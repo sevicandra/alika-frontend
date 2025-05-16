@@ -1,0 +1,15 @@
+"use server";
+import Sidebar from "@/component/Organisms/Sidebar";
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="relative grid grid-cols-[auto_1fr] overflow-hidden">
+      <Sidebar menu={"Penghasilan"} />
+      <div className={`w-[50px] md:hidden h-full max-h-full`}></div>
+      <main className="overflow-hidden">{children}</main>
+    </div>
+  );
+}
