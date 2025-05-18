@@ -7,6 +7,7 @@ import {
   ReactNode,
   useContext,
 } from "react";
+import { usePathname } from "next/navigation";
 
 type account = {
   kode_satker: string;
@@ -34,6 +35,10 @@ interface Session {
     preferred_username: string;
   };
   account?: account[];
+  globalRoles?: {
+    kode: string;
+    role: string;
+  }[];
   current_account?: account;
 }
 
@@ -41,6 +46,8 @@ interface SessionContextValue {
   data: Session | null;
   status: "authenticated" | "unauthenticated" | "loading";
   update: () => Promise<void>;
+  signOut: () => Promise<void>;
+  changeCurrentAccount: (kode_satker: string) => void;
 }
 
 interface SessionProviderProps {
@@ -53,6 +60,8 @@ const SessionContext = createContext<SessionContextValue | undefined>(
 const sessionChannel = new BroadcastChannel("session_channel");
 
 export function SessionProvider({ children }: SessionProviderProps) {
+  const pathname = usePathname();
+
   const [session, setSession] = useState<Session | null>(null);
   const [status, setStatus] = useState<
     "authenticated" | "unauthenticated" | "loading"
@@ -70,6 +79,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
   };
   const fetchSession = async () => {
     try {
+      setStatus("loading");
       const csrf_token = await fetch("/api/auth/csrf").then((res) =>
         res.json()
       );
@@ -83,15 +93,17 @@ export function SessionProvider({ children }: SessionProviderProps) {
       if (!res.ok) throw new Error("Session not found");
       const data = await res.json();
       setSession({
-        ...data,
+        user: data.user,
+        account: data.account,
+        globalRoles: data.globalRoles,
         current_account: data.account.find(
           (a: account) => a.kode_satker === data.user.kode_satker
         ),
       });
-      setStatus(data.session ? "authenticated" : "unauthenticated");
+      setStatus(data.user ? "authenticated" : "unauthenticated");
       sessionChannel.postMessage({
         type: "SESSION_UPDATE",
-        session: data.session,
+        session: session,
       });
     } catch (error) {
       console.error(error);
@@ -99,9 +111,36 @@ export function SessionProvider({ children }: SessionProviderProps) {
       setStatus("unauthenticated");
     }
   };
+  const signOut = async () => {
+    try {
+      const csrf_token = await fetch("/api/auth/csrf").then((res) =>
+        res.json()
+      );
+      const res = await fetch("/api/auth/signout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrf_token.token,
+        },
+      });
+      if (!res.ok) throw new Error("Sign out failed");
+      const data = await res.json();
+      if (data.status === "success") {
+        setSession(null);
+        setStatus("unauthenticated");
+        sessionChannel.postMessage({
+          type: "SESSION_UPDATE",
+          session: null,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchSession();
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     sessionChannel.onmessage = (event) => {
@@ -118,6 +157,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
       status,
       update: fetchSession,
       changeCurrentAccount,
+      signOut,
     }),
     [session, status]
   );

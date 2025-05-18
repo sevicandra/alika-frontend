@@ -46,8 +46,6 @@ const Page = () => {
           throw new Error(message);
         }
         const data = (await res.json()).data;
-        console.log(data);
-
         setData(
           data.map((item: any) => {
             return {

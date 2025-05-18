@@ -9,11 +9,26 @@ import Link from "next/link";
 import Confirmation from "@/component/Molecules/Confirmation";
 import Loading from "@/component/Molecules/Loading";
 import Paginator from "@/component/Organisms/Paginator";
+import { useSession } from "@/lib/context/session";
 export default function CetakMain() {
+  const { status } = useSession();
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      console.log("unauthenticated");
+      window.location.href = "/api/auth/signin";
+    }
+  }, [status]);
+
   const router = useRouter();
   const { setRefresh, refresh } = useContext(CetakContext);
 
-  const { page: currentPage, limit, setPage, totalPage, setTotalPage } = useContext(PaginatorContext);
+  const {
+    page: currentPage,
+    limit,
+    setPage,
+    totalPage,
+    setTotalPage,
+  } = useContext(PaginatorContext);
   const [error, setError] = useState<Error | null>(null);
   const { addNotification } = useContext(NotificationContext);
   const [data, setData] = useState<
@@ -38,15 +53,13 @@ export default function CetakMain() {
           `/api/Penghasilan/DataCetak?limit=${limit}&offset=${offset}`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
         }
         const data = await res.json();
-        console.log(data);
-                
         setData(
           data.data.map((item: any) => {
             return {
@@ -58,7 +71,7 @@ export default function CetakMain() {
               status: item.status,
               id: item.id,
             };
-          }),
+          })
         );
         setTotalPage(data.meta.totalPages);
       } catch (error) {
@@ -176,8 +189,13 @@ export default function CetakMain() {
         />
       </div>
       <div>
-      {totalPage > 1 && <Paginator action={setPage} totalPage={totalPage} page={currentPage} />}
-        
+        {totalPage > 1 && (
+          <Paginator
+            action={setPage}
+            totalPage={totalPage}
+            page={currentPage}
+          />
+        )}
       </div>
     </div>
   );

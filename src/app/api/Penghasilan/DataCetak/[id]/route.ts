@@ -22,7 +22,7 @@ export async function GET(
   }
   const { id } = await params;
   try {
-    const getDataCetak = await fetch(`${apiBaseUrl}/api/v2/DataTte/${id}/`, {
+    const getDataCetak = await fetch(`${apiBaseUrl}/api/v2/DataCetak/${id}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -42,6 +42,45 @@ export async function GET(
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
     revalidateTag(`Penghasilan:DataCetak`);
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
+  if (!session) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+  }
+  const user = await verify(session);
+  if (!user) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+  }
+  const { id } = await params;
+  try {
+    const getDataCetak = await fetch(apiBaseUrl + `api/v2/DataCetak/${id}/`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
+      },
+      cache: "no-store",
+    });
+    if (!getDataCetak.ok) {
+      const data = await getDataCetak.json();
+      return NextResponse.json(
+        { message: data.message },
+        { status: getDataCetak.status },
+      );
+    }
+    revalidateTag("Penghasilan:DataCetak");
+    const data = await getDataCetak.json();
+    return NextResponse.json(data, { status: 200 });
+  } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

@@ -4,10 +4,16 @@ import Card from "@/component/Molecules/MainModuleCard";
 import { useSession } from "@/lib/context/session";
 import Notification from "@/component/Organisms/Notification";
 import Themes from "@/component/Organisms/Themes";
+import { useEffect } from "react";
 
 export default function Home() {
-  const { data: session } = useSession();
-
+  const { data: session, status } = useSession();
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      console.log("unauthenticated");
+      window.location.href = "/api/auth/signin";
+    }
+  }, [status]);
   return (
     <>
       <div className="grid grid-cols-1 overflow-hidden">

@@ -1,7 +1,17 @@
+'use client';
 import Link from "next/link";
 import { FiChevronLeft } from "react-icons/fi";
+import { useEffect } from "react";
+import { useSession } from "@/lib/context/session";
 
-export default async function Layout({ data }: { data: React.ReactNode }) {
+export default function Layout({ data }: { data: React.ReactNode }) {
+    const { status } = useSession();
+    useEffect(() => {
+      if (status === "unauthenticated") {
+        console.log("unauthenticated");
+        window.location.href = "/api/auth/signin";
+      }
+    }, [status]);
   return (
     <div className="grid h-full w-full grid-rows-[auto_1fr_auto] gap-2 p-2 md:p-4">
       <div className="flex flex-wrap gap-1">

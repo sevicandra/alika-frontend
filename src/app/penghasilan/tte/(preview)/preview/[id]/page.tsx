@@ -23,7 +23,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const info = await fetch(`/api/Penghasilan/DataCetak/${id}`, {
+        const info = await fetch(`/api/Penghasilan/DataTTE/${id}`, {
           method: "GET",
         });
         if (!info.ok) {

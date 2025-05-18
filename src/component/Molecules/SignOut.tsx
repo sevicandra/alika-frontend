@@ -5,34 +5,28 @@ import { NotificationContext } from "@/lib/context/notifikasi";
 import { WebPushNotificationContext } from "@/lib/context/webPushNotification";
 import { useContext, useState } from "react";
 import Confirmation from "./Confirmation";
+import { useSession } from "@/lib/context/session";
 export default function SignOut() {
   const router = useRouter();
   const { addNotification } = useContext(NotificationContext);
   const { unsubscribeFromPush } = useContext(WebPushNotificationContext);
   const [isOpen, setIsOpen] = useState(false);
-  const signOut = async () => {
-    unsubscribeFromPush();
+  const { signOut } = useSession();
+
+  const signOutHandler = async () => {
     try {
-      const response = await fetch("/api/auth/signout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
-        },
-      });
-      if (response.ok) {
+      await signOut().then(() => {
+        unsubscribeFromPush();
+        addNotification({
+          title: "Logout",
+          message: "Berhasil logout",
+        });
         router.push("/");
-      } else {
-        const { message } = await response.json();
-        throw new Error(message);
-      }
-    } catch (error: any) {
+      });
+    } catch (error) {
       addNotification({
         title: "Logout",
-        message: error.message,
+        message: "Gagal logout",
       });
     }
   };
@@ -52,7 +46,7 @@ export default function SignOut() {
       <Confirmation
         title="Logout"
         message="Apakah anda yakin ingin logout?"
-        onConfirm={signOut}
+        onConfirm={signOutHandler}
         onCancel={() => setIsOpen(false)}
         isOpen={isOpen}
       />

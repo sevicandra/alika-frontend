@@ -1,7 +1,8 @@
-import 'server-only'
+import "server-only";
 import routes from "@/lib/OAuthOptions";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { OAuth2 } from "@/lib/OAuthOptions";
 
 const {
   AUTH_BASE_URI,
@@ -12,7 +13,7 @@ const {
   AUTH_GRANT_TYPE,
   AUTH_REDIRECT_URI,
 } = process.env;
-async function handler(req: Request) {
+async function handler(req: NextRequest) {
   const url = new URL(req.url);
   const authurl = url.pathname.split("/").slice(3);
   const method = req.method;
@@ -20,53 +21,57 @@ async function handler(req: Request) {
   try {
     if (method === "GET") {
       switch (action) {
-        case "session":
-          return NextResponse.json({ status: "success" });
-          break;
         case "signin":
           return NextResponse.redirect(
             `${AUTH_BASE_URI}/${AUTH_AUTHORIZE_ENDPOINT}?client_id=${AUTH_CLIENT_ID}&scope=${AUTH_SCOPE}&response_type=${AUTH_RESPONSE_TYPE}&grant_type=${AUTH_GRANT_TYPE}&redirect_uri=${AUTH_REDIRECT_URI}`
           );
           break;
         case "callback":
-          try {
-            return routes.callback(req);
-          } catch (error) {
-            console.log(error);
-          }
-          break;
-        case "error":
-          return NextResponse.json({ status: "success" });
+          return OAuth2.callback(req);
           break;
         case "csrf":
-          return await routes.csrf();
+          return await OAuth2.csrf();
           break;
       }
     } else if (method === "POST") {
       switch (action) {
-        case "signin":
-          (await cookies()).set(`${process.env.APP_NAME}.access_token`, "", {
-            expires: new Date(0),
-            path: "/",
-          });
-          (await cookies()).set(`${process.env.APP_NAME}.refresh_token`, "", {
-            expires: new Date(0),
-            path: "/",
-          });
-          return NextResponse.redirect("/");
-          break;
         case "signout":
-          return routes.signout();
+          try {
+            const response = await OAuth2.signout();
+            return NextResponse.json({ status: "success", message: response });
+          } catch (error) {
+            return NextResponse.json(
+              { status: "failed", error },
+              { status: 401 }
+            );
+          }
           break;
         case "session":
-          return routes.session();
+          try {
+            const session = await OAuth2.session(req);
+            return NextResponse.json({
+              status: "success",
+              user: session.user,
+              account: session.account,
+              globalRoles: session.globalRole,
+            });
+          } catch (error) {
+            console.log(error === "Token expired");
+            if (error === "Token expired") {
+              return NextResponse.redirect(new URL(req.url));
+            }
+            return NextResponse.json(
+              { status: "failed", error },
+              { status: 401 }
+            );
+          }
           break;
       }
     }
-    return NextResponse.json({ status: "failed" });
+    return NextResponse.json({ status: "not found" }, { status: 404 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ status: "failed" });
+    return NextResponse.json({ status: "failed" }, { status: 500 });
   }
 }
 export { handler as GET, handler as POST };

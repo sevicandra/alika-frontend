@@ -1,18 +1,11 @@
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
-import { verify, encrypt, decrypt } from "@/lib/jwt";
+import { encrypt, decrypt } from "@/lib/jwt";
 import { nanoid } from "nanoid";
 import { cookies as getCookies } from "next/headers";
-import OAuthOptions from "@/lib/OAuthOptions";
-import { Mutex } from "async-mutex";
+import { OAuth2 } from "@/lib/OAuthOptions";
 const csrfProtectedMethods = ["POST", "PUT", "PATCH", "DELETE"];
-const userLocks = new Map<string, Mutex>();
-async function getUserMutex(userId: string) {
-  if (!userLocks.has(userId)) {
-    userLocks.set(userId, new Mutex());
-  }
-  return userLocks.get(userId)!;
-}
+
 export default async function middleware(req: NextRequest) {
   const cookies = getCookies();
   const { pathname } = req.nextUrl;
@@ -20,7 +13,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/penghasilan/dashboard", req.url));
   }
   try {
-    let csrfTokenCookie = (await cookies).get("csrf_token")?.value;
+    const csrfTokenCookie = (await cookies).get("csrf_token")?.value;
     if (!csrfTokenCookie) {
       const newCsrfToken = nanoid();
       const encryptedCsrfToken = await encrypt({ newCsrfToken });
@@ -31,73 +24,37 @@ export default async function middleware(req: NextRequest) {
         path: "/",
         maxAge: 60 * 60, // 1h
       });
-      csrfTokenCookie = newCsrfToken;
+      return NextResponse.redirect(req.url);
     }
   } catch (error) {
     console.error("Failed to set CSRF token:", error);
     return NextResponse.json(
       { message: "Internal server error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
   if (
     pathname.startsWith("/api/auth") &&
     !pathname.startsWith("/api/auth/session")
-  ) {    
+  ) {
     return NextResponse.next();
   }
-  const sessionToken =
-    (await cookies).get(`${process.env.APP_NAME}.session`)?.value || "";
-  let user;
-  
-  if (sessionToken) {
-    try {
-      user = await verify(sessionToken);
-    } catch (error) {
-      (await cookies).delete(`${process.env.APP_NAME}.session`);
-      user = null;
+  try {
+    await OAuth2.session(req);
+  } catch (error) {
+    if (error === "Token expired") {
+      return NextResponse.redirect(new URL(req.url));
     }
-  }
-  if (!user) {
-    const refresh_token = (await cookies).get(
-      `${process.env.APP_NAME}.refresh_token`,
-    )?.value;
-    if (refresh_token) {
-      const mutex = await getUserMutex(refresh_token);
-      const release = await mutex.acquire();
-      try {
-        const currentToken =
-          (await cookies).get(`${process.env.APP_NAME}.session`)?.value || "";
-        const currentUser = await verify(currentToken).catch(() => null);
-        if (currentUser) {
-          user = currentUser;
-        } else {
-          await OAuthOptions.refreshToken({ refresh_token });
-          const newToken =
-            (await cookies).get(`${process.env.APP_NAME}.session`)?.value || "";
-          await verify(newToken);
-        }
-        return NextResponse.redirect(new URL(pathname, req.url));
-      } catch (error) {
-        console.error("Error refreshing token:", error);
-        (await cookies).delete(`${process.env.APP_NAME}.session`);
-        (await cookies).delete(`${process.env.APP_NAME}.refresh_token`);
-        return NextResponse.redirect(
-          new URL(`${process.env.APP_URL}/api/auth/signin`, req.url),
-        );
-      } finally {
-        release();
-      }
-    } else {
-      (await cookies).delete(`${process.env.APP_NAME}.refresh_token`);
-      return NextResponse.redirect(
-        new URL(`${process.env.APP_URL}/api/auth/signin`),
-      );
+    console.error("Error getting session:", error);
+    if (pathname.startsWith("/api")) {
+      return NextResponse.json({ message: "Session expired" }, { status: 401 });
     }
+    return NextResponse.redirect(
+      new URL(`${process.env.APP_URL}/api/auth/signin`, req.url)
+    );
   }
   if (
-    pathname.startsWith("/api/Penghasilan") ||
-    pathname.startsWith("/api/auth/session")
+    pathname.startsWith("/api")
   ) {
     const { method } = req;
     if (csrfProtectedMethods.includes(method)) {
@@ -107,21 +64,21 @@ export default async function middleware(req: NextRequest) {
         if (!csrfTokenHeader) {
           return NextResponse.json(
             { message: "Missing CSRF token" },
-            { status: 403 },
+            { status: 403 }
           );
         }
         const decrypted = await decrypt(csrfTokenHeader);
         if (!decrypted || csrfTokenHeader !== csrfTokenCookie) {
           return NextResponse.json(
             { message: "Invalid CSRF token" },
-            { status: 403 },
+            { status: 403 }
           );
         }
       } catch (error) {
         console.error("CSRF validation failed:", error);
         return NextResponse.json(
           { message: "CSRF validation error" },
-          { status: 500 },
+          { status: 500 }
         );
       }
       const referer = req.headers.get("Referer") || "";
