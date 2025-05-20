@@ -18,22 +18,26 @@ export const GET = async () => {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
   try {
-    const key = await fetch(`${apiBaseUrl}/key`, {
+    const key = await fetch(`${apiBaseUrl}/subscription/key`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
+      },
     });
     if (!key.ok) {
-      const data = await key.json();
+      const data = await key.json();      
       return NextResponse.json(
         { message: data.message },
         { status: key.status },
       );
     }
-    const data = await key.json();
+    const data = await key.json();    
     return NextResponse.json(
-      { message: "success", data: data.key },
+      data,
       { status: 200 },
     );
-  } catch (error: any) {
+  } catch (error: any) {    
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 };

@@ -96,6 +96,7 @@ const refreshToken = async ({
             redirect_uri: AUTH_REDIRECT_URI ?? "",
             refresh_token: refresh_token,
             grant_type: "refresh_token",
+            scope: process.env.AUTH_SCOPE ?? "",
           }),
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",

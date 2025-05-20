@@ -25,7 +25,7 @@ export default function WebPushNotificationProvider({
   const { addNotification } = useContext(NotificationContext);
   const [isSupported, setIsSupported] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription | null>(
-    null,
+    null
   );
   useEffect(() => {
     if ("serviceWorker" in navigator && "PushManager" in window) {
@@ -37,14 +37,16 @@ export default function WebPushNotificationProvider({
     if (subscription) {
       const checkSubscriptionStatus = async () => {
         try {
-          const response = await fetch("/api/Notifikasi/CheckSubscription", {
-            method: "POST",
+          const response = await fetch("/api/Notifikasi/Subscription", {
+            method: "PATCH",
             headers: {
               "Content-Type": "application/json",
-              "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-                const data = await res.json();
-                return data.token;
-              }),
+              "X-CSRF-Token": await fetch("/api/auth/csrf").then(
+                async (res) => {
+                  const data = await res.json();
+                  return data.token;
+                }
+              ),
             },
             body: JSON.stringify({
               endpoint: subscription.endpoint,
@@ -52,10 +54,12 @@ export default function WebPushNotificationProvider({
           });
           if (!response.ok) {
             const data = await response.json();
+            await subscription?.unsubscribe();
+            setSubscription(null);
             if (response.status === 404) {
-              await subscribeToPush();
               return;
             }
+            await subscribeToPush();
             throw new Error(data.message);
           }
           console.log("User is subscribed.");
@@ -84,13 +88,9 @@ export default function WebPushNotificationProvider({
       const registration = await navigator.serviceWorker.ready;
       const sub = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(
-          await (
-            await key.json()
-          ).data,
-        ),
+        applicationServerKey: urlBase64ToUint8Array((await key.json()).data),
       });
-      await fetch("/api/Notifikasi/Subscribe", {
+      await fetch("/api/Notifikasi/Subscription", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,6 +103,7 @@ export default function WebPushNotificationProvider({
       });
       setSubscription(sub);
     } catch (error: any) {
+      console.log(error);
       addNotification({
         title: "Push Notification Registration",
         message: error.message,
@@ -113,8 +114,8 @@ export default function WebPushNotificationProvider({
     if (subscription) {
       try {
         await subscription?.unsubscribe();
-        const unsubscribe = await fetch("/api/Notifikasi/Unsubscribe", {
-          method: "POST",
+        const unsubscribe = await fetch("/api/Notifikasi/Subscription", {
+          method: "DELETE",
           headers: {
             "Content-Type": "application/json",
             "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
