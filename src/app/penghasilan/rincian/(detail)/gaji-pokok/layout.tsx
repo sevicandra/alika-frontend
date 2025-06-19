@@ -1,9 +1,9 @@
 "use client";
 import GroupButton from "@/component/Molecules/GroupButton";
 import { Suspense } from "react";
-import { RincianContext } from "@/lib/context/penghasilan/rincian";
+import { RincianContext } from "@/context/penghasilan/rincian";
 import { useContext, useState } from "react";
-import Tab from "@/component/Molecules/Tab";
+import Tab from "@/component/Molecules/SliderButton";
 const Page = ({
   rutin,
   kekurangan,

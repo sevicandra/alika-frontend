@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useContext } from "react";
 import { DataTable } from "@/component/Organisms/DataTable";
-import { NotificationContext } from "@/lib/context/notifikasi";
+import { NotificationContext } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 export default function Page() {
   const [data, setData] = useState<

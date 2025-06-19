@@ -1,7 +1,7 @@
 "use client";
 import GroupButton from "@/component/Molecules/GroupButton";
 import { Suspense } from "react";
-import { RincianContext } from "@/lib/context/penghasilan/rincian";
+import { RincianContext } from "@/context/penghasilan/rincian";
 import { useContext } from "react";
 const Page = ({ children }: { children: React.ReactNode }) => {
   const { tahun } = useContext(RincianContext);

@@ -1,8 +1,8 @@
 "use client";
 import { DataTable } from "@/component/Organisms/DataTable";
 import { useState, useEffect, useContext } from "react";
-import { RincianContext } from "@/lib/context/penghasilan/rincian";
-import { NotificationContext } from "@/lib/context/notifikasi";
+import { RincianContext } from "@/context/penghasilan/rincian";
+import { NotificationContext } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 const Page = () => {
   const [error, setError] = useState<Error | null>(null);

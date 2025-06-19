@@ -6,39 +6,42 @@
 }
 
 @plugin "daisyui/theme" {
-  name: "blue";
+    name: "blue";
   default: true;
   prefersdark: false;
   color-scheme: light;
 
-  --color-base-100: #f2f4ff; /* Background utama (sangat terang) */
-  --color-base-200: #e0e4ff; /* Background sekunder */
-  --color-base-300: #c8d0ff; /* Warna netral untuk elemen UI */
-  --color-base-content: #222a50; /* Warna teks utama di atas base */
+  /* Base Colors - Diperhalus dan ditingkatkan kontrasnya */
+  --color-base-100: #f5f7ff; /* Lebih putih dan bersih */
+  --color-base-200: #e6ebff; /* Sedikit lebih gelap dari base-100 */
+  --color-base-300: #d0d8ff; /* Lebih kontras untuk elemen UI */
+  --color-base-content: #1a2250; /* Lebih gelap untuk readability */
 
-  --color-primary: #0c1550; /* Warna utama (Dark Blue) */
-  --color-primary-content: #f8f9ff; /* Warna teks kontras di atas primary */
+  /* Primary Colors - Lebih kaya dan konsisten */
+  --color-primary: #0d1a6b; /* Biru lebih dalam (dari #0c1550) */
+  --color-primary-content: #ffffff; /* Putih murni untuk kontras maksimal */
 
-  --color-secondary: #4a78c2; /* Biru yang lebih terang sebagai warna sekunder */
-  --color-secondary-content: #f8faff; /* Warna teks kontras di atas secondary */
+  /* Secondary Colors - Lebih hidup */
+  --color-secondary: #3a6bc8; /* Biru lebih cerah (dari #4a78c2) */
+  --color-secondary-content: #ffffff;
 
-  --color-accent: #36a98b; /* Hijau kebiruan untuk highlight/aksen */
-  --color-accent-content: #f9fefc; /* Warna teks kontras di atas aksen */
+  /* Accent Colors - Lebih segar */
+  --color-accent: #2e9f82; /* Hijau lebih dalam (dari #36a98b) */
+  --color-accent-content: #ffffff;
 
-  --color-neutral: #3b3f5f; /* Warna netral dengan sedikit kebiruan */
-  --color-neutral-content: #f8faff; /* Warna teks di atas netral */
+  /* Neutral Colors - Lebih seimbang */
+  --color-neutral: #3d4266; /* Sedikit lebih terang (dari #3b3f5f) */
+  --color-neutral-content: #ffffff;
 
-  --color-info: #3b82f6; /* Biru terang untuk status informasi */
-  --color-info-content: #f8faff; /* Warna teks kontras di atas info */
-
-  --color-success: #10b981; /* Hijau segar untuk status sukses */
-  --color-success-content: #f8faff; /* Warna teks kontras di atas success */
-
-  --color-warning: #facc15; /* Kuning-oranye untuk peringatan */
-  --color-warning-content: #5a3e00; /* Warna teks kontras di atas warning */
-
-  --color-error: #dc2626; /* Merah terang untuk status error */
-  --color-error-content: #f8faff; /* Warna teks kontras di atas error */
+  /* Status Colors - Dioptimalkan */
+  --color-info: #2563eb; /* Biru lebih standar */
+  --color-info-content: #ffffff;
+  --color-success: #0d9d6e; /* Hijau lebih natural */
+  --color-success-content: #ffffff;
+  --color-warning: #f59e0b; /* Kuning lebih warm */
+  --color-warning-content: #3e2a00;
+  --color-error: #c52222; /* Merah lebih dalam */
+  --color-error-content: #ffffff;
 }
 @plugin "daisyui/theme" {
   name: "blue-dark";
@@ -51,30 +54,31 @@
   --color-base-300: #252f49; /* Warna netral untuk elemen UI */
   --color-base-content: #e3e8ff; /* Warna teks utama di atas base */
 
-  --color-primary: #1e2a78; /* Warna utama (Dark Blue yang lebih gelap) */
-  --color-primary-content: #f8faff; /* Warna teks kontras di atas primary */
+  /* Perbaikan warna primary - lebih terang dan lebih kontras */
+  --color-primary: #3a4da8; /* Warna utama yang lebih terang */
+  --color-primary-content: #f8faff; /* Tetap sama karena kontrasnya baik */
 
-  --color-secondary: #3b5a99; /* Biru tua sebagai warna sekunder */
-  --color-secondary-content: #f1f4ff; /* Warna teks kontras di atas secondary */
+  /* Perbaikan warna secondary - lebih terang */
+  --color-secondary: #4d6bb3; /* Biru tua yang lebih terang */
+  --color-secondary-content: #f1f4ff; /* Tetap sama */
 
-  --color-accent: #2e8d76; /* Hijau kebiruan lebih gelap untuk aksen */
-  --color-accent-content: #effdf9; /* Warna teks kontras di atas aksen */
+  /* Perbaikan warna accent - lebih terang */
+  --color-accent: #3da58a; /* Hijau kebiruan lebih terang */
+  --color-accent-content: #effdf9; /* Tetap sama */
 
-  --color-neutral: #292d45; /* Warna netral dengan sedikit kebiruan */
-  --color-neutral-content: #f1f3ff; /* Warna teks di atas netral */
+  /* Warna berikut tetap sama karena sudah memiliki kontras baik */
+  --color-neutral: #292d45;
+  --color-neutral-content: #f1f3ff;
+  --color-info: #2563eb;
+  --color-info-content: #e8f0ff;
+  --color-success: #059669;
+  --color-success-content: #e6fff2;
+  --color-warning: #eab308;
+  --color-warning-content: #3e2a00;
+  --color-error: #b91c1c;
+  --color-error-content: #fde8e8;
 
-  --color-info: #2563eb; /* Biru lebih dalam untuk status informasi */
-  --color-info-content: #e8f0ff; /* Warna teks kontras di atas info */
-
-  --color-success: #059669; /* Hijau lebih gelap untuk status sukses */
-  --color-success-content: #e6fff2; /* Warna teks kontras di atas success */
-
-  --color-warning: #eab308; /* Kuning lebih gelap untuk peringatan */
-  --color-warning-content: #3e2a00; /* Warna teks kontras di atas warning */
-
-  --color-error: #b91c1c; /* Merah tua untuk status error */
-  --color-error-content: #fde8e8; /* Warna teks kontras di atas error */
-
+  /* Generate ulang variasi warna untuk primary, secondary, accent yang baru */
   --color-primary-50: color-mix(in srgb, var(--color-primary) 10%, black);
   --color-primary-100: color-mix(in srgb, var(--color-primary) 20%, black);
   --color-primary-200: color-mix(in srgb, var(--color-primary) 40%, black);
@@ -111,6 +115,7 @@
   --color-accent-900: color-mix(in srgb, var(--color-accent) 20%, white);
   --color-accent-950: color-mix(in srgb, var(--color-accent) 10%, white);
 
+  /* Warna berikut tetap sama karena tidak perlu diubah */
   --color-neutral-50: color-mix(in srgb, var(--color-neutral) 10%, black);
   --color-neutral-100: color-mix(in srgb, var(--color-neutral) 20%, black);
   --color-neutral-200: color-mix(in srgb, var(--color-neutral) 40%, black);

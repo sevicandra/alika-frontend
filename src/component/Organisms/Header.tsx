@@ -3,15 +3,15 @@ import AppLogo from "../Molecules/AppLogo";
 import Link from "next/link";
 import ProfileButton from "../Molecules/ProfileButton";
 import { Menu, MenuButton, MenuItems, MenuItem } from "../Molecules/Dropdown";
-import { useSession } from "@/lib/context/session";
-import { ThemesContext } from "@/lib/context/themes";
+import { useSession } from "@/context/session";
+import { ThemesContext } from "@/context/themes";
 import { useContext } from "react";
 import SignOut from "../Molecules/SignOut";
 export default function Header() {
   const { data: session } = useSession();
   const { openMenu } = useContext(ThemesContext);
   return (
-    <nav className="shadow-neutral/50 bg-primary sticky top-0 left-0 z-30 h-16 w-full bg-linear-to-r from-0% via-30% shadow-md">
+    <nav className="shadow-base-200 bg-base-200 shadow border-b border-base-content/10 sticky top-0 left-0 z-30 h-16 w-full">
       <div className="container-xl mx-auto flex h-full items-center justify-between px-4">
         <div>
           <Link href="/">

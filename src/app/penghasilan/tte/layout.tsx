@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useEffect } from "react";
-import { useSession } from "@/lib/context/session";
+import { useSession } from "@/context/session";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { status } = useSession();
   useEffect(() => {

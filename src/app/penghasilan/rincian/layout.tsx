@@ -1,7 +1,7 @@
 'use client';
-import RincianProvider from "@/lib/context/penghasilan/rincian";
+import RincianProvider from "@/context/penghasilan/rincian";
 import { useEffect } from "react";
-import { useSession } from "@/lib/context/session";
+import { useSession } from "@/context/session";
 export default  function Layout({ children }: { children: React.ReactNode }) {
     const { status } = useSession();
     useEffect(() => {

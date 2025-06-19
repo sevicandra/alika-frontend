@@ -2,14 +2,15 @@
 import { DataTable } from "@/component/Organisms/DataTable";
 import { useEffect, useState, useContext, use } from "react";
 import { useRouter } from "next/navigation";
-import { PaginatorContext } from "@/lib/context/paginator";
-import { NotificationContext } from "@/lib/context/notifikasi";
-import { CetakContext } from "@/lib/context/penghasilan/cetak";
+import { PaginatorContext } from "@/context/paginator";
+import { NotificationContext } from "@/context/notifikasi";
+import { CetakContext } from "@/context/penghasilan/cetak";
 import Link from "next/link";
 import Confirmation from "@/component/Molecules/Confirmation";
 import Loading from "@/component/Molecules/Loading";
 import Paginator from "@/component/Organisms/Paginator";
-import { useSession } from "@/lib/context/session";
+import { useSession } from "@/context/session";
+import ContainerCard from "@/component/Molecules/ContainerCard";
 export default function CetakMain() {
   const { status } = useSession();
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function CetakMain() {
           `/api/Penghasilan/DataCetak?limit=${limit}&offset=${offset}`,
           {
             method: "GET",
-          }
+          },
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -71,7 +72,7 @@ export default function CetakMain() {
               status: item.status,
               id: item.id,
             };
-          })
+          }),
         );
         setTotalPage(data.meta.totalPages);
       } catch (error) {
@@ -120,11 +121,10 @@ export default function CetakMain() {
   };
   if (error) throw error;
   return (
-    <div className="bg-base-200 rounded-box relative grid grid-rows-[auto_1fr_auto] gap-2 overflow-hidden p-2">
-      <div></div>
+    <ContainerCard className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden">
       <div className="overflow-auto">
         {isLoading && (
-          <div className="bg-base-300/50 text-primary-600 absolute z-10 flex h-full w-full">
+          <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
             <Loading />
           </div>
         )}
@@ -166,14 +166,14 @@ export default function CetakMain() {
                   {row.status === 2 && (
                     <button
                       onClick={() => setIsDelete(row.id)}
-                      className="btn btn-xs btn-error join-item"
+                      className="btn join-item btn-xs btn-error"
                     >
                       hapus
                     </button>
                   )}
                   <Link
                     href={`/penghasilan/cetak/preview/${row.id}`}
-                    className="btn btn-xs btn-info join-item"
+                    className="btn join-item btn-xs btn-info"
                   >
                     view
                   </Link>
@@ -188,15 +188,6 @@ export default function CetakMain() {
           onCancel={() => setIsDelete(null)}
         />
       </div>
-      <div>
-        {totalPage > 1 && (
-          <Paginator
-            action={setPage}
-            totalPage={totalPage}
-            page={currentPage}
-          />
-        )}
-      </div>
-    </div>
+    </ContainerCard>
   );
 }

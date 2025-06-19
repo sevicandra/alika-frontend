@@ -1,6 +1,6 @@
 "use client";
 import { useContext, useEffect } from "react";
-import { ThemesContext } from "@/lib/context/themes";
+import { ThemesContext } from "@/context/themes";
 import { Transition } from "@headlessui/react";
 import { FiXCircle } from "react-icons/fi";
 import { useState } from "react";
@@ -28,10 +28,10 @@ export default function Notification() {
           afterLeave={closeMenu}
         >
           <div
-            className="bg-primary-600 text-primary-content absolute right-0 grid h-full w-2xs max-w-full grid-rows-[auto_1fr] shadow-lg"
+            className="bg-base-300 text-base-content absolute right-0 grid h-full w-2xs max-w-full grid-rows-[auto_1fr] shadow-lg"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-primary-800 flex p-4 shadow">
+            <div className="bg-base-200 flex p-4 shadow">
               <button onClick={() => setShow(false)} className="cursor-pointer">
                 <FiXCircle />
               </button>
@@ -39,7 +39,7 @@ export default function Notification() {
             <div className="flex flex-col gap-2 overflow-auto p-4">
               {themes().map((item) => (
                 <div
-                  className="bg-base-100 text-base-content w-full cursor-pointer font-sans shadow"
+                  className="bg-base-100 text-base-content w-full cursor-pointer font-sans shadow shadow-base-100 border-base-200/20"
                   data-theme={item}
                   key={item}
                   onClick={() => setTheme(item)}

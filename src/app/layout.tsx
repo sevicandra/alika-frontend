@@ -2,14 +2,14 @@
 import type { Metadata } from "next";
 import { Abel } from "next/font/google";
 import "./globals.css";
-import { SessionProvider } from "@/lib/context/session";
+import { SessionProvider } from "@/context/session";
 import Header from "@/component/Organisms/Header";
-import NotificationProvider from "@/lib/context/notifikasi";
-import { ThemesProvider } from "@/lib/context/themes";
+import NotificationProvider from "@/context/notifikasi";
+import { ThemesProvider } from "@/context/themes";
 import Notification from "@/component/Organisms/Notification";
 import Themes from "@/component/Organisms/Themes";
 import Splash from "@/component/Molecules/Splash";
-import WebPushNotificationProvider from "@/lib/context/webPushNotification";
+import WebPushNotificationProvider from "@/context/webPushNotification";
 import PushNotificationSub from "@/component/Organisms/PushNotificationSub";
 const abel = Abel({
   weight: "400",

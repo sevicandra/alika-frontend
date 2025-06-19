@@ -2,7 +2,7 @@
 import { useContext } from "react";
 import GroupButton from "@/component/Molecules/GroupButton";
 import Loading from "@/component/Molecules/Loading";
-import { CetakDocContext } from "@/lib/context/penghasilan/cetakDoc";
+import { CetakDocContext } from "@/context/penghasilan/cetakDoc";
 
 export default function Layout({
   children,

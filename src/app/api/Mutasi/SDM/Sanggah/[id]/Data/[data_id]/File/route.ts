@@ -1,0 +1,56 @@
+import "server-only";
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { verify } from "@/lib/jwt";
+import { revalidateTag } from "next/cache";
+
+const apiBaseUrl =
+  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
+  process.env.MUTASI_ALIKA_BASE_URL;
+
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ id: string; data_id: string }> },
+) {
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
+  if (!session) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+  }
+  const user = await verify(session);
+  if (!user) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+  }
+  const { id, data_id } = await params;
+  if (!id) {
+    return NextResponse.json({ message: "Bad Request" }, { status: 400 });
+  }
+
+  try {
+    const res = await fetch(`${apiBaseUrl}/api/v2/SDM/Sanggah/${id}/Data/${data_id}/File`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
+      },
+      next: { revalidate: 60, tags: ["Mutasi:Sanggah:File"] },
+    });
+
+    if (!res.ok) {
+      revalidateTag("Mutasi:Sanggah:File");
+      const data = await res.json();
+      return NextResponse.json(data, { status: res.status });
+    }
+    const data = await res.blob();
+    return new Response(data, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/pdf",
+      },
+    });
+  } catch (error: any) {
+    revalidateTag("Mutasi:Sanggah:File");
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}

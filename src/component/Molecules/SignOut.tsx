@@ -1,11 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { LuLogOut } from "react-icons/lu";
-import { NotificationContext } from "@/lib/context/notifikasi";
-import { WebPushNotificationContext } from "@/lib/context/webPushNotification";
+import { NotificationContext } from "@/context/notifikasi";
+import { WebPushNotificationContext } from "@/context/webPushNotification";
 import { useContext, useState } from "react";
 import Confirmation from "./Confirmation";
-import { useSession } from "@/lib/context/session";
+import { useSession } from "@/context/session";
 export default function SignOut() {
   const router = useRouter();
   const { addNotification } = useContext(NotificationContext);

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useContext } from "react";
-import { DashboardContext } from "@/lib/context/penghasilan/dashboard";
-import { NotificationContext } from "@/lib/context/notifikasi";
+import { DashboardContext } from "@/context/penghasilan/dashboard";
+import { NotificationContext } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 const Page = () => {
   const [data, setData] = useState<{ tahun: number }[]>();

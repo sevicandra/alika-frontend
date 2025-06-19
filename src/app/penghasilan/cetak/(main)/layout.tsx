@@ -1,15 +1,14 @@
+"use client";
 import GroupButton from "@/component/Molecules/GroupButton";
-import { Suspense } from "react";
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import { usePaginator } from "@/context/paginator";
+import Paginator from "@/component/Organisms/Paginator";
+export default function Layout({ children }: { children: React.ReactNode }) {
+  const { totalPage } = usePaginator();
   return (
-    <div className="grid h-full max-h-full grid-rows-[auto_1fr] gap-2 overflow-hidden p-4">
-      <div className="overflow-x-auto overflow-y-hidden">
+    <div className="grid h-full max-h-full grid-rows-[auto_1fr_auto] gap-2 overflow-hidden p-4">
+      <div className="max-w-full overflow-x-auto px-4">
         <GroupButton
-          className="btn-accent btn-outline"
+          className="btn-success"
           button={[
             {
               name: "KP4",
@@ -36,6 +35,9 @@ export default async function Layout({
         />
       </div>
       {children}
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
     </div>
   );
 }

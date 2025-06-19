@@ -1,0 +1,260 @@
+"use client";
+import { use, useEffect, useContext, useState } from "react";
+import { usePaginator } from "@/context/paginator";
+import { NotificationContext } from "@/context/notifikasi";
+import Paginator from "@/component/Organisms/Paginator";
+import { DataTable } from "@/component/Organisms/DataTable";
+import { usePegawai, useSkDetail } from "@/context/mutasi/sdm";
+import Loading from "@/component/Molecules/Loading";
+import Link from "next/link";
+import ContainerCard from "@/component/Molecules/ContainerCard";
+import ExpandableItemCard from "@/component/Molecules/ExpandableItemCard";
+import { snackToTitleCase } from "@/helpers/string.helper";
+export default function Page({
+  params,
+}: {
+  params: Promise<{
+    id: string;
+  }>;
+}) {
+  const { id } = use(params);
+  const [data, setData] = useState<
+    {
+      id: string;
+      nip: string;
+      nama: string;
+      golongan: string;
+      kantor_asal: string;
+      kantor_tujuan: string;
+      process_keluarga: string;
+      process_biaya: string;
+      process_termin: string;
+      status: string;
+      Golongan: {
+        kode: string;
+        nama: string;
+      };
+      KantorAsal: {
+        kode_satker: string;
+        kantor: string;
+      };
+      KantorTujuan: {
+        kode_satker: string;
+        kantor: string;
+      };
+    }[]
+  >([]);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(true);
+  const { addNotification } = useContext(NotificationContext);
+  const {
+    setPage,
+    totalPage,
+    setTotalPage,
+    page: currentPage,
+    limit,
+  } = usePaginator();
+  const {
+    refresh,
+    search,
+    dataKeluarga,
+    dataBiaya,
+    dataTermin,
+    setDataBiaya,
+    setDataKeluarga,
+    setDataTermin,
+    searchTerm,
+    setSearchTerm,
+  } = usePegawai();
+  const { data: SuratKeputusan } = useSkDetail();
+
+  useEffect(() => {
+    const fetchPegawai = async () => {
+      setLoading(true);
+      const offset = (currentPage - 1) * limit;
+      const searchParams = new URLSearchParams();
+      if (limit) searchParams.append("limit", limit.toString());
+      if (offset) searchParams.append("offset", offset.toString());
+      if (search) searchParams.append("search", search);
+      if (dataKeluarga) searchParams.append("process_keluarga", dataKeluarga);
+      if (dataBiaya) searchParams.append("process_biaya", dataBiaya);
+      if (dataTermin) searchParams.append("process_termin", dataTermin);
+      searchParams.append("associations", "Golongan,KantorAsal,KantorTujuan");
+      try {
+        const res = await fetch(
+          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai?${searchParams}`,
+          {
+            method: "GET",
+          },
+        );
+        if (!res.ok) {
+          const { message } = await res.json();
+          throw new Error(message);
+        }
+        const data = await res.json();
+        setData(data.data);
+        setTotalPage(data.meta.totalPages);
+      } catch (error) {
+        addNotification({
+          title: `Data Pegawai`,
+          message: (error as Error).message,
+        });
+        setError(error as Error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPegawai();
+  }, [
+    refresh,
+    search,
+    currentPage,
+    dataKeluarga,
+    dataBiaya,
+    dataTermin,
+    limit,
+  ]);
+
+  if (error) throw error;
+  return (
+    <ContainerCard
+      title="Daftar Pegawai Mutasi"
+      headerRight={
+        <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+          <input
+            onChange={(e) => setSearchTerm(e.target.value)}
+            type="text"
+            className="input-bordered input input-xs focus:outline-none"
+            placeholder="Cari berdasarkan Nama / NIP"
+            value={searchTerm}
+          />
+          <select
+            className="select-bordered select select-xs focus:outline-none"
+            onChange={(e) => setDataKeluarga(e.target.value)}
+            value={dataKeluarga || ""}
+          >
+            <option value="">Semua Status Data Keluarga</option>
+            <option value="IDLE">IDLE</option>
+            <option value="PROCESSING">PROCESSING</option>
+            <option value="DONE">DONE</option>
+            <option value="FAILED">FAILED</option>
+            <option value="RETRYING">RETRYING</option>
+          </select>
+          <select
+            className="select-bordered select select-xs focus:outline-none"
+            onChange={(e) => setDataBiaya(e.target.value)}
+            value={dataBiaya || ""}
+          >
+            <option value="">Semua Status Rincian Biaya</option>
+            <option value="IDLE">IDLE</option>
+            <option value="PROCESSING">PROCESSING</option>
+            <option value="DONE">DONE</option>
+            <option value="FAILED">FAILED</option>
+            <option value="RETRYING">RETRYING</option>
+          </select>
+          <select
+            className="select-bordered select select-xs focus:outline-none"
+            onChange={(e) => setDataTermin(e.target.value)}
+            value={dataTermin || ""}
+          >
+            <option value="">Semua Status Termin</option>
+            <option value="IDLE">IDLE</option>
+            <option value="PROCESSING">PROCESSING</option>
+            <option value="DONE">DONE</option>
+            <option value="FAILED">FAILED</option>
+            <option value="RETRYING">RETRYING</option>
+          </select>
+        </div>
+      }
+      className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden"
+    >
+      <div className="relative grid grid-rows-[1fr_auto] overflow-hidden">
+        <div className="overflow-y-auto py-2">
+          {loading && (
+            <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
+              <Loading />
+            </div>
+          )}
+          {data.map((row) => (
+            <ExpandableItemCard
+              key={row.id}
+              title={`${row.nama} / ${row.nip}`}
+              subtitle={
+                <ul>
+                  <li>
+                    Pangkat/Gol. : {row.Golongan.nama} / {row.Golongan.kode}
+                  </li>
+                  <li>Kantor Asal : {row.KantorAsal.kantor}</li>
+                  <li>Kantor Tujuan : {row.KantorTujuan.kantor}</li>
+                </ul>
+              }
+              detail={
+                <ul>
+                  <li>Status Data Keluarga : {row.process_keluarga}</li>
+                  <li>Status Rincian Biaya : {row.process_biaya}</li>
+                  <li>Status Termin : {row.process_termin}</li>
+                </ul>
+              }
+              status={
+                <span className="badge badge-sm text-nowrap badge-info">
+                  {snackToTitleCase(row.status)}
+                </span>
+              }
+            >
+              <div className="max-w-full overflow-x-auto px-4">
+                <div
+                  className="flex min-w-max justify-end gap-1"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {row.process_keluarga === "IDLE" && (
+                    <Link
+                      href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/edit`}
+                      className="btn btn-xs btn-primary"
+                    >
+                      Edit
+                    </Link>
+                  )}
+                  <Link
+                    href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/keluarga`}
+                    className="btn btn-xs btn-primary"
+                  >
+                    Keluarga
+                  </Link>
+                  <Link
+                    href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/biaya`}
+                    className="btn btn-xs btn-primary"
+                  >
+                    Biaya
+                  </Link>
+                  <Link
+                    href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/termin`}
+                    className="btn btn-xs btn-primary"
+                  >
+                    Termin
+                  </Link>
+                  {SuratKeputusan?.status === "DRAFT" && (
+                    <>
+                      <Link
+                        href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/reset-data`}
+                        className="btn btn-xs btn-warning"
+                      >
+                        Reset Data
+                      </Link>
+                      <Link
+                        href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/hapus`}
+                        className="btn btn-xs btn-error"
+                      >
+                        Hapus
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </div>
+            </ExpandableItemCard>
+          ))}
+        </div>
+        <div className="overflow-hidden"></div>
+      </div>
+    </ContainerCard>
+  );
+}

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { FiChevronLeft } from "react-icons/fi";
 import { useEffect } from "react";
-import { useSession } from "@/lib/context/session";
+import { useSession } from "@/context/session";
 
 export default function Layout({ data }: { data: React.ReactNode }) {
     const { status } = useSession();

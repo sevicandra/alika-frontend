@@ -1,8 +1,8 @@
 "use client";
 import { Menu, MenuButton, MenuItems } from "@/component/Molecules/Dropdown";
 import { useContext, useEffect, useState } from "react";
-import { CetakDocContext } from "@/lib/context/penghasilan/cetakDoc";
-import { NotificationContext } from "@/lib/context/notifikasi";
+import { CetakDocContext } from "@/context/penghasilan/cetakDoc";
+import { NotificationContext } from "@/context/notifikasi";
 export default function Page() {
   const { tahun, setTahun } = useContext(CetakDocContext);
   const [error, setError] = useState<Error | null>(null);

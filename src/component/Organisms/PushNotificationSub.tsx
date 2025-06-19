@@ -1,7 +1,7 @@
 "use client";
 import Confirmation from "../Molecules/Confirmation";
 import { useContext, useState, useEffect } from "react";
-import { WebPushNotificationContext } from "@/lib/context/webPushNotification";
+import { WebPushNotificationContext } from "@/context/webPushNotification";
 export default function PushNotificationSub() {
   const { isSupported, subscription, subscribeToPush } = useContext(
     WebPushNotificationContext,

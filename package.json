@@ -19,6 +19,8 @@
     "canvas": "^3.1.0",
     "chart.js": "^4.4.9",
     "flubber": "^0.4.2",
+    "formdata-node": "^6.0.3",
+    "formidable": "^3.5.4",
     "framer-motion": "^12.5.0",
     "jose": "^6.0.10",
     "jsonwebtoken": "^9.0.2",
@@ -36,7 +38,9 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/busboy": "^1.5.4",
     "@types/flubber": "^0.4.0",
+    "@types/formidable": "^3.4.5",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/jwk-to-pem": "^2.0.3",
     "@types/node": "^20",
@@ -47,7 +51,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.3",
     "prettier": "^3.5.3",
-    "prettier-plugin-tailwindcss": "^0.6.11",
+    "prettier-plugin-tailwindcss": "^0.6.12",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

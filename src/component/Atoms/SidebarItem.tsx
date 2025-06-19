@@ -30,7 +30,7 @@ export default function SidebarItem({
   return (
     <Link href={href} className="w-full overflow-x-hidden">
       <div
-        className={`grid grid-cols-[50_auto] ${isOpenDelay ? "justify-start" : "justify-center"} py-2 ${pathname.startsWith(href) ? "bg-primary-content text-primary-500" : "text-primary-content"} hover:bg-primary-content hover:text-primary-500`}
+        className={`grid grid-cols-[50_auto] ${isOpenDelay ? "justify-start" : "justify-center"} py-2 ${pathname.startsWith(href) ? "bg-base-content text-base-300" : "text-base-content"} hover:bg-base-content hover:text-base-300`}
       >
         <span>
           <Icon height={"28px"} icon={icon} />

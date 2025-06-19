@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState, useContext } from "react";
 import Cart from "@/component/Organisms/riwayatPenghasilanCart";
-import { NotificationContext } from "@/lib/context/notifikasi";
-import { DashboardContext } from "@/lib/context/penghasilan/dashboard";
+import { NotificationContext } from "@/context/notifikasi";
+import { DashboardContext } from "@/context/penghasilan/dashboard";
 import Loading from "@/component/Molecules/Loading";
 export default function Page() {
   const [data, setData] = useState<

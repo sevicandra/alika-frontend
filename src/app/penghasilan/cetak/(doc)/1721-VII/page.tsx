@@ -1,7 +1,7 @@
 "use client";
 import { useState, useContext, useEffect } from "react";
-import { CetakDocContext } from "@/lib/context/penghasilan/cetakDoc";
-import { NotificationContext } from "@/lib/context/notifikasi";
+import { CetakDocContext } from "@/context/penghasilan/cetakDoc";
+import { NotificationContext } from "@/context/notifikasi";
 import Preview from "@/component/Organisms/PdfViewer";
 import { useRouter } from "next/navigation";
 import Confirmation from "@/component/Molecules/Confirmation";

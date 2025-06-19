@@ -1,10 +1,10 @@
 "use client";
 import { DataTable } from "@/component/Organisms/DataTable";
 import { useEffect, useState, use, Suspense, useContext } from "react";
-import { PaginatorContext } from "@/lib/context/paginator";
-import { NotificationContext } from "@/lib/context/notifikasi";
+import { usePaginator } from "@/context/paginator";
+import { NotificationContext } from "@/context/notifikasi";
 import Link from "next/link";
-import { TteContext } from "@/lib/context/penghasilan/tte";
+import { TteContext } from "@/context/penghasilan/tte";
 import Loading from "@/component/Molecules/Loading";
 import Paginator from "@/component/Organisms/Paginator";
 export default function Page() {
@@ -14,7 +14,7 @@ export default function Page() {
     limit,
     totalPage,
     setTotalPage,
-  } = useContext(PaginatorContext);
+  } = usePaginator();
   const [error, setError] = useState<Error | null>(null);
   const { addNotification } = useContext(NotificationContext);
   const [data, setData] = useState<
@@ -74,11 +74,11 @@ export default function Page() {
   }, [currentPage, refresh]);
   if (error) throw error;
   return (
-    <div className="bg-base-200 rounded-box relative grid grid-rows-[auto_1fr_auto] gap-2 overflow-hidden p-2">
+    <div className="relative grid grid-rows-[auto_1fr_auto] gap-2 overflow-hidden rounded-box bg-base-200 p-2">
       <div></div>
       <div className="overflow-auto">
         {isLoading && (
-          <div className="bg-base-300/50 text-primary-600 absolute z-10 flex h-full w-full">
+          <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
             <Loading />
           </div>
         )}
@@ -104,7 +104,7 @@ export default function Page() {
               <td className="p-4">
                 <Link
                   href={`/penghasilan/tte/preview/${row.id}`}
-                  className="btn btn-xs btn-info join-item"
+                  className="btn join-item btn-xs btn-info"
                 >
                   view
                 </Link>
@@ -113,15 +113,7 @@ export default function Page() {
           )}
         />
       </div>
-      <div>
-        {totalPage > 1 && (
-          <Paginator
-            action={setPage}
-            totalPage={totalPage}
-            page={currentPage}
-          />
-        )}
-      </div>
+      <div>{totalPage && <Paginator />}</div>
     </div>
   );
 }

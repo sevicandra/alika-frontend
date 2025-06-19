@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import TteProvider from "@/lib/context/penghasilan/tte";
+import TteProvider from "@/context/penghasilan/tte";
 
 export default function Layout({
   tte,

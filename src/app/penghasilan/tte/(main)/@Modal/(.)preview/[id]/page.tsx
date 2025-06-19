@@ -1,12 +1,12 @@
 "use client";
 import Preview from "@/component/Organisms/PdfViewer";
 import { use, useState, useEffect, useContext } from "react";
-import { NotificationContext } from "@/lib/context/notifikasi";
+import { NotificationContext } from "@/context/notifikasi";
 import { FiX } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import Tte from "@/component/Molecules/Tte";
 import Confirmation from "@/component/Molecules/Confirmation";
-import { TteContext } from "@/lib/context/penghasilan/tte";
+import { TteContext } from "@/context/penghasilan/tte";
 import Loading from "@/component/Molecules/Loading";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);

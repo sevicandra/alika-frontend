@@ -1,13 +1,13 @@
 "use client";
 import { useContext } from "react";
-import { NotificationContext } from "@/lib/context/notifikasi";
+import { NotificationContext } from "@/context/notifikasi";
 import { Transition } from "@headlessui/react";
 import { FiXCircle } from "react-icons/fi";
 export default function Notification() {
   const { notification, clearNotification, closeNotification } =
     useContext(NotificationContext);
   return (
-    <div className="absolute top-2 right-2 z-30 flex max-h-full flex-col gap-2 overflow-y-auto pr-2 pb-4">
+    <div className="absolute top-2 right-2 z-[999] flex max-h-full flex-col gap-2 overflow-y-auto pr-2 pb-4">
       {notification.map((n) => {
         return (
           <Transition

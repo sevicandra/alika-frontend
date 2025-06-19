@@ -44,7 +44,7 @@ export default function Confirmation({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-center">
-              <h2 className="text-xl">{title}</h2>
+              <h2 className="text-xl text-center">{title}</h2>
             </div>
             <div className="flex justify-center">
               <p className="text-sm">{message}</p>

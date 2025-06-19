@@ -1,7 +1,7 @@
 "use client";
-import DashboardProvider from "@/lib/context/penghasilan/dashboard";
+import DashboardProvider from "@/context/penghasilan/dashboard";
 import { useEffect } from "react";
-import { useSession } from "@/lib/context/session";
+import { useSession } from "@/context/session";
 const Layout = ({
   gapok,
   tukin,

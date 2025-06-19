@@ -1,9 +1,17 @@
+"use server";
 import Sidebar from "@/component/Organisms/Sidebar";
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="grid grid-cols-[auto_1fr] overflow-hidden">
-      <Sidebar menu="Mutasi" />
-      <main className="overflow-hidden">{children}</main>
+    <div className="relative grid grid-cols-[auto_1fr] overflow-hidden">
+      <Sidebar menu={"Mutasi"} />
+      <div className={`h-full max-h-full w-[50px] md:hidden`}></div>
+      <main className="relative overflow-hidden">
+        {children}
+      </main>
     </div>
   );
 }

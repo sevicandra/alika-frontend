@@ -8,7 +8,11 @@ export type MenuType = {
   }[];
 };
 
-export const menus = async ({ module }: { module: string }): Promise<MenuType[]> => {
+export const menus = async ({
+  module,
+}: {
+  module: string;
+}): Promise<MenuType[]> => {
   if (module === "Penghasilan") {
     return [
       {
@@ -17,11 +21,23 @@ export const menus = async ({ module }: { module: string }): Promise<MenuType[]>
           {
             label: "Dashboard",
             path: "/penghasilan/dashboard",
-            icon: "desktop",
+            icon: "LayoutDashboard",
           },
-          { label: "Rincian", path: "/penghasilan/rincian", icon: "buffer" },
-          { label: "Cetak", path: "/penghasilan/cetak", icon: "print" },
-          { label: "TTE", path: "/penghasilan/tte", icon: "file-signature" },
+          {
+            label: "Rincian",
+            path: "/penghasilan/rincian",
+            icon: "ClipboardList",
+          },
+          {
+            label: "Cetak",
+            path: "/penghasilan/cetak",
+            icon: "Printer",
+          },
+          {
+            label: "TTE",
+            path: "/penghasilan/tte",
+            icon: "FilePenLine",
+          },
         ],
       },
     ];
@@ -32,64 +48,49 @@ export const menus = async ({ module }: { module: string }): Promise<MenuType[]>
         data: [
           {
             label: "Dashboard",
-            path: "/penghasilan/dashboard",
-            icon: "desktop",
+            path: "/mutasi/user/dashboard",
+            icon: "LayoutDashboard",
           },
-          { label: "Rincian", path: "/penghasilan/rincian", icon: "buffer" },
-          { label: "Cetak", path: "/penghasilan/cetak", icon: "print" },
-          { label: "TTE", path: "/penghasilan/tte", icon: "file-signature" },
+          {
+            label: "Mutasi",
+            path: "/mutasi/user/mutasi",
+            icon: "Repeat",
+          },
         ],
       },
       {
-        title: "Estimasi",
+        title: "Bagian SDM",
         data: [
           {
             label: "Dashboard",
-            path: "/penghasilan/dashboard",
-            icon: "desktop",
+            path: "/mutasi/sdm/dashboard",
+            icon: "LayoutDashboard",
           },
-          { label: "Rincian", path: "/penghasilan/rincian", icon: "buffer" },
-          { label: "Cetak", path: "/penghasilan/cetak", icon: "print" },
-          { label: "TTE", path: "/penghasilan/tte", icon: "file-signature" },
-        ],
-      },
-      {
-        title: "SDM",
-        data: [
           {
-            label: "Dashboard",
-            path: "/penghasilan/dashboard",
-            icon: "desktop",
+            label: "SK Mutasi",
+            path: "/mutasi/sdm/sk",
+            icon: "FileBadge2",
           },
-          { label: "Rincian", path: "/penghasilan/rincian", icon: "buffer" },
-          { label: "Cetak", path: "/penghasilan/cetak", icon: "print" },
-          { label: "TTE", path: "/penghasilan/tte", icon: "file-signature" },
-        ],
-      },
-      {
-        title: "Keuangan",
-        data: [
           {
-            label: "Dashboard",
-            path: "/penghasilan/dashboard",
-            icon: "desktop",
+            label: "Sanggah",
+            path: "/mutasi/sdm/sanggah",
+            icon: "MessageCircleWarning",
           },
-          { label: "Rincian", path: "/penghasilan/rincian", icon: "buffer" },
-          { label: "Cetak", path: "/penghasilan/cetak", icon: "print" },
-          { label: "TTE", path: "/penghasilan/tte", icon: "file-signature" },
-        ],
-      },
-      {
-        title: "Admin",
-        data: [
           {
-            label: "Dashboard",
-            path: "/penghasilan/dashboard",
-            icon: "desktop",
+            label: "Monitoring Dokumen",
+            path: "/mutasi/sdm/monitoring",
+            icon: "SearchCheck",
           },
-          { label: "Rincian", path: "/penghasilan/rincian", icon: "buffer" },
-          { label: "Cetak", path: "/penghasilan/cetak", icon: "print" },
-          { label: "TTE", path: "/penghasilan/tte", icon: "file-signature" },
+          {
+            label: "Monitoring Pembayaran",
+            path: "/mutasi/sdm/pembayaran",
+            icon: "Landmark",
+          },
+          {
+            label: "Arsip",
+            path: "/mutasi/sdm/arsip",
+            icon: "Archive",
+          },
         ],
       },
     ];

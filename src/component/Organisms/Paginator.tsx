@@ -1,10 +1,10 @@
-import Main from "../Atoms/PaginatorMain";
+'use client'
 import Warper from "../Molecules/PaginatorWarper";
+import { usePaginator } from "@/context/paginator";
 
-export default function Paginator({ totalPage, page, action }: { totalPage: number, page: number, action: (page:number) => void }) {
+export default function Paginator() {
+  const { totalPage, page, setPage } = usePaginator();
   return (
-    <Main>
-      <Warper totalPage={totalPage} page={page} onEachSide={3} action={action} />
-    </Main>
+    <Warper totalPage={totalPage} page={page} onEachSide={3} action={setPage} />
   );
 }

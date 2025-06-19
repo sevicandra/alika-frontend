@@ -1,8 +1,8 @@
 'use client';
 import GroupButton from "@/component/Molecules/GroupButton";
-import CetakDocProvider from "@/lib/context/penghasilan/cetakDoc";
+import CetakDocProvider from "@/context/penghasilan/cetakDoc";
 import { useEffect } from "react";
-import { useSession } from "@/lib/context/session";
+import { useSession } from "@/context/session";
 export default function Layout({
   children,
 }: {

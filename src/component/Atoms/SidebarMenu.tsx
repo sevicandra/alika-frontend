@@ -45,11 +45,11 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   return (
     <SidebarContext.Provider value={contextValue}>
       <aside
-        className={`bg-primary-500 absolute md:relative top-0 left-0 z-20 h-full max-h-full overflow-y-hidden ${isOpen ? "w-3xs" : "w-[50px]"} grid grid-cols-1 grid-rows-[auto_1fr] transition-[width] duration-500`}
+        className={`absolute top-0 left-0 z-20 h-full max-h-full overflow-y-hidden border-r border-base-300 bg-base-300 shadow shadow-base-300 md:relative ${isOpen ? "w-3xs" : "w-[50px]"} grid grid-cols-1 grid-rows-[auto_1fr] transition-[width] duration-500`}
       >
-        <div className={`bg-secondary/50 relative h-[50px] w-full p-1`}>
+        <div className={`relative h-[50px] w-full bg-secondary/50 p-1`}>
           <div
-            className={`bg-base-200/50 hover:bg-base-200 rounded-box absolute right-1 flex aspect-square h-[42px] cursor-pointer items-center justify-center transition-transform duration-500 ease-in-out`}
+            className={`absolute right-1 flex aspect-square h-[42px] cursor-pointer items-center justify-center rounded-box bg-base-200/50 transition-transform duration-500 ease-in-out hover:bg-base-200`}
             onClick={() => setIsOpen(!isOpen)}
           >
             <span
@@ -57,7 +57,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                 isOpen ? "rotate-180" : "delay-250"
               }`}
             >
-              <Icon icon="chevron-right" width={20} height={20} />
+              <Icon icon="ChevronRight" width={20} height={20} />
             </span>
           </div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 import { Menu, MenuButton, MenuItems } from "@/component/Molecules/Dropdown";
 import { useContext } from "react";
-import { CetakDocContext } from "@/lib/context/penghasilan/cetakDoc";
+import { CetakDocContext } from "@/context/penghasilan/cetakDoc";
 const bulans = [
   "Januari",
   "Februari",

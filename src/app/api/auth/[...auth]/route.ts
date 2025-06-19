@@ -1,7 +1,5 @@
 import "server-only";
-import routes from "@/lib/OAuthOptions";
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { OAuth2 } from "@/lib/OAuthOptions";
 
 const {

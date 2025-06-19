@@ -1,7 +1,7 @@
 "use client";
 import Preview from "@/component/Organisms/PdfViewer";
 import { use, useState, useEffect, useContext } from "react";
-import { NotificationContext } from "@/lib/context/notifikasi";
+import { NotificationContext } from "@/context/notifikasi";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);

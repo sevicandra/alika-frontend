@@ -1,6 +1,15 @@
-export default function Card({ children }: { children: React.ReactNode }) {
+import { cn } from "@/lib/utils";
+type DivProps = React.HTMLAttributes<HTMLDivElement>;
+
+export default function Card({ children, className, ...props }: DivProps) {
   return (
-    <div className="bg-primary hover:bg-primary-700 flex aspect-square w-50 cursor-pointer items-center justify-center rounded-md p-10 hover:drop-shadow-sm">
+    <div
+      className={cn(
+        className,
+        "bg-base-300 rounded-box border border-base-300 shadow shadow-base-300"
+      )}
+      {...props}
+    >
       {children}
     </div>
   );

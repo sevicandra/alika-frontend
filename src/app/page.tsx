@@ -1,7 +1,8 @@
 "use client";
 import Icon from "@/component/Atoms/Icon";
 import Card from "@/component/Molecules/MainModuleCard";
-import { useSession } from "@/lib/context/session";
+import ModuleCard from "@/component/Molecules/ModuleCard";
+import { useSession } from "@/context/session";
 import Notification from "@/component/Organisms/Notification";
 import Themes from "@/component/Organisms/Themes";
 import { useEffect } from "react";
@@ -16,8 +17,8 @@ export default function Home() {
   }, [status]);
   return (
     <>
-      <div className="grid grid-cols-1 overflow-hidden">
-        <div className="text-base-content my-auto">
+      <div className="grid grid-cols-1 grid-rows-[auto_1fr] overflow-hidden">
+        <div className="text-base-content my-auto p-5">
           <span className="text-capitalize text-center text-3xl font-extrabold">
             <h1>Selamat Datang,</h1>
           </span>
@@ -25,19 +26,31 @@ export default function Home() {
             <h1>{session?.user.name}</h1>
           </span>
         </div>
-        <div className="flex flex-wrap justify-center gap-5">
-          <Card href="/penghasilan" label="Penghasilan">
-            <Icon.Penghasilan width="100%" height="100%" />
-          </Card>
-          <Card href="/" label="Sentralisasi">
-            <Icon.Sentralisasi width="100%" height="100%" />
-          </Card>
-          <Card href="/mutasi" label="Mutasi">
-            <Icon.Mutasi width="100%" height="100%" />
-          </Card>
-          <Card href="/" label="Monev">
-            <Icon.Monev width="100%" height="100%" />
-          </Card>
+        <div className="flex flex-wrap justify-center gap-5 items-center">
+          <ModuleCard
+            href="/penghasilan"
+            title="Penghasilan"
+            icon={<Icon.Penghasilan height={"138"} />}
+            
+          />
+          <ModuleCard
+            href="/"
+            title="Sentralisasi"
+            icon={<Icon.Sentralisasi height={"138"} />}
+            
+          />
+          <ModuleCard
+            href="/mutasi"
+            title="Mutasi"
+            icon={<Icon.Mutasi height={"138"} />}
+            
+          />
+          <ModuleCard
+            href="/"
+            title="Monev"
+            icon={<Icon.Monev height={"138"} />}
+            
+          />
         </div>
       </div>
       <Notification />

@@ -1,0 +1,47 @@
+"use client";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import Breadcrumb from "@/component/Molecules/Breadcrumb";
+import { usePaginator } from "@/context/paginator";
+import Paginator from "@/component/Organisms/Paginator";
+
+export default function Layout({
+  children,
+  action,
+}: {
+  children: React.ReactNode;
+  action: React.ReactNode;
+}) {
+  const pathname = usePathname();
+  const pathSegments = pathname.split("/").filter(Boolean).slice(2);
+  const { totalPage } = usePaginator();
+  return (
+    <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">
+      <div className="mx-4 mt-4">
+        <Breadcrumb
+          data={pathSegments.map((segment, index) => ({
+            name: segment.replace(/-/g, " ").toUpperCase(),
+            href: `/mutasi/sdm/${pathSegments.slice(0, index + 1).join("/")}`,
+          }))}
+          renderRow={(row, index) => (
+            <li key={index}>
+              <Link href={row.href}>{row.name}</Link>
+            </li>
+          )}
+        />
+      </div>
+      <div className="max-w-full overflow-x-auto px-4">
+        <div className="flex min-w-max justify-end gap-1">
+          <Link href="/mutasi/sdm/sk/new" className="btn btn-xs btn-success">
+            Input SK Baru
+          </Link>
+        </div>
+      </div>
+      {children}
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
+      {action}
+    </div>
+  );
+}

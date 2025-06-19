@@ -12,6 +12,17 @@ export default async function middleware(req: NextRequest) {
   if (pathname === "/penghasilan") {
     return NextResponse.redirect(new URL("/penghasilan/dashboard", req.url));
   }
+  if (pathname.startsWith("/mutasi")) {
+    if (pathname === "/mutasi/admin") {
+      return NextResponse.redirect(new URL("/mutasi/admin/dashboard", req.url));
+    }
+    if (pathname === "/mutasi/user" || pathname === "/mutasi") {
+      return NextResponse.redirect(new URL("/mutasi/user/dashboard", req.url));
+    }
+    if (pathname === "/mutasi/sdm") {
+      return NextResponse.redirect(new URL("/mutasi/sdm/dashboard", req.url));
+    }
+  }
   try {
     const csrfTokenCookie = (await cookies).get("csrf_token")?.value;
     if (!csrfTokenCookie) {

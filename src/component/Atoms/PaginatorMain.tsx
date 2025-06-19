@@ -7,6 +7,8 @@ type PaginatorContextType = {
   setTotalPage: (number: number) => void;
   onEachSide: number;
   setOnEachSide: (number: number) => void;
+  limit: number;
+  setLimit: (number: number) => void;
 };
 
 export const PaginatorContext = createContext<PaginatorContextType>({
@@ -16,12 +18,15 @@ export const PaginatorContext = createContext<PaginatorContextType>({
   setCurrentPage: () => {},
   setTotalPage: () => {},
   setOnEachSide: () => {},
+  limit: 10,
+  setLimit: () => {},
 });
 
 export default function Paginator({ children }: { children: React.ReactNode }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [onEachSide, setOnEachSide] = useState(3);
+  const [limit, setLimit] = useState(10);
 
   const contextValue = {
     currentPage,
@@ -35,6 +40,10 @@ export default function Paginator({ children }: { children: React.ReactNode }) {
     },
     setOnEachSide(page: number) {
       setOnEachSide(page);
+    },
+    limit,
+    setLimit(page: number) {
+      setLimit(page);
     },
   };
 

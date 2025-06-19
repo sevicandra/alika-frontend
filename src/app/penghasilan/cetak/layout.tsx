@@ -1,5 +1,5 @@
-import PaginatorProvider from "@/lib/context/paginator";
-import CetakProvider from "@/lib/context/penghasilan/cetak";
+import PaginatorProvider from "@/context/paginator";
+import CetakProvider from "@/context/penghasilan/cetak";
 export default async function Layout({
   children,
 }: {
