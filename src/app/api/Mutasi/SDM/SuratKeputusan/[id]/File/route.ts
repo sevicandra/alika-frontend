@@ -10,10 +10,10 @@ const apiBaseUrl =
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
+    `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
@@ -28,7 +28,7 @@ export async function GET(
   }
 
   try {
-    const suratKeputusan = await fetch(
+    const res = await fetch(
       `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/File`,
       {
         method: "GET",
@@ -37,19 +37,28 @@ export async function GET(
           Authorization: `Bearer ${session}`,
         },
         next: { revalidate: 60, tags: ["Mutasi:SuratKeputusan:File"] },
-      }
+      },
     );
 
-    if (!suratKeputusan.ok) {
+    if (!res.ok) {
       revalidateTag("Mutasi:SuratKeputusan:File");
-      const data = await suratKeputusan.json();
-      return NextResponse.json(data, { status: suratKeputusan.status });
+      const data = await res.json();
+      return NextResponse.json(data, { status: res.status });
     }
-    const data = await suratKeputusan.blob();
+    const contentDisposition = res.headers.get("Content-Disposition");
+    let filename = "dokumen.pdf"; // Nama file default jika header tidak ditemukan
+    if (contentDisposition) {
+      const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+      if (filenameMatch && filenameMatch.length > 1) {
+        filename = filenameMatch[1];
+      }
+    }
+    const data = await res.blob();
     return new Response(data, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
+        "Content-Disposition": `inline; filename="${filename}"`,
       },
     });
   } catch (error: any) {

@@ -5,7 +5,6 @@ import { useTab } from "./TabMenu";
 type DivProps = React.HTMLAttributes<HTMLDivElement>;
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
 export const TabButton = ({
-  className,
   items,
 }: DivProps & {
   items: string[];

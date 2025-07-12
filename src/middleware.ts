@@ -51,7 +51,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
   try {
-    await OAuth2.session(req);
+    await OAuth2.session();
   } catch (error) {
     if (error === "Token expired") {
       return NextResponse.redirect(new URL(req.url));

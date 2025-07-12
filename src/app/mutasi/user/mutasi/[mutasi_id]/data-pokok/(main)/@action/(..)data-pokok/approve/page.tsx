@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { use, useState } from "react";
 import { useMutasiDetail } from "@/context/mutasi/user";
 import { useNotification } from "@/context/notifikasi";
-import Loading from "@/component/Molecules/Loading";
+import Confirmation from "@/component/Organisms/Confirmation";
 export default function Page({
   params,
 }: {
@@ -14,7 +14,7 @@ export default function Page({
   const { setRefresh } = useMutasiDetail();
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(false);
-  const deleteData = async () => {
+  const approve = async () => {
     try {
       setLoading(true);
       const res = await fetch(
@@ -52,28 +52,14 @@ export default function Page({
   };
 
   return (
-    <div className="grid place-content-center gap-2">
-      {loading && (
-        <div className="absolute z-10 flex h-full w-full text-primary-600">
-          <Loading />
-        </div>
-      )}
-      <div className="flex justify-center">
-        <h2 className="text-center text-xl">Are you sure?</h2>
-      </div>
-      <div className="flex justify-center">
-        <p className="text-sm">
-          Data pegawai akan di setujui dan tidak dapat diubah kembali
-        </p>
-      </div>
-      <div className="flex justify-center gap-2">
-        <button className="btn btn-sm btn-error" onClick={() => router.back()}>
-          Cancel
-        </button>
-        <button className="btn btn-sm btn-success" onClick={() => deleteData()}>
-          Confirm
-        </button>
-      </div>
-    </div>
+    <Confirmation
+      title=""
+      message="Data pegawai akan di setujui dan tidak dapat diubah kembali"
+      onConfirm={approve}
+      onCancel={() => router.back()}
+      loading={loading}
+      icon="CircleCheck"
+      variant="positive"
+    />
   );
 }

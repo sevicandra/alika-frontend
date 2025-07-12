@@ -4,6 +4,8 @@ import { useSk } from "@/context/mutasi/sdm";
 import { NotificationContext } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 import { useRouter } from "next/navigation";
+import Icon from "@/component/Atoms/LabelIcon";
+
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const [error, setError] = useState<Error | null>(null);
   const { addNotification } = useContext(NotificationContext);
@@ -21,25 +23,31 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       message: string;
     }[]
   >([]);
+  const getValidationError = (field: string) => {
+    return validationErrors.find((e) => e.field === field);
+  };
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {
       setLoading(true);
-      const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/SetTimeline`, {
-        headers: {
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
+      const res = await fetch(
+        `/api/Mutasi/SDM/SuratKeputusan/${id}/SetTimeline`,
+        {
+          headers: {
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+          },
+          method: "POST",
+          body: JSON.stringify({
+            timeline_sanggah: tanggalSanggah,
+            timeline_verifikasi: tanggalVerifikasi,
+            timeline_spm: tanggalSpm,
           }),
         },
-        method: "POST",
-        body: JSON.stringify({
-          timeline_sanggah: tanggalSanggah,
-          timeline_verifikasi: tanggalVerifikasi,
-          timeline_spm: tanggalSpm,
-        }),
-      });
+      );
       if (!res.ok) {
         const { message, errors } = await res.json();
         if (res.status === 422) {
@@ -74,13 +82,13 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         }
         const { data } = await res.json();
         setTanggalSanggah(
-          data.Timeline.find((e: any) => e.ref_kode === "01")?.tanggal ?? ""
+          data.Timeline.find((e: any) => e.ref_kode === "01")?.tanggal ?? "",
         );
         setTanggalVerifikasi(
-          data.Timeline.find((e: any) => e.ref_kode === "02")?.tanggal ?? ""
+          data.Timeline.find((e: any) => e.ref_kode === "02")?.tanggal ?? "",
         );
         setTanggalSpm(
-          data.Timeline.find((e: any) => e.ref_kode === "03")?.tanggal ?? ""
+          data.Timeline.find((e: any) => e.ref_kode === "03")?.tanggal ?? "",
         );
       } catch (error) {
         addNotification({
@@ -96,83 +104,111 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   }, []);
   if (error) throw error;
   return (
-    <>
+    <form onSubmit={submitForm}>
       {loading && (
-        <div className="text-primary-600 absolute z-10 flex h-full w-full">
+        <div className="absolute z-10 flex h-full w-full text-primary-600">
           <Loading />
         </div>
       )}
-      <form onSubmit={submitForm}>
-        <fieldset className="fieldset">
-          <legend className="fieldset-legend text-base-content">
-            Edit Timeline
-          </legend>
+      <div className="p-4">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6">
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-semibold">Timeline Sanggah</span>
+            </label>
+            <div className="relative">
+              <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                <Icon icon="CalendarDays" height={20} />
+              </span>
+              <input
+                name="timeline_sanggah"
+                type="date"
+                className={`input-bordered input w-full pl-10 ${getValidationError("tanggal") ? "input-error" : ""}`}
+                value={tanggalSanggah}
+                onChange={(e) => setTanggalSanggah(e.target.value)}
+              />
+            </div>
+            {getValidationError("tanggal") && (
+              <label className="label">
+                <span className="label-text-alt flex items-center gap-1 text-error">
+                  <Icon icon="CircleAlert" height={16} />{" "}
+                  {getValidationError("tanggal")?.message}
+                </span>
+              </label>
+            )}
+          </div>
 
-          <label className="label text-base-content after:content-['*'] after:text-error">
-            Timeline Sanggah:
-          </label>
-          <input
-            type="date"
-            className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "timeline_sanggah") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            placeholder="Type here"
-            name="timeline_sanggah"
-            value={tanggalSanggah}
-            onChange={(e) => setTanggalSanggah(e.target.value)}
-          />
-          {validationErrors.find((e) => e.field === "timeline_sanggah") && (
-            <p className="text-error label font-bold">
-              {
-                validationErrors.find((e) => e.field === "timeline_sanggah")
-                  ?.message
-              }
-            </p>
-          )}
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-semibold">
+                Timeline Verifikasi
+              </span>
+            </label>
+            <div className="relative">
+              <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                <Icon icon="CalendarDays" height={20} />
+              </span>
+              <input
+                type="date"
+                className={`input-bordered input w-full pl-10 ${getValidationError("tanggal") ? "input-error" : ""}`}
+                name="timeline_verifikasi"
+                value={tanggalVerifikasi}
+                onChange={(e) => setTanggalVerifikasi(e.target.value)}
+              />
+            </div>
+            {getValidationError("tanggal") && (
+              <label className="label">
+                <span className="label-text-alt flex items-center gap-1 text-error">
+                  <Icon icon="CircleAlert" height={16} />{" "}
+                  {getValidationError("tanggal")?.message}
+                </span>
+              </label>
+            )}
+          </div>
 
-          <label className="label text-base-content after:content-['*'] after:text-error">
-            Timeline Verifikasi:
-          </label>
-          <input
-            type="date"
-            className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "timeline_verifikasi") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            placeholder="Type here"
-            name="timeline_verifikasi"
-            value={tanggalVerifikasi}
-            onChange={(e) => setTanggalVerifikasi(e.target.value)}
-          />
-          {validationErrors.find((e) => e.field === "timeline_verifikasi") && (
-            <p className="text-error label font-bold">
-              {
-                validationErrors.find((e) => e.field === "timeline_verifikasi")
-                  ?.message
-              }
-            </p>
-          )}
-
-          <label className="label text-base-content after:content-['*'] after:text-error">
-            Timeline SPM:
-          </label>
-          <input
-            type="date"
-            className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "timeline_spm") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            placeholder="Type here"
-            name="timeline_spm"
-            value={tanggalSpm}
-            onChange={(e) => setTanggalSpm(e.target.value)}
-          />
-          {validationErrors.find((e) => e.field === "timeline_spm") && (
-            <p className="text-error label font-bold">
-              {
-                validationErrors.find((e) => e.field === "timeline_spm")
-                  ?.message
-              }
-            </p>
-          )}
-
-          <button type="submit" className="btn btn-sm mt-4 btn-accent">
-            Submit
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-semibold">
+                Timeline Verifikasi
+              </span>
+            </label>
+            <div className="relative">
+              <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                <Icon icon="CalendarDays" height={20} />
+              </span>
+              <input
+                type="date"
+                className={`input-bordered input w-full pl-10 ${getValidationError("tanggal") ? "input-error" : ""}`}
+                name="timeline_spm"
+                value={tanggalSpm}
+                onChange={(e) => setTanggalSpm(e.target.value)}
+              />
+            </div>
+            {getValidationError("tanggal") && (
+              <label className="label">
+                <span className="label-text-alt flex items-center gap-1 text-error">
+                  <Icon icon="CircleAlert" height={16} />{" "}
+                  {getValidationError("tanggal")?.message}
+                </span>
+              </label>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="bg-base-100 shadow-xl">
+        <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={() => router.back()}
+          >
+            <Icon icon="ArrowLeft" height={16} /> Batal
           </button>
-        </fieldset>
-      </form>
-    </>
+          <button type="submit" className="btn text-nowrap btn-primary">
+            <Icon icon="FileText" height={16} /> Buat Timeline
+          </button>
+        </div>
+      </div>
+    </form>
   );
 }

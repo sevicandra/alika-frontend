@@ -6,7 +6,7 @@
 }
 
 @plugin "daisyui/theme" {
-    name: "blue";
+  name: "blue";
   default: true;
   prefersdark: false;
   color-scheme: light;
@@ -1207,13 +1207,18 @@
   /* base sizes */
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
-
   /* border size */
   --border: 1px;
 
   /* effects */
   --depth: 1;
   --noise: 1;
+
+  /* breakpoints */
+    --breakpoint-3xl: 112rem;
+    --breakpoint-4xl: 128rem;
+    --breakpoint-5xl: 144rem;
+    --breakpoint-6xl: 160rem;
 }
 
 * {
@@ -1221,5 +1226,3 @@
   scrollbar-width: none;
   -webkit-scrollbar: none;
 }
-
-

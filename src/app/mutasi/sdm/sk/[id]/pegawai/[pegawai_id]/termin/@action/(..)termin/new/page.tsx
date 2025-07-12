@@ -4,6 +4,7 @@ import { useTermin, usePegawaiDetail } from "@/context/mutasi/sdm";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
+import Icon from "@/component/Atoms/LabelIcon";
 
 export default function Page({
   params,
@@ -29,6 +30,9 @@ export default function Page({
       message: string;
     }[]
   >([]);
+  const getValidationError = (field: string) => {
+    return validationErrors.find((e) => e.field === field);
+  };
   const [data, setData] = useState<{
     tahun: string;
     ref_termin: string;
@@ -80,7 +84,7 @@ export default function Page({
             tahun: data.tahun,
             nominal: data.nominal,
           }),
-        }
+        },
       );
       if (!res.ok) {
         const { message, errors } = await res.json();
@@ -107,99 +111,148 @@ export default function Page({
   }
   if (error) throw error;
   return (
-    <>
+    <form onSubmit={submitForm} noValidate>
       {loading && (
-        <div className="text-primary-600 absolute z-10 flex h-full w-full">
+        <div className="absolute z-10 flex h-full w-full text-primary-600">
           <Loading />
         </div>
       )}
-      <form onSubmit={submitForm}>
-        <fieldset className="fieldset">
-          <legend className="fieldset-legend text-base-content">
-            Input Termin
-          </legend>
+      <div className="bg-base-100 shadow-xl">
+        <div className="p-4">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-6">
+            {/* --- Field Nama --- */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold">Nama</span>
+              </label>
+              <div className="relative">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                  <Icon icon="ChevronsUpDown" height={20} />
+                </span>
+                <select
+                  name="ref_termin"
+                  className={`select-bordered select w-full pl-10 ${getValidationError("ref_termin") ? "select-error" : ""}`}
+                  required
+                  value={data.ref_termin}
+                  onChange={(e) =>
+                    setData({ ...data, ref_termin: e.target.value })
+                  }
+                >
+                  <option disabled={true} value={""}>
+                    Pilih Jenis Termin
+                  </option>
+                  {refTermin.map((item) => (
+                    <option key={item.kode} value={item.kode}>
+                      {item.nama}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {getValidationError("ref_termin") && (
+                <label className="label">
+                  <span className="label-text-alt flex items-center gap-1 text-error">
+                    <Icon icon="CircleAlert" height={16} />{" "}
+                    {getValidationError("ref_termin")?.message}
+                  </span>
+                </label>
+              )}
+            </div>
 
-          <label className="label text-base-content">Nama:</label>
-          <select
-            name="ref_termin"
-            className={`select select-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "ref_termin") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            required
-            value={data.ref_termin}
-            onChange={(e) => setData({ ...data, ref_termin: e.target.value })}
+            {/* --- Field Tahun Anggaran --- */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold">Tahun Anggaran</span>
+              </label>
+              <div className="relative">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                  <Icon icon="FileText" height={20} />
+                </span>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]{4}"
+                  name="tahun"
+                  className={`input-bordered input w-full pl-10 ${getValidationError("tahun") ? "input-error" : ""}`}
+                  required
+                  value={data.tahun}
+                  onChange={(e) => {
+                    setData({ ...data, tahun: e.target.value });
+                  }}
+                />
+              </div>
+              {getValidationError("tahun") && (
+                <label className="label">
+                  <span className="label-text-alt flex items-center gap-1 text-error">
+                    <Icon icon="CircleAlert" height={16} />{" "}
+                    {getValidationError("tahun")?.message}
+                  </span>
+                </label>
+              )}
+            </div>
+
+            {/* --- Field Nominal --- */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold">
+                  Nominal{" "}
+                  <p className="text-info">
+                    (Sisa Tagihan:{" "}
+                    {pegawai?.MonitoringTagihan.sisa_tagihan.toLocaleString(
+                      "id-ID",
+                      {
+                        style: "currency",
+                        currency: "IDR",
+                      },
+                    )}
+                    )
+                  </p>
+                </span>
+              </label>
+              <div className="relative">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                  <Icon icon="FileText" height={20} />
+                </span>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*[.,]?[0-9]*"
+                  name="nominal"
+                  className={`input-bordered input w-full pl-10 ${getValidationError("nominal") ? "input-error" : ""}`}
+                  required
+                  value={data.nominal.toLocaleString("id-ID")}
+                  onChange={(e) => {
+                    const rawValue = e.target.value.replace(/[^\d]/g, "");
+                    const numericValue = Number(rawValue);
+                    if (!isNaN(numericValue)) {
+                      setData({ ...data, nominal: numericValue });
+                    }
+                  }}
+                />
+              </div>
+              {getValidationError("nominal") && (
+                <label className="label">
+                  <span className="label-text-alt flex items-center gap-1 text-error">
+                    <Icon icon="CircleAlert" height={16} />{" "}
+                    {getValidationError("nominal")?.message}
+                  </span>
+                </label>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={() => router.back()}
           >
-            <option disabled={true} value={""}>
-              Pilih Jenis Termin
-            </option>
-            {refTermin.map((item) => (
-              <option key={item.kode} value={item.kode}>
-                {item.nama}
-              </option>
-            ))}
-          </select>
-          {validationErrors.find((e) => e.field === "ref_termin") && (
-            <p className="text-error label font-bold">
-              {validationErrors.find((e) => e.field === "ref_termin")?.message}
-            </p>
-          )}
-
-          <label className="label text-base-content">Tahun Anggaran:</label>
-          <input
-            type="text"
-            className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "tahun") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            placeholder="Type here"
-            name="tahun"
-            required
-            autoComplete="off"
-            value={data.tahun}
-            onChange={(e) => setData({ ...data, tahun: e.target.value })}
-          />
-          {validationErrors.find((e) => e.field === "tahun") && (
-            <p className="text-error label font-bold">
-              {validationErrors.find((e) => e.field === "tahun")?.message}
-            </p>
-          )}
-
-          <label className="label text-base-content">
-            Nominal{" "}
-            <p className="text-info">
-              (Sisa Tagihan:{" "}
-              {pegawai?.MonitoringTagihan.sisa_tagihan.toLocaleString("id-ID", {
-                style: "currency",
-                currency: "IDR",
-              })}
-              )
-            </p>
-            :
-          </label>
-          <input
-            type="text"
-            inputMode="numeric"
-            className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "nominal") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            placeholder="Masukkan harga satuan"
-            name="nominal"
-            autoComplete="off"
-            required
-            value={data.nominal.toLocaleString("id-ID")}
-            onChange={(e) => {
-              const rawValue = e.target.value.replace(/[^\d]/g, "");
-              const numericValue = Number(rawValue);
-              if (!isNaN(numericValue)) {
-                setData({ ...data, nominal: numericValue });
-              }
-            }}
-          />
-
-          {validationErrors.find((e) => e.field === "nominal") && (
-            <p className="text-error label font-bold">
-              {validationErrors.find((e) => e.field === "nominal")?.message}
-            </p>
-          )}
-
-          <button type="submit" className="btn btn-sm mt-4 btn-accent">
-            Submit
+            <Icon icon="ArrowLeft" height={16} /> Batal
           </button>
-        </fieldset>
-      </form>
-    </>
+          <button type="submit" className="btn text-nowrap btn-primary">
+            <Icon icon="FileText" height={16} /> Tambah Termin
+          </button>
+        </div>
+      </div>
+    </form>
   );
 }

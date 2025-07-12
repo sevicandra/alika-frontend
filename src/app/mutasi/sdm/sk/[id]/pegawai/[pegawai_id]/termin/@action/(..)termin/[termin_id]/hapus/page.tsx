@@ -1,8 +1,9 @@
 "use client";
-import { use } from "react";
+import { use, useState } from "react";
 import { useTermin, usePegawaiDetail } from "@/context/mutasi/sdm";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
+import Confirmation from "@/component/Organisms/Confirmation";
 
 export default function Page({
   params,
@@ -14,8 +15,11 @@ export default function Page({
   const { addNotification } = useNotification();
   const { setRefresh: setRefreshPegawai } = usePegawaiDetail();
   const { setRefresh } = useTermin();
+  const [loading, setLoading] = useState(false);
+
   async function submitForm() {
     try {
+      setLoading(true);
       const res = await fetch(
         `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin/${termin_id}`,
         {
@@ -27,7 +31,7 @@ export default function Page({
             }),
           },
           method: "DELETE",
-        }
+        },
       );
       if (!res.ok) {
         const { message } = await res.json();
@@ -45,27 +49,21 @@ export default function Page({
         message: (error as Error).message,
         title: "Hapus Termin",
       });
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div className="grid gap-2">
-      <div className="flex justify-center">
-        <h2 className="text-xl text-center">Are you sure?</h2>
-      </div>
-      <div className="flex justify-center">
-        <p className="text-sm">
-          Data Termin ini akan dihapus, dan tidak dapat dikembalikan lagi.
-        </p>
-      </div>
-      <div className="flex justify-center gap-2">
-        <button className="btn btn-sm btn-error" onClick={() => router.back()}>
-          Cancel
-        </button>
-        <button className="btn btn-sm btn-success" onClick={() => submitForm()}>
-          Confirm
-        </button>
-      </div>
-    </div>
+    <Confirmation
+      title="Reset Data Termin"
+      message="Data Termin ini akan dihapus, dan tidak dapat dikembalikan lagi."
+      onConfirm={submitForm}
+      onCancel={() => router.back()}
+      variant="destructive"
+      icon="Trash2"
+      cancelText="Batal"
+      loading={loading}
+    />
   );
 }

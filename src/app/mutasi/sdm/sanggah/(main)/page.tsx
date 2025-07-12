@@ -1,26 +1,20 @@
 "use client";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useNotification } from "@/context/notifikasi";
 import { useSanggah } from "@/context/mutasi/sdm";
 import { usePaginator } from "@/context/paginator";
 import Link from "next/link";
 import Loading from "@/component/Molecules/Loading";
 import ContainerCard from "@/component/Molecules/ContainerCard";
-import ExpandableItemCard from "@/component/Molecules/ExpandableItemCard";
-import { snackToTitleCase } from "@/helpers/string.helper";
 import { DataTable } from "@/component/Organisms/DataTable";
+import Icon from "@/component/Atoms/LabelIcon";
+
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
   const { refresh, search, searchTerm, setSearchTerm } = useSanggah();
 
-  const {
-    page: currentPage,
-    limit,
-    setPage,
-    totalPage,
-    setTotalPage,
-  } = usePaginator();
+  const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [data, setData] = useState<
     {
       id: string;
@@ -30,11 +24,11 @@ export default function Page() {
       Pegawai: {
         nama: string;
         nip: string;
-        SuratKeputusan:{
+        SuratKeputusan: {
           nomor: string;
           tanggal: string;
-        }
-      }
+        };
+      };
     }[]
   >([]);
 
@@ -79,7 +73,7 @@ export default function Page() {
           <input
             onChange={(e) => setSearchTerm(e.target.value)}
             type="text"
-            className="input-bordered input input-xs focus:outline-none w-xs"
+            className="input-bordered input input-xs w-xs focus:outline-none"
             placeholder="Cari berdasarkan Nomor Tiket/Nama"
             value={searchTerm}
           />
@@ -95,26 +89,42 @@ export default function Page() {
         )}
         <div className="overflow-y-auto py-2">
           <DataTable
-            columns={["No", "Nomor Tiket", "Tanggal" , "Nama/NIP", "Nomor SK", "Action"]}
+            columns={[
+              "No",
+              "Nomor Tiket",
+              "Tanggal",
+              "Nama/NIP",
+              "Nomor SK",
+              "Action",
+            ]}
             data={data}
             renderRow={(row, index) => (
               <tr key={index}>
                 <td className="p-4">{index + 1}</td>
                 <td className="p-4">{row.ticket_number}</td>
-                <td className="p-4">{new Date(row.submitted_at).toLocaleDateString("id-ID",{
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-                })}</td>
-                <td className="p-4">{row.Pegawai.nama}/{row.Pegawai.nip}</td>
+                <td className="p-4">
+                  {new Date(row.submitted_at).toLocaleDateString("id-ID", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </td>
+                <td className="p-4">
+                  {row.Pegawai.nama}/{row.Pegawai.nip}
+                </td>
                 <td className="p-4">{row.Pegawai.SuratKeputusan.nomor}</td>
                 <td className="p-4">
-                  <Link
-                    href={`/mutasi/sdm/sanggah/${row.id}`}
-                    className="btn btn-xs btn-primary"
-                  >
-                    Lihat
-                  </Link>
+                  <div className="tooltip" data-tip="Detail">
+                    <Link href={`/mutasi/sdm/sanggah/${row.id}`}>
+                      <div className="rounded-box bg-info/80 p-1 text-info-content">
+                        <Icon
+                          className="hover:scale-110"
+                          icon="Eye"
+                          height={16}
+                        />
+                      </div>
+                    </Link>
+                  </div>
                 </td>
               </tr>
             )}

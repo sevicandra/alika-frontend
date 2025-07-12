@@ -1,6 +1,5 @@
 "use client";
 import Icon from "@/component/Atoms/Icon";
-import Card from "@/component/Molecules/MainModuleCard";
 import ModuleCard from "@/component/Molecules/ModuleCard";
 import { useSession } from "@/context/session";
 import Notification from "@/component/Organisms/Notification";
@@ -34,7 +33,7 @@ export default function Home() {
             
           />
           <ModuleCard
-            href="/"
+            href="https://sentralisasi-alika.kemenkeu.go.id"
             title="Sentralisasi"
             icon={<Icon.Sentralisasi height={"138"} />}
             
@@ -46,7 +45,7 @@ export default function Home() {
             
           />
           <ModuleCard
-            href="/"
+            href="https://monev-alika.kemenkeu.go.id"
             title="Monev"
             icon={<Icon.Monev height={"138"} />}
             

@@ -46,7 +46,7 @@ async function handler(req: NextRequest) {
           break;
         case "session":
           try {
-            const session = await OAuth2.session(req);
+            const session = await OAuth2.session();
             return NextResponse.json({
               status: "success",
               user: session.user,

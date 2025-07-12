@@ -2,7 +2,6 @@
 import { useEffect, useState, useContext } from "react";
 import { NotificationContext } from "@/context/notifikasi";
 import { DashboardContext } from "@/context/penghasilan/dashboard";
-import Loading from "@/component/Molecules/Loading";
 import StatCard from "@/component/Molecules/StatCard";
 export default function Page() {
   const { addNotification } = useContext(NotificationContext);

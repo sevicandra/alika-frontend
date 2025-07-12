@@ -7,3 +7,7 @@ export const snackToTitleCase = (str: string) => {
     })
     .join(" ");
 };
+
+export const snackToUpperCase = (str: string) => {
+  return str.toUpperCase().split("_").join(" ");
+};

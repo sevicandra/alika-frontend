@@ -3,17 +3,13 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { useMutasiDetail } from "@/context/mutasi/user";
-import { Tabs, Item } from "@/component/Molecules/Tabs";
 
 export default function Layout({
   dataPokok,
-
-  sanggah,
   action,
 }: {
   dataPokok: React.ReactNode;
   action: React.ReactNode;
-  sanggah: React.ReactNode;
 }) {
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean).slice(2);
@@ -45,17 +41,7 @@ export default function Layout({
           )}
         />
       </div>
-      <Tabs
-        tabs={["Data Pokok", "Riwayat Sanggah"]}
-        data={[dataPokok, sanggah]}
-        renderTab={(item, index) => {
-          return (
-            <Item key={index} index={index} className="h-full overflow-hidden">
-              {item}
-            </Item>
-          );
-        }}
-      />
+      {dataPokok}
       {action}
     </div>
   );

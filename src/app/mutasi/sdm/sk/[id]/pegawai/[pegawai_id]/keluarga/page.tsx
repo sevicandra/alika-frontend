@@ -8,6 +8,8 @@ import Onproccess from "@/component/Molecules/Onproccess";
 import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import { snackToTitleCase } from "@/helpers/string.helper";
+import Icon from "@/component/Atoms/LabelIcon";
+
 export default function Page({
   params,
 }: {
@@ -48,7 +50,7 @@ export default function Page({
           `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Keluarga?${searchParams}`,
           {
             method: "GET",
-          }
+          },
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -87,7 +89,7 @@ export default function Page({
           ) : (
             <>
               {loading && (
-                <div className="bg-base-300/50 text-primary-600 absolute z-10 flex h-full w-full">
+                <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
                   <Loading />
                 </div>
               )}
@@ -106,7 +108,7 @@ export default function Page({
                 data={data.sort(
                   (a, b) =>
                     new Date(a.tanggal_lahir).getTime() -
-                    new Date(b.tanggal_lahir).getTime()
+                    new Date(b.tanggal_lahir).getTime(),
                 )}
                 renderRow={(row, index) => (
                   <tr key={index}>
@@ -131,19 +133,29 @@ export default function Page({
                     <td className="px-4 py-2">
                       {pegawai?.process_biaya === "IDLE" &&
                         pegawai?.process_keluarga === "DONE" && (
-                          <div className="flex gap-2">
-                            <Link
-                              className="btn btn-primary btn-xs"
-                              href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/keluarga/${row.id}/edit`}
-                            >
-                              Edit
-                            </Link>
-                            <Link
-                              className="btn btn-error btn-xs"
-                              href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/keluarga/${row.id}/hapus`}
-                            >
-                              Hapus
-                            </Link>
+                          <div className="flex gap-1">
+                            <div className="tooltip" data-tip="edit">
+                              <Link
+                                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/keluarga/${row.id}/edit`}
+                              >
+                                <div className="rounded-box bg-info/80 p-1 text-info-content">
+                                  <Icon
+                                    className="hover:scale-110"
+                                    icon="SquarePen"
+                                    height={16}
+                                  />
+                                </div>
+                              </Link>
+                            </div>
+                            <div className="tooltip" data-tip="hapus">
+                              <Link
+                                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/keluarga/${row.id}/hapus`}
+                              >
+                                <div className="rounded-box bg-error/80 p-1 text-error-content">
+                                  <Icon className="hover:scale-110" icon="Trash2" height={16} />
+                                </div>
+                              </Link>
+                            </div>
                           </div>
                         )}
                     </td>
@@ -153,7 +165,7 @@ export default function Page({
             </>
           )}
         </div>
-        <div className=" overflow-hidden"></div>
+        <div className="overflow-hidden"></div>
       </div>
     </ContainerCard>
   );

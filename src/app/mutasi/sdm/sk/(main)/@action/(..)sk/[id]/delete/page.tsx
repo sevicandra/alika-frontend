@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { use, useState } from "react";
 import { useSk } from "@/context/mutasi/sdm";
 import { useNotification } from "@/context/notifikasi";
-import Loading from "@/component/Molecules/Loading";
+import Confirmation from "@/component/Organisms/Confirmation";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = use(params);
@@ -44,28 +44,13 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   };
 
   return (
-    <div className="grid place-content-center gap-2">
-      {loading && (
-        <div className="text-primary-600 absolute z-10 flex h-full w-full">
-          <Loading />
-        </div>
-      )}
-      <div className="flex justify-center">
-        <h2 className="text-xl text-center">Are you sure?</h2>
-      </div>
-      <div className="flex justify-center">
-        <p className="text-sm">
-          Data yang sudah dihapus tidak dapat dikembalikan
-        </p>
-      </div>
-      <div className="flex justify-center gap-2">
-        <button className="btn btn-sm btn-error" onClick={() => router.back()}>
-          Cancel
-        </button>
-        <button className="btn btn-sm btn-success" onClick={() => deleteData()}>
-          Confirm
-        </button>
-      </div>
-    </div>
+    <Confirmation
+      title="Surat Keputusan"
+      message="Data yang sudah dihapus tidak dapat dikembalikan"
+      onConfirm={deleteData}
+      onCancel={() => router.back()}
+      loading={loading}
+      icon="CircleCheck"
+    />
   );
 }

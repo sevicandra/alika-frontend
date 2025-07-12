@@ -8,7 +8,7 @@ const apiBaseUrl =
   process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
   process.env.MUTASI_ALIKA_BASE_URL;
 
-export async function GET(req: Request) {
+export async function GET() {
   const session = (await cookies()).get(
     `${process.env.APP_NAME}.session`
   )?.value;

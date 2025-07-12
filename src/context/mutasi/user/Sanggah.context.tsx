@@ -145,7 +145,22 @@ export function SanggahProvider({
         if (!response.ok)
           throw new Error("Gagal mengambil referensi hubungan keluarga");
         const { data } = await response.json();
-        setReferensiHubungan(data);
+        setReferensiHubungan(
+          data
+            .filter(
+              (d: any) =>
+                d.jenis === "PASANGAN" || d.jenis === "ANAK" || d.kode === 99,
+            )
+            .sort((a: any, b: any) => {
+              const getPriority = (d: any) => {
+                if (d.jenis === "PASANGAN") return 0;
+                if (d.jenis === "ANAK") return 1;
+                if (d.kode === 99) return 2;
+                return 3;
+              };
+              return getPriority(a) - getPriority(b);
+            }),
+        );
       } catch (error) {
         console.error(error);
       }

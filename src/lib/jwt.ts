@@ -1,7 +1,5 @@
 import "server-only";
 import { EncryptJWT, jwtDecrypt, JWTPayload, jwtVerify } from "jose";
-import jwt from "jsonwebtoken";
-import jwkToPem from "jwk-to-pem";
 const encrypt = async (payload: JWTPayload | undefined) => {
   const secret = process.env.APP_KEY || "";
   const key = new Uint8Array(Buffer.from(secret, "base64"));

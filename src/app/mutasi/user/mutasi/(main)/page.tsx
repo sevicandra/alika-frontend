@@ -8,11 +8,12 @@ import { usePaginator } from "@/context/paginator";
 import { useMutasi } from "@/context/mutasi/user";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import ItemCard from "@/component/Molecules/ItemCard";
+import Icon from "@/component/Atoms/LabelIcon";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
-  const { page: currentPage, totalPage, setTotalPage, limit } = usePaginator();
+  const { page: currentPage, setTotalPage, limit } = usePaginator();
   const { searchTerm, refresh, search, setSearchTerm } = useMutasi();
 
   const [data, setData] = useState<
@@ -131,28 +132,57 @@ export default function Page() {
                 </span>
               }
             >
-              <div className="max-w-full overflow-x-auto px-4">
+              <div className="max-w-full px-4">
                 <div
-                  className="flex min-w-max justify-end gap-1"
+                  className="flex min-w-max flex-nowrap justify-end gap-1"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <Link
-                    href={`/mutasi/user/mutasi/${item.id}/timeline`}
-                    className="btn btn-xs btn-primary"
-                  >
-                    Timeline
-                  </Link>
-                  <Link
-                    href={`/mutasi/user/mutasi/${item.id}/data-pokok`}
-                    className="btn btn-xs btn-primary"
-                  >
-                    Data Pokok
-                  </Link>
-                  {item.status === "APPROVED" && (
-                    <Link href={`/mutasi/user/mutasi/${item.id}/pembayaran`} className="btn btn-xs btn-primary">
-                      Pembayaran
+                  <div className="tooltip" data-tip="timeline">
+                    <Link href={`/mutasi/user/mutasi/${item.id}/timeline`}>
+                      <div className="rounded-box bg-info/80 p-1 text-info-content">
+                        <Icon
+                          className="hover:scale-110"
+                          icon="CalendarDays"
+                          height={16}
+                        />
+                      </div>
                     </Link>
+                  </div>
+                  <div className="tooltip" data-tip="data pokok">
+                    <Link href={`/mutasi/user/mutasi/${item.id}/data-pokok`}>
+                      <div className="rounded-box bg-info/80 p-1 text-info-content">
+                        <Icon
+                          className="hover:scale-110"
+                          icon="Users"
+                          height={16}
+                        />
+                      </div>
+                    </Link>
+                  </div>
+                  {item.status === "APPROVED" && (
+                    <div className="tooltip" data-tip="pembayaran">
+                      <Link href={`/mutasi/user/mutasi/${item.id}/pembayaran`}>
+                        <div className="rounded-box bg-info/80 p-1 text-info-content">
+                          <Icon
+                            className="hover:scale-110"
+                            icon="CreditCard"
+                            height={16}
+                          />
+                        </div>
+                      </Link>
+                    </div>
                   )}
+                  <div className="tooltip" data-tip="riwayat">
+                    <Link href={`/mutasi/user/mutasi/${item.id}/riwayat`}>
+                      <div className="rounded-box bg-info/80 p-1 text-info-content">
+                        <Icon
+                          className="hover:scale-110"
+                          icon="History"
+                          height={16}
+                        />
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </ItemCard>

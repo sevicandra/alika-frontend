@@ -8,6 +8,7 @@ export default function Page({
   summary,
   remove,
   submit,
+  action
 }: {
   selector: React.ReactNode;
   add: React.ReactNode;
@@ -15,6 +16,7 @@ export default function Page({
   summary: React.ReactNode;
   remove: React.ReactNode;
   submit: React.ReactNode;
+  action: React.ReactNode;
 }) {
   const { form } = useSanggahContext();
 
@@ -36,6 +38,7 @@ export default function Page({
         <ContainerCard className="md:col-span-2">{submit}</ContainerCard>
       </div>
       <div className="overflow-hidden"></div>
+      {action}
     </div>
   );
 }

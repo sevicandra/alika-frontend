@@ -7,10 +7,9 @@ import Paginator from "@/component/Organisms/Paginator";
 
 export default function Layout({
   children,
-  action,
 }: {
-  children: React.ReactNode;
-  action: React.ReactNode;
+  children: React.ReactElement;
+
 }) {
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean).slice(2);
@@ -35,7 +34,6 @@ export default function Layout({
       <div className="mx-4 mb-4 flex justify-between">
         {totalPage && <Paginator />}
       </div>
-      {action}
     </div>
   );
 }

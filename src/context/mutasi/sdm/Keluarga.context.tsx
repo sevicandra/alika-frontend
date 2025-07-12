@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useState, useMemo, useContext, useEffect } from "react";
+import { createContext, useState, useMemo, useContext } from "react";
 type KelaurgaContextType = {
   refresh: number;
   setRefresh: () => void;

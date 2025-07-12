@@ -2,7 +2,6 @@ import "server-only";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
-import { revalidateTag } from "next/cache";
 
 const apiBaseUrl =
   process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??

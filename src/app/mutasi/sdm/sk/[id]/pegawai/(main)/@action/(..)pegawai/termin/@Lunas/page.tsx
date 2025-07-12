@@ -42,7 +42,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             type: "LUNAS",
             tahun_lunas: data.tahun_lunas,
           }),
-        }
+        },
       );
       if (!res.ok) {
         const { message, errors } = await res.json();
@@ -70,7 +70,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   return (
     <>
       {loading && (
-        <div className="text-primary-600 absolute z-10 flex h-full w-full">
+        <div className="absolute z-10 flex h-full w-full text-primary-600">
           <Loading />
         </div>
       )}
@@ -80,13 +80,13 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             Input Mekanisme Sekaligus
           </legend>
 
-          <label className="label text-base-content after:content-['*'] after:text-error">
+          <label className="label text-base-content after:text-error after:content-['*']">
             Tahun Anggaran:
           </label>
           <input
             type="text"
             inputMode="numeric"
-            className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "tahun_lunas") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
+            className={`input input-sm w-full bg-base-300 focus:outline-none ${validationErrors.find((e) => e.field === "tahun_lunas") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
             placeholder="Masukkan harga satuan"
             name="tahun_lunas"
             autoComplete="off"
@@ -97,12 +97,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             }}
           />
           {validationErrors.find((e) => e.field === "tahun_lunas") && (
-            <p className="text-error label font-bold">
+            <p className="label font-bold text-error">
               {validationErrors.find((e) => e.field === "tahun_lunas")?.message}
             </p>
           )}
 
-          <button type="submit" className="btn btn-sm mt-4 btn-accent">
+          <button type="submit" className="btn mt-4 btn-sm btn-accent">
             Submit
           </button>
         </fieldset>

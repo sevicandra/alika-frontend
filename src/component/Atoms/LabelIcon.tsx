@@ -20,79 +20,411 @@ import {
   LuRepeat,
   LuMessageCircleWarning,
   LuFileBadge2,
+  LuX,
+  LuPlus,
+  LuFilePlus2,
+  LuCircleCheck,
+  LuCirclePlay,
+  LuTrash2,
+  LuCircleAlert,
+  LuChevronsUpDown,
+  LuCalendarDays,
+  LuArrowLeft,
+  LuKey,
+  LuSquarePen,
+  LuFile,
+  LuSend,
+  LuCreditCard,
+  LuEye,
+  LuFolderOpen,
+  LuFolderSearch2,
+  LuHistory,
+  LuCircleX,
 } from "react-icons/lu";
+import { FaPeopleArrows, FaUsers } from "react-icons/fa6";
+import { BsReceipt } from "react-icons/bs";
+import { BiReset } from "react-icons/bi";
+import { cn } from "@/lib/utils";
+type SvgProps = React.SVGAttributes<SVGSVGElement>;
+
 export default function Icon({
-  width = "100%",
   height = "100%",
   icon,
+  className,
+  ...props
 }: {
-  width?: number | string;
   height: number | string;
   icon?: string;
-}) {
+} & SvgProps) {
   switch (icon) {
     case "LaptopMinimal":
-      return <LuLaptopMinimal className="w-full" size={height} />;
+      return (
+        <LuLaptopMinimal
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "Layers3":
-      return <LuLayers3 className="w-full" size={height} />;
+      return (
+        <LuLayers3
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "Printer":
-      return <LuPrinter className="w-full" size={height} />;
+      return (
+        <LuPrinter
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "FilePenLine":
-      return <LuFilePenLine className="w-full" size={height} />;
+      return (
+        <LuFilePenLine
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "FileSpreadsheet":
-      return <LuFileSpreadsheet className="w-full" size={height} />;
+      return (
+        <LuFileSpreadsheet
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "ChevronRight":
-      return <LuChevronRight className="w-full" size={height} />;
+      return (
+        <LuChevronRight
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "MapPinCheck":
-      return <LuMapPinCheck className="w-full" size={height} />;
+      return (
+        <LuMapPinCheck
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "CloudUpload":
-      return <LuCloudUpload className="w-full" size={height} />;
+      return (
+        <LuCloudUpload
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "LayoutDashboard":
-      return <LuLayoutDashboard className="w-full" size={height} />;
+      return (
+        <LuLayoutDashboard
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "Keyboard":
-      return <LuKeyboard className="w-full" size={height} />;
+      return (
+        <LuKeyboard
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "Search":
-      return <LuSearch className="w-full" size={height} />;
+      return (
+        <LuSearch
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "Archive":
-      return <LuArchive className="w-full" size={height} />;
+      return (
+        <LuArchive
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "FileSearch":
-      return <LuFileSearch2 className="w-full" size={height} />;
+      return (
+        <LuFileSearch2
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "Coins":
-      return <LuCoins className="w-full" size={height} />;
+      return (
+        <LuCoins className={cn("w-full", className)} size={height} {...props} />
+      );
       break;
     case "FileText":
-      return <LuFileText className="w-full" size={height} />;
+      return (
+        <LuFileText
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "Upload":
-      return <LuUpload className="w-full" size={height} />;
+      return (
+        <LuUpload
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "ClipboardList":
-      return <LuClipboardList className="w-full" size={height} />;
+      return (
+        <LuClipboardList
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "FilePen":
-      return <LuFilePen className="w-full" size={height} />;
+      return (
+        <LuFilePen
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "Repeat":
-      return <LuRepeat className="w-full" size={height} />;
+      return (
+        <LuRepeat
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "MessageCircleWarning":
-      return <LuMessageCircleWarning className="w-full" size={height} />;
+      return (
+        <LuMessageCircleWarning
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     case "FileBadge2":
-      return <LuFileBadge2 className="w-full" size={height} />;
+      return (
+        <LuFileBadge2
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "x":
+      return (
+        <LuX className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "plus":
+      return (
+        <LuPlus className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "FilePlus2":
+      return (
+        <LuFilePlus2
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "CircleCheck":
+      return (
+        <LuCircleCheck
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "CirclePlay":
+      return (
+        <LuCirclePlay
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Trash2":
+      return (
+        <LuTrash2
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "CircleAlert":
+      return (
+        <LuCircleAlert
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "ChevronsUpDown":
+      return (
+        <LuChevronsUpDown
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "CalendarDays":
+      return (
+        <LuCalendarDays
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "ArrowLeft":
+      return (
+        <LuArrowLeft
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Key":
+      return (
+        <LuKey className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "SquarePen":
+      return (
+        <LuSquarePen
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "PeopleArrows":
+      return (
+        <FaPeopleArrows
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "File":
+      return (
+        <LuFile className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "Send":
+      return (
+        <LuSend className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "Users":
+      return (
+        <FaUsers className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "CreditCard":
+      return (
+        <LuCreditCard
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Receipt":
+      return (
+        <BsReceipt
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Reset":
+      return (
+        <BiReset className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "Eye":
+      return (
+        <LuEye className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "FolderOpen":
+      return (
+        <LuFolderOpen
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "FolderSearch2":
+      return (
+        <LuFolderSearch2
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "History":
+      return (
+        <LuHistory
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "CircleX":
+      return (
+        <LuCircleX
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
       break;
     default:
       break;

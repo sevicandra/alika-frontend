@@ -7,6 +7,7 @@ import { useBiaya, BiayaProvider } from "./Biaya.context";
 import { useTermin, TerminProvider } from "./Termin.context";
 import { useSanggah, SanggahProvider } from "./Sanggah.context";
 import { useSanggahDetail, SanggahDetailProvider } from "./SanggahDetail.context";
+import { usePermohonanPembayaran, PermohonanPembayaranProvider } from "./PermohonanPembayaran.context";
 export {
   SkProvider,
   useSk,
@@ -26,4 +27,6 @@ export {
   useSanggah,
   SanggahDetailProvider,
   useSanggahDetail,
+  PermohonanPembayaranProvider,
+  usePermohonanPembayaran,
 };

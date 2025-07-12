@@ -3,9 +3,26 @@ import { useContext } from "react";
 import { NotificationContext } from "@/context/notifikasi";
 import { Transition } from "@headlessui/react";
 import { FiXCircle } from "react-icons/fi";
+import { cn } from "@/lib/utils";
 export default function Notification() {
   const { notification, clearNotification, closeNotification } =
     useContext(NotificationContext);
+
+  const variantStyles = {
+    info: {
+      iconColor: "alert-info",
+    },
+    error: {
+      iconColor: "alert-error",
+    },
+    success: {
+      iconColor: "alert-success",
+    },
+    warning: {
+      iconColor: "alert-warning",
+    },
+  };
+
   return (
     <div className="absolute top-2 right-2 z-[999] flex max-h-full flex-col gap-2 overflow-y-auto pr-2 pb-4">
       {notification.map((n) => {
@@ -29,8 +46,15 @@ export default function Notification() {
             }}
             key={n.id}
           >
-            <div className="alert alert-info w-3xs transition-all duration-150">
-              <div onClick={() => closeNotification(n.id)}><FiXCircle /></div>
+            <div
+              className={cn(
+                `alert w-3xs alert-info transition-all duration-150`,
+                variantStyles[n.variant].iconColor,
+              )}
+            >
+              <div onClick={() => closeNotification(n.id)}>
+                <FiXCircle />
+              </div>
               <div>
                 <div>{n.title}</div>
                 <div>{n.message}</div>

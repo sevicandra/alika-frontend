@@ -85,6 +85,7 @@ export default function WebPushNotificationProvider({
         const data = await key.json();
         return console.error(data.message);
       }
+
       const registration = await navigator.serviceWorker.ready;
       const sub = await registration.pushManager.subscribe({
         userVisibleOnly: true,
@@ -103,9 +104,9 @@ export default function WebPushNotificationProvider({
       });
       setSubscription(sub);
     } catch (error: any) {
-      console.log(error);
       addNotification({
         title: "Push Notification Registration",
+        variant: "error",
         message: error.message,
       });
     }

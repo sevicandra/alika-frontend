@@ -1,5 +1,4 @@
 import type { MetadataRoute } from 'next'
- import Icon from '@/component/Atoms/LabelIcon'
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: process.env.APP_NAME,

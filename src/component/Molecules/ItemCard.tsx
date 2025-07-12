@@ -28,7 +28,7 @@ export default function ItemCard({
         </div>
         {status && <div >{status}</div>}
       </div>
-      {children && <div className="mt-2 pb-4 text-sm">{children}</div>}
+      <div className="mt-2 pb-4 text-sm">{children}</div>
     </Card>
   );
 }

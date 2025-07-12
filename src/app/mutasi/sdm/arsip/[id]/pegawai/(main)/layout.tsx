@@ -1,0 +1,58 @@
+"use client";
+import Link from "next/link";
+import Breadcrumb from "@/component/Molecules/Breadcrumb";
+import { usePathname } from "next/navigation";
+import { useSkDetail } from "@/context/mutasi/sdm";
+import { usePaginator } from "@/context/paginator";
+import Paginator from "@/component/Organisms/Paginator";
+
+export default function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+  params: Promise<{
+    id: string;
+  }>;
+}) {
+  const pathname = usePathname();
+  const { totalPage } = usePaginator();
+  const pathSegments = pathname.split("/").filter(Boolean).slice(2);
+
+  const { data: suratKeputusan } = useSkDetail();
+  return (
+    <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">
+      <div className="mx-4 mt-4">
+        <Breadcrumb
+          data={pathSegments.map((segment, index) => {
+            let label;
+            if (pathSegments[index - 1] === "arsip") {
+              return {
+                name: suratKeputusan
+                  ? suratKeputusan.nomor.toUpperCase()
+                  : "Surat Keputusan",
+              };
+            }
+            return {
+              name: label || segment.replace(/-/g, " ").toUpperCase(),
+              href: `/mutasi/sdm/${pathSegments.slice(0, index + 1).join("/")}`,
+            };
+          })}
+          renderRow={(row, index) => (
+            <li key={index}>
+              {row.href ? (
+                <Link href={row.href}>{row.name}</Link>
+              ) : (
+                <span>{row.name}</span>
+              )}
+            </li>
+          )}
+        />
+      </div>
+      <div className="max-w-full overflow-x-auto px-4"></div>
+      {children}
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
+    </div>
+  );
+}

@@ -6,7 +6,6 @@ import { useSanggahDetail } from "@/context/mutasi/sdm";
 
 export default function Layout({
   children,
-  params,
   action,
 }: {
   children: React.ReactNode;

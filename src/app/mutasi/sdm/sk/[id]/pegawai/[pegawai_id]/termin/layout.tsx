@@ -44,7 +44,7 @@ export default function Layout({
             }
             return {
               name: label || segment.replace(/-/g, " ").toUpperCase(),
-              href: `/${pathSegments.slice(0, index + 1).join("/")}`,
+              href: `/mutasi/sdm/${pathSegments.slice(0, index + 1).join("/")}`,
             };
           })}
           renderRow={(row, index) => (

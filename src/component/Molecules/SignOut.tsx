@@ -24,6 +24,7 @@ export default function SignOut() {
         router.push("/");
       });
     } catch (error) {
+      console.log(error);
       addNotification({
         title: "Logout",
         message: "Gagal logout",

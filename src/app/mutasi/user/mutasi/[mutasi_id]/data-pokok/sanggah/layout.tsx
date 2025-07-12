@@ -9,13 +9,12 @@ import Link from "next/link";
 export default function Layout({
   children,
   params,
-  action,
+
 }: {
   children: React.ReactNode;
   params: Promise<{
     mutasi_id: string;
   }>;
-  action: React.ReactNode;
 }) {
   const { mutasi_id } = use(params);
   const pathname = usePathname();
@@ -53,7 +52,6 @@ export default function Layout({
       </div>
       <SanggahProvider mutasi_id={mutasi_id}>
         <div className="mx-4 overflow-auto">{children}</div>
-        {action}
       </SanggahProvider>
     </div>
   );

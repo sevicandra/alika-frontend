@@ -1,8 +1,9 @@
 "use client";
-import { useContext, useEffect, useState, use } from "react";
+import { useContext, useState, use } from "react";
 import { usePegawai } from "@/context/mutasi/sdm";
 import { NotificationContext } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
+import Confirmation from "@/component/Organisms/Confirmation";
 
 export default function Page({
   params,
@@ -13,8 +14,10 @@ export default function Page({
   const { id, pegawai_id } = use(params);
   const { addNotification } = useContext(NotificationContext);
   const { setRefresh } = usePegawai();
+  const [loading, setLoading] = useState(false);
   async function submitForm() {
     try {
+      setLoading(true);
       const res = await fetch(
         `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/ResetData`,
         {
@@ -26,7 +29,7 @@ export default function Page({
             }),
           },
           method: "POST",
-        }
+        },
       );
       if (!res.ok) {
         const { message } = await res.json();
@@ -43,28 +46,22 @@ export default function Page({
         message: (error as Error).message,
         title: "Reset Data",
       });
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div className="grid gap-2">
-      <div className="flex justify-center">
-        <h2 className="text-xl text-center">Are you sure?</h2>
-      </div>
-      <div className="flex justify-center text-center">
-        <p className="text-sm">
-          data pegawai ini akan direset, termasuk data keluarga dan rincian
-          biaya, dan tidak dapat dikembalikan lagi.
-        </p>
-      </div>
-      <div className="flex justify-center gap-2">
-        <button className="btn btn-sm btn-error" onClick={() => router.back()}>
-          Cancel
-        </button>
-        <button className="btn btn-sm btn-success" onClick={() => submitForm()}>
-          Confirm
-        </button>
-      </div>
-    </div>
+    <Confirmation
+      title="Reset Data Pegawai"
+      message="data pegawai ini akan direset, termasuk data keluarga dan rincian biaya, dan tidak dapat dikembalikan lagi."
+      onConfirm={submitForm}
+      onCancel={() => router.back()}
+      variant="warning"
+      icon="CircleAlert"
+      loading={loading}
+      confirmText="Reset"
+      cancelText="Batal"
+    />
   );
 }

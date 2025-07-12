@@ -26,6 +26,7 @@ export default function Page({
       status: string;
       Ref: {
         nama: string;
+        jenis: string;
       };
     }[]
   >([]);
@@ -71,7 +72,15 @@ export default function Page({
         )}
         <div className="overflow-y-auto py-2">
           <DataTable
-            data={data}
+            data={data.sort((a, b) => {
+              const getPriority = (d: any) => {
+                if (d.Ref.jenis === "PASANGAN") return 0;
+                if (d.Ref.jenis === "ANAK") return 1;
+                if (d.Ref.kode === 99) return 2;
+                return 3;
+              };
+              return getPriority(a) - getPriority(b);
+            })}
             columns={[
               "No",
               "Nama",

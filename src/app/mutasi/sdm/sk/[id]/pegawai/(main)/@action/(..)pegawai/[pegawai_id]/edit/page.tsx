@@ -4,6 +4,7 @@ import { usePegawai } from "@/context/mutasi/sdm";
 import { NotificationContext } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
+import Icon from "@/component/Atoms/LabelIcon";
 
 export default function Page({
   params,
@@ -32,6 +33,9 @@ export default function Page({
       message: string;
     }[]
   >([]);
+  const getValidationError = (field: string) => {
+    return validationErrors.find((e) => e.field === field);
+  };
   const { id, pegawai_id } = use(params);
   const { addNotification } = useContext(NotificationContext);
   const { setRefresh } = usePegawai();
@@ -68,7 +72,7 @@ export default function Page({
     const fetchKantor = async () => {
       try {
         const res = await fetch(
-          "/api/Mutasi/Referensi/Kantor?sortField=kode_kota&sortOrder=asc"
+          "/api/Mutasi/Referensi/Kantor?sortField=kode_kota&sortOrder=asc",
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -93,7 +97,7 @@ export default function Page({
       try {
         setLoading(true);
         const res = await fetch(
-          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`
+          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`,
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -131,7 +135,7 @@ export default function Page({
             kantor_asal: data.kantor_asal,
             kantor_tujuan: data.kantor_tujuan,
           }),
-        }
+        },
       );
       if (!res.ok) {
         const { message, errors } = await res.json();
@@ -156,129 +160,199 @@ export default function Page({
   }
   if (error) throw error;
   return (
-    <>
+    <form onSubmit={submitForm} noValidate>
       {loading && (
-        <div className="text-primary-600 absolute z-10 flex h-full w-full">
+        <div className="absolute z-10 flex h-full w-full text-primary-600">
           <Loading />
         </div>
       )}
-      <form onSubmit={submitForm}>
-        <fieldset className="fieldset">
-          <legend className="fieldset-legend text-base-content">
-            Input Pegawai
-          </legend>
-          <label className="label text-base-content">NIP:</label>
-          <input
-            type="text"
-            className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "nip") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            placeholder="Type here"
-            name="nip"
-            required
-            autoComplete="off"
-            onChange={(e) => setData({ ...data, nip: e.target.value })}
-            value={data.nip}
-          />
-          {validationErrors.find((e) => e.field === "nip") && (
-            <p className="text-error label font-bold">
-              {validationErrors.find((e) => e.field === "nip")?.message}
-            </p>
-          )}
+      <div className="bg-base-100 shadow-xl">
+        <div className="p-4">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-6">
+            {/* --- Field Nama --- */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold">Nama</span>
+              </label>
+              <div className="relative">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                  <Icon icon="FileText" height={20} />
+                </span>
+                <input
+                  type="text"
+                  name="nama"
+                  className={`input-bordered input w-full pl-10 ${getValidationError("nama") ? "input-error" : ""}`}
+                  required
+                  value={data.nama}
+                  onChange={(e) => setData({ ...data, nama: e.target.value })}
+                />
+              </div>
+              {getValidationError("nama") && (
+                <label className="label">
+                  <span className="label-text-alt flex items-center gap-1 text-error">
+                    <Icon icon="CircleAlert" height={16} />{" "}
+                    {getValidationError("nama")?.message}
+                  </span>
+                </label>
+              )}
+            </div>
 
-          <label className="label text-base-content">Nama:</label>
-          <input
-            type="text"
-            className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "nip") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            placeholder="Type here"
-            name="nama"
-            required
-            autoComplete="off"
-            onChange={(e) => setData({ ...data, nama: e.target.value })}
-            value={data.nama}
-          />
-          {validationErrors.find((e) => e.field === "nama") && (
-            <p className="text-error label font-bold">
-              {validationErrors.find((e) => e.field === "nama")?.message}
-            </p>
-          )}
+            {/* --- Field NIP --- */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold">NIP</span>
+              </label>
+              <div className="relative">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                  <Icon icon="FileText" height={20} />
+                </span>
+                <input
+                  type="text"
+                  name="nip"
+                  className={`input-bordered input w-full pl-10 ${getValidationError("nip") ? "input-error" : ""}`}
+                  required
+                  value={data.nip}
+                  onChange={(e) => setData({ ...data, nip: e.target.value })}
+                />
+              </div>
+              {getValidationError("nip") && (
+                <label className="label">
+                  <span className="label-text-alt flex items-center gap-1 text-error">
+                    <Icon icon="CircleAlert" height={16} />{" "}
+                    {getValidationError("nip")?.message}
+                  </span>
+                </label>
+              )}
+            </div>
 
-          <label className="label text-base-content">Golongan:</label>
-          <select
-            name="golongan"
-            className={`select select-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "golongan") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            required
-            onChange={(e) => setData({ ...data, golongan: e.target.value })}
-            value={data.golongan}
+            {/* --- Field Golongan --- */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold">Golongan</span>
+              </label>
+              <div className="relative">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                  <Icon icon="ChevronsUpDown" height={20} />
+                </span>
+                <select
+                  name="golongan"
+                  className={`select-bordered select w-full pl-10 ${getValidationError("golongan") ? "select-error" : ""}`}
+                  required
+                  onChange={(e) =>
+                    setData({ ...data, golongan: e.target.value })
+                  }
+                  value={data.golongan}
+                >
+                  <option disabled={true} value="">
+                    Golongan
+                  </option>
+                  {golongan.map((item) => (
+                    <option key={item.kode} value={item.kode}>
+                      {item.kode} - {item.nama}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {getValidationError("golongan") && (
+                <label className="label">
+                  <span className="label-text-alt flex items-center gap-1 text-error">
+                    <Icon icon="CircleAlert" height={16} />{" "}
+                    {getValidationError("golongan")?.message}
+                  </span>
+                </label>
+              )}
+            </div>
+
+            {/* --- Field Kantor Asal --- */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold">Kantor Asal</span>
+              </label>
+              <div className="relative">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                  <Icon icon="ChevronsUpDown" height={20} />
+                </span>
+                <select
+                  name="kantor_asal"
+                  className={`select-bordered select w-full pl-10 ${getValidationError("kantor_asal") ? "select-error" : ""}`}
+                  required
+                  onChange={(e) =>
+                    setData({ ...data, kantor_asal: e.target.value })
+                  }
+                  value={data.kantor_asal}
+                >
+                  <option disabled={true} value="">
+                    Kantor Asal
+                  </option>
+                  {kantor.map((item) => (
+                    <option key={item.kode_satker} value={item.kode_satker}>
+                      {item.kantor}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {getValidationError("kantor_asal") && (
+                <label className="label">
+                  <span className="label-text-alt flex items-center gap-1 text-error">
+                    <Icon icon="CircleAlert" height={16} />{" "}
+                    {getValidationError("kantor_asal")?.message}
+                  </span>
+                </label>
+              )}
+            </div>
+
+            {/* --- Field Kantor Tujuan --- */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold">Kantor Tujuan</span>
+              </label>
+              <div className="relative">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                  <Icon icon="ChevronsUpDown" height={20} />
+                </span>
+                <select
+                  name="kantor_tujuan"
+                  className={`select-bordered select w-full pl-10 ${getValidationError("kantor_tujuan") ? "select-error" : ""}`}
+                  required
+                  onChange={(e) =>
+                    setData({ ...data, kantor_tujuan: e.target.value })
+                  }
+                  value={data.kantor_tujuan}
+                >
+                  <option disabled={true} value="">
+                    Kantor Tujuan
+                  </option>
+                  {kantor.map((item) => (
+                    <option key={item.kode_satker} value={item.kode_satker}>
+                      {item.kantor}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {getValidationError("kantor_tujuan") && (
+                <label className="label">
+                  <span className="label-text-alt flex items-center gap-1 text-error">
+                    <Icon icon="CircleAlert" height={16} />{" "}
+                    {getValidationError("kantor_tujuan")?.message}
+                  </span>
+                </label>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={() => router.back()}
           >
-            <option disabled={true} value="">
-              Golongan
-            </option>
-            {golongan.map((item) => (
-              <option key={item.kode} value={item.kode}>
-                {item.kode} - {item.nama}
-              </option>
-            ))}
-          </select>
-          {validationErrors.find((e) => e.field === "golongan") && (
-            <p className="text-error label font-bold">
-              {validationErrors.find((e) => e.field === "golongan")?.message}
-            </p>
-          )}
-
-          <label className="label text-base-content">Kantor Asal:</label>
-          <select
-            name="kantor_asal"
-            className={`select select-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "kantor_asal") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            required
-            onChange={(e) => setData({ ...data, kantor_asal: e.target.value })}
-            value={data.kantor_asal}
-          >
-            <option disabled={true} value="">
-              Kantor Asal
-            </option>
-            {kantor.map((item) => (
-              <option key={item.kode_satker} value={item.kode_satker}>
-                {item.kantor}
-              </option>
-            ))}
-          </select>
-          {validationErrors.find((e) => e.field === "kantor_asal") && (
-            <p className="text-error label font-bold">
-              {validationErrors.find((e) => e.field === "kantor_asal")?.message}
-            </p>
-          )}
-
-          <label className="label text-base-content">Kantor Tujuan:</label>
-          <select
-            name="kantor_tujuan"
-            className={`select select-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "kantor_tujuan") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            required
-            onChange={(e) =>
-              setData({ ...data, kantor_tujuan: e.target.value })
-            }
-            value={data.kantor_tujuan}
-          >
-            <option disabled={true} value="">
-              Kantor Tujuan
-            </option>
-            {kantor.map((item) => (
-              <option key={item.kode_satker} value={item.kode_satker}>
-                {item.kantor}
-              </option>
-            ))}
-          </select>
-          {validationErrors.find((e) => e.field === "kantor_tujuan") && (
-            <p className="text-error label font-bold">
-              {
-                validationErrors.find((e) => e.field === "kantor_tujuan")
-                  ?.message
-              }
-            </p>
-          )}
-          <button type="submit" className="btn btn-sm mt-4 btn-accent">
-            Submit
+            <Icon icon="ArrowLeft" height={16} /> Batal
           </button>
-        </fieldset>
-      </form>
-    </>
+          <button type="submit" className="btn text-nowrap btn-primary">
+            <Icon icon="FileText" height={16} /> Edit Pegawai
+          </button>
+        </div>
+      </div>
+    </form>
   );
 }

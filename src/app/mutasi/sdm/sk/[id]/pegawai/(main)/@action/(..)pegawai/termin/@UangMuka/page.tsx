@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState, use } from "react";
+import { useContext, useState, use } from "react";
 import { usePegawai } from "@/context/mutasi/sdm";
 import { NotificationContext } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
@@ -9,7 +9,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { addNotification } = useContext(NotificationContext);
   const { setRefresh } = usePegawai();
-  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<{
     percentage: string;
     maximum: number;
@@ -31,7 +30,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      setLoading(true);
       const res = await fetch(
         `/api/Mutasi/SDM/SuratKeputusan/${id}/ProcessTermin`,
         {
@@ -50,7 +48,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             tahun_uang_muka: data.tahun_uang_muka,
             tahun_lunas: data.tahun_lunas,
           }),
-        }
+        },
       );
       if (!res.ok) {
         const { message, errors } = await res.json();
@@ -70,8 +68,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         message: (error as Error).message,
         title: "Termin",
       });
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -82,14 +78,14 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           Input Mekanisme Uang Muka
         </legend>
 
-        <label className="label text-base-content after:content-['*'] after:text-error">
+        <label className="label text-base-content after:text-error after:content-['*']">
           Persentase:
         </label>
         <input
           type="text"
           inputMode="decimal"
           pattern="[0-9]*[.,]?[0-9]*"
-          className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "percentage") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
+          className={`input input-sm w-full bg-base-300 focus:outline-none ${validationErrors.find((e) => e.field === "percentage") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
           placeholder="Masukkan percentage"
           name="percentage"
           autoComplete="off"
@@ -103,7 +99,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           }}
         />
         {validationErrors.find((e) => e.field === "percentage") && (
-          <p className="text-error label font-bold">
+          <p className="label font-bold text-error">
             {validationErrors.find((e) => e.field === "percentage")?.message}
           </p>
         )}
@@ -112,7 +108,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         <input
           type="text"
           inputMode="numeric"
-          className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "maximum") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
+          className={`input input-sm w-full bg-base-300 focus:outline-none ${validationErrors.find((e) => e.field === "maximum") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
           placeholder="Masukkan harga satuan"
           name="maximum"
           autoComplete="off"
@@ -126,18 +122,18 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           }}
         />
         {validationErrors.find((e) => e.field === "maximum") && (
-          <p className="text-error label font-bold">
+          <p className="label font-bold text-error">
             {validationErrors.find((e) => e.field === "maximum")?.message}
           </p>
         )}
 
-        <label className="label text-base-content after:content-['*'] after:text-error">
+        <label className="label text-base-content after:text-error after:content-['*']">
           Tahun Uang Muka:
         </label>
         <input
           type="text"
           inputMode="numeric"
-          className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "tahun_uang_muka") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
+          className={`input input-sm w-full bg-base-300 focus:outline-none ${validationErrors.find((e) => e.field === "tahun_uang_muka") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
           placeholder="Masukkan harga satuan"
           name="tahun_uang_muka"
           autoComplete="off"
@@ -148,7 +144,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           }}
         />
         {validationErrors.find((e) => e.field === "tahun_uang_muka") && (
-          <p className="text-error label font-bold">
+          <p className="label font-bold text-error">
             {
               validationErrors.find((e) => e.field === "tahun_uang_muka")
                 ?.message
@@ -156,13 +152,13 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           </p>
         )}
 
-        <label className="label text-base-content after:content-['*'] after:text-error">
+        <label className="label text-base-content after:text-error after:content-['*']">
           Tahun Pelunasan:
         </label>
         <input
           type="text"
           inputMode="numeric"
-          className={`input input-sm focus:outline-none w-full max-w-md bg-base-300 ${validationErrors.find((e) => e.field === "tahun_lunas") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
+          className={`input input-sm w-full bg-base-300 focus:outline-none ${validationErrors.find((e) => e.field === "tahun_lunas") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
           placeholder="Masukkan harga satuan"
           name="tahun_lunas"
           autoComplete="off"
@@ -173,12 +169,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           }}
         />
         {validationErrors.find((e) => e.field === "tahun_lunas") && (
-          <p className="text-error label font-bold">
+          <p className="label font-bold text-error">
             {validationErrors.find((e) => e.field === "tahun_lunas")?.message}
           </p>
         )}
 
-        <button type="submit" className="btn btn-sm mt-4 btn-accent">
+        <button type="submit" className="btn mt-4 btn-sm btn-accent">
           Submit
         </button>
       </fieldset>

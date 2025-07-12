@@ -2,14 +2,14 @@
 import { use, useEffect, useContext, useState } from "react";
 import { usePaginator } from "@/context/paginator";
 import { NotificationContext } from "@/context/notifikasi";
-import Paginator from "@/component/Organisms/Paginator";
-import { DataTable } from "@/component/Organisms/DataTable";
 import { usePegawai, useSkDetail } from "@/context/mutasi/sdm";
 import Loading from "@/component/Molecules/Loading";
 import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import ExpandableItemCard from "@/component/Molecules/ExpandableItemCard";
 import { snackToTitleCase } from "@/helpers/string.helper";
+import Icon from "@/component/Atoms/LabelIcon";
+
 export default function Page({
   params,
 }: {
@@ -48,8 +48,6 @@ export default function Page({
   const [loading, setLoading] = useState(true);
   const { addNotification } = useContext(NotificationContext);
   const {
-    setPage,
-    totalPage,
     setTotalPage,
     page: currentPage,
     limit,
@@ -207,45 +205,85 @@ export default function Page({
                   onClick={(e) => e.stopPropagation()}
                 >
                   {row.process_keluarga === "IDLE" && (
-                    <Link
-                      href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/edit`}
-                      className="btn btn-xs btn-primary"
-                    >
-                      Edit
-                    </Link>
+                    <div className="tooltip" data-tip="edit">
+                      <Link
+                        href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/edit`}
+                      >
+                        <div className="rounded-box bg-info/80 p-1 text-info-content">
+                          <Icon
+                            className="hover:scale-110"
+                            icon="SquarePen"
+                            height={16}
+                          />
+                        </div>
+                      </Link>
+                    </div>
                   )}
-                  <Link
-                    href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/keluarga`}
-                    className="btn btn-xs btn-primary"
-                  >
-                    Keluarga
-                  </Link>
-                  <Link
-                    href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/biaya`}
-                    className="btn btn-xs btn-primary"
-                  >
-                    Biaya
-                  </Link>
-                  <Link
-                    href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/termin`}
-                    className="btn btn-xs btn-primary"
-                  >
-                    Termin
-                  </Link>
+                  <div className="tooltip" data-tip="keluarga">
+                    <Link
+                      href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/keluarga`}
+                    >
+                      <div className="rounded-box bg-info/80 p-1 text-info-content">
+                        <Icon
+                          className="hover:scale-110"
+                          icon="Users"
+                          height={16}
+                        />
+                      </div>
+                    </Link>
+                  </div>
+                  <div className="tooltip" data-tip="biaya">
+                    <Link href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/biaya`}>
+                      <div className="rounded-box bg-info/80 p-1 text-info-content">
+                        <Icon
+                          className="hover:scale-110"
+                          icon="CreditCard"
+                          height={16}
+                        />
+                      </div>
+                    </Link>
+                  </div>
+                  <div className="tooltip" data-tip="termin">
+                    <Link
+                      href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/termin`}
+                    >
+                      <div className="rounded-box bg-info/80 p-1 text-info-content">
+                        <Icon
+                          className="hover:scale-110"
+                          icon="Receipt"
+                          height={16}
+                        />
+                      </div>
+                    </Link>
+                  </div>
                   {SuratKeputusan?.status === "DRAFT" && (
                     <>
-                      <Link
-                        href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/reset-data`}
-                        className="btn btn-xs btn-warning"
-                      >
-                        Reset Data
-                      </Link>
-                      <Link
-                        href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/hapus`}
-                        className="btn btn-xs btn-error"
-                      >
-                        Hapus
-                      </Link>
+                      <div className="tooltip" data-tip="reset">
+                        <Link
+                          href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/reset-data`}
+                        >
+                          <div className="rounded-box bg-warning/80 p-1 text-warning-content">
+                            <Icon
+                              className="hover:scale-110"
+                              icon="Reset"
+                              height={16}
+                            />
+                          </div>
+                        </Link>
+                      </div>
+                      <div className="tooltip" data-tip="hapus">
+                        <Link
+                          href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/hapus`}
+                        >
+                          <div className="rounded-box bg-error/80 p-1 text-error-content">
+                            <Icon
+                              className="hover:scale-110"
+                              icon="Trash2"
+                              height={16}
+                            />
+                          </div>
+                        </Link>
+                      </div>
                     </>
                   )}
                 </div>

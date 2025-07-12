@@ -1,5 +1,4 @@
 "use client";
-import { useContext, useEffect } from "react";
 import { usePaginator } from "@/context/paginator";
 import {
   CloseToEnd,

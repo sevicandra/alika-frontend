@@ -8,7 +8,7 @@ type DataTabProps<T> = {
   renderTab: (tab: T, index: number) => React.ReactNode;
 };
 
-export function Tabs<T>({ tabs, data, renderTab }: DataTabProps<any>) {
+export function Tabs({ tabs, data, renderTab }: DataTabProps<any>) {
   return (
     <TabProvider>
       <div>

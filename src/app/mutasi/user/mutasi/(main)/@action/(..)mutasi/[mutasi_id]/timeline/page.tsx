@@ -1,6 +1,6 @@
 "use client";
 import { useNotification } from "@/context/notifikasi";
-import { useContext, useEffect, useState, use } from "react";
+import { useEffect, useState, use } from "react";
 import { DataTable } from "@/component/Organisms/DataTable";
 import Loading from "@/component/Molecules/Loading";
 import { snackToTitleCase } from "@/helpers/string.helper";
@@ -16,7 +16,6 @@ export default function Page({
       tanggal: string;
     }[]
   >([]);
-  const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
   const { mutasi_id } = use(params);
@@ -54,7 +53,6 @@ export default function Page({
           title: "Timeline",
           message: (error as Error).message,
         });
-        setError(error as Error);
       } finally {
         setLoading(false);
       }

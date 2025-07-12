@@ -8,6 +8,8 @@ import { useBiaya, usePegawaiDetail } from "@/context/mutasi/sdm";
 import Onproccess from "@/component/Molecules/Onproccess";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import { snackToTitleCase } from "@/helpers/string.helper";
+import Icon from "@/component/Atoms/LabelIcon";
+
 export default function Page({
   params,
 }: {
@@ -41,14 +43,14 @@ export default function Page({
           `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/RincianBiaya`,
           {
             method: "GET",
-          }
+          },
         );
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
         }
-        const data = await res.json();
-        setData(data.data.sort((a: any, b: any) => {}));
+        const {data} = await res.json();
+        setData(data);
       } catch (error) {
         addNotification({
           title: `Data Pegawai`,
@@ -91,7 +93,7 @@ export default function Page({
           ) : (
             <>
               {loading && (
-                <div className="bg-base-300/50 text-primary-600 absolute z-10 flex h-full w-full">
+                <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
                   <Loading />
                 </div>
               )}
@@ -131,22 +133,36 @@ export default function Page({
                       })}
                     </td>
                     <td>
-                      <div className="flex gap-2">
+                      <div className="flex gap-1">
                         {pegawai?.process_termin === "IDLE" &&
                           pegawai?.process_biaya === "DONE" && (
                             <>
-                              <Link
-                                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/biaya/${row.id}/edit`}
-                                className="btn btn-xs"
-                              >
-                                Edit
-                              </Link>
-                              <Link
-                                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/biaya/${row.id}/hapus`}
-                                className="btn btn-xs btn-error"
-                              >
-                                Hapus
-                              </Link>
+                              <div className="tooltip" data-tip="edit">
+                                <Link
+                                  href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/biaya/${row.id}/edit`}
+                                >
+                                  <div className="rounded-box bg-info/80 p-1 text-info-content">
+                                    <Icon
+                                      className="hover:scale-110"
+                                      icon="SquarePen"
+                                      height={16}
+                                    />
+                                  </div>
+                                </Link>
+                              </div>
+                              <div className="tooltip" data-tip="hapus">
+                                <Link
+                                  href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/biaya/${row.id}/hapus`}
+                                >
+                                  <div className="rounded-box bg-error/80 p-1 text-error-content">
+                                    <Icon
+                                      className="hover:scale-110"
+                                      icon="Trash2"
+                                      height={16}
+                                    />
+                                  </div>
+                                </Link>
+                              </div>
                             </>
                           )}
                       </div>
@@ -157,7 +173,7 @@ export default function Page({
             </>
           )}
         </div>
-        <div className=" overflow-hidden"></div>
+        <div className="overflow-hidden"></div>
       </div>
     </ContainerCard>
   );

@@ -56,6 +56,11 @@ export const menus = async ({
             path: "/mutasi/user/mutasi",
             icon: "Repeat",
           },
+          {
+            label: "TTE",
+            path: "/mutasi/user/tte",
+            icon: "FilePenLine",
+          },
         ],
       },
       {
@@ -77,18 +82,38 @@ export const menus = async ({
             icon: "MessageCircleWarning",
           },
           {
-            label: "Monitoring Dokumen",
-            path: "/mutasi/sdm/monitoring",
-            icon: "SearchCheck",
-          },
-          {
-            label: "Monitoring Pembayaran",
-            path: "/mutasi/sdm/pembayaran",
-            icon: "Landmark",
+            label: "Permohonan Pembayaran",
+            path: "/mutasi/sdm/permohonan-pembayaran",
+            icon: "FolderSearch2",
           },
           {
             label: "Arsip",
             path: "/mutasi/sdm/arsip",
+            icon: "Archive",
+          },
+        ],
+      },
+      {
+        title: "Bagian KEU",
+        data: [
+          {
+            label: "Dashboard",
+            path: "/mutasi/keuangan/dashboard",
+            icon: "LayoutDashboard",
+          },
+          {
+            label: "SK Mutasi",
+            path: "/mutasi/keuangan/sk",
+            icon: "FileBadge2",
+          },
+          {
+            label: "Permohonan Pembayaran",
+            path: "/mutasi/keuangan/permohonan-pembayaran",
+            icon: "FolderSearch2",
+          },
+          {
+            label: "Arsip",
+            path: "/mutasi/keuangan/arsip",
             icon: "Archive",
           },
         ],

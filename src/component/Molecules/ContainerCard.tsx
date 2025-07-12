@@ -1,6 +1,5 @@
 import Card from "@/component/Atoms/Card";
 import { cn } from "@/lib/utils";
-import Loading from "./Loading";
 
 interface ContainerCardProps {
   title?: string;

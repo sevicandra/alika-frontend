@@ -1,6 +1,6 @@
 "use client";
 import { DataTable } from "@/component/Organisms/DataTable";
-import { useEffect, useState, useContext, use } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { PaginatorContext } from "@/context/paginator";
 import { NotificationContext } from "@/context/notifikasi";
@@ -8,7 +8,6 @@ import { CetakContext } from "@/context/penghasilan/cetak";
 import Link from "next/link";
 import Confirmation from "@/component/Molecules/Confirmation";
 import Loading from "@/component/Molecules/Loading";
-import Paginator from "@/component/Organisms/Paginator";
 import { useSession } from "@/context/session";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 export default function CetakMain() {
@@ -26,8 +25,6 @@ export default function CetakMain() {
   const {
     page: currentPage,
     limit,
-    setPage,
-    totalPage,
     setTotalPage,
   } = useContext(PaginatorContext);
   const [error, setError] = useState<Error | null>(null);

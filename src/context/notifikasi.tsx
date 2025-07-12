@@ -4,20 +4,23 @@ import { v4 as uuidv4 } from "uuid";
 
 type NotificationContextType = {
   notification: {
-    id: number | string;
+    id: string;
     title: string;
     message: string;
     show: boolean;
+    variant: "info" | "error" | "success" | "warning";
   }[];
   addNotification: ({
     message,
     title,
+    variant
   }: {
     message: string;
     title: string;
+    variant?: "info" | "error" | "success" | "warning";
   }) => void;
-  clearNotification: (id: number | string) => void;
-  closeNotification: (id: number | string) => void;
+  clearNotification: (id: string) => void;
+  closeNotification: (id: string) => void;
 };
 
 export const NotificationContext = createContext<NotificationContextType>({
@@ -27,38 +30,41 @@ export const NotificationContext = createContext<NotificationContextType>({
   closeNotification: () => {},
 });
 
-export default function Notification({
+export default function NotificationProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [notification, setNotification] = useState<
     {
-      id: number | string;
+      id: string;
       title: string;
       message: string;
       show: boolean;
+      variant: "info" | "error" | "success" | "warning";
     }[]
   >([]);
 
   const addNotification = ({
     message,
     title,
+    variant,
   }: {
     message: string;
     title: string;
+    variant?: "info" | "error" | "success" | "warning";
   }) => {
     setNotification((notification) => [
       ...notification,
-      { id: uuidv4(), message, title, show: true },
+      { id: uuidv4(), message, title, show: true, variant: variant || "info" },
     ]);
   };
 
-  const clearNotification = (id: number | string) => {
+  const clearNotification = (id: string) => {
     setNotification(notification.filter((n) => n.id !== id));
   };
 
-  const closeNotification = (id: number | string) => {
+  const closeNotification = (id: string) => {
     setNotification(
       notification.map((n) => {
         if (n.id === id) {
@@ -87,7 +93,7 @@ export function useNotification() {
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error(
-      "useNotification must be used within a NotificationProvider"
+      "useNotification must be used within a NotificationProvider" // Pesan error sudah benar, tidak perlu diubah jika nama komponen provider diubah.
     );
   }
   return context;

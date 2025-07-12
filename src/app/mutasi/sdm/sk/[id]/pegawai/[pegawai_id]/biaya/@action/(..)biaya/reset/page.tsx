@@ -3,7 +3,7 @@ import { useContext, use, useState } from "react";
 import { useBiaya, usePegawaiDetail } from "@/context/mutasi/sdm";
 import { NotificationContext } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
-import Loading from "@/component/Molecules/Loading";
+import Confirmation from "@/component/Organisms/Confirmation";
 
 export default function Page({
   params,
@@ -30,7 +30,7 @@ export default function Page({
             }),
           },
           method: "POST",
-        }
+        },
       );
       if (!res.ok) {
         const { message } = await res.json();
@@ -54,36 +54,15 @@ export default function Page({
   }
 
   return (
-    <>
-      {loading && (
-        <div className="text-primary-600 absolute z-10 flex h-full w-full">
-          <Loading />
-        </div>
-      )}
-      <div className="grid gap-2">
-        <div className="flex justify-center">
-          <h2 className="text-xl text-center">Are you sure?</h2>
-        </div>
-        <div className="flex justify-center">
-          <p className="text-sm">
-            Data Biaya ini akan dihapus, dan tidak dapat dikembalikan lagi.
-          </p>
-        </div>
-        <div className="flex justify-center gap-2">
-          <button
-            className="btn btn-sm btn-error"
-            onClick={() => router.back()}
-          >
-            Cancel
-          </button>
-          <button
-            className="btn btn-sm btn-success"
-            onClick={() => submitForm()}
-          >
-            Confirm
-          </button>
-        </div>
-      </div>
-    </>
+    <Confirmation
+      title="Reset Data Biaya"
+      message="Data Biaya ini akan dihapus secara permanen. Tindakan ini tidak dapat dikembalikan."
+      onConfirm={submitForm}
+      onCancel={() => router.back()}
+      variant="warning"
+      icon="CircleAlert"
+      cancelText="Batal"
+      loading={loading}
+    />
   );
 }

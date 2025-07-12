@@ -1,17 +1,20 @@
 "use client";
-import { useContext, useEffect, useState, use } from "react";
+import { useContext, useState, use } from "react";
 import { usePegawai } from "@/context/mutasi/sdm";
 import { NotificationContext } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
+import Confirmation from "@/component/Organisms/Confirmation";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = use(params);
   const { addNotification } = useContext(NotificationContext);
   const { setRefresh } = usePegawai();
+  const [loading, setLoading] = useState(false);
 
   async function submitForm() {
     try {
+      setLoading(true);
       const res = await fetch(
         `/api/Mutasi/SDM/SuratKeputusan/${id}/ProcessKeluarga`,
         {
@@ -23,7 +26,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             }),
           },
           method: "POST",
-        }
+        },
       );
       if (!res.ok) {
         const { message } = await res.json();
@@ -40,27 +43,21 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         message: (error as Error).message,
         title: "Proses Data Keluarga",
       });
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div className="grid gap-2">
-      <div className="flex justify-center">
-        <h2 className="text-xl text-center">Are you sure?</h2>
-      </div>
-      <div className="flex justify-center">
-        <p className="text-sm">
-          Proses data keluarga dengan status <strong>IDLE</strong>.
-        </p>
-      </div>
-      <div className="flex justify-center gap-2">
-        <button className="btn btn-sm btn-error" onClick={() => router.back()}>
-          Cancel
-        </button>
-        <button className="btn btn-sm btn-success" onClick={() => submitForm()}>
-          Confirm
-        </button>
-      </div>
-    </div>
+    <Confirmation
+      title="Proses Data Keluarga"
+      message="Apakah anda yakin untuk melakukan proses data keluarga?"
+      onConfirm={submitForm}
+      onCancel={() => router.back()}
+      variant="positive"
+      icon="CircleCheck"
+      cancelText="Batal"
+      loading={loading}
+    />
   );
 }

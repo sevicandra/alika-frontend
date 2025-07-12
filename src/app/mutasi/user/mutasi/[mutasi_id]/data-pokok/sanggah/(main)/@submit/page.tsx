@@ -1,8 +1,9 @@
 "use client";
 import { useSanggahContext } from "@/context/mutasi/user";
-import { use } from "react";
+import { use, useState } from "react";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 export default function Submit({
   params,
 }: {
@@ -12,15 +13,22 @@ export default function Submit({
 }) {
   const { revisi } = useSanggahContext();
   const { addNotification } = useNotification();
+  const [isLoading, setIsLoading] = useState(false);
   const { mutasi_id } = use(params);
+  const [checked, setChecked] = useState(false);
   const router = useRouter();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (revisi.length === 0) {
+      addNotification({
+        title: "Sanggah Mutasi",
+        message: "Tidak ada data revisi untuk dikirim.",
+      });
+      setIsLoading(false);
       return;
     }
-
     if (confirm("Anda yakin ingin mengirimkan data ini?")) {
       try {
         const formData = new FormData();
@@ -72,7 +80,7 @@ export default function Submit({
         );
         if (!res.ok) {
           const { message, errors } = await res.json();
-          if (res.status === 422) {
+          if (res.status === 422 && errors && Array.isArray(errors)) {
             for (const error of errors) {
               addNotification({
                 title: "Sanggah Mutasi",
@@ -92,7 +100,11 @@ export default function Submit({
           title: "Sanggah Mutasi",
           message: (error as Error).message,
         });
+      } finally {
+        setIsLoading(false);
       }
+    } else {
+      setIsLoading(false);
     }
   };
 
@@ -103,14 +115,20 @@ export default function Submit({
           <input
             type="checkbox"
             className="checkbox checkbox-primary"
-            required
+            checked={checked}
+            onChange={() => setChecked(!checked)}
           />
           Saya menyatakan bahwa data yang saya berikan adalah benar dan dapat
           dipertanggungjawabkan. Saya bersedia menerima konsekuensi hukum
           apabila data yang saya berikan tidak sesuai dengan keadaan sebenarnya.
         </label>
-        <div className="flex justify-end">
-          <button className="btn btn-xs btn-primary">Kirim</button>
+        <div className="mt-4 flex justify-end">
+          <Link
+            href={`/mutasi/user/mutasi/${mutasi_id}/data-pokok/sanggah/kirim`}
+            className={`btn btn-xs btn-primary ${!checked && "btn-disabled"}`}
+          >
+            {isLoading ? "Mengirim..." : "Kirim"}
+          </Link>
         </div>
       </fieldset>
     </form>

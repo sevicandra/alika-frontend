@@ -1,6 +1,6 @@
 "use client";
 import { DataTable } from "@/component/Organisms/DataTable";
-import { useEffect, useState, use, Suspense, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { PaginatorContext } from "@/context/paginator";
 import { NotificationContext } from "@/context/notifikasi";
 import Link from "next/link";
@@ -9,7 +9,6 @@ import Loading from "@/component/Molecules/Loading";
 import Paginator from "@/component/Organisms/Paginator";
 export default function Page() {
   const {
-    setPage,
     page: currentPage,
     limit,
     totalPage,

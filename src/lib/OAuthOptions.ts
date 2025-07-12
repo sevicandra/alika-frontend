@@ -1,10 +1,8 @@
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
 import { cookies } from "next/headers";
-import { encrypt, verify, decrypt } from "./jwt";
+import { verify} from "./jwt";
 import { Mutex } from "async-mutex";
-import { cache } from "react";
 const userLocks = new Map<string, Mutex>();
 async function getUserMutex(userId: string) {
   if (!userLocks.has(userId)) {
@@ -161,7 +159,7 @@ export class OAuth2 {
     });
   }
 
-  static async session(req: NextRequest): Promise<any> {
+  static async session(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       const token = (await this.getUser()) ?? "";
       const user = await verify(token).catch(() => null);

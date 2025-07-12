@@ -8,6 +8,7 @@ import Loading from "@/component/Molecules/Loading";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import ExpandableItemCard from "@/component/Molecules/ExpandableItemCard";
 import { snackToTitleCase } from "@/helpers/string.helper";
+import Icon from "@/component/Atoms/LabelIcon";
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const { addNotification } = useContext(NotificationContext);
@@ -25,8 +26,6 @@ export default function Page() {
   const {
     page: currentPage,
     limit,
-    setPage,
-    totalPage,
     setTotalPage,
   } = usePaginator();
   const [data, setData] = useState<
@@ -181,46 +180,76 @@ export default function Page() {
                 >
                   {row.status === "DRAFT" && (
                     <>
-                      <Link
-                        href={`/mutasi/sdm/sk/${row.id}/edit`}
-                        className="btn btn-xs btn-primary"
-                      >
-                        Edit
-                      </Link>
-                      <Link
-                        href={`/mutasi/sdm/sk/${row.id}/timeline`}
-                        className="btn btn-xs btn-primary"
-                      >
-                        Timeline
-                      </Link>
+                      <div className="tooltip" data-tip="edit">
+                        <Link href={`/mutasi/sdm/sk/${row.id}/edit`}>
+                          <div className="rounded-box bg-info/80 p-1 text-info-content">
+                            <Icon
+                              className="hover:scale-110"
+                              icon="SquarePen"
+                              height={16}
+                            />
+                          </div>
+                        </Link>
+                      </div>
+                      <div className="tooltip" data-tip="timeline">
+                        <Link href={`/mutasi/sdm/sk/${row.id}/timeline`}>
+                          <div className="rounded-box bg-info/80 p-1 text-info-content">
+                            <Icon
+                              className="hover:scale-110"
+                              icon="CalendarDays"
+                              height={16}
+                            />
+                          </div>
+                        </Link>
+                      </div>
                     </>
                   )}
-                  <Link
-                    href={`/mutasi/sdm/sk/${row.id}/pegawai`}
-                    className="btn btn-xs btn-primary"
-                  >
-                    Pegawai
-                  </Link>
-                  <Link
-                    href={`/mutasi/sdm/sk/${row.id}/file`}
-                    className="btn btn-xs btn-primary"
-                  >
-                    File
-                  </Link>
+                  <div className="tooltip" data-tip="Pegawai">
+                    <Link href={`/mutasi/sdm/sk/${row.id}/pegawai`}>
+                      <div className="rounded-box bg-info/80 p-1 text-info-content">
+                        <Icon
+                          className="hover:scale-110"
+                          icon="PeopleArrows"
+                          height={16}
+                        />
+                      </div>
+                    </Link>
+                  </div>
+                  <div className="tooltip" data-tip="File">
+                    <div className="rounded-box bg-info/80 p-1 text-info-content">
+                      <Link href={`/mutasi/sdm/sk/${row.id}/file`}>
+                        <Icon
+                          className="hover:scale-110"
+                          icon="File"
+                          height={16}
+                        />
+                      </Link>
+                    </div>
+                  </div>
                   {row.status === "DRAFT" && (
                     <>
-                      <Link
-                        href={`/mutasi/sdm/sk/${row.id}/publish`}
-                        className="btn btn-xs btn-primary"
-                      >
-                        Publish
-                      </Link>
-                      <Link
-                        href={`/mutasi/sdm/sk/${row.id}/delete`}
-                        className="btn btn-xs btn-error"
-                      >
-                        Delete
-                      </Link>
+                      <div className="tooltip" data-tip="Publish">
+                        <Link href={`/mutasi/sdm/sk/${row.id}/publish`}>
+                          <div className="rounded-box bg-success/80 p-1 text-success-content">
+                            <Icon
+                              className="hover:scale-110"
+                              icon="Send"
+                              height={16}
+                            />
+                          </div>
+                        </Link>
+                      </div>
+                      <div className="tooltip" data-tip="hapus">
+                        <Link href={`/mutasi/sdm/sk/${row.id}/delete`}>
+                          <div className="rounded-box bg-error/80 p-1 text-error-content">
+                            <Icon
+                              className="hover:scale-110"
+                              icon="Trash2"
+                              height={16}
+                            />
+                          </div>
+                        </Link>
+                      </div>
                     </>
                   )}
                 </div>
