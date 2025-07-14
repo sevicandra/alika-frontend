@@ -15,7 +15,7 @@ export default function Page({
   }>;
 }) {
   const router = useRouter();
-  const { pegawaiAsal } = usePenandatangan();
+  const { pegawaiTujuan } = usePenandatangan();
   const { mutasi_id, pembayaran_id, dokumen_id } = use(params);
   const [validationErrors, setValidationErrors] = useState<
     {
@@ -96,7 +96,7 @@ export default function Page({
                       nip: val.nip,
                     });
                   }}
-                  options={pegawaiAsal}
+                  options={pegawaiTujuan}
                   placeholder="Cari atau pilih..."
                   renderRow={(val, option, index) => {
                     return (

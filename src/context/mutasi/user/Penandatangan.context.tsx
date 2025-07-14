@@ -49,9 +49,12 @@ export function PenandatanganProvider({
         if (!response.ok)
           throw new Error("Gagal mengambil data Pegawai Kantor Asal");
         const { data } = await response.json();
-        console.log(data);
-
-        setPegawaiAsal(data);
+        setPegawaiAsal(
+          data.filter(
+            (d: { nama: string; nip: string; jenisJabatan: string }) =>
+              d.jenisJabatan.toLowerCase() === "struktural",
+          ),
+        );
       } catch (error) {
         console.error(error);
       }
@@ -68,8 +71,12 @@ export function PenandatanganProvider({
         if (!response.ok)
           throw new Error("Gagal mengambil data Pegawai Kantor Tujuan");
         const { data } = await response.json();
-        console.log(data);
-        setPegawaiTujuan(data);
+        setPegawaiTujuan(
+          data.filter(
+            (d: { nama: string; nip: string; jenisJabatan: string }) =>
+              d.jenisJabatan.toLowerCase() === "struktural",
+          ),
+        );
       } catch (error) {
         console.error(error);
       }

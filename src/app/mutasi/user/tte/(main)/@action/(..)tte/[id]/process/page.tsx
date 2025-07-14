@@ -136,9 +136,9 @@ export default function Page({
                 />
                 <label className="label">
                   <span className="label-text text-justify text-wrap">
-                    Dengan ini saya menyatakan bahwa data yang saya kirimkan
-                    merupakan data yang benar dan sah. Saya bersedia
-                    mempertanggungjawabkan apabila terdapat kekeliruan.
+                    Dengan ini saya menyatakan bahwa pegawai yang bersangkutan
+                    benar akan berangkat dari kantor asal/telah sampai di kantor
+                    Tujuan
                   </span>
                 </label>
               </div>

@@ -99,7 +99,7 @@ export default function Layout({
             </div>
           )}
 
-          {data && !data.KantorTujuan.penandatangan && SetTujuan}
+          {(data && data.KantorAsal.status === "SIGNED" && !data.KantorTujuan.penandatangan) && SetTujuan}
           {data && data.KantorTujuan.penandatangan && (
             <div>
               <div className="p-4">
