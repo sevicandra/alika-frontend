@@ -18,7 +18,7 @@ export default function ContainerCard({
   return (
     <Card className={cn(className)}>
       {(title || headerRight) && (
-        <div className="relative p-4 flex flex-wrap lg:flex-nowrap overflow-x-hidden gap-1 justify-between items-center after:absolute after:content-[''] after:w-full after:h-px after:left-0 after:bottom-0 after:bg-base-100">
+        <div className="relative p-4 py-2 flex flex-wrap lg:flex-nowrap overflow-x-hidden gap-1 justify-between items-center after:absolute after:content-[''] after:w-full after:h-px after:left-0 after:bottom-0 after:bg-base-100">
           {title && (
             <h2 className="text-lg font-semibold shrink-0">
               {title.toLocaleUpperCase()}

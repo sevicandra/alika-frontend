@@ -40,9 +40,9 @@ import {
   LuFolderSearch2,
   LuHistory,
   LuCircleX,
+  LuReceipt
 } from "react-icons/lu";
 import { FaPeopleArrows, FaUsers } from "react-icons/fa6";
-import { BsReceipt } from "react-icons/bs";
 import { BiReset } from "react-icons/bi";
 import { cn } from "@/lib/utils";
 type SvgProps = React.SVGAttributes<SVGSVGElement>;
@@ -373,7 +373,7 @@ export default function Icon({
       break;
     case "Receipt":
       return (
-        <BsReceipt
+        <LuReceipt
           className={cn("w-full", className)}
           size={height}
           {...props}

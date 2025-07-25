@@ -18,7 +18,7 @@ export default function Layout({
   const pathSegments = pathname.split("/").filter(Boolean).slice(2);
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">
-      <div className="mx-4 mt-4">
+      <div className="mx-4 mt-4 overflow-x-auto pr-4">
         <Breadcrumb
           data={pathSegments.map((segment, index) => {
             let label;

@@ -53,7 +53,7 @@ export async function GET(
     const contentDisposition = res.headers.get("Content-Disposition");
     let filename = "dokumen.pdf"; // Nama file default jika header tidak ditemukan
     if (contentDisposition) {
-      const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+      const filenameMatch = contentDisposition.match(/filename="(.+)"/);      
       if (filenameMatch && filenameMatch.length > 1) {
         filename = filenameMatch[1];
       }

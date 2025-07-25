@@ -6,13 +6,11 @@ import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { useMutasiDetail } from "@/context/mutasi/user";
 
 export default function Layout({
-  dataPokok,
   action,
   keluarga,
   biaya,
   params,
 }: {
-  dataPokok: React.ReactNode;
   action: React.ReactNode;
   keluarga: React.ReactNode;
   biaya: React.ReactNode;
@@ -24,7 +22,7 @@ export default function Layout({
   const { mutasi_id } = use(params);
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr] gap-2 overflow-hidden">
-      <div className="mx-4 mt-4">
+      <div className="mx-4 mt-4  overflow-x-auto pr-4">
         <Breadcrumb
           data={pathSegments.map((segment, index) => {
             let label;
@@ -78,7 +76,6 @@ export default function Layout({
             biaya}
         </div>
       </div>
-      {dataPokok}
       {action}
     </div>
   );

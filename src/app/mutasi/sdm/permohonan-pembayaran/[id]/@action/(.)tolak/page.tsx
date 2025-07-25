@@ -59,7 +59,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       title="Surat Keputusan"
       message="Data ini akan di tolak. Apakah anda yakin?"
       onConfirm={tolak}
-      onCancel={() => router.replace("/mutasi/sdm/permohonan-pembayaran")}
+      onCancel={() => router.back()}
       loading={loading}
       icon="CircleAlert"
       variant="warning"

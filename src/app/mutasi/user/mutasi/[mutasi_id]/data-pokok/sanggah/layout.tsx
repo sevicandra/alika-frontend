@@ -23,7 +23,7 @@ export default function Layout({
   if (mutasi?.CurrentSanggah) throw new Error("Sanggah sedang dalam proses");
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_1fr] gap-2 overflow-hidden">
-      <div className="mx-4 mt-4">
+      <div className="mx-4 mt-4  overflow-x-auto pr-4">
         <Breadcrumb
           data={pathSegments.map((segment, index) => {
             let label;

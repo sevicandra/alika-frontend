@@ -6,7 +6,7 @@ type TableHeaderProps = {
 type TableRowProps = React.HTMLAttributes<HTMLTableRowElement>;
 export const TableHeader = ({ columns, className }: TableRowProps & TableHeaderProps) => (
   <thead>
-    <tr className={`sticky top-0 border-0 bg-primary-100 ${className}`}>
+    <tr className={`sticky top-0 border-0 bg-primary-100 ${className} z-10`}>
       {columns.map((col, index) => (
         <th
           key={index}

@@ -112,9 +112,9 @@ export const menus = async ({
             icon: "FolderSearch2",
           },
           {
-            label: "Arsip",
-            path: "/mutasi/keuangan/arsip",
-            icon: "Archive",
+            label: "Payroll",
+            path: "/mutasi/keuangan/payroll",
+            icon: "Receipt",
           },
         ],
       },

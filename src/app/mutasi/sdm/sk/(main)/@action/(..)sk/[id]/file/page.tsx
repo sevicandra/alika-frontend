@@ -6,7 +6,7 @@ import Loading from "@/component/Molecules/Loading";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [base64, setBase64] = useState<string>();
-  const [data, setData] = useState<any>({});
+  const [fileName, setFileName] = useState("dokumen.pdf");
   const [error, setError] = useState<Error | null>(null);
   const { addNotification } = useContext(NotificationContext);
   const [loading, setLoading] = useState(true);
@@ -14,15 +14,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const info = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}`, {
-          method: "GET",
-        });
-        if (!info.ok) {
-          const { message } = await info.json();
-          throw new Error(message);
-        }
-        const dataInfo = (await info.json()).data;
-        setData(dataInfo);
         const file = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/File`, {
           method: "GET",
           headers: {
@@ -32,6 +23,13 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         if (!file.ok) {
           const { message } = await file.json();
           throw new Error(message);
+        }
+        const contentDisposition = file.headers.get("Content-Disposition");
+        if (contentDisposition) {
+          const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+          if (filenameMatch && filenameMatch.length > 1) {
+            setFileName(filenameMatch[1]);
+          }
         }
         const dataFile = await file.arrayBuffer();
         function arrayBufferToBase64(buffer: ArrayBuffer) {
@@ -66,12 +64,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           <Loading />
         </div>
       )}
-      {base64 && (
-        <Preview
-          base64={base64}
-          fileName={`[${data?.nomor}] - ${data?.uraian}`}
-        />
-      )}
+      {base64 && <Preview base64={base64} fileName={fileName} />}
     </div>
   );
 }

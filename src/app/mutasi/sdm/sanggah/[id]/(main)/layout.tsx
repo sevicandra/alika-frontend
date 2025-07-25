@@ -20,7 +20,7 @@ export default function Layout({
   const { data: sanggah } = useSanggahDetail();
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden relative">
-      <div className="mx-4 mt-4">
+      <div className="mx-4 mt-4  overflow-x-auto pr-4">
         <Breadcrumb
           data={pathSegments.map((segment, index) => {
             let label;
