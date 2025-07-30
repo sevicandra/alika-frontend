@@ -51,7 +51,6 @@ async function handler(req: NextRequest) {
               status: "success",
               user: session.user,
               account: session.account,
-              globalRoles: session.globalRole,
             });
           } catch (error) {
             console.log(error === "Token expired");

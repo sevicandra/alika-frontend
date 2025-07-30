@@ -1,7 +1,7 @@
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { verify} from "./jwt";
+import { verify } from "./jwt";
 import { Mutex } from "async-mutex";
 const userLocks = new Map<string, Mutex>();
 async function getUserMutex(userId: string) {
@@ -22,11 +22,10 @@ const {
   AUTH_SCOPE,
 } = process.env;
 
-
 export class OAuth2 {
   private static async getUser() {
     const token = (await cookies()).get(
-      `${process.env.APP_NAME}.session`
+      `${process.env.APP_NAME}.session`,
     )?.value;
     if (!token) {
       return null;
@@ -36,7 +35,7 @@ export class OAuth2 {
 
   private static async getRefreshToken() {
     const refresh_token = (await cookies()).get(
-      `${process.env.APP_NAME}.refresh_token`
+      `${process.env.APP_NAME}.refresh_token`,
     )?.value;
     if (!refresh_token) {
       return null;
@@ -61,11 +60,13 @@ export class OAuth2 {
             grant_type: AUTH_GRANT_TYPE ?? "",
           }),
           cache: "no-store",
-        }
+        },
       );
       if (!res.ok) {
-        const message = await res.json();
-        throw new Error(message);
+        const { error } = await res.json();
+        console.log(error);
+
+        throw new Error(error);
       }
       const { access_token, refresh_token, expires_in } = await res.json();
       (await cookies()).set(`${process.env.APP_NAME}.session`, access_token, {
@@ -84,13 +85,13 @@ export class OAuth2 {
           path: "/",
           sameSite: "lax",
           maxAge: 60 * 60 * 24 * 30,
-        }
+        },
       );
       return NextResponse.redirect(new URL(`${process.env.APP_URL}`, req.url));
     } catch (error: any) {
       return NextResponse.json(
         { status: "failed", message: error.message },
-        { status: 500 }
+        { status: 500 },
       );
     }
   }
@@ -121,7 +122,7 @@ export class OAuth2 {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
             },
-          }
+          },
         );
         if (!response.ok) {
           const { message } = await response.json();
@@ -138,7 +139,7 @@ export class OAuth2 {
               path: "/",
               sameSite: "lax",
               maxAge: expires_in,
-            }
+            },
           );
           (await cookies()).set(
             `${process.env.APP_NAME}.refresh_token`,
@@ -149,7 +150,7 @@ export class OAuth2 {
               path: "/",
               sameSite: "lax",
               maxAge: 60 * 60 * 24 * 30,
-            }
+            },
           );
           resolve();
         }
@@ -159,7 +160,25 @@ export class OAuth2 {
     });
   }
 
-  static async session(): Promise<any> {
+  static async session(): Promise<{
+    user: {
+      sub: string;
+      name: string;
+      nik: string;
+      nip: string;
+      kode_satker: string;
+      satker: string;
+      gravatar: string;
+    };
+    account: {
+      service: string;
+      kode_satker: string | null;
+      roles: {
+        kode: string;
+        nama: string;
+      }[];
+    }[];
+  }> {
     return new Promise(async (resolve, reject) => {
       const token = (await this.getUser()) ?? "";
       const user = await verify(token).catch(() => null);
@@ -190,16 +209,22 @@ export class OAuth2 {
       } else {
         resolve({
           user: {
-            sub: user.sub,
-            name: user.name,
-            nik: user.nik,
-            nip: user.nip,
-            kode_satker: user.kode_satker,
-            satker: user.satker,
-            gravatar: user.gravatar,
+            sub: user.sub as string,
+            name: user.name as string,
+            nik: user.nik as string,
+            nip: user.nip as string,
+            kode_satker: user.kode_satker as string,
+            satker: user.satker as string,
+            gravatar: user.gravatar as string,
           },
-          globalRoles: user.globalRoles,
-          account: user.account,
+          account: user.account as {
+            service: string;
+            kode_satker: string | null;
+            roles: {
+              kode: string;
+              nama: string;
+            }[];
+          }[],
         });
       }
     });
@@ -235,7 +260,7 @@ export class OAuth2 {
               refresh_token: refresh_token,
             }),
             cache: "no-store",
-          }
+          },
         );
         if (!response.ok) {
           const data = await response.json();
@@ -251,4 +276,3 @@ export class OAuth2 {
     });
   }
 }
-

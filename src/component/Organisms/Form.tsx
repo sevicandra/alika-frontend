@@ -38,7 +38,7 @@ export default function Confirmation({
   const { buttonClass, defaultConfirmText } = variantStyles[variant];
   return (
     <PopUp title={title} className="w-lg">
-      <form onSubmit={submitForm} noValidate>
+      <form onSubmit={submitForm} noValidate autoComplete="off">
         <div className="bg-base-100 shadow-xl">
           <div className="p-4">{children}</div>
           <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
@@ -46,6 +46,7 @@ export default function Confirmation({
               className="btn btn-ghost"
               onClick={onCancel}
               disabled={loading}
+              type="button"
             >
               {cancelText}
             </button>

@@ -10,7 +10,8 @@ import {
 import { usePathname } from "next/navigation";
 
 type account = {
-  kode_satker: string;
+  service: string;
+  kode_satker: string | null;
   roles: {
     kode: string;
     role: string;
@@ -34,12 +35,7 @@ interface Session {
     gravatar: string;
     preferred_username: string;
   };
-  account?: account[];
-  globalRoles?: {
-    kode: string;
-    role: string;
-  }[];
-  current_account?: account;
+  account: account[];
 }
 
 interface SessionContextValue {
@@ -50,12 +46,13 @@ interface SessionContextValue {
   changeCurrentAccount: (kode_satker: string) => void;
 }
 
+
 interface SessionProviderProps {
   children: ReactNode;
 }
 
 const SessionContext = createContext<SessionContextValue | undefined>(
-  undefined
+  undefined,
 );
 const sessionChannel = new BroadcastChannel("session_channel");
 
@@ -72,7 +69,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
       return {
         ...prev,
         current_account: prev?.account.find(
-          (a: account) => a.kode_satker === kode_satker
+          (a: account) => a.kode_satker === kode_satker,
         ),
       };
     });
@@ -81,7 +78,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
     try {
       setStatus("loading");
       const csrf_token = await fetch("/api/auth/csrf").then((res) =>
-        res.json()
+        res.json(),
       );
       const res = await fetch("/api/auth/session", {
         method: "POST",
@@ -95,10 +92,6 @@ export function SessionProvider({ children }: SessionProviderProps) {
       setSession({
         user: data.user,
         account: data.account,
-        globalRoles: data.globalRoles,
-        current_account: data.account.find(
-          (a: account) => a.kode_satker === data.user.kode_satker
-        ),
       });
       setStatus(data.user ? "authenticated" : "unauthenticated");
       sessionChannel.postMessage({
@@ -114,7 +107,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
   const signOut = async () => {
     try {
       const csrf_token = await fetch("/api/auth/csrf").then((res) =>
-        res.json()
+        res.json(),
       );
       const res = await fetch("/api/auth/signout", {
         method: "POST",
@@ -159,7 +152,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
       changeCurrentAccount,
       signOut,
     }),
-    [session, status]
+    [session, status],
   );
   return (
     <SessionContext.Provider value={value}>{children}</SessionContext.Provider>

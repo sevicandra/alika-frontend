@@ -1,6 +1,7 @@
 "use server";
 export type MenuType = {
   title: string | undefined;
+  role?: string | undefined;
   data: {
     label: string;
     path: string;
@@ -65,6 +66,7 @@ export const menus = async ({
       },
       {
         title: "Bagian SDM",
+        role: "SDM",
         data: [
           {
             label: "Dashboard",
@@ -95,6 +97,7 @@ export const menus = async ({
       },
       {
         title: "Bagian KEU",
+        role: "KEUANGAN",
         data: [
           {
             label: "Dashboard",
@@ -115,6 +118,22 @@ export const menus = async ({
             label: "Payroll",
             path: "/mutasi/keuangan/payroll",
             icon: "Receipt",
+          },
+        ],
+      },
+      {
+        title: "Admin",
+        role: "ADMIN",
+        data: [
+          {
+            label: "User",
+            path: "/mutasi/admin/user",
+            icon: "UserCog",
+          },
+          {
+            label: "Referensi",
+            path: "/mutasi/admin/referensi",
+            icon: "FileSearch",
           },
         ],
       },

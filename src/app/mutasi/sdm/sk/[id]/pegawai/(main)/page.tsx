@@ -199,7 +199,7 @@ export default function Page({
                 </span>
               }
             >
-              <div className="max-w-full overflow-x-auto px-4">
+              <div className="max-w-full  px-4">
                 <div
                   className="flex min-w-max justify-end gap-1"
                   onClick={(e) => e.stopPropagation()}

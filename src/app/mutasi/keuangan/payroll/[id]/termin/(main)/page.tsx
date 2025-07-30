@@ -209,7 +209,7 @@ export default function Page({
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-2">
+                <td className="px-4 py-2 overflow-hidden">
                   <div className="flex gap-1">
                     {row.status === "APPROVED_KEU" && (
                       <div className="tooltip" data-tip="edit">

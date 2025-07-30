@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState, use, useRef } from "react";
+import { useContext, useState, use } from "react";
 import { usePayroll } from "@/context/mutasi/keu";
 import { NotificationContext } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
@@ -8,7 +8,6 @@ import Icon from "@/component/Atoms/LabelIcon";
 import { DataTable } from "@/component/Organisms/DataTable";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
-  const [error, setError] = useState<Error | null>(null);
   const { addNotification } = useContext(NotificationContext);
   const router = useRouter();
   const { setRefresh, termin, tanggal, setTanggal } = usePayroll();
@@ -80,7 +79,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       router.back();
     }
   }
-  if (error) throw error;
   return (
     <form onSubmit={submitForm} noValidate>
       {loading && (

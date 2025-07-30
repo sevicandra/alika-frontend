@@ -40,9 +40,20 @@ import {
   LuFolderSearch2,
   LuHistory,
   LuCircleX,
-  LuReceipt
+  LuReceipt,
+  LuMap,
+  LuUserCog,
+  LuUsers,
+  LuBuilding2,
+  LuPlane,
+  LuShip,
+  LuBusFront,
+  LuPackage,
+  LuHeartHandshake,
+  LuWallet,
+  LuCar,
 } from "react-icons/lu";
-import { FaPeopleArrows, FaUsers } from "react-icons/fa6";
+import { FaPeopleArrows } from "react-icons/fa6";
 import { BiReset } from "react-icons/bi";
 import { cn } from "@/lib/utils";
 type SvgProps = React.SVGAttributes<SVGSVGElement>;
@@ -359,7 +370,7 @@ export default function Icon({
       break;
     case "Users":
       return (
-        <FaUsers className={cn("w-full", className)} size={height} {...props} />
+        <LuUsers className={cn("w-full", className)} size={height} {...props} />
       );
       break;
     case "CreditCard":
@@ -420,6 +431,84 @@ export default function Icon({
     case "CircleX":
       return (
         <LuCircleX
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Map":
+      return (
+        <LuMap className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "UserCog":
+      return (
+        <LuUserCog
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Building":
+      return (
+        <LuBuilding2
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Plane":
+      return (
+        <LuPlane className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "Ship":
+      return (
+        <LuShip className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "Bus":
+      return (
+        <LuBusFront
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Package":
+      return (
+        <LuPackage
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "HeartHandshake":
+      return (
+        <LuHeartHandshake
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Wallet":
+      return (
+        <LuWallet
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Car":
+      return (
+        <LuCar
           className={cn("w-full", className)}
           size={height}
           {...props}

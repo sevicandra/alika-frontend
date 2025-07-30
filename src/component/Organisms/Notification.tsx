@@ -48,7 +48,7 @@ export default function Notification() {
           >
             <div
               className={cn(
-                `alert w-3xs alert-info transition-all duration-150`,
+                `alert w-3xs transition-all duration-150`,
                 variantStyles[n.variant].iconColor,
               )}
             >

@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState, use, useRef } from "react";
+import { useContext, useState, use } from "react";
 import { NotificationContext } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Icon from "@/component/Atoms/LabelIcon";
@@ -12,7 +12,6 @@ export default function Page({
 }: {
   params: Promise<{ id: string; termin_id: string }>;
 }) {
-  const [error, setError] = useState<Error | null>(null);
   const { setRefresh } = usePayroll();
   const { input, setInput, getValidationError, setValidationErrors } =
     useForm();
@@ -59,7 +58,6 @@ export default function Page({
       setLoading(false);
     }
   }
-  if (error) throw error;
   return (
     <Form
       title="Tolak Payroll"
