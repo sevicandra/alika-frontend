@@ -50,7 +50,7 @@ export default function PopUp({
           <Icon icon="x" height={"20px"} />
         </button>
       </div>
-      <div className="relative overflow-auto">{children}</div>
+      <div className="relative overflow-y-auto overflow-x-hidden">{children}</div>
     </div>
   );
 }

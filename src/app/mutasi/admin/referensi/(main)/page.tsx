@@ -9,7 +9,7 @@ export default function Page() {
       className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden"
     >
       <div className="relative flex flex-wrap overflow-hidden">
-        <div className="grid w-full grid-cols-1 gap-6 p-4 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="grid w-full grid-cols-1 gap-6 p-2 lg:grid-cols-2 xl:grid-cols-3 overflow-y-auto h-full">
           <ReferenceCard
             title="Data Wilayah"
             icon="Map"

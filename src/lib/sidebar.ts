@@ -138,6 +138,39 @@ export const menus = async ({
         ],
       },
     ];
+  } else if (module === "Sso") {
+    return [
+      {
+      title: "Data",
+      data: [
+        {
+        label: "client",
+        path: "/sso/client",
+        icon: "Users",
+        },
+        {
+        label: "user",
+        path: "/sso/user",
+        icon: "User",
+        },
+      ],
+      },
+      {
+      title: "Referensi",
+      data: [
+        {
+        label: "service",
+        path: "/sso/service",
+        icon: "Server",
+        },
+        {
+        label: "scope action",
+        path: "/sso/scope-action",
+        icon: "Activity",
+        },
+      ],
+      },
+    ];
   } else {
     return [];
   }

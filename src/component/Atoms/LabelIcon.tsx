@@ -52,6 +52,12 @@ import {
   LuHeartHandshake,
   LuWallet,
   LuCar,
+  LuArrowRightFromLine,
+  LuKeyRound,
+  LuGitFork,
+  LuUser,
+  LuServer,
+  LuActivity,
 } from "react-icons/lu";
 import { FaPeopleArrows } from "react-icons/fa6";
 import { BiReset } from "react-icons/bi";
@@ -508,7 +514,53 @@ export default function Icon({
       break;
     case "Car":
       return (
-        <LuCar
+        <LuCar className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "ArrowRightFromLine":
+      return (
+        <LuArrowRightFromLine
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "KeyRound":
+      return (
+        <LuKeyRound
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "GitFork":
+      return (
+        <LuGitFork
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "User":
+      return (
+        <LuUser className={cn("w-full", className)} size={height} {...props} />
+      );
+      break;
+    case "Server":
+      return (
+        <LuServer
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Activity":
+      return (
+        <LuActivity
           className={cn("w-full", className)}
           size={height}
           {...props}
