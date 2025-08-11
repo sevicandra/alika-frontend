@@ -73,6 +73,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/penghasilan/dashboard", req.url));
   }
   if (pathname.startsWith("/mutasi")) {
+    return NextResponse.redirect(new URL("https://mutasi-alika.kemenkeu.go.id", req.url));
     if (pathname === "/mutasi/admin") {
       if (
         !user.account
