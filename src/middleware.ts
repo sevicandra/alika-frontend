@@ -35,7 +35,7 @@ export default async function middleware(req: NextRequest) {
       const encryptedCsrfToken = await encrypt({ newCsrfToken });
       (await cookies).set("csrf_token", encryptedCsrfToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.APP_COOKIES === "secure",
         sameSite: "strict",
         path: "/",
         maxAge: 60 * 60, // 1h

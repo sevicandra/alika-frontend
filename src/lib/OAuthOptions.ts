@@ -71,7 +71,7 @@ export class OAuth2 {
       const { access_token, refresh_token, expires_in } = await res.json();
       (await cookies()).set(`${process.env.APP_NAME}.session`, access_token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production" ? true : false,
+        secure: process.env.APP_COOKIES === "secure" ? true : false,
         path: "/",
         sameSite: "lax",
         maxAge: expires_in,
@@ -81,7 +81,7 @@ export class OAuth2 {
         refresh_token,
         {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production" ? true : false,
+          secure: process.env.APP_COOKIES === "secure" ? true : false,
           path: "/",
           sameSite: "lax",
           maxAge: 60 * 60 * 24 * 30,
@@ -135,7 +135,7 @@ export class OAuth2 {
             access_token,
             {
               httpOnly: true,
-              secure: process.env.NODE_ENV === "production" ? true : false,
+              secure: process.env.APP_COOKIES === "secure" ? true : false,
               path: "/",
               sameSite: "lax",
               maxAge: expires_in,
@@ -146,7 +146,7 @@ export class OAuth2 {
             refresh_token,
             {
               httpOnly: true,
-              secure: process.env.NODE_ENV === "production" ? true : false,
+              secure: process.env.APP_COOKIES === "secure" ? true : false,
               path: "/",
               sameSite: "lax",
               maxAge: 60 * 60 * 24 * 30,
