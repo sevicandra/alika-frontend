@@ -6,7 +6,7 @@ import { revalidateTag } from "next/cache";
 const apiBaseUrl =
   process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
 
-export async function GET(request: Request) {
+export async function GET() {
   const session = (await cookies()).get(
     `${process.env.APP_NAME}.session`,
   )?.value;

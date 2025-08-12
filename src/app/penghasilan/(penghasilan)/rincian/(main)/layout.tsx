@@ -1,5 +1,4 @@
 "use server";
-import GroupButton from "@/component/Molecules/GroupButton";
 import Link from "next/link";
 const Layout = async ({
   children,

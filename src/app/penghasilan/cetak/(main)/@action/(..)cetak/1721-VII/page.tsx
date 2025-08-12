@@ -20,7 +20,6 @@ const Page = () => {
     setOpen,
     loading,
     setTahun,
-    setBulan,
   } = useCetak();
   const { addNotification } = useNotification();
   const router = useRouter();
