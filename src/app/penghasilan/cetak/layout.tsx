@@ -1,13 +1,13 @@
 import PaginatorProvider from "@/context/paginator";
-import CetakProvider from "@/context/penghasilan/cetak";
+import { TableProvider } from "@/context/table.context";
 export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <CetakProvider>
+    <TableProvider>
       <PaginatorProvider>{children}</PaginatorProvider>
-    </CetakProvider>
+    </TableProvider>
   );
 }

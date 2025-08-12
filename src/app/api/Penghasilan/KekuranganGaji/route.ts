@@ -49,10 +49,8 @@ export async function GET(req: Request) {
     if (!gaji.ok) {
       revalidateTag(`Penghasilan:KekuranganGaji`);
       const data = await gaji.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: gaji.status },
-      );
+      return NextResponse.json(data, { status: gaji.status });
+
     }
     const data = await gaji.json();
     return NextResponse.json(data, { status: 200 });

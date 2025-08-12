@@ -37,10 +37,7 @@ async function handler(req: Request) {
     if (!penghasilan.ok) {
       revalidateTag(`Penghasilan:Penghasilan:Detail`);
       const data = await penghasilan.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: penghasilan.status },
-      );
+      return NextResponse.json(data, { status: penghasilan.status });
     }
     const data = await penghasilan.json();
     return NextResponse.json(data, { status: 200 });

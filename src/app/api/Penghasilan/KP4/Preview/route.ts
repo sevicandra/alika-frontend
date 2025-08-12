@@ -29,10 +29,7 @@ async function handler() {
     if (!kp4.ok) {
       revalidateTag(`Penghasilan:KP4`);
       const data = await kp4.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: kp4.status },
-      );
+      return NextResponse.json(data, { status: kp4.status });
     }
     const data = await kp4.blob();
     return new Response(data, {

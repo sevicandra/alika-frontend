@@ -20,7 +20,7 @@ export default function StatCard({
   loading = false,
 }: StatCardProps) {
   return (
-    <Card className={cn("p-4 relative", className)}>
+    <Card className={cn(className, "relative p-4")}>
       <div className="flex items-center justify-between">
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center p-4 backdrop-blur-lg">
@@ -29,9 +29,9 @@ export default function StatCard({
         )}
         <div>
           <div className="text-sm font-semibold text-base-content">{title}</div>
-          <div className="text-3xl font-bold text-primary">{value}</div>
+          <div className="text-3xl font-bold text-base-content">{value}</div>
           {description && (
-            <div className="text-xs text-base-content/60 mt-1">
+            <div className="mt-1 text-xs text-base-content/60">
               {description}
             </div>
           )}

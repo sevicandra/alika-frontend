@@ -30,10 +30,7 @@ export async function GET() {
     if (!dataCetak.ok) {
       revalidateTag("Penghasilan:Gaji:Tahun");
       const data = await dataCetak.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: dataCetak.status },
-      );
+      return NextResponse.json(data, { status: dataCetak.status });
     }
     const data = await dataCetak.json();
     return NextResponse.json(data, { status: 200 });

@@ -29,10 +29,7 @@ async function handler() {
 
     if (!dataCetak.ok) {
       const data = await dataCetak.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: dataCetak.status },
-      );
+      return NextResponse.json(data, { status: dataCetak.status });
     }
     revalidateTag("Penghasilan:DataCetak");
     const data = await dataCetak.json();

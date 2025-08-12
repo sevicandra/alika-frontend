@@ -6,11 +6,11 @@ import { FiX } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import Tte from "@/component/Molecules/Tte";
 import Confirmation from "@/component/Molecules/Confirmation";
-import { TteContext } from "@/context/penghasilan/tte";
+import { useTable } from "@/context/table.context";
 import Loading from "@/component/Molecules/Loading";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { setRefresh } = useContext(TteContext);
+  const { setRefresh } = useTable();
   const [base64, setBase64] = useState<string>();
   const [data, setData] = useState<any>({});
   const [error, setError] = useState<Error | null>(null);
@@ -32,8 +32,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         }
         const dataInfo = (await info.json()).data;
         setData(dataInfo);
-        const file = await fetch("/api/Penghasilan/File", {
-          method: "POST",
+        const file = await fetch(`/api/Penghasilan/File/${id}`, {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
@@ -41,9 +41,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               return data.token;
             }),
           },
-          body: JSON.stringify({
-            id: id,
-          }),
         });
         if (!file.ok) {
           const { message } = await file.json();
@@ -93,8 +90,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           }),
         });
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { errors } = await res.json();
+          throw new Error(errors.message);
         }
         router.back();
         addNotification({
@@ -118,8 +115,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           }),
         });
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { errors } = await res.json();
+          throw new Error(errors.message);
         }
         router.back();
         addNotification({
@@ -132,6 +129,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       addNotification({
         title: `TTE`,
         message: (error as Error).message,
+        variant: "error",
       });
     } finally {
       setTte(false);
@@ -209,9 +207,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         </div>
       </div>
       <div className="overflow-hidden">
-        <div className="bg-neutral text-neutral-content rounded-box relative grid h-full w-full grid-rows-[auto_1fr] gap-2 overflow-hidden shadow">
+        <div className="relative grid h-full w-full grid-rows-[auto_1fr] gap-2 overflow-hidden rounded-box bg-neutral text-neutral-content shadow">
           {loading && (
-            <div className="bg-base-300/50 text-primary-600 absolute z-10 flex h-full w-full">
+            <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
               <Loading />
             </div>
           )}

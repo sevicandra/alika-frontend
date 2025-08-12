@@ -43,10 +43,7 @@ export async function GET(request: Request) {
     if (!countDataCetak.ok) {
       revalidateTag("Penghasilan:DataCetak");
       const data = await countDataCetak.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: countDataCetak.status },
-      );
+      return NextResponse.json(data, { status: countDataCetak.status });
     }
     const data = await countDataCetak.json();
     return NextResponse.json(data, { status: 200 });

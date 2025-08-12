@@ -34,10 +34,8 @@ export async function POST(req: Request) {
 
     if (!tukin.ok) {
       const data = await tukin.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: tukin.status },
-      );
+      return NextResponse.json(data, { status: tukin.status });
+
     }
     const data = await tukin.json();
     revalidateTag("Penghasilan:DataCetak:TTE");

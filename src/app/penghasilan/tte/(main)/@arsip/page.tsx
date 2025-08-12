@@ -4,7 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import { PaginatorContext } from "@/context/paginator";
 import { NotificationContext } from "@/context/notifikasi";
 import Link from "next/link";
-import { TteContext } from "@/context/penghasilan/tte";
+import { useTable } from "@/context/table.context";
 import Loading from "@/component/Molecules/Loading";
 import Paginator from "@/component/Organisms/Paginator";
 export default function Page() {
@@ -27,7 +27,7 @@ export default function Page() {
       id: string;
     }[]
   >([]);
-  const { refresh } = useContext(TteContext);
+  const { refresh } = useTable();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {

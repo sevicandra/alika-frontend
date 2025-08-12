@@ -40,11 +40,11 @@ export default function Confirmation({
           afterLeave={() => setShow(false)}
         >
           <div
-            className="bg-primary text-primary-content rounded-box border-primary-content/40 absolute top-10 left-1/2 flex w-xs max-w-full translate-x-[-50%] flex-col gap-2 border p-4 shadow"
+            className="absolute top-10 left-1/2 flex w-xs max-w-full translate-x-[-50%] flex-col gap-2 rounded-box border border-primary-content/40 bg-base-200 p-4 text-base-content shadow-lg shadow-base-content/50"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-center">
-              <h2 className="text-xl text-center">{title}</h2>
+              <h2 className="text-center text-xl">{title}</h2>
             </div>
             <div className="flex justify-center">
               <p className="text-sm">{message}</p>

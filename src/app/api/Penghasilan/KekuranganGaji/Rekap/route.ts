@@ -40,10 +40,8 @@ export async function GET(req: Request) {
     if (!kekuranganGaji.ok) {
       revalidateTag(`Penghasilan:KekuranganGaji:Rekap`);
       const data = await kekuranganGaji.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: kekuranganGaji.status },
-      );
+      return NextResponse.json(data, { status: kekuranganGaji.status });
+
     }
     const data = await kekuranganGaji.json();
     return NextResponse.json(data, { status: 200 });

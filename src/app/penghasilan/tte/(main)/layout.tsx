@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import TteProvider from "@/context/penghasilan/tte";
+import {TableProvider} from "@/context/table.context";
 
 export default function Layout({
   tte,
@@ -13,7 +13,7 @@ export default function Layout({
 }) {
   const [page, setPage] = useState(true);
   return (
-    <TteProvider>
+    <TableProvider>
       <div className="grid h-full max-h-full grid-rows-[auto_1fr] gap-2 overflow-hidden p-4">
         <div>
           <div className="flex gap-2">
@@ -34,6 +34,6 @@ export default function Layout({
         {page ? tte : arsip}
         {Modal}
       </div>
-    </TteProvider>
+    </TableProvider>
   );
 }

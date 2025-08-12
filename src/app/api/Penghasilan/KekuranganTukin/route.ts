@@ -48,10 +48,7 @@ export async function GET(req: Request) {
     if (!tukin.ok) {
       revalidateTag(`Penghasilan:KekuranganTukin`);
       const data = await tukin.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: tukin.status },
-      );
+      return NextResponse.json(data, { status: tukin.status });
     }
     const data = await tukin.json();
     return NextResponse.json(data, { status: 200 });

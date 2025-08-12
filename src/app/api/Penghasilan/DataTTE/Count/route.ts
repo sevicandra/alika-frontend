@@ -30,7 +30,7 @@ export async function GET(request: Request) {
   if (hal) searchParams.append("hal", hal);
   try {
     const countDataCetak = await fetch(
-       `${apiBaseUrl}/api/v2/DataTte/Count/?${searchParams.toString()}`,
+      `${apiBaseUrl}/api/v2/DataTte/Count/?${searchParams.toString()}`,
       {
         method: "GET",
         headers: {
@@ -43,10 +43,7 @@ export async function GET(request: Request) {
     if (!countDataCetak.ok) {
       revalidateTag("Penghasilan:DataCetak:TTE");
       const data = await countDataCetak.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: countDataCetak.status },
-      );
+      return NextResponse.json(data, { status: countDataCetak.status });
     }
     const data = await countDataCetak.json();
     return NextResponse.json(data, { status: 200 });

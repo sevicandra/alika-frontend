@@ -1,4 +1,4 @@
-import 'server-only'
+import "server-only";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
@@ -40,14 +40,11 @@ export async function GET(req: Request) {
     if (!gaji.ok) {
       revalidateTag(`Penghasilan:Gaji:Rekap`);
       const data = await gaji.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: gaji.status },
-      );
+      return NextResponse.json(data, { status: gaji.status });
     }
-    const data = await gaji.json();    
+    const data = await gaji.json();
     return NextResponse.json(data, { status: 200 });
-  } catch (error:any) {
+  } catch (error: any) {
     revalidateTag(`Penghasilan:Gaji:Rekap`);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

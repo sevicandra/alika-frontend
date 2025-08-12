@@ -41,10 +41,7 @@ export async function GET(req: Request) {
     if (!umak.ok) {
       revalidateTag(`Penghasilan:UangMakan:Rekap`);
       const data = await umak.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: umak.status },
-      );
+      return NextResponse.json(data, { status: umak.status });
     }
     const data = await umak.json();
     return NextResponse.json(data, { status: 200 });

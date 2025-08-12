@@ -4,7 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { PaginatorContext } from "@/context/paginator";
 import { NotificationContext } from "@/context/notifikasi";
-import { CetakContext } from "@/context/penghasilan/cetak";
+import { useTable } from "@/context/table.context";
 import Link from "next/link";
 import Confirmation from "@/component/Molecules/Confirmation";
 import Loading from "@/component/Molecules/Loading";
@@ -20,7 +20,7 @@ export default function CetakMain() {
   }, [status]);
 
   const router = useRouter();
-  const { setRefresh, refresh } = useContext(CetakContext);
+  const { setRefresh, refresh } = useTable();
 
   const {
     page: currentPage,
@@ -169,7 +169,7 @@ export default function CetakMain() {
                     </button>
                   )}
                   <Link
-                    href={`/penghasilan/cetak/preview/${row.id}`}
+                    href={`/penghasilan/cetak/${row.id}/preview`}
                     className="btn join-item btn-xs btn-info"
                   >
                     view

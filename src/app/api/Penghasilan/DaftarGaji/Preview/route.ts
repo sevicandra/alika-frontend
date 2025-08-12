@@ -37,10 +37,7 @@ async function handler(req: Request) {
     if (!dataCetak.ok) {
       revalidateTag(`Penghasilan:DaftarGaji:${tahun}:${bulan}`);
       const data = await dataCetak.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: dataCetak.status },
-      );
+      return NextResponse.json(data, { status: dataCetak.status });
     }
     const data = await dataCetak.blob();
     return new Response(data, {

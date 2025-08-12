@@ -55,10 +55,7 @@ export async function GET(request: Request) {
     if (!getDataCetak.ok) {
       revalidateTag("Penghasilan:DataCetak");
       const data = await getDataCetak.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: getDataCetak.status },
-      );
+      return NextResponse.json(data, { status: getDataCetak.status });
     }
     const data = await getDataCetak.json();
     return NextResponse.json(data, { status: 200 });

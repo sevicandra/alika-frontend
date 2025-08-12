@@ -36,10 +36,7 @@ export async function POST(
     );
     if (!getDataCetak.ok) {
       const data = await getDataCetak.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: getDataCetak.status },
-      );
+      return NextResponse.json(data, { status: getDataCetak.status });
     }
     revalidateTag("Penghasilan:DataCetak:TTE");
     const data = await getDataCetak.json();

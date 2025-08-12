@@ -41,10 +41,8 @@ export async function GET(req: Request) {
     if (!lembur.ok) {
       revalidateTag(`Penghasilan:UangLembur:Rekap`);
       const data = await lembur.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: lembur.status },
-      );
+      return NextResponse.json(data, { status: lembur.status });
+
     }
     const data = await lembur.json();
     return NextResponse.json(data, { status: 200 });
