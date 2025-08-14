@@ -28,6 +28,11 @@ export default async function middleware(req: NextRequest) {
       }[];
     }[];
   };
+    if (
+    pathname.startsWith("/api/auth/signin")
+  ) {
+    return NextResponse.next();
+  }
   try {
     const csrfTokenCookie = (await cookies).get("csrf_token")?.value;
     if (!csrfTokenCookie) {
