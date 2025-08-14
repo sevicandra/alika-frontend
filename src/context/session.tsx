@@ -135,15 +135,6 @@ export function SessionProvider({ children }: SessionProviderProps) {
     fetchSession();
   }, [pathname]);
 
-  useEffect(() => {
-    sessionChannel.onmessage = (event) => {
-      if (event.data.type === "SESSION_UPDATE") {
-        setSession(event.data.session);
-        setStatus(event.data.session ? "authenticated" : "unauthenticated");
-      }
-    };
-    return () => sessionChannel.close();
-  }, []);
   const value = useMemo(
     () => ({
       data: session,

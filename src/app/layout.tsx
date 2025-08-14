@@ -22,6 +22,11 @@ export async function generateMetadata(): Promise<Metadata> {
       default: "Alika",
       template: "%s | Alika",
     },
+    icons:{
+      icon: "/favicon.png",
+      shortcut: "/favicon.png",
+      apple: "/apple-touch-icon.png",
+    }
   };
 }
 

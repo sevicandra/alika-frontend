@@ -36,6 +36,7 @@ async function handler(req: Request) {
       return NextResponse.json(data, { status: dataCetak.status });
     }
     revalidateTag("Penghasilan:DataCetak");
+    revalidateTag("Penghasilan:DataCetak:TTE");
     const data = await dataCetak.json();
     return NextResponse.json({ message: data.message }, { status: 200 });
   } catch (error: any) {

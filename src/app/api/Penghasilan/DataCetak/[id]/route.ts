@@ -28,17 +28,14 @@ export async function GET(
         "Content-Type": "application/json",
         Authorization: `Bearer ${session}`,
       },
-      next: { revalidate: 60, tags: [`Penghasilan:DataCetak`] },
     });
     if (!getDataCetak.ok) {
-      revalidateTag(`Penghasilan:DataCetak`);
       const data = await getDataCetak.json();
       return NextResponse.json(data, { status: getDataCetak.status });
     }
     const data = await getDataCetak.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:DataCetak`);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

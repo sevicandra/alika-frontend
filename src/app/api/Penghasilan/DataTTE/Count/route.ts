@@ -2,7 +2,7 @@ import "server-only";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
-import { revalidateTag } from "next/cache";
+
 const apiBaseUrl =
   process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
 
@@ -37,18 +37,15 @@ export async function GET(request: Request) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session}`,
         },
-        next: { revalidate: 60, tags: ["Penghasilan:DataCetak:TTE"] },
       },
     );
     if (!countDataCetak.ok) {
-      revalidateTag("Penghasilan:DataCetak:TTE");
       const data = await countDataCetak.json();
       return NextResponse.json(data, { status: countDataCetak.status });
     }
     const data = await countDataCetak.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag("Penghasilan:DataCetak:TTE");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
