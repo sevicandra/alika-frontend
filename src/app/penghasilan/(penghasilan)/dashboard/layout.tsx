@@ -18,10 +18,10 @@ const Layout = ({
 }) => {
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">
-      <div className="mx-4 mt-4 overflow-x-auto pr-4"></div>
-      <div className="max-w-full overflow-x-auto px-4">
+      <div className="mx-4 mt-4 overflow-x-auto pr-4">
         <div className="flex min-w-max justify-start gap-1">{tahun}</div>
       </div>
+      <div className="max-w-full overflow-x-auto px-4"></div>
       <div className="overflow-y-auto">
         <div className="flex flex-col gap-2 p-4">
           <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4">
