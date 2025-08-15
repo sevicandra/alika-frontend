@@ -19,13 +19,13 @@ export default function Layout({
           <div className="flex gap-2">
             <button
               onClick={() => setPage(true)}
-              className={`btn btn-xs btn-outline btn-accent ${page ? "btn-active" : ""}`}
+              className={`btn btn-xs btn-outline btn-success ${page ? "btn-active" : ""}`}
             >
               TTE
             </button>
             <button
               onClick={() => setPage(false)}
-              className={`btn btn-xs btn-outline btn-accent ${!page ? "btn-active" : ""}`}
+              className={`btn btn-xs btn-outline btn-success ${!page ? "btn-active" : ""}`}
             >
               Arsip
             </button>

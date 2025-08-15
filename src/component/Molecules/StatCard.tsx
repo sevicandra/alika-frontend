@@ -29,7 +29,7 @@ export default function StatCard({
         )}
         <div>
           <div className="text-sm font-semibold text-base-content">{title}</div>
-          <div className="text-3xl font-bold text-base-content">{value}</div>
+          <div className="text-2xl font-bold text-base-content">{value}</div>
           {description && (
             <div className="mt-1 text-xs text-base-content/60">
               {description}

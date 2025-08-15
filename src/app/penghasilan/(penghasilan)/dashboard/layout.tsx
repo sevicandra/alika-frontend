@@ -5,7 +5,7 @@ const Layout = ({
   umak,
   lembur,
   bulanan,
-  dokumen,
+
   tahun,
 }: {
   gapok: React.ReactElement;
@@ -13,7 +13,6 @@ const Layout = ({
   umak: React.ReactElement;
   lembur: React.ReactElement;
   bulanan: React.ReactElement;
-  dokumen: React.ReactElement;
   tahun: React.ReactElement;
 }) => {
   return (
@@ -36,12 +35,12 @@ const Layout = ({
             </div>
             {bulanan}
           </div>
-          <div className="grid grid-rows-[auto_1fr] gap-2 overflow-hidden rounded-box bg-base-200 p-2">
+          {/* <div className="grid grid-rows-[auto_1fr] gap-2 overflow-hidden rounded-box bg-base-200 p-2">
             <div className="relative mb-2 after:absolute after:mt-2 after:w-full after:border-b after:border-base-300 after:content-['']">
               <h3 className="font-bold">Dokumen Terbaru</h3>
             </div>
             {dokumen}
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="mx-4 mb-4 flex justify-between"></div>

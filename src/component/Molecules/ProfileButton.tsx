@@ -15,14 +15,14 @@ const ProfileButton = ({
   return (
     <div
       ref={ref}
-      className="border-secondary bg-neutral/80 hover:bg-neutral flex max-w-3xs min-w-fit cursor-pointer items-center gap-2 overflow-x-hidden rounded-full border p-1 hover:drop-shadow sm:pr-3"
+      className="flex max-w-3xs min-w-fit cursor-pointer items-center gap-2 overflow-x-hidden rounded-full border border-primary-content bg-primary/80 p-1 hover:bg-primary hover:shadow shadow-primary/50 sm:pr-3"
     >
       {src && <Avatar src={src} />}
-      <div className="text-primary-content hidden truncate text-left text-nowrap sm:block">
+      <div className="hidden truncate text-left text-nowrap text-primary-content sm:block">
         <p className="text-sm font-bold">{name}</p>
         <p className="text-xs">{nip}</p>
       </div>
-      <div className="text-primary-content hidden sm:block">
+      <div className="hidden text-primary-content sm:block">
         <FaAngleDown />
       </div>
     </div>

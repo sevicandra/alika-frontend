@@ -20,11 +20,11 @@ export default function ModuleSelectCard({
   return (
     <Link
       href={href}
-      className={cn("hover:shadow-lg transition duration-200", className)}
+      className={cn("transition duration-200 hover:shadow-lg", className)}
     >
-      <Card className="flex flex-col items-center justify-center gap-2 p-4 w-50 aspect-square text-center">
+      <Card className="flex aspect-square w-50 flex-col items-center justify-center gap-2 bg-primary border-primary-content p-4 text-center text-primary-content">
         <div className="text-4xl">{icon}</div>
-        <div className="font-semibold text-sm">{title}</div>
+        <div className="text-sm font-semibold">{title}</div>
       </Card>
     </Link>
   );
