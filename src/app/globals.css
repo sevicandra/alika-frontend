@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tailwindcss/preflight.css" layer(base);
+@import "./theme.css";
 
 @plugin "daisyui" {
   themes: blue --default;
