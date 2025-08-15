@@ -64,8 +64,6 @@ export class OAuth2 {
       );
       if (!res.ok) {
         const { error } = await res.json();
-        console.log(error);
-
         throw new Error(error);
       }
       const { access_token, refresh_token, expires_in } = await res.json();
