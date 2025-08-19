@@ -1,13 +1,13 @@
 "use client";
-import { useContext, useState, use } from "react";
+import { useState, use } from "react";
 import { usePegawai } from "@/context/mutasi/sdm";
-import { NotificationContext } from "@/context/notifikasi";
+import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = use(params);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const { setRefresh } = usePegawai();
   const [data, setData] = useState<{
     percentage: string;

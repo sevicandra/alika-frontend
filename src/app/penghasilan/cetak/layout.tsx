@@ -1,6 +1,7 @@
-import PaginatorProvider from "@/context/paginator";
+'use client';
+import { PaginatorProvider } from "@/context/paginator";
 import { TableProvider } from "@/context/table.context";
-export default async function Layout({
+export default function Layout({
   children,
 }: {
   children: React.ReactNode;

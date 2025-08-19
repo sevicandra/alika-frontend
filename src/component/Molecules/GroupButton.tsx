@@ -25,13 +25,13 @@ const GroupButton = ({
 }: GroupButtonProps & ButtonProps) => {
   return (
     <div className="flex gap-1">
-      {button.map((item) =>
+      {button.map((item, index) =>
         item.type === "button" ? (
           <Button
             className={cn("btn btn-xs", className)}
             onClick={item.onClick}
             {...props}
-            key={item.name}
+            key={index}
           >
             {item.name}
           </Button>
@@ -39,7 +39,7 @@ const GroupButton = ({
           <Link
             href={item.href}
             className={cn("btn btn-xs", className)}
-            key={item.name}
+            key={index}
           >
             {item.name}
           </Link>

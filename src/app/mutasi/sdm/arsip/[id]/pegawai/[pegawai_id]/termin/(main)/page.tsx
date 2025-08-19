@@ -1,6 +1,6 @@
 "use client";
-import { use, useEffect, useContext, useState } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { use, useEffect, useState } from "react";
+import { useNotification } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
@@ -18,7 +18,7 @@ export default function Page({
   const { id, pegawai_id } = use(params);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {

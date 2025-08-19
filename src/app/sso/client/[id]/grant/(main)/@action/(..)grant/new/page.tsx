@@ -1,6 +1,6 @@
 "use client";
-import { useContext, useState, use, useEffect } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { useState, use, useEffect } from "react";
+import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Icon from "@/component/Atoms/LabelIcon";
 import { useForm } from "@/context/form.context";
@@ -12,7 +12,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { input, setInput, getValidationError, setValidationErrors } =
     useForm();
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);

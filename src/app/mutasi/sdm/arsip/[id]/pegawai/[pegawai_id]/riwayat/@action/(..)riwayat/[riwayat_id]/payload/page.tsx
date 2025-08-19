@@ -1,6 +1,6 @@
 "use client";
-import { use, useState, useEffect, useContext } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { use, useState, useEffect } from "react";
+import { useNotification } from "@/context/notifikasi";
 import SanggahKeluargaCard from "@/component/Molecules/SanggahKeluargaCard";
 import Loading from "@/component/Molecules/Loading";
 import { snackToTitleCase } from "@/helpers/string.helper";
@@ -11,7 +11,7 @@ export default function Page({
   params: Promise<{ id: string; pegawai_id: string; riwayat_id: string }>;
 }) {
   const { id, pegawai_id, riwayat_id } = use(params);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<
     | {

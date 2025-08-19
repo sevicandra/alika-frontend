@@ -1,7 +1,7 @@
 "use client";
 import GroupButton from "@/component/Molecules/GroupButton";
-import { useContext, useEffect, useState } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { useEffect, useState } from "react";
+import { useNotification } from "@/context/notifikasi";
 import Preview from "@/component/Organisms/PdfViewer";
 import Confirmation from "@/component/Molecules/Confirmation";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ const Page = () => {
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {

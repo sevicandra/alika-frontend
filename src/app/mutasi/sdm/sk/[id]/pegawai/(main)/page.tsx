@@ -1,7 +1,7 @@
 "use client";
-import { use, useEffect, useContext, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { usePaginator } from "@/context/paginator";
-import { NotificationContext } from "@/context/notifikasi";
+import { useNotification } from "@/context/notifikasi";
 import { usePegawai, useSkDetail } from "@/context/mutasi/sdm";
 import Loading from "@/component/Molecules/Loading";
 import Link from "next/link";
@@ -46,7 +46,7 @@ export default function Page({
   >([]);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const {
     setTotalPage,
     page: currentPage,

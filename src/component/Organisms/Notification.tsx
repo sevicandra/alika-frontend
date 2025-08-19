@@ -1,12 +1,11 @@
 "use client";
-import { useContext } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { useNotification } from "@/context/notifikasi";
 import { Transition } from "@headlessui/react";
 import { FiXCircle } from "react-icons/fi";
 import { cn } from "@/lib/utils";
 export default function Notification() {
   const { notification, clearNotification, closeNotification } =
-    useContext(NotificationContext);
+    useNotification();
 
   const variantStyles = {
     info: {

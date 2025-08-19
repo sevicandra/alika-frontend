@@ -1,6 +1,6 @@
 "use client";
-import { useContext, useEffect, useState, use } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { useEffect, useState, use } from "react";
+import { useNotification } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 
 export default function Page({
@@ -29,7 +29,7 @@ export default function Page({
       description: string;
     }[]
   >([]);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
 
   useEffect(() => {
     const fetchData = async () => {

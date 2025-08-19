@@ -1,16 +1,21 @@
 "use client";
 import { DataTable } from "@/component/Organisms/DataTable";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { usePaginator } from "@/context/paginator";
-import { NotificationContext } from "@/context/notifikasi";
+import { useNotification } from "@/context/notifikasi";
 import Link from "next/link";
 import { useTable } from "@/context/table.context";
 import Loading from "@/component/Molecules/Loading";
 import Paginator from "@/component/Organisms/Paginator";
 export default function Page() {
-  const { page: currentPage, limit, totalPage, setTotalPage } = usePaginator();
+  const {
+    page: currentPage,
+    limit,
+    totalPage,
+    setTotalPage,
+  } = usePaginator();
   const [error, setError] = useState<Error | null>(null);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const [data, setData] = useState<
     {
       jenis: string;
@@ -30,7 +35,7 @@ export default function Page() {
         setIsLoading(true);
         const offset = (Number(currentPage) - 1) * limit;
         const res = await fetch(
-          `/api/Penghasilan/DataTTE?limit=${limit}&offset=${offset}&status=0&sortField=tanggal&sortOrder=asc`,
+          `/api/Penghasilan/DataTTE?limit=${limit}&offset=${offset}&status=1&sortField=tanggal&sortOrder=desc`,
           {
             method: "GET",
           },

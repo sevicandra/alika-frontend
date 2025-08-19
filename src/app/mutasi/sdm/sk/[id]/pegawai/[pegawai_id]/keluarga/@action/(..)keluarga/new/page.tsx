@@ -1,7 +1,7 @@
 "use client";
-import { useContext, useEffect, useState, use } from "react";
+import { useEffect, useState, use } from "react";
 import { useKelaurga } from "@/context/mutasi/sdm";
-import { NotificationContext } from "@/context/notifikasi";
+import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
 import Icon from "@/component/Atoms/LabelIcon";
@@ -13,7 +13,7 @@ export default function Page({
 }) {
   const router = useRouter();
   const { id, pegawai_id } = use(params);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const { setRefresh } = useKelaurga();
   const [loading, setLoading] = useState(false);
   const [hubungan, setHubungan] = useState<

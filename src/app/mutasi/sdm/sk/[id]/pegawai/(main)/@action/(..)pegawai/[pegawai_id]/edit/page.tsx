@@ -1,7 +1,7 @@
 "use client";
-import { useContext, useEffect, useState, use } from "react";
+import { useEffect, useState, use } from "react";
 import { usePegawai } from "@/context/mutasi/sdm";
-import { NotificationContext } from "@/context/notifikasi";
+import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
 import Icon from "@/component/Atoms/LabelIcon";
@@ -37,7 +37,7 @@ export default function Page({
     return validationErrors.find((e) => e.field === field);
   };
   const { id, pegawai_id } = use(params);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const { setRefresh } = usePegawai();
   const [golongan, setGolongan] = useState<
     {

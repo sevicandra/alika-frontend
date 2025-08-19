@@ -1,7 +1,7 @@
 "use client";
 import Preview from "@/component/Organisms/PdfViewer";
-import { use, useState, useEffect, useContext } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { use, useState, useEffect } from "react";
+import { useNotification } from "@/context/notifikasi";
 import { FiX } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import Tte from "@/component/Molecules/Tte";
@@ -14,7 +14,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const [base64, setBase64] = useState<string>();
   const [data, setData] = useState<any>({});
   const [error, setError] = useState<Error | null>(null);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const [tte, setTte] = useState(false);
   const [tolak, setTolak] = useState(false);
   const [loading, setLoading] = useState(true);

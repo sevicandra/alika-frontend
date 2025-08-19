@@ -4,7 +4,7 @@ import { Abel } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "@/context/session";
 import Header from "@/component/Organisms/Header";
-import NotificationProvider from "@/context/notifikasi";
+import { NotificationProvider } from "@/context/notifikasi";
 import { ThemesProvider } from "@/context/themes";
 import Notification from "@/component/Organisms/Notification";
 import Themes from "@/component/Organisms/Themes";
@@ -22,11 +22,11 @@ export async function generateMetadata(): Promise<Metadata> {
       default: "Alika",
       template: "%s | Alika",
     },
-    icons:{
+    icons: {
       icon: "/favicon.png",
       shortcut: "/favicon.png",
       apple: "/apple-touch-icon.png",
-    }
+    },
   };
 }
 
@@ -41,7 +41,7 @@ export default async function RootLayout({
         <ThemesProvider>
           <NotificationProvider>
             <body
-              className={`bg-base-100 text-base-content relative grid h-svh max-h-svh grid-rows-[auto_1fr] overflow-hidden ${abel.className} antialiased`}
+              className={`relative grid h-svh max-h-svh grid-rows-[auto_1fr] overflow-hidden bg-base-100 text-base-content ${abel.className} antialiased`}
             >
               <WebPushNotificationProvider>
                 <Splash />

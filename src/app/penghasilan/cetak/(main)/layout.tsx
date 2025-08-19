@@ -2,7 +2,13 @@
 import Link from "next/link";
 import { usePaginator } from "@/context/paginator";
 import Paginator from "@/component/Organisms/Paginator";
-export default function Layout({ children, action }: { children: React.ReactNode, action: React.ReactNode }) {
+export default function Layout({
+  children,
+  action,
+}: {
+  children: React.ReactNode;
+  action: React.ReactNode;
+}) {
   const { totalPage } = usePaginator();
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">
@@ -41,11 +47,13 @@ export default function Layout({ children, action }: { children: React.ReactNode
           </Link>
         </div>
       </div>
-      {children}
+      <>
+        {children}
+        {action}
+      </>
       <div className="mx-4 mb-4 flex justify-between">
         {totalPage && <Paginator />}
       </div>
-      {action}
     </div>
   );
 }

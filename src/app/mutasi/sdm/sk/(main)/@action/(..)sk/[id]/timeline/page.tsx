@@ -1,14 +1,14 @@
 "use client";
-import { useContext, useEffect, useState, use } from "react";
+import { useEffect, useState, use } from "react";
 import { useSk } from "@/context/mutasi/sdm";
-import { NotificationContext } from "@/context/notifikasi";
+import { useNotification } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 import { useRouter } from "next/navigation";
 import Icon from "@/component/Atoms/LabelIcon";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const [error, setError] = useState<Error | null>(null);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const router = useRouter();
   const { setRefresh } = useSk();
   const [loading, setLoading] = useState(true);

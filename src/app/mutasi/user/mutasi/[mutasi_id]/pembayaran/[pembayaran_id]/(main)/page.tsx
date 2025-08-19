@@ -1,6 +1,6 @@
 "use client";
-import { use, useEffect, useContext, useState } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { use, useEffect, useState } from "react";
+import { useNotification } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import { DataTable } from "@/component/Organisms/DataTable";
@@ -19,7 +19,7 @@ export default function Page({
   const { refresh } = useTermin();
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const [data, setData] = useState<{
     id: string;
     ref_termin: string;

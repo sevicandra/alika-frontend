@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect, useContext } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { useState, useEffect } from "react";
+import { useNotification } from "@/context/notifikasi";
 import { useSk } from "@/context/mutasi/keu";
 import { usePaginator } from "@/context/paginator";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import { snackToTitleCase } from "@/helpers/string.helper";
 import Icon from "@/component/Atoms/LabelIcon";
 export default function Page() {
   const [loading, setLoading] = useState(true);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const {
     refresh,
     status,

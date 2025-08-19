@@ -1,6 +1,6 @@
 "use client";
-import { use, useEffect, useContext, useState } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { use, useEffect, useState } from "react";
+import { useNotification } from "@/context/notifikasi";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import Icon from "@/component/Atoms/LabelIcon";
 import { DataTable } from "@/component/Organisms/DataTable";
@@ -29,7 +29,7 @@ export default function Page({
     tahap,
     setTahap,
   } = usePayroll();
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const [loading, setLoading] = useState(true);
   const { id } = use(params);
   const [data, setData] = useState<

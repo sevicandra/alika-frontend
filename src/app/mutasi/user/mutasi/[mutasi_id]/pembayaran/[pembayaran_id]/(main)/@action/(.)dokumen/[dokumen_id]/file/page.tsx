@@ -1,7 +1,7 @@
 "use client";
 import Preview from "@/component/Organisms/PdfViewer";
-import { use, useState, useEffect, useContext } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { use, useState, useEffect } from "react";
+import { useNotification } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 import PopUp from "@/component/Molecules/PopUp";
 export default function Page({
@@ -16,7 +16,7 @@ export default function Page({
   const { mutasi_id, pembayaran_id, dokumen_id } = use(params);
   const [base64, setBase64] = useState<string>();
   const [error, setError] = useState<Error | null>(null);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const [loading, setLoading] = useState(true);
   const [fileName, setFileName] = useState("dokumen.pdf");
   useEffect(() => {

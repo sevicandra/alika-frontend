@@ -1,6 +1,6 @@
 "use client";
-import { use, useEffect, useContext, useState } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { use, useEffect, useState } from "react";
+import { useNotification } from "@/context/notifikasi";
 import { DataTable } from "@/component/Organisms/DataTable";
 import Loading from "@/component/Molecules/Loading";
 import { usePegawaiDetail } from "@/context/mutasi/keu";
@@ -36,7 +36,7 @@ export default function Page({
       file: string;
     }[]
   >([]);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   useEffect(() => {
     const fetchPegawai = async () => {
       setLoading(true);

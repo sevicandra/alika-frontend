@@ -1,7 +1,7 @@
 "use client";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useCetak } from "@/context/penghasilan/Cetak.context";
-import { NotificationContext } from "@/context/notifikasi";
+import { useNotification } from "@/context/notifikasi";
 import Preview from "@/component/Organisms/PdfViewer";
 import { useRouter } from "next/navigation";
 import Confirmation from "@/component/Molecules/Confirmation";
@@ -37,7 +37,7 @@ const Page = () => {
     setTahun,
     setBulan,
   } = useCetak();
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const router = useRouter();
   const [tahuns, setTahuns] = useState<{ tahun: number }[]>([]);
   const { setRefresh } = useTable();

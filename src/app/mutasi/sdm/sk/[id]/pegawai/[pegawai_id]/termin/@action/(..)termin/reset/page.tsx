@@ -1,7 +1,7 @@
 "use client";
-import { useContext, use, useState } from "react";
+import { use, useState } from "react";
 import { usePegawaiDetail, useTermin } from "@/context/mutasi/sdm";
-import { NotificationContext } from "@/context/notifikasi";
+import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Confirmation from "@/component/Organisms/Confirmation";
 export default function Page({
@@ -11,7 +11,7 @@ export default function Page({
 }) {
   const router = useRouter();
   const { id, pegawai_id } = use(params);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const { setRefresh } = useTermin();
   const { setRefresh: setRefreshPegawai } = usePegawaiDetail();
   const [loading, setLoading] = useState(false);

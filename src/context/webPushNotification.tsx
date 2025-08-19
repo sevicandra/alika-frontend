@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState, useContext, createContext } from "react";
-import { NotificationContext } from "./notifikasi";
+import { useEffect, useState, createContext } from "react";
+import { useNotification } from "./notifikasi";
 
 type WebPushNotificationContextType = {
   isSupported: boolean;
@@ -22,7 +22,7 @@ export default function WebPushNotificationProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const [isSupported, setIsSupported] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription | null>(
     null

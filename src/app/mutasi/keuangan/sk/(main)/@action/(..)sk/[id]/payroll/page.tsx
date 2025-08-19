@@ -1,6 +1,6 @@
 "use client";
-import { useContext, use, useState, useRef, DragEvent } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { use, useState, useRef, DragEvent } from "react";
+import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
 import Icon from "@/component/Atoms/LabelIcon";
@@ -8,7 +8,7 @@ import Icon from "@/component/Atoms/LabelIcon";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = use(params);
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);

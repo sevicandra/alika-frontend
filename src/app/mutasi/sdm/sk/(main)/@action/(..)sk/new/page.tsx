@@ -1,13 +1,13 @@
 "use client";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useSk } from "@/context/mutasi/sdm";
-import { NotificationContext } from "@/context/notifikasi";
+import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Icon from "@/component/Atoms/LabelIcon";
 
 export default function Page() {
   const router = useRouter();
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const { setRefresh } = useSk();
   const [validationErrors, setValidationErrors] = useState<
     {

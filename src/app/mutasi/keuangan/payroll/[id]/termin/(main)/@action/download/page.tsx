@@ -1,14 +1,14 @@
 "use client";
-import { useContext, useState, use } from "react";
+import { useState, use } from "react";
 import { usePayroll } from "@/context/mutasi/keu";
-import { NotificationContext } from "@/context/notifikasi";
+import { useNotification } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 import { useRouter } from "next/navigation";
 import Icon from "@/component/Atoms/LabelIcon";
 import { DataTable } from "@/component/Organisms/DataTable";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const router = useRouter();
   const { setRefresh, termin, tanggal, setTanggal } = usePayroll();
   const [loading, setLoading] = useState(false);

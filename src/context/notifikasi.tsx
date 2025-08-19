@@ -23,14 +23,14 @@ type NotificationContextType = {
   closeNotification: (id: string) => void;
 };
 
-export const NotificationContext = createContext<NotificationContextType>({
+const NotificationContext = createContext<NotificationContextType>({
   notification: [],
   addNotification: () => {},
   clearNotification: () => {},
   closeNotification: () => {},
 });
 
-export default function NotificationProvider({
+export function NotificationProvider({
   children,
 }: {
   children: React.ReactNode;

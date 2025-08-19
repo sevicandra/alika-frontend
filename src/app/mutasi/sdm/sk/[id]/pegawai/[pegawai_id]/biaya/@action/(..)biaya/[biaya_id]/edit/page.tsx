@@ -1,6 +1,6 @@
 "use client";
-import { useContext, useEffect, useState, use } from "react";
-import { NotificationContext } from "@/context/notifikasi";
+import { useEffect, useState, use } from "react";
+import { useNotification } from "@/context/notifikasi";
 import { useBiaya } from "@/context/mutasi/sdm";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
@@ -25,7 +25,7 @@ export default function Page({
   };
   const [error, setError] = useState<Error | null>(null);
 
-  const { addNotification } = useContext(NotificationContext);
+  const { addNotification } = useNotification();
   const { setRefresh } = useBiaya();
   const [data, setData] = useState<{
     jenis: string;
