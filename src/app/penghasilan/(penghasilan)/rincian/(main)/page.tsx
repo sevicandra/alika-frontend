@@ -74,7 +74,7 @@ const Page = () => {
   if (error) throw error;
   return (
     <ContainerCard
-      title="Rincian Biaya"
+      title="Rincian Penghasilan"
       className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden"
     >
       <div className="relative grid grid-rows-[1fr_auto] overflow-hidden">

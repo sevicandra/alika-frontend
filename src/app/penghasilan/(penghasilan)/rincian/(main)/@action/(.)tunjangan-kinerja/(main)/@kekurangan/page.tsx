@@ -98,7 +98,7 @@ const Page = () => {
             </td>
             <td className="p-4">
               {row.pot_absesi.toLocaleString("id-ID")} (
-              {(row.pot_absesi / row.tunjangan_kinerja) * 100}%)
+              {((row.pot_absesi / row.tunjangan_kinerja) * 100).toFixed(2)}%)
             </td>
             <td className="p-4">{row.pot_pph.toLocaleString("id-ID")}</td>
             <td className="p-4">

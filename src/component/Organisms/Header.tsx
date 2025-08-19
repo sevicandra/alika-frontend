@@ -11,7 +11,7 @@ export default function Header() {
   const { data: session } = useSession();
   const { openMenu } = useContext(ThemesContext);
   return (
-    <nav className="shadow-base-200 bg-base-200 shadow border-b border-base-content/10 sticky top-0 left-0 z-30 h-16 w-full">
+    <nav className="sticky top-0 left-0 z-30 h-16 w-full border-b border-base-content/10 bg-base-200 shadow shadow-base-200">
       <div className="container-xl mx-auto flex h-full items-center justify-between px-4">
         <div>
           <Link href="/">
@@ -28,12 +28,12 @@ export default function Header() {
                   nip={session?.user?.nip || "-"}
                 />
               </MenuButton>
-              <MenuItems className="bg-secondary text-secondary-content min-w-36">
+              <MenuItems className="min-w-36 bg-secondary text-secondary-content">
                 <div className="w-full">
                   <MenuItem
                     className="cursor-pointer"
                     onClick={openMenu}
-                    icon="buffer"
+                    icon="Palette"
                     showIcon={true}
                   >
                     <div>Themes</div>

@@ -6,7 +6,7 @@ import { Suspense } from "react";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { tahun } = useTahun();
   return (
-    <PopUp title={`Uang Lembur Tahun ${tahun}`} className="mt-0 w-6xl">
+    <PopUp title={`Penghasilan Lain Tahun ${tahun}`} className="mt-0 w-6xl">
       <div className="grid h-full max-h-full gap-2 overflow-hidden p-2">
         <div className="relative grid grid-rows-[auto_1fr_auto] gap-2 overflow-hidden rounded-box bg-base-200">
           <div className="flex w-full justify-end px-4"></div>

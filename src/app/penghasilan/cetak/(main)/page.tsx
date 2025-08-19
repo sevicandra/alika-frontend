@@ -75,7 +75,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, refresh]);
+  }, [currentPage, refresh, limit]);
 
   const HapusData = async () => {
     try {
@@ -109,7 +109,6 @@ export default function Page() {
   };
   if (error) throw error;
   return (
-
     <ContainerCard className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden">
       <div className="overflow-auto">
         {isLoading && (

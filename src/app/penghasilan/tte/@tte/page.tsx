@@ -65,7 +65,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, refresh]);
+  }, [currentPage, refresh, limit]);
   if (error) throw error;
   return (
     <div className="relative grid grid-rows-[auto_1fr_auto] gap-2 overflow-hidden rounded-box bg-base-200 p-2">
@@ -92,7 +92,14 @@ export default function Page() {
               <td className="p-4">{index + 1}</td>
               <td className="p-4">{row.jenis}</td>
               <td className="p-4">{row.nomor}</td>
-              <td className="p-4">{row.tanggal}</td>
+              <td className="p-4">
+                {" "}
+                {new Date(row.tanggal * 1000).toLocaleDateString("id-ID", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit",
+                })}
+              </td>
               <td className="p-4">{row.hal}</td>
               <td className="p-4">{row.pemohon}</td>
               <td className="p-4">

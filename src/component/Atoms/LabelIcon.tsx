@@ -58,6 +58,7 @@ import {
   LuUser,
   LuServer,
   LuActivity,
+  LuPalette,
 } from "react-icons/lu";
 import { FaPeopleArrows } from "react-icons/fa6";
 import { BiReset } from "react-icons/bi";
@@ -561,6 +562,15 @@ export default function Icon({
     case "Activity":
       return (
         <LuActivity
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "Palette":
+      return (
+        <LuPalette
           className={cn("w-full", className)}
           size={height}
           {...props}

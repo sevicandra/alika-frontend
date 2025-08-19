@@ -53,7 +53,7 @@ export function PaginatorProvider({ children }: { children: React.ReactNode }) {
     if (page > totalPage) {
       setPage(totalPage);
     }
-  }, [totalPage]);
+  }, [totalPage, page]);
 
   const contextValue = {
     page,
