@@ -63,6 +63,7 @@ const Page = () => {
         addNotification({
           message: (error as Error).message,
           title: `Rincian Penghasilan Tahun ${tahun}`,
+          variant: "error",
         });
       } finally {
         setLoading(false);

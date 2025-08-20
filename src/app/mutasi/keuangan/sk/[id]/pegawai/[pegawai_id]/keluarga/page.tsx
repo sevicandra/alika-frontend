@@ -59,6 +59,7 @@ export default function Page({
         addNotification({
           title: `Data Pegawai`,
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       } finally {

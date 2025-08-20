@@ -50,6 +50,7 @@ const Page = () => {
         addNotification({
           title: `Uang Lembur Tahun ${tahun}`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

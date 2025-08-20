@@ -51,6 +51,7 @@ const Page = () => {
         addNotification({
           title: `Kekurangan Tunjangan Kinerja ${tahun}`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

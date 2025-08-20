@@ -56,6 +56,7 @@ export default function Page({
         addNotification({
           title: "Error Fetch Data Service",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

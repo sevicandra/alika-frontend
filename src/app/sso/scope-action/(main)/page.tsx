@@ -48,6 +48,7 @@ export default function Page() {
         addNotification({
           title: "Error Fetch Data Scope Action",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

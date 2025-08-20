@@ -49,6 +49,7 @@ const Page = () => {
         addNotification({
           message: (error as Error).message,
           title: `Tahun`,
+          variant: "error",
         });
       }
     };
@@ -93,6 +94,7 @@ const Page = () => {
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -142,6 +144,7 @@ const Page = () => {
       addNotification({
         title: `Kirim Permohonan`,
         message: (error as Error).message,
+        variant: "error"
       });
     } finally {
       setLoading(false);

@@ -38,6 +38,7 @@ export default function Page({
         addNotification({
           title: "Gagal Memuat Data Pembayaran Mutasi",
           message: `Gagal memuat data pembayaran mutasi: ${error instanceof Error ? error.message : "Unknown error"}`,
+          variant: "error",
         });
       } finally {
         setLoading(false);

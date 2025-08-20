@@ -58,6 +58,7 @@ export default function Page() {
       addNotification({
         message: (error as Error).message,
         title: "Client",
+        variant: "error",
       });
     } finally {
       setLoading(false);

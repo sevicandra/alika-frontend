@@ -53,6 +53,7 @@ export default function Page({
         addNotification({
           title: `Data Termin`,
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       } finally {

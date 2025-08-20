@@ -48,6 +48,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,
+          variant: "error"
         });
       } finally {
         setLoading(false);

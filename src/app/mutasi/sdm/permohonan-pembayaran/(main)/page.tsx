@@ -15,11 +15,7 @@ export default function Page() {
   const { refresh, search, searchTerm, setSearchTerm } =
     usePermohonanPembayaran();
 
-  const {
-    page: currentPage,
-    limit,
-    setTotalPage,
-  } = usePaginator();
+  const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [data, setData] = useState<
     {
       id: string;
@@ -85,10 +81,10 @@ export default function Page() {
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
-        console.log(error);
         addNotification({
           title: `Surat Keputusan`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -145,11 +141,13 @@ export default function Page() {
                 <td className="p-4">{row.Pegawai.KantorTujuan.kantor}</td>
                 <td>
                   <div className="tooltip" data-tip="Detail">
-                    <Link
-                      href={`/mutasi/sdm/permohonan-pembayaran/${row.id}`}
-                    >
+                    <Link href={`/mutasi/sdm/permohonan-pembayaran/${row.id}`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                      <Icon className="hover:scale-110" icon="FolderOpen" height={16} />
+                        <Icon
+                          className="hover:scale-110"
+                          icon="FolderOpen"
+                          height={16}
+                        />
                       </div>
                     </Link>
                   </div>

@@ -47,6 +47,7 @@ export default function Page() {
         addNotification({
           title: "Error Fetch Data Client",
           message: (error as Error).message,
+          variant: "error"
         });
       } finally {
         setLoading(false);

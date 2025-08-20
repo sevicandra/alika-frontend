@@ -55,6 +55,7 @@ export default function Page({
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

@@ -44,6 +44,7 @@ export default function Page() {
         addNotification({
           message: (error as Error).message,
           title: "Gaji Pokok",
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -55,10 +56,12 @@ export default function Page() {
   return (
     <StatCard
       title="Gaji Pokok"
-      value={data?.netto.toLocaleString("id-ID",{
-        style: "currency",
-        currency: "IDR",
-      }) || 0}
+      value={
+        data?.netto.toLocaleString("id-ID", {
+          style: "currency",
+          currency: "IDR",
+        }) || 0
+      }
       loading={loading}
       className="bg-base-200"
     />

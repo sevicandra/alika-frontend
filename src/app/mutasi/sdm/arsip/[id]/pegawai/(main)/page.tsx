@@ -47,11 +47,7 @@ export default function Page({
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
-  const {
-    setTotalPage,
-    page: currentPage,
-    limit,
-  } = usePaginator();
+  const { setTotalPage, page: currentPage, limit } = usePaginator();
   const {
     refresh,
     search,
@@ -91,6 +87,7 @@ export default function Page({
         addNotification({
           title: `Data Pegawai`,
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       } finally {

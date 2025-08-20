@@ -52,6 +52,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         addNotification({
           title: "Error Fetch Data Redirect",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

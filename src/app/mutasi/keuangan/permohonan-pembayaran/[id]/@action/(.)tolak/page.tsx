@@ -47,6 +47,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       addNotification({
         title: "Tolak Permohonan Pembayaran",
         message: (error as Error).message,
+        variant: "error",
       });
       router.back();
     } finally {

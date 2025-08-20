@@ -23,11 +23,7 @@ export default function Page() {
     setSearchTerm,
   } = useSk();
 
-  const {
-    page: currentPage,
-    limit,
-    setTotalPage,
-  } = usePaginator();
+  const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [data, setData] = useState<
     {
       id: string;
@@ -66,10 +62,10 @@ export default function Page() {
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
-        console.log(error);
         addNotification({
           title: `Surat Keputusan`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

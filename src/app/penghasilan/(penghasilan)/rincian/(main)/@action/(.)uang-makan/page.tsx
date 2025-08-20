@@ -46,6 +46,7 @@ const Page = () => {
         addNotification({
           title: `Uang Makan Tahun ${tahun}`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

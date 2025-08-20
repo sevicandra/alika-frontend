@@ -83,6 +83,7 @@ export default function Page({
         addNotification({
           title: "Data Biaya",
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       } finally {
@@ -95,7 +96,7 @@ export default function Page({
   if (error) throw error;
 
   return (
-    <ContainerCard className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden py-2 mt-2">
+    <ContainerCard className="mx-4 mt-2 grid grid-rows-[auto_1fr] overflow-x-hidden py-2">
       {loading && (
         <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
           <Loading />

@@ -46,6 +46,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Hapus Role",
+        variant: "error",
       });
     } finally {
       setLoading(false);

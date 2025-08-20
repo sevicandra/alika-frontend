@@ -28,22 +28,23 @@ const Page = () => {
           const { message } = await res.json();
           throw new Error(message);
         }
-          const data = (await res.json()).data;
-          setData(
-            data.map((item: any) => {
-              return {
-                bulan: item.nama_bulan,
-                uarian: item.uraian,
-                bruto: item.bruto,
-                pph: item.pph,
-              };
-            }),
-          );
+        const data = (await res.json()).data;
+        setData(
+          data.map((item: any) => {
+            return {
+              bulan: item.nama_bulan,
+              uarian: item.uraian,
+              bruto: item.bruto,
+              pph: item.pph,
+            };
+          }),
+        );
       } catch (error) {
-        setError(error as Error);        
+        setError(error as Error);
         addNotification({
           title: `Penghasilan Lain Rutin ${tahun}`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -55,7 +56,7 @@ const Page = () => {
   return (
     <>
       {loading && (
-        <div className="bg-base-300/50 text-primary-600 absolute z-10 flex h-full w-full">
+        <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
           <Loading />
         </div>
       )}

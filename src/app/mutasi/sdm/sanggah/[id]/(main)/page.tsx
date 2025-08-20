@@ -100,10 +100,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         const { data } = await res.json();
         setData(data);
       } catch (error) {
-        console.log(error);
         addNotification({
           title: `Review Sanggah`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -134,6 +134,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           addNotification({
             title: `Review Sanggah`,
             message: JSON.stringify(errors),
+            variant: "error",
           });
           throw new Error(message);
         }
@@ -147,6 +148,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         addNotification({
           title: `Review Sanggah`,
           message: (error as Error).message,
+          variant: "error",
         });
       }
     }

@@ -38,6 +38,7 @@ export default function Page() {
         addNotification({
           title: "Uang Makan",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

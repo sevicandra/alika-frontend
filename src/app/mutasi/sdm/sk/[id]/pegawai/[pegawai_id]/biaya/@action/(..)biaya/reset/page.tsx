@@ -47,6 +47,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Reset Data Biaya",
+        variant: "error",
       });
     } finally {
       setLoading(false);

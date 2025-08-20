@@ -53,13 +53,14 @@ export default function Page() {
       addNotification({
         message: (error as Error).message,
         title: "Gagal",
+        variant: "error",
       });
     }
   }
 
   return (
     <form action={submitForm} noValidate>
-      <div className=" bg-base-100 shadow-xl">
+      <div className="bg-base-100 shadow-xl">
         <div className="p-4">
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
             {/* --- Field Nomor SK --- */}
@@ -68,7 +69,7 @@ export default function Page() {
                 <span className="label-text font-semibold">Nomor SK</span>
               </label>
               <div className="relative">
-                <span className="absolute top-1/2 left-3 -translate-y-1/2 text-base-content/50 z-10">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
                   <Icon icon="FileText" height={20} />
                 </span>
                 <input
@@ -95,7 +96,7 @@ export default function Page() {
                 <span className="label-text font-semibold">Jenjang</span>
               </label>
               <div className="relative">
-                <span className="absolute top-1/2 left-3 -translate-y-1/2 text-base-content/50 z-10">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
                   <Icon icon="ChevronsUpDown" height={20} />
                 </span>
                 <select
@@ -156,7 +157,7 @@ export default function Page() {
                 </span>
               </label>
               <div className="relative">
-                <span className="absolute top-1/2 left-3 -translate-y-1/2 text-base-content/50 z-10">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
                   <Icon icon="CalendarDays" height={20} />
                 </span>
                 <input
@@ -184,7 +185,7 @@ export default function Page() {
                 </span>
               </label>
               <div className="relative">
-                <span className="absolute top-1/2 left-3 -translate-y-1/2 text-base-content/50 z-10">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
                   <Icon icon="CalendarDays" height={20} />
                 </span>
                 <input
@@ -210,7 +211,7 @@ export default function Page() {
                 <span className="label-text font-semibold">Unggah File SK</span>
               </label>
               <div className="relative">
-                <span className="absolute top-1/2 left-3 -translate-y-1/2 text-base-content/50 z-10">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
                   <Icon icon="Upload" height={20} />
                 </span>
                 <input

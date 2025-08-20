@@ -83,7 +83,7 @@ export default async function middleware(req: NextRequest) {
     ) {
       return NextResponse.redirect(new URL("/", req.url));
     }
-    return NextResponse.redirect(new URL("/mutasi/admin/user", req.url));
+    return NextResponse.next();
   }
   if (pathname === "/penghasilan") {
     return NextResponse.redirect(new URL("/penghasilan/dashboard", req.url));

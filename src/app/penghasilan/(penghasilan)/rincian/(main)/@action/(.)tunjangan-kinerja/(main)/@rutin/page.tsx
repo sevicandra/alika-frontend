@@ -48,6 +48,7 @@ const Page = () => {
         addNotification({
           title: `Tunjangan Kinerja Rutin ${tahun}`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

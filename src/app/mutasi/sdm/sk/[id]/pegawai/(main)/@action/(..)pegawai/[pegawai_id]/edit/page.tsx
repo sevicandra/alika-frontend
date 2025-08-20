@@ -65,6 +65,7 @@ export default function Page({
         addNotification({
           title: `Golongan`,
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       }
@@ -84,6 +85,7 @@ export default function Page({
         addNotification({
           title: `Kantor`,
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       }
@@ -155,6 +157,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Data pegawai",
+        variant: "error",
       });
     }
   }

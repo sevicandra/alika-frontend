@@ -55,6 +55,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Scope Action",
+        variant: "error",
       });
     } finally {
       setLoading(false);

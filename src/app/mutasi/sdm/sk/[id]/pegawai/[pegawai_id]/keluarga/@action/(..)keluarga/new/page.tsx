@@ -61,6 +61,7 @@ export default function Page({
         addNotification({
           title: `Referensi Hubungan Keluarga`,
           message: (error as Error).message,
+          variant: "error",
         });
       }
     };
@@ -109,6 +110,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Data Keluarga",
+        variant: "error",
       });
     } finally {
       setLoading(false);

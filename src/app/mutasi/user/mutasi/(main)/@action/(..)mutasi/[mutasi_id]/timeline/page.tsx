@@ -25,7 +25,7 @@ export default function Page({
       try {
         setLoading(true);
         const response = await fetch(
-          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Timeline`
+          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Timeline`,
         );
         if (!response.ok) {
           const { message } = await response.json();
@@ -52,6 +52,7 @@ export default function Page({
         addNotification({
           title: "Timeline",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -64,7 +65,7 @@ export default function Page({
   return (
     <>
       {loading && (
-        <div className="text-primary-600 absolute z-10 flex h-full w-full">
+        <div className="absolute z-10 flex h-full w-full text-primary-600">
           <Loading />
         </div>
       )}
@@ -74,11 +75,13 @@ export default function Page({
         renderRow={(row, index) => (
           <tr key={index}>
             <td className="p-4">{row.jenis}</td>
-            <td className="p-4">{new Date(row.tanggal).toLocaleDateString("id-ID",{
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-            })}</td>
+            <td className="p-4">
+              {new Date(row.tanggal).toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
+            </td>
           </tr>
         )}
       />

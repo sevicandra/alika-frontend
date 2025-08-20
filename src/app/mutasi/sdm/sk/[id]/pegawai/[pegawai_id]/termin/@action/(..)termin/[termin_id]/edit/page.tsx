@@ -1,5 +1,5 @@
 "use client";
-import {  useEffect, useState, use } from "react";
+import { useEffect, useState, use } from "react";
 import { useTermin, usePegawaiDetail } from "@/context/mutasi/sdm";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
@@ -62,6 +62,7 @@ export default function Page({
         addNotification({
           title: "Data Termin",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -81,6 +82,7 @@ export default function Page({
         addNotification({
           title: "Referensi Termin",
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       } finally {
@@ -131,6 +133,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Ubah Termin",
+        variant: "error",
       });
     } finally {
       setLoading(false);
@@ -140,85 +143,6 @@ export default function Page({
   if (error) throw error;
 
   return (
-    // <>
-    //   {loading && (
-    //     <div className="absolute z-10 flex h-full w-full text-primary-600">
-    //       <Loading />
-    //     </div>
-    //   )}
-    //   <form onSubmit={submitForm}>
-    //     <fieldset className="fieldset px-2 py-4">
-    //       <label className="label text-base-content">Nama:</label>
-    //       <select
-    //         name="ref_termin"
-    //         className={`select w-full bg-base-300 select-sm focus:outline-none ${validationErrors.find((e) => e.field === "ref_termin") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-    //         required
-    //         value={data.ref_termin}
-    //         onChange={(e) => setData({ ...data, ref_termin: e.target.value })}
-    //       >
-    //         <option disabled={true} value={""}>
-    //           Pilih Jenis Termin
-    //         </option>
-    //         {refTermin.map((item) => (
-    //           <option key={item.kode} value={item.kode}>
-    //             {item.nama}
-    //           </option>
-    //         ))}
-    //       </select>
-    //       {validationErrors.find((e) => e.field === "ref_termin") && (
-    //         <p className="label font-bold text-error">
-    //           {validationErrors.find((e) => e.field === "ref_termin")?.message}
-    //         </p>
-    //       )}
-
-    //       <label className="label text-base-content">Tahun Anggaran:</label>
-    //       <input
-    //         type="text"
-    //         className={`input input-sm w-full bg-base-300 focus:outline-none ${validationErrors.find((e) => e.field === "tahun") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-    //         placeholder="Type here"
-    //         name="tahun"
-    //         required
-    //         autoComplete="off"
-    //         value={data.tahun}
-    //         onChange={(e) => setData({ ...data, tahun: e.target.value })}
-    //       />
-    //       {validationErrors.find((e) => e.field === "tahun") && (
-    //         <p className="label font-bold text-error">
-    //           {validationErrors.find((e) => e.field === "tahun")?.message}
-    //         </p>
-    //       )}
-
-    //       <label className="label text-base-content">Nominal :</label>
-    //       <input
-    //         type="text"
-    //         inputMode="numeric"
-    //         className={`input input-sm w-full bg-base-300 focus:outline-none ${validationErrors.find((e) => e.field === "nominal") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-    //         placeholder="Masukkan harga satuan"
-    //         name="nominal"
-    //         autoComplete="off"
-    //         required
-    //         value={data.nominal.toLocaleString("id-ID")}
-    //         onChange={(e) => {
-    //           const rawValue = e.target.value.replace(/[^\d]/g, "");
-    //           const numericValue = Number(rawValue);
-    //           if (!isNaN(numericValue)) {
-    //             setData({ ...data, nominal: numericValue });
-    //           }
-    //         }}
-    //       />
-
-    //       {validationErrors.find((e) => e.field === "nominal") && (
-    //         <p className="label font-bold text-error">
-    //           {validationErrors.find((e) => e.field === "nominal")?.message}
-    //         </p>
-    //       )}
-
-    //       <button type="submit" className="btn mt-4 btn-sm btn-accent">
-    //         Submit
-    //       </button>
-    //     </fieldset>
-    //   </form>
-    // </>
     <form onSubmit={submitForm} noValidate>
       {loading && (
         <div className="absolute z-10 flex h-full w-full text-primary-600">

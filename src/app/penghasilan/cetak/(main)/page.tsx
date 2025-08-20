@@ -69,6 +69,7 @@ export default function Page() {
         addNotification({
           message: (error as Error).message,
           title: "Data Cetak",
+          variant: "error",
         });
       } finally {
         setIsLoading(false);
@@ -101,6 +102,7 @@ export default function Page() {
       addNotification({
         message: (error as Error).message,
         title: "Data Cetak",
+        variant: "error",
       });
     } finally {
       setIsDelete(null);

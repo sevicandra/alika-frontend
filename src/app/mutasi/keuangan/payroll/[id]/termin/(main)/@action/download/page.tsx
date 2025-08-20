@@ -73,6 +73,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       addNotification({
         message: (error as Error).message,
         title: "Surat Keputusan",
+        variant: "error",
       });
     } finally {
       setLoading(false);

@@ -68,6 +68,7 @@ export default function Page() {
         addNotification({
           title: `Surat Keputusan`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

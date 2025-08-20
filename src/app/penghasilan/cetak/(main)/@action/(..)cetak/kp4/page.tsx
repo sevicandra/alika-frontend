@@ -50,6 +50,7 @@ const Page = () => {
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -87,6 +88,7 @@ const Page = () => {
       addNotification({
         title: `Kirim Permohonan`,
         message: (error as Error).message,
+        variant: "error",
       });
     } finally {
       setLoading(false);
@@ -95,7 +97,7 @@ const Page = () => {
   if (error) throw error;
   return (
     <>
-      <div className="relative grid grid-rows-[auto_1fr] gap-2 overflow-hidden rounded-box bg-base-200 p-2 max-h-full">
+      <div className="relative grid max-h-full grid-rows-[auto_1fr] gap-2 overflow-hidden rounded-box bg-base-200 p-2">
         {loading && (
           <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
             <Loading />

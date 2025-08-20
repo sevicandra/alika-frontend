@@ -77,6 +77,7 @@ const Page = () => {
         addNotification({
           title: `Kekurangan Gaji ${tahun}`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -88,7 +89,7 @@ const Page = () => {
   return (
     <>
       {loading && (
-        <div className="bg-primary-300/50 text-primary-600 absolute z-10 flex h-full w-full">
+        <div className="absolute z-10 flex h-full w-full bg-primary-300/50 text-primary-600">
           <Loading />
         </div>
       )}

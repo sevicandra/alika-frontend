@@ -6,7 +6,12 @@ import Loading from "@/component/Molecules/Loading";
 export default function Page({
   params,
 }: {
-  params: Promise<{ id: string; pegawai_id: string; termin_id: string; dokumen_id: string }>;
+  params: Promise<{
+    id: string;
+    pegawai_id: string;
+    termin_id: string;
+    dokumen_id: string;
+  }>;
 }) {
   const { id, pegawai_id, termin_id, dokumen_id } = use(params);
   const [base64, setBase64] = useState<string>();
@@ -55,6 +60,7 @@ export default function Page({
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

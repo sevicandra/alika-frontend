@@ -23,6 +23,7 @@ export default function Page({
       addNotification({
         title: "Sanggah Mutasi",
         message: "Tidak ada data revisi untuk dikirim.",
+        variant: "error",
       });
       setLoading(false);
       return;
@@ -81,6 +82,7 @@ export default function Page({
             addNotification({
               title: "Sanggah Mutasi",
               message: error.message,
+              variant: "error",
             });
           }
         }
@@ -95,6 +97,7 @@ export default function Page({
       addNotification({
         title: "Sanggah Mutasi",
         message: (error as Error).message,
+        variant: "error"
       });
     } finally {
       setLoading(false);

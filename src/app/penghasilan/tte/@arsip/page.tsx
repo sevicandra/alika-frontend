@@ -59,6 +59,7 @@ export default function Page() {
         addNotification({
           message: (error as Error).message,
           title: "Data TTE",
+          variant: "error",
         });
       } finally {
         setIsLoading(false);

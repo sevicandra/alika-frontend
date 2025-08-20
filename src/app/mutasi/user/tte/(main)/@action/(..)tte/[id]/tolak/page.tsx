@@ -44,6 +44,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Dokumen SPD",
+        variant: "error",
       });
     } finally {
       setLoading(false);

@@ -40,6 +40,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -56,12 +57,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           <Loading />
         </div>
       )}
-      {base64 && (
-        <Preview
-          base64={base64}
-          fileName={`dokumen.pdf`}
-        />
-      )}
+      {base64 && <Preview base64={base64} fileName={`dokumen.pdf`} />}
     </div>
   );
 }

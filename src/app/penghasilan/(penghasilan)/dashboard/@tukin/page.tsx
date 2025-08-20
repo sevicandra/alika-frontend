@@ -20,13 +20,13 @@ export default function Page() {
           "/api/Penghasilan/Tukin/Rekap/?tahun=" + tahun,
           {
             method: "GET",
-          }
+          },
         );
         const kekurangan = await fetch(
           "/api/Penghasilan/KekuranganTukin/Rekap?tahun=" + tahun,
           {
             method: "GET",
-          }
+          },
         );
         if (!tukin.ok) {
           const { message } = await tukin.json();
@@ -48,6 +48,7 @@ export default function Page() {
         addNotification({
           title: "Tunjangan Kinerja",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

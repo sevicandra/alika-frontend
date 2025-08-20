@@ -62,6 +62,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         addNotification({
           title: `Referensi Golongan`,
           message: (error as Error).message,
+          variant: "error",
         });
       }
     };
@@ -81,6 +82,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         addNotification({
           title: `Referensi Kantor`,
           message: (error as Error).message,
+          variant: "error",
         });
       }
     };
@@ -128,6 +130,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       addNotification({
         message: (error as Error).message,
         title: "Pegawai Mutasi",
+        variant: "error",
       });
     } finally {
       setLoading(false);

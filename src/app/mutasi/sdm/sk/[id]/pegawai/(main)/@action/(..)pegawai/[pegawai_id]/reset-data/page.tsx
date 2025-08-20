@@ -45,6 +45,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Reset Data",
+        variant: "error",
       });
     } finally {
       setLoading(false);

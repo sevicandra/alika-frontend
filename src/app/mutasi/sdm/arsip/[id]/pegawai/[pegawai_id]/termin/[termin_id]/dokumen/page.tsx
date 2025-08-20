@@ -45,6 +45,7 @@ export default function Page({
         addNotification({
           title: "Error Fetch Data Pembayaran",
           message: (error as Error).message,
+          variant: "error",
         });
       }
     };

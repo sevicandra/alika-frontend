@@ -39,9 +39,12 @@ export default function Page({
           searchParams.append("search", getSearchParams("search"));
 
         setLoading(true);
-        const res = await fetch(`/api/Sso/Service/${service_kode}/Role?${searchParams}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Sso/Service/${service_kode}/Role?${searchParams}`,
+          {
+            method: "GET",
+          },
+        );
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -53,6 +56,7 @@ export default function Page({
         addNotification({
           title: "Error Fetch Data Service",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -84,7 +88,9 @@ export default function Page({
                 <td className="p-4">
                   <div className="flex gap-1">
                     <div className="tooltip" data-tip="edit">
-                      <Link href={`/sso/service/${service_kode}/role/${row.kode}/edit`}>
+                      <Link
+                        href={`/sso/service/${service_kode}/role/${row.kode}/edit`}
+                      >
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
                           <Icon
                             className="hover:scale-110"
@@ -95,7 +101,9 @@ export default function Page({
                       </Link>
                     </div>
                     <div className="tooltip" data-tip="hapus">
-                      <Link href={`/sso/service/${service_kode}/role/${row.kode}/hapus`}>
+                      <Link
+                        href={`/sso/service/${service_kode}/role/${row.kode}/hapus`}
+                      >
                         <div className="rounded-box bg-error/80 p-1 text-error-content">
                           <Icon
                             className="hover:scale-110"

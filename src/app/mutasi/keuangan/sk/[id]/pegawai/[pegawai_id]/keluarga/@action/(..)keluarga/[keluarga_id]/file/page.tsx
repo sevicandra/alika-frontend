@@ -6,9 +6,9 @@ import Loading from "@/component/Molecules/Loading";
 export default function Page({
   params,
 }: {
-  params: Promise<{ id: string; pegawai_id:string; keluarga_id: string }>;
+  params: Promise<{ id: string; pegawai_id: string; keluarga_id: string }>;
 }) {
-  const { id, keluarga_id,pegawai_id } = use(params);
+  const { id, keluarga_id, pegawai_id } = use(params);
   const [base64, setBase64] = useState<string>();
   const [fileName, setFileName] = useState("dokumen.pdf");
   const [error, setError] = useState<Error | null>(null);
@@ -55,6 +55,7 @@ export default function Page({
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

@@ -50,6 +50,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         addNotification({
           title: "Error Fetch Data Scope",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -76,7 +77,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             renderRow={(row, index) => (
               <tr key={index}>
                 <td className="p-4">{index + 1}</td>
-                <td className="p-4">{row.service}.{row.scope}.{row.action}</td>
+                <td className="p-4">
+                  {row.service}.{row.scope}.{row.action}
+                </td>
                 <td className="p-4">
                   <div className="flex gap-1">
                     <div className="tooltip" data-tip="edit">

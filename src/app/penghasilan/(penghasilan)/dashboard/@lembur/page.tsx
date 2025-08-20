@@ -36,6 +36,7 @@ export default function Page() {
         addNotification({
           title: "Uang Lembur",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);

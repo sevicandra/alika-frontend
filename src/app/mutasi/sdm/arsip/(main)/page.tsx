@@ -23,11 +23,7 @@ export default function Page() {
     setSearchTerm,
   } = useSk();
 
-  const {
-    page: currentPage,
-    limit,
-    setTotalPage,
-  } = usePaginator();
+  const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [data, setData] = useState<
     {
       id: string;
@@ -70,6 +66,7 @@ export default function Page() {
         addNotification({
           title: `Surat Keputusan`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -173,7 +170,7 @@ export default function Page() {
                 </span>
               }
             >
-              <div className="max-w-full  px-4">
+              <div className="max-w-full px-4">
                 <div
                   className="flex min-w-max justify-end gap-1"
                   onClick={(e) => e.stopPropagation()}

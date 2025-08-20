@@ -49,12 +49,13 @@ export default function Page({
           const { message } = await res.json();
           throw new Error(message);
         }
-        const {data} = await res.json();
+        const { data } = await res.json();
         setData(data);
       } catch (error) {
         addNotification({
           title: `Data Pegawai`,
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       } finally {

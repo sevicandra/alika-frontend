@@ -64,6 +64,7 @@ export default function Page({
         addNotification({
           title: "Gagal Memuat Data Pembayaran Mutasi",
           message: `Gagal memuat data pembayaran mutasi: ${error instanceof Error ? error.message : "Unknown error"}`,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -87,13 +88,18 @@ export default function Page({
             </div>
           )}
           <DataTable
-            data={data?.DokumenTermin.sort((a, b) => {
-              const setPriority = (type: boolean) => {
-                if (type) return 0;
-                return 1;
-              };
-              return setPriority(a.required) - setPriority(b.required) || a.document_type.localeCompare(b.document_type);
-            }) || []}
+            data={
+              data?.DokumenTermin.sort((a, b) => {
+                const setPriority = (type: boolean) => {
+                  if (type) return 0;
+                  return 1;
+                };
+                return (
+                  setPriority(a.required) - setPriority(b.required) ||
+                  a.document_type.localeCompare(b.document_type)
+                );
+              }) || []
+            }
             columns={["Dokumen", ""]}
             renderRow={(row, index) => (
               <tr key={index}>

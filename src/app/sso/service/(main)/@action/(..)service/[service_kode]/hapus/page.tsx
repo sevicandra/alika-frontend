@@ -5,7 +5,11 @@ import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Confirmation from "@/component/Organisms/Confirmation";
 
-export default function Page({ params }: { params: Promise<{ service_kode: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ service_kode: string }>;
+}) {
   const router = useRouter();
   const { service_kode } = use(params);
   const [loading, setLoading] = useState(false);
@@ -39,6 +43,7 @@ export default function Page({ params }: { params: Promise<{ service_kode: strin
       addNotification({
         message: (error as Error).message,
         title: "Hapus Service",
+        variant: "error",
       });
     } finally {
       setLoading(false);

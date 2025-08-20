@@ -64,6 +64,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Kirim Tagihan",
+        variant: "error",
       });
     }
   }

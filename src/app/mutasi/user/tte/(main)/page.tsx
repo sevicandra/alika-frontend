@@ -51,6 +51,7 @@ export default function Page() {
         addNotification({
           title: `Permohonan TTE`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setTimeout(() => {

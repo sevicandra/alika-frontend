@@ -45,7 +45,7 @@ export default function Page({
       required: boolean;
     }[];
   }>();
- 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -62,6 +62,7 @@ export default function Page({
         addNotification({
           title: "Error Fetch Data Pembayaran",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -77,13 +78,18 @@ export default function Page({
       <div className="flex flex-col items-center gap-2 px-4 pt-4">
         <DataTable
           columns={["No", "Nama", "File"]}
-          data={data?.DokumenTermin.sort((a, b)=>{
-            const setPriority = (type: boolean) => {
+          data={
+            data?.DokumenTermin.sort((a, b) => {
+              const setPriority = (type: boolean) => {
                 if (type) return 0;
                 return 1;
               };
-              return setPriority(a.required) - setPriority(b.required) || a.document_type.localeCompare(b.document_type);
-          }) || []}
+              return (
+                setPriority(a.required) - setPriority(b.required) ||
+                a.document_type.localeCompare(b.document_type)
+              );
+            }) || []
+          }
           renderRow={(row, index) => (
             <tr key={index}>
               <td className="w-10 p-4">{index + 1}</td>

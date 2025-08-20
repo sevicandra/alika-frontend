@@ -48,6 +48,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Dokumen",
+        variant: "error",
       });
     } finally {
       setLoading(false);

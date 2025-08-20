@@ -25,6 +25,7 @@ export default function Submit({
       addNotification({
         title: "Sanggah Mutasi",
         message: "Tidak ada data revisi untuk dikirim.",
+        variant: "error",
       });
       setIsLoading(false);
       return;
@@ -85,6 +86,7 @@ export default function Submit({
               addNotification({
                 title: "Sanggah Mutasi",
                 message: error.message,
+                variant: "error",
               });
             }
           }
@@ -99,6 +101,7 @@ export default function Submit({
         addNotification({
           title: "Sanggah Mutasi",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setIsLoading(false);

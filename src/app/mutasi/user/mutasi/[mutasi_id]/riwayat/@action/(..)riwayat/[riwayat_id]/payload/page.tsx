@@ -46,6 +46,7 @@ export default function Page({
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -214,8 +215,12 @@ export default function Page({
               </div>
             )}
             {data.action_type === "SANGGAHAN_DIREVIEW" && (
-              <span className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center rotate-45 border-4 ${(r as ReviewSanggah).confrimation ? "border-info/50" : "border-error/50"}`}>
-                <p className={`text-6xl font-black uppercase ${(r as ReviewSanggah).confrimation ? "text-info/50" : "text-error/50"}`}>
+              <span
+                className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-4 text-center ${(r as ReviewSanggah).confrimation ? "border-info/50" : "border-error/50"}`}
+              >
+                <p
+                  className={`text-6xl font-black uppercase ${(r as ReviewSanggah).confrimation ? "text-info/50" : "text-error/50"}`}
+                >
                   {(r as ReviewSanggah).confrimation ? "Disetujui" : "Di Tolak"}
                 </p>
               </span>

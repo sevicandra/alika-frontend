@@ -140,6 +140,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       addNotification({
         message: (error as Error).message,
         title: "Redirect",
+        variant: "error",
       });
     } finally {
       setLoading(false);
@@ -209,9 +210,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               className={`select-bordered select w-full pl-10 ${getValidationError("scope_id") ? "select-error" : ""}`}
               required
               value={input.scope_id || ""}
-              onChange={(e) =>
-                setInput({ ...input, scope_id: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, scope_id: e.target.value })}
             >
               <option disabled value={""}>
                 Pilih Scope

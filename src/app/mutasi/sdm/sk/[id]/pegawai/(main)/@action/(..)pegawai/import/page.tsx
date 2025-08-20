@@ -32,6 +32,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       addNotification({
         title: "Gagal",
         message: "Silakan pilih file terlebih dahulu.",
+        variant: "error",
       });
       return;
     }
@@ -70,6 +71,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       addNotification({
         message: (error as Error).message,
         title: "Pegawai Mutasi",
+        variant: "error",
       });
     } finally {
       setLoading(false);

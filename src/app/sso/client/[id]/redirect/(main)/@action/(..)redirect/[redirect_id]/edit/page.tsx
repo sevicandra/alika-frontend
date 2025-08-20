@@ -56,6 +56,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Redirect",
+        variant: "error",
       });
     } finally {
       setLoading(false);
@@ -66,9 +67,12 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Sso/Client/${id}/Redirect/${redirect_id}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Sso/Client/${id}/Redirect/${redirect_id}`,
+          {
+            method: "GET",
+          },
+        );
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);

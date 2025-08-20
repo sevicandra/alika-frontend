@@ -65,6 +65,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       addNotification({
         message: (error as Error).message,
         title: "Timeline",
+        variant: "error",
       });
     } finally {
       setLoading(false);
@@ -94,6 +95,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         addNotification({
           title: `Surat Keputusan`,
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       } finally {

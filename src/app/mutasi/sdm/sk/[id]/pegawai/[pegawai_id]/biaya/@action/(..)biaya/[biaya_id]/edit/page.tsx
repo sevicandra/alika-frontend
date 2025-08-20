@@ -62,6 +62,7 @@ export default function Page({
         addNotification({
           title: "Biaya Mutasi",
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       } finally {
@@ -111,6 +112,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Biaya Mutasi",
+        variant: "error",
       });
     }
   }

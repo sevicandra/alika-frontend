@@ -44,6 +44,7 @@ export default function Page() {
         addNotification({
           message: (error as Error).message,
           title: "Dokumen Terbaru",
+          variant: "error",
         });
       }
     };
@@ -54,7 +55,7 @@ export default function Page() {
   return (
     <div className="relative">
       {!data ? (
-        <div className="bg-base-300/50 text-primary-600 absolute z-10 flex h-full w-full">
+        <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
           <Loading />
         </div>
       ) : (
@@ -73,11 +74,11 @@ export default function Page() {
               </td>
               <td className="p-4">
                 {row.status === 0 ? (
-                  <button className="btn btn-primary btn-xs">Lihat</button>
+                  <button className="btn btn-xs btn-primary">Lihat</button>
                 ) : row.status === 1 ? (
-                  <button className="btn btn-primary btn-xs">download</button>
+                  <button className="btn btn-xs btn-primary">download</button>
                 ) : (
-                  <button className="btn btn-primary btn-xs">Lihat</button>
+                  <button className="btn btn-xs btn-primary">Lihat</button>
                 )}
               </td>
             </tr>

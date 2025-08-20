@@ -43,6 +43,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Hapus Redirect",
+        variant: "error",
       });
     } finally {
       setLoading(false);

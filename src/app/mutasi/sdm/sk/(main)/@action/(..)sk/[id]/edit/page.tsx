@@ -43,8 +43,14 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const formData = new FormData();
     formData.append("nomor", data.nomor);
     formData.append("uraian", data.uraian);
-    formData.append("tanggal", data.tanggal ? new Date(data.tanggal).toISOString().slice(0, 10) : "");
-    formData.append("tmt", data.tmt ? new Date(data.tmt).toISOString().slice(0, 10) : "");
+    formData.append(
+      "tanggal",
+      data.tanggal ? new Date(data.tanggal).toISOString().slice(0, 10) : "",
+    );
+    formData.append(
+      "tmt",
+      data.tmt ? new Date(data.tmt).toISOString().slice(0, 10) : "",
+    );
     formData.append("jenjang", data.jenjang);
     if (data.file) {
       formData.append("file", data.file);
@@ -77,6 +83,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       addNotification({
         message: (error as Error).message,
         title: "Surat Keputusan",
+        variant: "error",
       });
     } finally {
       setLoading(false);
@@ -107,6 +114,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         addNotification({
           title: `Surat Keputusan`,
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       } finally {

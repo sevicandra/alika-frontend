@@ -84,6 +84,7 @@ export default function Page({
         addNotification({
           title: "Error Fetch Data Pembayaran",
           message: (error as Error).message,
+          variant: "error",
         });
       } finally {
         setLoading(false);
@@ -209,7 +210,7 @@ export default function Page({
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-2 overflow-hidden">
+                <td className="overflow-hidden px-4 py-2">
                   <div className="flex gap-1">
                     {row.status === "APPROVED_KEU" && (
                       <div className="tooltip" data-tip="edit">

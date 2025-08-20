@@ -62,6 +62,7 @@ export default function Page({
         addNotification({
           title: `Data Pegawai`,
           message: (error as Error).message,
+          variant: "error",
         });
         setError(error as Error);
       } finally {
@@ -152,7 +153,11 @@ export default function Page({
                                 href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/keluarga/${row.id}/hapus`}
                               >
                                 <div className="rounded-box bg-error/80 p-1 text-error-content">
-                                  <Icon className="hover:scale-110" icon="Trash2" height={16} />
+                                  <Icon
+                                    className="hover:scale-110"
+                                    icon="Trash2"
+                                    height={16}
+                                  />
                                 </div>
                               </Link>
                             </div>

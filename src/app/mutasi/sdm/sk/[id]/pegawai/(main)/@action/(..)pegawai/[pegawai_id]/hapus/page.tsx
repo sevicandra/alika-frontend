@@ -14,7 +14,7 @@ export default function Page({
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
   const { setRefresh } = usePegawai();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   async function submitForm() {
     try {
       setLoading(true);
@@ -45,9 +45,10 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Pegawai Mutasi",
+        variant: "error",
       });
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   }
 
