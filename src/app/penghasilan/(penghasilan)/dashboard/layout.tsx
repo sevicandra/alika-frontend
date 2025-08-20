@@ -5,7 +5,6 @@ const Layout = ({
   umak,
   lembur,
   bulanan,
-
   tahun,
 }: {
   gapok: React.ReactElement;

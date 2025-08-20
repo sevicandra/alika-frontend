@@ -75,6 +75,16 @@ export default async function middleware(req: NextRequest) {
       new URL(`${process.env.APP_URL}/api/auth/signin`, req.url),
     );
   }
+  if (pathname.startsWith("/sso")) {
+    if (
+      !user.account
+        .find((a) => a.service.toUpperCase() === "ACCOUNT")
+        ?.roles.find((r) => r.nama.toUpperCase() === "ADMIN")
+    ) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+    return NextResponse.redirect(new URL("/mutasi/admin/user", req.url));
+  }
   if (pathname === "/penghasilan") {
     return NextResponse.redirect(new URL("/penghasilan/dashboard", req.url));
   }

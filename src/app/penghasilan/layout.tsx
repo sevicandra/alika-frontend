@@ -1,3 +1,4 @@
+'use server'
 import Template from "@/component/Templates/Penghasilan";
 import type { Metadata } from "next";
 export async function generateMetadata(): Promise<Metadata> {
