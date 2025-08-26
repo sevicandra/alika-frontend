@@ -171,7 +171,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           <div className="form-control">
             <label className="label">
               <span className="label-text font-semibold">
-                Timeline Verifikasi
+                Timeline SPM
               </span>
             </label>
             <div className="relative">

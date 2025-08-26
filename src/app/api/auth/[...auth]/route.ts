@@ -67,8 +67,7 @@ async function handler(req: NextRequest) {
     }
     return NextResponse.json({ status: "not found" }, { status: 404 });
   } catch (error) {
-    console.log(error);
-    return NextResponse.json({ status: "failed" }, { status: 500 });
+    return NextResponse.json({ status: "failed", error }, { status: 500 });
   }
 }
 export { handler as GET, handler as POST };

@@ -89,9 +89,9 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/penghasilan/dashboard", req.url));
   }
   if (pathname.startsWith("/mutasi")) {
-    return NextResponse.redirect(
-      new URL("https://mutasi-alika.kemenkeu.go.id", req.url),
-    );
+    // return NextResponse.redirect(
+    //   new URL("https://mutasi-alika.kemenkeu.go.id", req.url),
+    // );
     if (pathname === "/mutasi/admin") {
       if (
         !user.account
@@ -114,7 +114,7 @@ export default async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL("/", req.url));
       }
       return NextResponse.redirect(
-        new URL("/mutasi/keuangan/dashboard", req.url),
+        new URL("/mutasi/keuangan/sk", req.url),
       );
     }
     if (pathname === "/mutasi/sdm") {
@@ -125,7 +125,7 @@ export default async function middleware(req: NextRequest) {
       ) {
         return NextResponse.redirect(new URL("/", req.url));
       }
-      return NextResponse.redirect(new URL("/mutasi/sdm/dashboard", req.url));
+      return NextResponse.redirect(new URL("/mutasi/sdm/sk", req.url));
     }
   }
   if (pathname.startsWith("/api")) {

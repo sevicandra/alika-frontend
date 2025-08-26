@@ -7,13 +7,9 @@ const apiBaseUrl =
   process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
   process.env.MUTASI_ALIKA_BASE_URL;
 
-export async function POST(
+export async function GET(
   req: Request,
-  params: {
-    params: Promise<{
-      mutasi_id: string;
-    }>;
-  },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const session = (await cookies()).get(
     `${process.env.APP_NAME}.session`,
@@ -25,17 +21,17 @@ export async function POST(
   if (!user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
+  const { id } = await params;
 
-  const { mutasi_id } = await params.params;
   try {
     const res = await fetch(
-      `${apiBaseUrl}/api/v2/Pegawai/Mutasi/${mutasi_id}/Sanggah`,
+      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/Overview`,
       {
-        method: "POST",
+        method: "GET",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${session}`,
         },
-        body: await req.formData(),
         cache: "no-store",
       },
     );
@@ -44,8 +40,22 @@ export async function POST(
       const data = await res.json();
       return NextResponse.json(data, { status: res.status });
     }
-    const data = await res.json();
-    return NextResponse.json(data, { status: 200 });
+    const contentDisposition = res.headers.get("Content-Disposition");
+    let filename = "dokumen.pdf"; // Nama file default jika header tidak ditemukan
+    if (contentDisposition) {
+      const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+      if (filenameMatch && filenameMatch.length > 1) {
+        filename = filenameMatch[1];
+      }
+    }
+    const data = await res.blob();
+    return new Response(data, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `inline; filename="${filename}"`,
+      },
+    });
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

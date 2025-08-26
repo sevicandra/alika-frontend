@@ -111,6 +111,7 @@ export default function Page() {
                   <option value={"ESELON I"}>ESELON I</option>
                   <option value={"ESELON II"}>ESELON II</option>
                   <option value={"ESELON III"}>ESELON III</option>
+                  <option value={"ESELON IV"}>ESELON IV</option>
                   <option value={"JABATAN FUNGSIONAL"}>
                     JABATAN FUNGSIONAL
                   </option>

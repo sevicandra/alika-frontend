@@ -68,11 +68,11 @@ export const menus = async ({
         title: "Bagian SDM",
         role: "SDM",
         data: [
-          {
-            label: "Dashboard",
-            path: "/mutasi/sdm/dashboard",
-            icon: "LayoutDashboard",
-          },
+          // {
+          //   label: "Dashboard",
+          //   path: "/mutasi/sdm/dashboard",
+          //   icon: "LayoutDashboard",
+          // },
           {
             label: "SK Mutasi",
             path: "/mutasi/sdm/sk",
@@ -99,11 +99,11 @@ export const menus = async ({
         title: "Bagian KEU",
         role: "KEUANGAN",
         data: [
-          {
-            label: "Dashboard",
-            path: "/mutasi/keuangan/dashboard",
-            icon: "LayoutDashboard",
-          },
+          // {
+          //   label: "Dashboard",
+          //   path: "/mutasi/keuangan/dashboard",
+          //   icon: "LayoutDashboard",
+          // },
           {
             label: "SK Mutasi",
             path: "/mutasi/keuangan/sk",

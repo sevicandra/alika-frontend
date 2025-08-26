@@ -26,7 +26,7 @@ export default function Layout({
   const { data: suratKeputusan } = useSkDetail();
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">
-      <div className="mx-4 mt-4  overflow-x-auto pr-4">
+      <div className="mx-4 mt-4 overflow-x-auto pr-4">
         <Breadcrumb
           data={pathSegments.map((segment, index) => {
             let label;
@@ -61,7 +61,7 @@ export default function Layout({
                 href={`/mutasi/sdm/sk/${id}/pegawai/import`}
                 className="btn btn-xs btn-success"
               >
-                Import Pegawai
+                Import Data
               </Link>
               <Link
                 href={`/mutasi/sdm/sk/${id}/pegawai/new`}
@@ -89,6 +89,12 @@ export default function Layout({
               </Link>
             </>
           )}
+          <Link
+            href={`/mutasi/sdm/sk/${id}/pegawai/overview`}
+            className="btn btn-xs btn-success"
+          >
+            Overview
+          </Link>
         </div>
       </div>
 

@@ -7,14 +7,7 @@ const apiBaseUrl =
   process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
   process.env.MUTASI_ALIKA_BASE_URL;
 
-export async function POST(
-  req: Request,
-  params: {
-    params: Promise<{
-      mutasi_id: string;
-    }>;
-  },
-) {
+export async function POST(req: Request) {
   const session = (await cookies()).get(
     `${process.env.APP_NAME}.session`,
   )?.value;
@@ -25,21 +18,16 @@ export async function POST(
   if (!user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
-
-  const { mutasi_id } = await params.params;
   try {
-    const res = await fetch(
-      `${apiBaseUrl}/api/v2/Pegawai/Mutasi/${mutasi_id}/Sanggah`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session}`,
-        },
-        body: await req.formData(),
-        cache: "no-store",
+    const res = await fetch(`${apiBaseUrl}/api/v2/Pegawai/Dashboard/Estimasi`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session}`,
+        "Content-Type": "application/json",
       },
-    );
-
+      body: JSON.stringify(await req.json()),
+      cache: "no-store",
+    });
     if (!res.ok) {
       const data = await res.json();
       return NextResponse.json(data, { status: res.status });

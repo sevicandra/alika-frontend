@@ -153,7 +153,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                 </span>{" "}
                 atau seret dan lepas
               </p>
-              <p className="text-xs text-base-content/50">Hanya PDF</p>
+              <p className="text-xs text-base-content/50">Hanya CSV</p>
               <input
                 ref={fileInputRef}
                 name="file"
