@@ -73,7 +73,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [refresh, status, jenjang, search, limit]);
+  }, [refresh, status, jenjang, search, limit, currentPage]);
 
   return (
     <ContainerCard

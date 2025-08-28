@@ -18,16 +18,13 @@ export default function Page() {
   >([]);
   const [loading, setLoading] = useState(true);
   const { page: currentPage, limit, setTotalPage, totalPage } = usePaginator();
-  const {
-    refresh,
-    getSearchParams,
-    searchParams,
-  } = useTable();
+  const { getSearchParams, searchParams } = useTable();
   const { addNotification } = useNotification();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const offset = (currentPage - 1) * limit;
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
@@ -36,7 +33,6 @@ export default function Page() {
           searchParams.append("search", getSearchParams("search"));
         if (getSearchParams("status"))
           searchParams.append("status", getSearchParams("status"));
-        setLoading(true);
         const res = await fetch(
           `/api/Mutasi/Pegawai/Dashboard/Faq?${searchParams}`,
           {
@@ -61,15 +57,15 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, limit, refresh, searchParams]);
+  }, [currentPage, limit, searchParams]);
   return (
-    <div className="relative grid grid-rows-[1fr_auto] overflow-hidden max-h-full">
+    <div className="relative grid max-h-full grid-rows-[1fr_auto] overflow-hidden">
       {loading && (
         <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
           <Loading />
         </div>
       )}
-      <div className="min-h-24 overflow-y-auto p-2 flex flex-col gap-2">
+      <div className="flex min-h-24 flex-col gap-2 overflow-y-auto p-2">
         {data.map((row, index) => (
           <ItemCard title={row.question} subtitle={row.answer} key={index} />
         ))}

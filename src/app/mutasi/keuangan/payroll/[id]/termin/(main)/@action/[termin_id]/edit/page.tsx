@@ -46,14 +46,14 @@ export default function Page({
       }
       addNotification({
         message: "Berhasil di ubah",
-        title: "Surat Keputusan",
+        title: "Data Rekening",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Surat Keputusan",
+        title: "Data Rekening",
         variant: "error",
       });
     } finally {
@@ -76,7 +76,12 @@ export default function Page({
         }
         const { data } = await res.json();
         setInput(data);
-      } catch (error) {
+      } catch (error: any) {
+        addNotification({
+          title: "Data Rekening",
+          message: error.message,
+          variant: "error",
+        });
         setError(error as Error);
       } finally {
         setLoading(false);

@@ -91,7 +91,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [refresh, search, limit]);
+  }, [refresh, search, limit, currentPage]);
 
   return (
     <ContainerCard
