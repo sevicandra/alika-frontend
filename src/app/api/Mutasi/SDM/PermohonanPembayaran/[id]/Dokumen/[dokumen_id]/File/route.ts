@@ -2,7 +2,6 @@ import "server-only";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
-import { revalidateTag } from "next/cache";
 
 const apiBaseUrl =
   process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
@@ -40,12 +39,10 @@ export async function GET(
           "Content-Type": "application/json",
           Authorization: `Bearer ${session}`,
         },
-        next: { revalidate: 60, tags: ["Mutasi:Dokumen:File"] },
       },
     );
 
     if (!res.ok) {
-      revalidateTag("Mutasi:Dokumen:File");
       const data = await res.json();
       return NextResponse.json(data, { status: res.status });
     }
@@ -66,7 +63,6 @@ export async function GET(
       },
     });
   } catch (error: any) {
-    revalidateTag("Mutasi:Sanggah:File");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
