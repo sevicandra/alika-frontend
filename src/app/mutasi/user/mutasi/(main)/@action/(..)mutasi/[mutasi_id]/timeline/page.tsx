@@ -33,14 +33,10 @@ export default function Page({
         }
         const { data } = await response.json();
         const timeline: { jenis: string; tanggal: string }[] = [];
-
-        console.log(data);
-
         timeline.push({
           jenis: "Surat Keputusan",
           tanggal: data.tanggal,
         });
-
         data.Timeline.forEach((e: any) => {
           timeline.push({
             jenis: snackToTitleCase(e.Ref.nama),
