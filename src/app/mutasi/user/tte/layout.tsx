@@ -1,5 +1,5 @@
 "use client";
-import { TteProvider } from "@/context/mutasi/user";
+import { PaginatorProvider } from "@/context/paginator";
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <TteProvider>{children}</TteProvider>;
+  return <PaginatorProvider>{children}</PaginatorProvider>;
 }

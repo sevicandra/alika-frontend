@@ -9,12 +9,15 @@ import { usePaginator } from "@/context/paginator";
 import Link from "next/link";
 import Icon from "@/component/Atoms/LabelIcon";
 import { useTable } from "@/context/table.context";
+import { useSession } from "@/context/session";
 
 export default function Page() {
   const { addNotification } = useNotification();
   const { refresh, getSearchParams } = useTable();
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [loading, setLoading] = useState(true);
+  const { data: session } = useSession();
+
   const [data, setData] = useState<
     {
       id: string;
@@ -78,17 +81,19 @@ export default function Page() {
                 <td className="p-4">{row.nama}</td>
                 <td className="p-4">
                   <div className="flex gap-1">
-                    <div className="tooltip" data-tip="edit">
-                      <Link href={`/mutasi/admin/user/${row.id}/edit`}>
-                        <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="SquarePen"
-                            height={16}
-                          />
-                        </div>
-                      </Link>
-                    </div>
+                    {row.nip !== session?.user.nip && (
+                      <div className="tooltip" data-tip="edit">
+                        <Link href={`/mutasi/admin/user/${row.id}/edit`}>
+                          <div className="rounded-box bg-info/80 p-1 text-info-content">
+                            <Icon
+                              className="hover:scale-110"
+                              icon="SquarePen"
+                              height={16}
+                            />
+                          </div>
+                        </Link>
+                      </div>
+                    )}
                     <div className="tooltip" data-tip="role">
                       <Link href={`/mutasi/admin/user/${row.id}/role`}>
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
@@ -100,17 +105,19 @@ export default function Page() {
                         </div>
                       </Link>
                     </div>
-                    <div className="tooltip" data-tip="hapus">
-                      <Link href={`/mutasi/admin/user/${row.id}/hapus`}>
-                        <div className="rounded-box bg-error/80 p-1 text-error-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="Trash2"
-                            height={16}
-                          />
-                        </div>
-                      </Link>
-                    </div>
+                    {row.nip !== session?.user.nip && (
+                      <div className="tooltip" data-tip="hapus">
+                        <Link href={`/mutasi/admin/user/${row.id}/hapus`}>
+                          <div className="rounded-box bg-error/80 p-1 text-error-content">
+                            <Icon
+                              className="hover:scale-110"
+                              icon="Trash2"
+                              height={16}
+                            />
+                          </div>
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </td>
               </tr>

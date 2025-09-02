@@ -6,6 +6,7 @@ import Icon from "@/component/Atoms/LabelIcon";
 import { useForm } from "@/context/form.context";
 import { useTable } from "@/context/table.context";
 import Form from "@/component/Organisms/Form";
+import { useSession } from "@/context/session";
 
 export default function Page({
   params,
@@ -22,6 +23,7 @@ export default function Page({
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -73,6 +75,10 @@ export default function Page({
           throw new Error(message);
         }
         const { data } = await res.json();
+        if (data.nip === session?.user.nip) {
+          router.back();
+          return;
+        }
         setInput(data);
       } catch (error) {
         setError(error as Error);

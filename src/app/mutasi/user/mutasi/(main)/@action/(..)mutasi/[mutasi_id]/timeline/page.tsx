@@ -66,7 +66,7 @@ export default function Page({
         </div>
       )}
       <DataTable
-        columns={["Timeline", ""]}
+        columns={["", ""]}
         data={data}
         renderRow={(row, index) => (
           <tr key={index}>

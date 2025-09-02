@@ -7,6 +7,7 @@ import ContainerCard from "@/component/Molecules/ContainerCard";
 import { DataTable } from "@/component/Organisms/DataTable";
 import Link from "next/link";
 import Icon from "@/component/Atoms/LabelIcon";
+import { useTable } from "@/context/table.context";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
@@ -27,6 +28,7 @@ export default function Page() {
       jenis: string;
     }[]
   >([]);
+  const { refresh } = useTable();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +62,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, []);
+  }, [refresh, currentPage, limit]);
 
   return (
     <ContainerCard

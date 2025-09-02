@@ -12,16 +12,9 @@ type PaginatorContextType = {
   setOnEachSide: (onEachSide: number) => void;
 };
 
-const PaginatorContext = createContext<PaginatorContextType>({
-  page: 1,
-  setPage: () => {},
-  limit: 10,
-  setLimit: () => {},
-  totalPage: 1,
-  setTotalPage: () => {},
-  onEachSide: 2,
-  setOnEachSide: () => {},
-});
+const PaginatorContext = createContext<PaginatorContextType | undefined>(
+  undefined,
+);
 
 export function PaginatorProvider({ children }: { children: React.ReactNode }) {
   const [page, setPage] = useState(1);

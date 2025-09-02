@@ -4,6 +4,7 @@ import Link from "next/link";
 import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { usePaginator } from "@/context/paginator";
 import Paginator from "@/component/Organisms/Paginator";
+import { TableProvider } from "@/context/table.context";
 
 export default function Layout({
   children,
@@ -30,8 +31,10 @@ export default function Layout({
           )}
         />
       </div>
-      {children}
-      {action}
+      <TableProvider>
+        {children}
+        {action}
+      </TableProvider>
       <div className="mx-4 mb-4 flex justify-between">
         {totalPage && <Paginator />}
       </div>

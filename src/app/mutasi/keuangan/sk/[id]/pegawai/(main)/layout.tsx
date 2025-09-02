@@ -11,11 +11,13 @@ import ContainerCard from "@/component/Molecules/ContainerCard";
 export default function Layout({
   children,
   params,
+  action,
 }: {
   children: React.ReactNode;
   params: Promise<{
     id: string;
   }>;
+  action: React.ReactNode;
 }) {
   const { id } = use(params);
   const pathname = usePathname();
@@ -55,40 +57,12 @@ export default function Layout({
       </div>
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1">
-          {suratKeputusan?.status === "DRAFT" && (
-            <>
-              <Link
-                href={`/mutasi/sdm/sk/${id}/pegawai/import`}
-                className="btn btn-xs btn-success"
-              >
-                Import Pegawai
-              </Link>
-              <Link
-                href={`/mutasi/sdm/sk/${id}/pegawai/new`}
-                className="btn btn-xs btn-success"
-              >
-                Tambah Pegawai
-              </Link>
-              <Link
-                href={`/mutasi/sdm/sk/${id}/pegawai/process-keluarga`}
-                className="btn btn-xs btn-success"
-              >
-                Proses Data Keluarga
-              </Link>
-              <Link
-                href={`/mutasi/sdm/sk/${id}/pegawai/hitung`}
-                className="btn btn-xs btn-success"
-              >
-                Hitung Biaya
-              </Link>
-              <Link
-                href={`/mutasi/sdm/sk/${id}/pegawai/termin`}
-                className="btn btn-xs btn-success"
-              >
-                Buat Termin
-              </Link>
-            </>
-          )}
+          <Link
+            href={`/mutasi/keuangan/sk/${id}/pegawai/overview`}
+            className="btn btn-xs btn-success"
+          >
+            Overview
+          </Link>
         </div>
       </div>
       <ContainerCard
@@ -111,6 +85,7 @@ export default function Layout({
       <div className="mx-4 mb-4 flex justify-between">
         {totalPage && <Paginator />}
       </div>
+      {action}
     </div>
   );
 }

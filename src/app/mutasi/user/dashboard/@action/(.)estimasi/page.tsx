@@ -6,6 +6,7 @@ import Form from "@/component/Organisms/Form";
 import { useForm } from "@/context/form.context";
 import Icon from "@/component/Atoms/LabelIcon";
 import { snackToTitleCase } from "@/helpers/string.helper";
+import { SearchableSelect } from "@/component/Molecules/InputForm";
 
 export default function Page() {
   const router = useRouter();
@@ -239,24 +240,24 @@ export default function Page() {
             <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
               <Icon icon="ChevronsUpDown" height={20} />
             </span>
-            <select
-              name="kantor_asal"
-              className={`select-bordered select w-full pl-10 ${getValidationError("kantor_asal") ? "select-error" : ""}`}
-              required
-              value={input.kantor_asal || ""}
-              onChange={(e) =>
-                setInput({ ...input, kantor_asal: e.target.value })
-              }
-            >
-              <option disabled value={""}>
-                Pilih Kantor
-              </option>
-              {kantor.map((item) => (
-                <option key={item.kode_satker} value={item.kode_satker}>
-                  {item.kantor}
-                </option>
-              ))}
-            </select>
+            <SearchableSelect
+              onSelect={(val) => {
+                setInput({ ...input, kantor_asal: val.kode_satker });
+              }}
+              options={kantor}
+              placeholder="Cari atau pilih..."
+              renderRow={(val, option, index) => {
+                return (
+                  <div
+                    key={index}
+                    onClick={() => val(`${option.kantor}`, index)}
+                    className="cursor-pointer border-b p-2 last:border-0 hover:bg-base-300"
+                  >
+                    {option.kantor}
+                  </div>
+                );
+              }}
+            />
           </div>
           {getValidationError("kantor_asal") && (
             <label className="label">
@@ -276,24 +277,24 @@ export default function Page() {
             <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
               <Icon icon="ChevronsUpDown" height={20} />
             </span>
-            <select
-              name="kantor_tujuan"
-              className={`select-bordered select w-full pl-10 ${getValidationError("kantor_tujuan") ? "select-error" : ""}`}
-              required
-              value={input.kantor_tujuan || ""}
-              onChange={(e) =>
-                setInput({ ...input, kantor_tujuan: e.target.value })
-              }
-            >
-              <option disabled value={""}>
-                Pilih Kantor
-              </option>
-              {kantor.map((item) => (
-                <option key={item.kode_satker} value={item.kode_satker}>
-                  {item.kantor}
-                </option>
-              ))}
-            </select>
+            <SearchableSelect
+              onSelect={(val) => {
+                setInput({ ...input, kantor_tujuan: val.kode_satker });
+              }}
+              options={kantor}
+              placeholder="Cari atau pilih..."
+              renderRow={(val, option, index) => {
+                return (
+                  <div
+                    key={index}
+                    onClick={() => val(`${option.kantor}`, index)}
+                    className="cursor-pointer border-b p-2 last:border-0 hover:bg-base-300"
+                  >
+                    {option.kantor}
+                  </div>
+                );
+              }}
+            />
           </div>
           {getValidationError("kantor_tujuan") && (
             <label className="label">

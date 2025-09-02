@@ -248,6 +248,32 @@ export default function Page() {
                       </div>
                     </>
                   )}
+                  {row.status === "PUBLISH" && (
+                    <div className="tooltip" data-tip="batal">
+                      <Link href={`/mutasi/sdm/sk/${row.id}/batal`}>
+                        <div className="rounded-box bg-error/80 p-1 text-error-content">
+                          <Icon
+                            className="hover:scale-110"
+                            icon="CircleX"
+                            height={16}
+                          />
+                        </div>
+                      </Link>
+                    </div>
+                  )}
+                  {row.status === "PUBLISH" && (
+                    <div className="tooltip" data-tip="selesai">
+                      <Link href={`/mutasi/sdm/sk/${row.id}/selesai`}>
+                        <div className="rounded-box bg-success/80 p-1 text-success-content">
+                          <Icon
+                            className="hover:scale-110"
+                            icon="CircleCheck"
+                            height={16}
+                          />
+                        </div>
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
             </ExpandableItemCard>

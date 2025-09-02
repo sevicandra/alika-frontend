@@ -2,7 +2,7 @@
 import { useState, use } from "react";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
-import { useTte } from "@/context/mutasi/user";
+import { useTable } from "@/context/table.context";
 import Icon from "@/component/Atoms/LabelIcon";
 
 export default function Page({
@@ -14,7 +14,7 @@ export default function Page({
 }) {
   const router = useRouter();
   const { id } = use(params);
-  const { setRefresh } = useTte();
+  const { setRefresh } = useTable();
   const [validationErrors, setValidationErrors] = useState<
     {
       field: string | null;

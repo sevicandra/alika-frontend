@@ -130,12 +130,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         });
 
         if (!res.ok) {
-          const { message, errors } = await res.json();
-          addNotification({
-            title: `Review Sanggah`,
-            message: JSON.stringify(errors),
-            variant: "error",
-          });
+          const { message } = await res.json();
           throw new Error(message);
         }
         addNotification({

@@ -12,7 +12,6 @@ export default function Page({
 }: {
   params: Promise<{ id: string; termin_id: string }>;
 }) {
-  const [error, setError] = useState<Error | null>(null);
   const { setRefresh } = usePayroll();
   const { input, setInput, getValidationError, setValidationErrors } =
     useForm();
@@ -82,7 +81,6 @@ export default function Page({
           message: error.message,
           variant: "error",
         });
-        setError(error as Error);
       } finally {
         setLoading(false);
       }
@@ -90,7 +88,6 @@ export default function Page({
     fetchData();
   }, []);
 
-  if (error) throw error;
   return (
     <Form
       title="Edit Payroll"
