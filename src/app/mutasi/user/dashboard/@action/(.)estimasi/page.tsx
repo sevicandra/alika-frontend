@@ -162,7 +162,7 @@ export default function Page() {
         {/* --- Field anak < 2 th --- */}
         <div className="form-control col-span-2 md:col-span-1">
           <label className="label">
-            <span className="label-text font-semibold">{`Anank < 2 th`}</span>
+            <span className="label-text font-semibold">{`Anak < 2 th`}</span>
           </label>
           <div className="relative">
             <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
@@ -199,7 +199,7 @@ export default function Page() {
         {/* --- Field anak > 2 th --- */}
         <div className="form-control col-span-2 md:col-span-1">
           <label className="label">
-            <span className="label-text font-semibold">{`Anank > 2 th`}</span>
+            <span className="label-text font-semibold">{`Anak > 2 th`}</span>
           </label>
           <div className="relative">
             <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
