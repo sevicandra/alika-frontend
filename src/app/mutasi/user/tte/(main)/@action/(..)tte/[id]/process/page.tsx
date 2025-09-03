@@ -4,6 +4,8 @@ import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import { useTable } from "@/context/table.context";
 import Icon from "@/component/Atoms/LabelIcon";
+import Form from "@/component/Organisms/Form";
+import { useForm } from "@/context/form.context";
 
 export default function Page({
   params,
@@ -15,22 +17,15 @@ export default function Page({
   const router = useRouter();
   const { id } = use(params);
   const { setRefresh } = useTable();
-  const [validationErrors, setValidationErrors] = useState<
-    {
-      field: string | null;
-      message: string;
-    }[]
-  >([]);
-  const getValidationError = (field: string) => {
-    return validationErrors.find((e) => e.field === field);
-  };
-  const [passpharse, setPasspharse] = useState("");
-  const [tanggal, setTanggal] = useState("");
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
+  const [loading, setLoading] = useState(false);
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
+      setLoading(true);
       const res = await fetch(`/api/Mutasi/Pegawai/TTE/${id}/Process`, {
         headers: {
           "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
@@ -40,133 +35,132 @@ export default function Page({
         },
         method: "POST",
         body: JSON.stringify({
-          passphrase: passpharse,
-          tanggal: tanggal,
+          passphrase: input.passphrase,
+          tanggal: input.tanggal,
+          confirmation: input.confirmation,
         }),
       });
       if (!res.ok) {
-        const { message, errors } = await res.json();
+        const { errors } = await res.json();
         if (res.status === 422) {
           setValidationErrors(errors);
         }
-        throw new Error(message);
+        throw new Error(errors.message);
       }
       addNotification({
         message: `berhasil ditandatangani`,
-        title: "Dokumen SPD",
+        title: "TTE Dokumen",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Dokumen SPD",
+        title: "TTE Dokumen",
         variant: "error",
       });
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <form onSubmit={submitForm}>
-      <div className="bg-base-100 shadow-xl">
-        <div className="p-4">
-          <div className="grid grid-cols-1 gap-x-8 gap-y-6">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Tanggal</span>
-              </label>
-              <div className="relative">
-                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
-                  <Icon icon="CalendarDays" height={20} />
-                </span>
-                <input
-                  type="date"
-                  name="tanggal"
-                  className={`input-bordered input w-full pl-10 ${getValidationError("tanggal") ? "input-error" : ""}`}
-                  required
-                  value={tanggal}
-                  onChange={(e) => {
-                    setTanggal(e.target.value);
-                  }}
-                />
-              </div>
-              {getValidationError("tanggal") && (
-                <label className="label">
-                  <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("tanggal")?.message}
-                  </span>
-                </label>
-              )}
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Passpharse</span>
-              </label>
-              <div className="relative">
-                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
-                  <Icon icon="Key" height={20} />
-                </span>
-                <input
-                  type="password"
-                  name="passpharse"
-                  className={`input-bordered input w-full pl-10 ${getValidationError("passpharse") ? "input-error" : ""}`}
-                  required
-                  value={passpharse}
-                  onChange={(e) => {
-                    setPasspharse(e.target.value);
-                  }}
-                />
-              </div>
-              {getValidationError("passpharse") && (
-                <label className="label">
-                  <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("passpharse")?.message}
-                  </span>
-                </label>
-              )}
-            </div>
-            <div className="form-control">
-              <div className="relative flex gap-2">
-                <input
-                  type="checkbox"
-                  name="passpharse"
-                  className="checkbox"
-                  required
-                />
-                <label className="label">
-                  <span className="label-text text-justify text-wrap">
-                    Dengan ini saya menyatakan bahwa pegawai yang bersangkutan
-                    benar akan berangkat dari kantor asal/telah sampai di kantor
-                    Tujuan
-                  </span>
-                </label>
-              </div>
-              {getValidationError("passpharse") && (
-                <label className="label">
-                  <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("passpharse")?.message}
-                  </span>
-                </label>
-              )}
-            </div>
+    <Form
+      title="Tanda Tangan Elektronik"
+      onCancel={() => router.back()}
+      submitForm={submitForm}
+      loading={loading}
+      variant="positive"
+      confirmText="Process"
+      cancelText="Batalkan"
+    >
+      <div className="grid gap-x-8 gap-y-6">
+        {/* --- Field Tanggal --- */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-semibold">Tanggal</span>
+          </label>
+          <div className="relative">
+            <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+              <Icon icon="CalendarDays" height={20} />
+            </span>
+            <input
+              type="date"
+              name="tanggal"
+              className={`input-bordered input w-full pl-10 ${getValidationError("tanggal") ? "input-error" : ""}`}
+              value={input.tanggal || ""}
+              onChange={(e) => {
+                setInput({ ...input, tanggal: e.target.value });
+              }}
+            />
           </div>
+          {getValidationError("tanggal") && (
+            <label className="label">
+              <span className="label-text-alt flex items-center gap-1 text-error">
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("tanggal")?.message}
+              </span>
+            </label>
+          )}
         </div>
-        <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-          <button
-            type="button"
-            className="btn btn-ghost"
-            onClick={() => router.back()}
-          >
-            <Icon icon="ArrowLeft" height={16} /> Batal
-          </button>
-          <button type="submit" className="btn text-nowrap btn-primary">
-            <Icon icon="FileText" height={16} /> Kirim
-          </button>
+        {/* --- Field Passpharse --- */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-semibold">Passpharse</span>
+          </label>
+          <div className="relative">
+            <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+              <Icon icon="Key" height={20} />
+            </span>
+            <input
+              type="password"
+              name="passphrase"
+              className={`input-bordered input w-full pl-10 ${getValidationError("passphrase") ? "input-error" : ""}`}
+              required
+              value={input.passphrase || ""}
+              onChange={(e) => {
+                setInput({ ...input, passphrase: e.target.value });
+              }}
+            />
+          </div>
+          {getValidationError("passphrase") && (
+            <label className="label">
+              <span className="label-text-alt flex items-center gap-1 text-error">
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("passphrase")?.message}
+              </span>
+            </label>
+          )}
+        </div>
+        <div className="form-control">
+          <div className="relative flex gap-2">
+            <input
+              type="checkbox"
+              name="confirmation"
+              className="checkbox"
+              required
+              value={input.confirmation || ""}
+              onChange={(e) => {                
+                setInput({ ...input, confirmation: e.target.checked });
+              }}
+            />
+            <label className="label">
+              <span className="label-text text-justify text-wrap">
+                Dengan ini saya menyatakan bahwa pegawai yang bersangkutan benar
+                akan berangkat dari kantor asal/telah sampai di kantor Tujuan
+              </span>
+            </label>
+          </div>
+          {getValidationError("confirmation") && (
+            <label className="label">
+              <span className="label-text-alt flex items-center gap-1 text-error">
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("confirmation")?.message}
+              </span>
+            </label>
+          )}
         </div>
       </div>
-    </form>
+    </Form>
   );
 }
