@@ -4,7 +4,7 @@ import { useNotification } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import { DataTable } from "@/component/Organisms/DataTable";
-import { useTermin } from "@/context/mutasi/user";
+import { useTable } from "@/context/table.context";
 import Link from "next/link";
 import Icon from "@/component/Atoms/LabelIcon";
 export default function Page({
@@ -16,7 +16,7 @@ export default function Page({
   }>;
 }) {
   const { mutasi_id, pembayaran_id } = use(params);
-  const { refresh } = useTermin();
+  const { refresh } = useTable();
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();

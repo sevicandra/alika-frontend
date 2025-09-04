@@ -3,10 +3,11 @@ import { use } from "react";
 import Link from "next/link";
 import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { usePathname } from "next/navigation";
-import { useSkDetail, usePegawai } from "@/context/mutasi/keu";
+import { useSkDetail } from "@/context/mutasi/keu";
 import { usePaginator } from "@/context/paginator";
 import Paginator from "@/component/Organisms/Paginator";
 import ContainerCard from "@/component/Molecules/ContainerCard";
+import { useTable } from "@/context/table.context";
 
 export default function Layout({
   children,
@@ -25,7 +26,7 @@ export default function Layout({
   const pathSegments = pathname.split("/").filter(Boolean).slice(2);
 
   const { data: suratKeputusan } = useSkDetail();
-  const { searchTerm, setSearchTerm } = usePegawai();
+  const { searchsTerm, setSearchsTerm } = useTable();
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">
       <div className="mx-4 mt-4 overflow-x-auto pr-4">
@@ -70,11 +71,11 @@ export default function Layout({
         headerRight={
           <div className="">
             <input
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchsTerm({...searchsTerm, search: e.target.value})}
               type="text"
               className="input-bordered input input-xs w-md max-w-full focus:outline-none"
               placeholder="Cari berdasarkan Nama / NIP"
-              value={searchTerm}
+              value={searchsTerm.search}
             />
           </div>
         }

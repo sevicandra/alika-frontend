@@ -3,7 +3,7 @@ import { use } from "react";
 import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { usePathname } from "next/navigation";
 import { usePegawaiDetail, useSkDetail } from "@/context/mutasi/sdm";
-import { TerminProvider } from "@/context/mutasi/sdm";
+import { TableProvider } from "@/context/table.context";
 
 import Link from "next/link";
 export default function Layout({
@@ -79,10 +79,10 @@ export default function Layout({
             )}
         </div>
       </div>
-      <TerminProvider>
+      <TableProvider>
         {children}
         {action}
-      </TerminProvider>
+      </TableProvider>
       <div className="mx-4 mb-4 flex justify-between">
       </div>
     </div>

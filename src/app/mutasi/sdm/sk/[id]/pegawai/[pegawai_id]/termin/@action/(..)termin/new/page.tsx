@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, use } from "react";
-import { useTermin, usePegawaiDetail } from "@/context/mutasi/sdm";
+import { usePegawaiDetail } from "@/context/mutasi/sdm";
+import {useTable} from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
@@ -14,7 +15,7 @@ export default function Page({
   const router = useRouter();
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
-  const { setRefresh } = useTermin();
+  const { setRefresh } = useTable();
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);
   const [refTermin, setRefTermin] = useState<

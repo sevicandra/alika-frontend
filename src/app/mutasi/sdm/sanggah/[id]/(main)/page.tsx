@@ -6,14 +6,14 @@ import ContainerCard from "@/component/Molecules/ContainerCard";
 import { snackToTitleCase } from "@/helpers/string.helper";
 import SanggahKeluargaCard from "@/component/Molecules/SanggahKeluargaCard";
 import { useSanggahDetail } from "@/context/mutasi/sdm";
-import { useSanggah } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { data: sanggah } = useSanggahDetail();
-  const { setRefresh } = useSanggah();
+  const { setRefresh } = useTable();
   const { addNotification } = useNotification();
   const [reviewData, setReviewData] = useState<
     { id: string; is_approved?: boolean; admin_notes?: string }[]

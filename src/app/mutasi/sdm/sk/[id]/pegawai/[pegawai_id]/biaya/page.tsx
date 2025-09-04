@@ -4,7 +4,8 @@ import { useNotification } from "@/context/notifikasi";
 import { DataTable } from "@/component/Organisms/DataTable";
 import Loading from "@/component/Molecules/Loading";
 import Link from "next/link";
-import { useBiaya, usePegawaiDetail } from "@/context/mutasi/sdm";
+import { usePegawaiDetail } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import Onproccess from "@/component/Molecules/Onproccess";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import { snackToTitleCase } from "@/helpers/string.helper";
@@ -34,7 +35,7 @@ export default function Page({
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
-  const { setRefresh } = useBiaya();
+  const { refresh, setRefresh } = useTable();
   useEffect(() => {
     const fetchPegawai = async () => {
       setLoading(true);
@@ -63,7 +64,7 @@ export default function Page({
       }
     };
     fetchPegawai();
-  }, [setRefresh]);
+  }, [refresh]);
 
   if (error) throw error;
   return (

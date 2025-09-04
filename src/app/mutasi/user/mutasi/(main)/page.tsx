@@ -5,7 +5,7 @@ import Loading from "@/component/Molecules/Loading";
 import Link from "next/link";
 import { snackToTitleCase } from "@/helpers/string.helper";
 import { usePaginator } from "@/context/paginator";
-import { useMutasi } from "@/context/mutasi/user";
+import { useTable } from "@/context/table.context";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import ItemCard from "@/component/Molecules/ItemCard";
 import Icon from "@/component/Atoms/LabelIcon";
@@ -14,7 +14,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
   const { page: currentPage, setTotalPage, limit } = usePaginator();
-  const { searchTerm, refresh, search, setSearchTerm } = useMutasi();
+  const { searchsTerm, refresh, searchs, setSearchsTerm } = useTable();
 
   const [data, setData] = useState<
     {
@@ -55,6 +55,7 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (limit) searchParams.append("offset", (currentPage - 1).toString());
+        const { search } = searchs;
         if (search) searchParams.append("search", search);
         const res = await fetch(`/api/Mutasi/Pegawai/Mutasi?${searchParams}`, {
           method: "GET",
@@ -82,18 +83,18 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [refresh, search, currentPage, limit]);
+  }, [refresh, searchs, currentPage, limit]);
 
   return (
     <ContainerCard
       title="Daftar SK Mutasi"
       headerRight={
         <input
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearchsTerm({ search: e.target.value })}
           type="text"
           className="input-bordered input input-xs w-3xs max-w-full focus:outline-none"
           placeholder="Cari berdasarkan Nomor/Perihal"
-          value={searchTerm}
+          value={searchsTerm.search}
         />
       }
       className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden"

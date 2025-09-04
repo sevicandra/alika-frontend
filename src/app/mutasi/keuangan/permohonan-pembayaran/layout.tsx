@@ -1,9 +1,9 @@
-import { PermohonanPembayaranProvider } from "@/context/mutasi/keu";
+import { TableProvider } from "@/context/table.context";
 import { PaginatorProvider } from "@/context/paginator";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <PermohonanPembayaranProvider>
+    <TableProvider>
       <PaginatorProvider>{children}</PaginatorProvider>
-    </PermohonanPembayaranProvider>
+    </TableProvider>
   );
 }

@@ -1,9 +1,9 @@
 import { PaginatorProvider } from "@/context/paginator";
-import { PegawaiProvider } from "@/context/mutasi/sdm";
+import { TableProvider } from "@/context/table.context";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <PegawaiProvider>
+    <TableProvider>
       <PaginatorProvider>{children}</PaginatorProvider>
-    </PegawaiProvider>
+    </TableProvider>
   );
 }

@@ -3,7 +3,8 @@ import { useState, use } from "react";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Icon from "@/component/Atoms/LabelIcon";
-import { useTermin, usePembayaranDetail } from "@/context/mutasi/user";
+import { usePembayaranDetail } from "@/context/mutasi/user";
+import { useTable } from "@/context/table.context";
 import Form from "@/component/Organisms/Form";
 import { useForm } from "@/context/form.context";
 
@@ -17,7 +18,7 @@ export default function Page({
 }) {
   const router = useRouter();
   const { mutasi_id, pembayaran_id } = use(params);
-  const { setRefresh } = useTermin();
+  const { setRefresh } = useTable();
   const { setRefresh: refreshPembayaran } = usePembayaranDetail();
   const { input, setInput, getValidationError, setValidationErrors } =
     useForm();

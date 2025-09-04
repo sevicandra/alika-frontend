@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { use, useState } from "react";
-import { useTermin } from "@/context/mutasi/user";
+import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import Confirmation from "@/component/Organisms/Confirmation";
 export default function Page({
@@ -15,7 +15,7 @@ export default function Page({
 }) {
   const router = useRouter();
   const { mutasi_id, pembayaran_id, dokumen_id } = use(params);
-  const { setRefresh } = useTermin();
+  const { setRefresh } = useTable();
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(false);
   const deleteData = async () => {

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, use } from "react";
-import { useKelaurga } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
@@ -15,7 +15,7 @@ export default function Page({
   const { id, pegawai_id, keluarga_id } = use(params);
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
-  const { setRefresh } = useKelaurga();
+  const { setRefresh } = useTable();
   const [hubungan, setHubungan] = useState<
     {
       kode: string;

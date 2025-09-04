@@ -13,13 +13,7 @@ import { snackToTitleCase } from "@/helpers/string.helper";
 
 export default function Page() {
   const { addNotification } = useNotification();
-  const {
-    refresh,
-    searchParamsTerm,
-    setSearchParamsTerm,
-    getSearchParams,
-    searchParams,
-  } = useTable();
+  const { refresh, searchsTerm, setSearchsTerm, searchs } = useTable();
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<
@@ -42,9 +36,8 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        if (getSearchParams("search"))
-          searchParams.append("search", getSearchParams("search"));
-
+        const { search } = searchs;
+        if (search) searchParams.append("search", search);
         setLoading(true);
         const res = await fetch(
           `/api/Mutasi/Admin/Referensi/Darat?${searchParams}`,
@@ -70,7 +63,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, limit, refresh, searchParams]);
+  }, [currentPage, limit, refresh, searchs]);
 
   return (
     <ContainerCard
@@ -79,11 +72,11 @@ export default function Page() {
       headerRight={
         <div className="flex gap-2">
           <input
-            onChange={(e) => setSearchParamsTerm({ search: e.target.value })}
+            onChange={(e) => setSearchsTerm({ search: e.target.value })}
             type="text"
             className="input-bordered input input-xs w-xs max-w-full focus:outline-none"
             placeholder="nama rute"
-            value={searchParamsTerm.search || ""}
+            value={searchsTerm.search || ""}
           />
         </div>
       }

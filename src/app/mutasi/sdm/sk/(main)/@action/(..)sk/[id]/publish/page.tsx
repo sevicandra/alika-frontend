@@ -1,13 +1,13 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { use, useState } from "react";
-import { useSk } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import Confirmation from "@/component/Organisms/Confirmation";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = use(params);
-  const { setRefresh } = useSk();
+  const { setRefresh } = useTable();
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(false);
   const publishSk = async () => {

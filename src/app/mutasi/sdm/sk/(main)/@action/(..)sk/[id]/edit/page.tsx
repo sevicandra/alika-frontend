@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, use, useRef } from "react";
-import { useSk } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { addNotification } = useNotification();
   const router = useRouter();
-  const { setRefresh } = useSk();
+  const { setRefresh } = useTable();
   const [loading, setLoading] = useState(true);
   const { id } = use(params);
   const [data, setData] = useState<{

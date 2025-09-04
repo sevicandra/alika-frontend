@@ -12,13 +12,8 @@ import ItemCard from "@/component/Molecules/ItemCard";
 
 export default function Page() {
   const { addNotification } = useNotification();
-  const {
-    refresh,
-    searchParamsTerm,
-    setSearchParamsTerm,
-    getSearchParams,
-    searchParams,
-  } = useTable();
+  const { refresh, searchsTerm, setSearchsTerm, searchs, filter, setFilter } =
+    useTable();
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<
@@ -37,10 +32,10 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        if (getSearchParams("search"))
-          searchParams.append("search", getSearchParams("search"));
-        if (getSearchParams("status"))
-          searchParams.append("status", getSearchParams("status"));
+        const {search} = searchs
+        const {status} = filter
+        if (search) searchParams.append("search", search);
+        if (status) searchParams.append("status", status);
         setLoading(true);
         const res = await fetch(
           `/api/Mutasi/Admin/Referensi/Faq?${searchParams}`,
@@ -66,7 +61,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, limit, refresh, searchParams]);
+  }, [currentPage, limit, refresh, searchs, filter]);
 
   return (
     <ContainerCard
@@ -76,25 +71,23 @@ export default function Page() {
         <div className="flex gap-2">
           <input
             onChange={(e) =>
-              setSearchParamsTerm({
-                ...searchParamsTerm,
+              setSearchsTerm({
                 search: e.target.value,
               })
             }
             type="text"
             className="input-bordered input input-xs w-xs max-w-full focus:outline-none"
             placeholder=""
-            value={searchParamsTerm.search || ""}
+            value={searchsTerm.search || ""}
           />
           <select
             className="select-bordered select select-xs focus:outline-none"
             onChange={(e) =>
-              setSearchParamsTerm({
-                ...searchParamsTerm,
+              setFilter({
                 status: e.target.value,
               })
             }
-            value={searchParamsTerm.status || ""}
+            value={filter.status || ""}
           >
             <option value="">Semua Status</option>
             <option value="DRAFT">DRAFT</option>

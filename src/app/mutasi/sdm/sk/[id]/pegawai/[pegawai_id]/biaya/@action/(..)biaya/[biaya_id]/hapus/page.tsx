@@ -1,6 +1,6 @@
 "use client";
 import { use, useState } from "react";
-import { useBiaya } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Confirmation from "@/component/Organisms/Confirmation";
@@ -14,7 +14,7 @@ export default function Page({
   const { id, pegawai_id, biaya_id } = use(params);
   const [loading, setLoading] = useState(false);
   const { addNotification } = useNotification();
-  const { setRefresh } = useBiaya();
+  const { setRefresh } = useTable();
   async function submitForm() {
     try {
       setLoading(true);

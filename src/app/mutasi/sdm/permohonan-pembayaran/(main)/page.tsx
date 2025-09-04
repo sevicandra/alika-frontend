@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useNotification } from "@/context/notifikasi";
-import { usePermohonanPembayaran } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { usePaginator } from "@/context/paginator";
 import Link from "next/link";
 import Loading from "@/component/Molecules/Loading";
@@ -12,8 +12,8 @@ import Icon from "@/component/Atoms/LabelIcon";
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
-  const { refresh, search, searchTerm, setSearchTerm } =
-    usePermohonanPembayaran();
+  const { refresh, searchs, searchsTerm, setSearchsTerm } =
+    useTable();
 
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [data, setData] = useState<
@@ -64,7 +64,7 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (limit) searchParams.append("offset", (currentPage - 1).toString());
-        if (search) searchParams.append("search", search);
+        if (searchs.search) searchParams.append("search", searchs.search);
         const res = await fetch(
           `/api/Mutasi/SDM/PermohonanPembayaran?${searchParams}`,
           {
@@ -91,7 +91,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [refresh, search, limit, currentPage]);
+  }, [refresh, searchs, limit, currentPage]);
 
   return (
     <ContainerCard
@@ -99,11 +99,11 @@ export default function Page() {
       headerRight={
         <div className="flex gap-2">
           <input
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchsTerm({ search: e.target.value })}
             type="text"
             className="input-bordered input input-xs w-xs focus:outline-none"
             placeholder="Cari berdasarkan Nama/NIP"
-            value={searchTerm}
+            value={searchsTerm.search || ""}
           />
         </div>
       }

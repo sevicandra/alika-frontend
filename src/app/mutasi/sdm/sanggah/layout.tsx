@@ -1,9 +1,9 @@
-import { SanggahProvider } from "@/context/mutasi/sdm";
+import { TableProvider } from "@/context/table.context";
 import { PaginatorProvider } from "@/context/paginator";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <SanggahProvider>
+    <TableProvider>
       <PaginatorProvider>{children}</PaginatorProvider>
-    </SanggahProvider>
+    </TableProvider>
   );
 }

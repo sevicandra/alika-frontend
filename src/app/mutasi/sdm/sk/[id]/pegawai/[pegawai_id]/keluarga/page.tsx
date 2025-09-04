@@ -3,7 +3,8 @@ import { use, useEffect, useState } from "react";
 import { useNotification } from "@/context/notifikasi";
 import { DataTable } from "@/component/Organisms/DataTable";
 import Loading from "@/component/Molecules/Loading";
-import { useKelaurga, usePegawaiDetail } from "@/context/mutasi/sdm";
+import { usePegawaiDetail } from "@/context/mutasi/sdm";
+import {useTable} from "@/context/table.context"
 import Onproccess from "@/component/Molecules/Onproccess";
 import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
@@ -19,7 +20,7 @@ export default function Page({
   }>;
 }) {
   const { id, pegawai_id } = use(params);
-  const { refresh, setRefresh } = useKelaurga();
+  const { refresh, setRefresh } = useTable();
   const { data: pegawai, setRefresh: setRefreshPegawai } = usePegawaiDetail();
   const [data, setData] = useState<
     {

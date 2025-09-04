@@ -4,7 +4,6 @@ import { useNotification } from "@/context/notifikasi";
 import { usePaginator } from "@/context/paginator";
 import Loading from "@/component/Molecules/Loading";
 import ItemCard from "@/component/Molecules/ItemCard";
-import { useTable } from "@/context/table.context";
 import Paginator from "@/component/Organisms/Paginator";
 
 export default function Page() {
@@ -18,7 +17,6 @@ export default function Page() {
   >([]);
   const [loading, setLoading] = useState(true);
   const { page: currentPage, limit, setTotalPage, totalPage } = usePaginator();
-  const { getSearchParams, searchParams } = useTable();
   const { addNotification } = useNotification();
 
   useEffect(() => {
@@ -29,10 +27,6 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        if (getSearchParams("search"))
-          searchParams.append("search", getSearchParams("search"));
-        if (getSearchParams("status"))
-          searchParams.append("status", getSearchParams("status"));
         const res = await fetch(
           `/api/Mutasi/Pegawai/Dashboard/Faq?${searchParams}`,
           {
@@ -57,7 +51,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, limit, searchParams]);
+  }, [currentPage, limit]);
   return (
     <div className="relative grid max-h-full grid-rows-[1fr_auto] overflow-hidden">
       {loading && (

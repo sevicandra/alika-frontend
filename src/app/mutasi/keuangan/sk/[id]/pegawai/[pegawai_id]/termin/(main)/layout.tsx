@@ -3,7 +3,6 @@ import { use } from "react";
 import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { usePathname } from "next/navigation";
 import { usePegawaiDetail, useSkDetail } from "@/context/mutasi/keu";
-import { TerminProvider } from "@/context/mutasi/keu";
 
 import Link from "next/link";
 export default function Layout({
@@ -78,9 +77,7 @@ export default function Layout({
             )}
         </div>
       </div>
-      <TerminProvider>
         {children}
-      </TerminProvider>
       <div className="mx-4 mb-4 flex justify-between">
       </div>
     </div>

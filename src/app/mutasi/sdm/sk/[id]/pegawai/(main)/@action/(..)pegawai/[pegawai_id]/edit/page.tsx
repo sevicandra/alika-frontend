@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, use } from "react";
-import { usePegawai } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
@@ -38,7 +38,7 @@ export default function Page({
   };
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
-  const { setRefresh } = usePegawai();
+  const { setRefresh } = useTable();
   const [golongan, setGolongan] = useState<
     {
       kode: string;

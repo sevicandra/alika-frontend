@@ -2,7 +2,8 @@
 import { use, useEffect, useState } from "react";
 import { usePaginator } from "@/context/paginator";
 import { useNotification } from "@/context/notifikasi";
-import { usePegawai, useSkDetail } from "@/context/mutasi/sdm";
+import { useSkDetail } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import Loading from "@/component/Molecules/Loading";
 import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
@@ -48,18 +49,8 @@ export default function Page({
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
   const { setTotalPage, page: currentPage, limit } = usePaginator();
-  const {
-    refresh,
-    search,
-    dataKeluarga,
-    dataBiaya,
-    dataTermin,
-    setDataBiaya,
-    setDataKeluarga,
-    setDataTermin,
-    searchTerm,
-    setSearchTerm,
-  } = usePegawai();
+  const { refresh, searchs, filter, searchsTerm, setSearchsTerm, setFilter } =
+    useTable();
   const { data: SuratKeputusan } = useSkDetail();
 
   useEffect(() => {
@@ -69,6 +60,8 @@ export default function Page({
       const searchParams = new URLSearchParams();
       if (limit) searchParams.append("limit", limit.toString());
       if (offset) searchParams.append("offset", offset.toString());
+      const {search} = searchs;
+      const {dataKeluarga, dataBiaya, dataTermin} = filter;
       if (search) searchParams.append("search", search);
       if (dataKeluarga) searchParams.append("process_keluarga", dataKeluarga);
       if (dataBiaya) searchParams.append("process_biaya", dataBiaya);
@@ -100,15 +93,7 @@ export default function Page({
       }
     };
     fetchPegawai();
-  }, [
-    refresh,
-    search,
-    currentPage,
-    dataKeluarga,
-    dataBiaya,
-    dataTermin,
-    limit,
-  ]);
+  }, [refresh, searchs, currentPage, filter, limit]);
 
   if (error) throw error;
   return (
@@ -117,16 +102,16 @@ export default function Page({
       headerRight={
         <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
           <input
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchsTerm({ ...searchsTerm, search: e.target.value})}
             type="text"
             className="input-bordered input input-xs focus:outline-none"
             placeholder="Cari berdasarkan Nama / NIP"
-            value={searchTerm}
+            value={searchsTerm.search || ""}
           />
           <select
             className="select-bordered select select-xs focus:outline-none"
-            onChange={(e) => setDataKeluarga(e.target.value)}
-            value={dataKeluarga || ""}
+            onChange={(e) => setFilter({...filter, dataKeluarga: e.target.value})}
+            value={filter.dataKeluarga || ""}
           >
             <option value="">Semua Status Data Keluarga</option>
             <option value="IDLE">IDLE</option>
@@ -137,8 +122,8 @@ export default function Page({
           </select>
           <select
             className="select-bordered select select-xs focus:outline-none"
-            onChange={(e) => setDataBiaya(e.target.value)}
-            value={dataBiaya || ""}
+            onChange={(e) => setFilter({...filter, dataBiaya: e.target.value})}
+            value={filter.dataBiaya || ""}
           >
             <option value="">Semua Status Rincian Biaya</option>
             <option value="IDLE">IDLE</option>
@@ -149,8 +134,8 @@ export default function Page({
           </select>
           <select
             className="select-bordered select select-xs focus:outline-none"
-            onChange={(e) => setDataTermin(e.target.value)}
-            value={dataTermin || ""}
+            onChange={(e) => setSearchsTerm({...searchsTerm, dataTermin: e.target.value})}
+            value={filter.dataTermin || ""}
           >
             <option value="">Semua Status Termin</option>
             <option value="IDLE">IDLE</option>

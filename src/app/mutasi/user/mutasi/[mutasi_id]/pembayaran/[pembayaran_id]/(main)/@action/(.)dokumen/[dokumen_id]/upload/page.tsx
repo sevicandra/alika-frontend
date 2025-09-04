@@ -4,7 +4,7 @@ import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
 import Icon from "@/component/Atoms/LabelIcon";
-import { useTermin } from "@/context/mutasi/user";
+import { useTable } from "@/context/table.context";
 export default function Page({
   params,
 }: {
@@ -16,7 +16,7 @@ export default function Page({
 }) {
   const router = useRouter();
   const { addNotification } = useNotification();
-  const { setRefresh } = useTermin();
+  const { setRefresh } = useTable();
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);

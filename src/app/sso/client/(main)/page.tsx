@@ -12,7 +12,7 @@ import { useTable } from "@/context/table.context";
 
 export default function Page() {
   const { addNotification } = useNotification();
-  const { refresh, getSearchParams } = useTable();
+  const { refresh } = useTable();
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<
@@ -29,8 +29,6 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        if (getSearchParams("search"))
-          searchParams.append("search", getSearchParams("search"));
 
         setLoading(true);
         const res = await fetch(`/api/Sso/Client?${searchParams}`, {
@@ -47,7 +45,7 @@ export default function Page() {
         addNotification({
           title: "Error Fetch Data Client",
           message: (error as Error).message,
-          variant: "error"
+          variant: "error",
         });
       } finally {
         setLoading(false);

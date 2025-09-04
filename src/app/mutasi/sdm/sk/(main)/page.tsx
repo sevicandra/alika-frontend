@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useNotification } from "@/context/notifikasi";
-import { useSk } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { usePaginator } from "@/context/paginator";
 import Link from "next/link";
 import Loading from "@/component/Molecules/Loading";
@@ -14,14 +14,12 @@ export default function Page() {
   const { addNotification } = useNotification();
   const {
     refresh,
-    status,
-    jenjang,
-    search,
-    setJenjang,
-    setStatus,
-    searchTerm,
-    setSearchTerm,
-  } = useSk();
+    setFilter,
+    searchsTerm,
+    setSearchsTerm,
+    filter,
+    searchs,
+  } = useTable();
 
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [data, setData] = useState<
@@ -43,9 +41,11 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (limit) searchParams.append("offset", (currentPage - 1).toString());
+        const {jenjang, status} = filter;
+        const {search} = searchs;
+        if (search) searchParams.append("search", search);
         if (jenjang) searchParams.append("jenjang", jenjang);
         if (status) searchParams.append("status", status);
-        if (search) searchParams.append("search", search);
         const res = await fetch(
           `/api/Mutasi/SDM/SuratKeputusan?${searchParams}`,
           {
@@ -72,7 +72,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [refresh, status, jenjang, search, limit, currentPage]);
+  }, [refresh, filter, currentPage, searchs]);
 
   return (
     <ContainerCard
@@ -80,16 +80,16 @@ export default function Page() {
       headerRight={
         <div className="flex gap-2">
           <input
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchsTerm({ search: e.target.value })}
             type="text"
             className="input-bordered input input-xs focus:outline-none"
             placeholder="Cari berdasarkan Nomor/Perihal"
-            value={searchTerm}
+            value={searchsTerm.search || ""}
           />
           <select
             className="select-bordered select select-xs focus:outline-none"
-            onChange={(e) => setJenjang(e.target.value)}
-            value={jenjang || ""}
+            onChange={(e) => setFilter({ jenjang: e.target.value })}
+            value={filter.jenjang || ""}
           >
             <option value="" defaultChecked>
               Semua Jenjang
@@ -104,8 +104,8 @@ export default function Page() {
           </select>
           <select
             className="select-bordered select select-xs focus:outline-none"
-            onChange={(e) => setStatus(e.target.value)}
-            value={status || ""}
+            onChange={(e) => setFilter({ status: e.target.value })}
+            value={filter.status || ""}
           >
             <option value="" defaultChecked>
               Semua Status

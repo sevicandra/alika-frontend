@@ -1,6 +1,6 @@
 "use client";
 import { use } from "react";
-import { KelaurgaProvider } from "@/context/mutasi/sdm";
+import { TableProvider } from "@/context/table.context";
 import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { usePathname } from "next/navigation";
 import { usePegawaiDetail, useSkDetail } from "@/context/mutasi/sdm";
@@ -70,10 +70,10 @@ export default function Layout({
             )}
         </div>
       </div>
-      <KelaurgaProvider>
+      <TableProvider>
         {children}
         {action}
-      </KelaurgaProvider>
+      </TableProvider>
       <div className="mx-4 mb-4 flex justify-between"></div>
     </div>
   );

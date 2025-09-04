@@ -3,7 +3,6 @@ import { use, useEffect, useState } from "react";
 import { useNotification } from "@/context/notifikasi";
 import { DataTable } from "@/component/Organisms/DataTable";
 import Loading from "@/component/Molecules/Loading";
-import { useTermin } from "@/context/mutasi/keu";
 import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import { snackToTitleCase } from "@/helpers/string.helper";
@@ -31,7 +30,6 @@ export default function Page({
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
-  const { refresh } = useTermin();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,7 +59,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [refresh]);
+  }, []);
   if (error) throw error;
   return (
     <ContainerCard

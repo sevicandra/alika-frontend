@@ -13,7 +13,7 @@ import { snackToTitleCase } from "@/helpers/string.helper";
 
 export default function Page() {
   const { addNotification } = useNotification();
-  const { refresh, getSearchParams } = useTable();
+  const { refresh, searchs } = useTable();
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<
@@ -32,8 +32,7 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        if (getSearchParams("search"))
-          searchParams.append("search", getSearchParams("search"));
+        if (searchs.search) searchParams.append("search", searchs.search);
 
         setLoading(true);
         const res = await fetch(
@@ -60,7 +59,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, limit, refresh]);
+  }, [currentPage, limit, refresh, searchs]);
 
   return (
     <ContainerCard

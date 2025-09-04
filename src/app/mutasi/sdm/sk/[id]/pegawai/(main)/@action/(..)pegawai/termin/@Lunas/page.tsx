@@ -1,6 +1,6 @@
 "use client";
 import { useState, use } from "react";
-import { usePegawai } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
@@ -9,7 +9,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = use(params);
   const { addNotification } = useNotification();
-  const { setRefresh } = usePegawai();
+  const { setRefresh } = useTable();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<{
     tahun_lunas: string;

@@ -3,7 +3,8 @@ import { use, useEffect, useState } from "react";
 import { useNotification } from "@/context/notifikasi";
 import { DataTable } from "@/component/Organisms/DataTable";
 import Loading from "@/component/Molecules/Loading";
-import { usePegawaiDetail, useSkDetail, useTermin } from "@/context/mutasi/sdm";
+import { usePegawaiDetail, useSkDetail } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import { snackToTitleCase } from "@/helpers/string.helper";
@@ -39,7 +40,7 @@ export default function Page({
   const { addNotification } = useNotification();
   const { data: pegawai } = usePegawaiDetail();
   const { data: suratKeputusan } = useSkDetail();
-  const { refresh } = useTermin();
+  const { refresh } = useTable();
 
   useEffect(() => {
     const fetchData = async () => {

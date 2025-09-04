@@ -13,7 +13,7 @@ import { useSession } from "@/context/session";
 
 export default function Page() {
   const { addNotification } = useNotification();
-  const { refresh, getSearchParams } = useTable();
+  const { refresh, searchs, searchsTerm, setSearchsTerm } = useTable();
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [loading, setLoading] = useState(true);
   const { data: session } = useSession();
@@ -33,8 +33,8 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        if (getSearchParams("search"))
-          searchParams.append("search", getSearchParams("search"));
+        const { search } = searchs;
+        if (search) searchParams.append("search", search);
 
         setLoading(true);
         const res = await fetch(`/api/Mutasi/Admin/User?${searchParams}`, {
@@ -57,12 +57,23 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, limit, refresh]);
+  }, [currentPage, limit, refresh, searchs]);
 
   return (
     <ContainerCard
       title="Daftar User"
       className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden"
+      headerRight={
+        <div className="flex gap-2">
+          <input
+            onChange={(e) => setSearchsTerm({ search: e.target.value })}
+            type="text"
+            className="input-bordered input input-xs w-xs max-w-full focus:outline-none"
+            placeholder="nama provinsi"
+            value={searchsTerm.search || ""}
+          />
+        </div>
+      }
     >
       <div className="relative grid grid-rows-[1fr_auto] overflow-hidden">
         {loading && (

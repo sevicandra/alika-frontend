@@ -1,6 +1,6 @@
 "use client";
 import { use } from "react";
-import { BiayaProvider } from "@/context/mutasi/sdm";
+import { TableProvider } from "@/context/table.context";
 import Link from "next/link";
 import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { usePathname } from "next/navigation";
@@ -78,10 +78,10 @@ export default function Layout({
             )}
         </div>
       </div>
-      <BiayaProvider>
+      <TableProvider>
         {children}
         {action}
-      </BiayaProvider>
+      </TableProvider>
       <div className="mx-4 mb-4 flex justify-between"></div>
     </div>
   );

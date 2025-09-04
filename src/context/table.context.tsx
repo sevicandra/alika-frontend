@@ -6,12 +6,10 @@ type TableContextType = {
   setRefresh: () => void;
   filter: { [key: string]: any };
   setFilter: (filter: { [key: string]: any }) => void;
-  searchParams: { [key: string]: any };
-  setSearchParams: (searchParams: { [key: string]: any }) => void;
-  searchParamsTerm: { [key: string]: any };
-  setSearchParamsTerm: (searchParamsTerm: { [key: string]: any }) => void;
-  getFilter: (key: string) => any;
-  getSearchParams: (key: string) => any;
+  searchs: { [key: string]: any };
+  setSearchs: (searchs: { [key: string]: any }) => void;
+  searchsTerm: { [key: string]: any };
+  setSearchsTerm: (searchsTerm: { [key: string]: any }) => void;
 };
 
 const TableContext = createContext<TableContextType | undefined>(undefined);
@@ -19,27 +17,20 @@ const TableContext = createContext<TableContextType | undefined>(undefined);
 export const TableProvider = ({ children }: { children: React.ReactNode }) => {
   const [refresh, setRefreshState] = useState(0);
   const [filter, setFilterState] = useState<{ [key: string]: any }>({});
-  const [searchParams, setSearchParams] = useState<{ [key: string]: any }>({});
-  const [searchParamsTerm, setSearchParamsTerm] = useState<{
+  const [searchs, setSearchs] = useState<{ [key: string]: any }>({});
+  const [searchsTerm, setSearchsTerm] = useState<{
     [key: string]: any;
   }>({});
   const setRefresh = () => setRefreshState((prev) => prev + 1);
   useEffect(() => {
     const handler = setTimeout(() => {
-      setSearchParams(searchParamsTerm);
+      setSearchs(searchsTerm);
     }, 500);
 
     return () => {
       clearTimeout(handler);
     };
-  }, [searchParamsTerm]);
-  const getFilter = (key: string) => {
-    return filter.hasOwnProperty(key) ? filter[key] : null;
-  };
-
-  const getSearchParams = (key: string) => {
-    return searchParams.hasOwnProperty(key) ? searchParams[key] : null;
-  };
+  }, [searchsTerm]);
 
   const value = useMemo(
     () => ({
@@ -47,14 +38,12 @@ export const TableProvider = ({ children }: { children: React.ReactNode }) => {
       setRefresh,
       filter,
       setFilter: setFilterState,
-      searchParams,
-      setSearchParams,
-      searchParamsTerm,
-      setSearchParamsTerm,
-      getFilter,
-      getSearchParams,
+      searchs,
+      setSearchs,
+      searchsTerm,
+      setSearchsTerm,
     }),
-    [refresh, filter, searchParams, searchParamsTerm],
+    [refresh, filter, searchs, searchsTerm],
   );
 
   return (

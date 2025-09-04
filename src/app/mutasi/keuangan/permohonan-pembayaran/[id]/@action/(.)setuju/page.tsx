@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { use, useState } from "react";
 import { useNotification } from "@/context/notifikasi";
-import { usePermohonanPembayaran } from "@/context/mutasi/keu";
+import { useTable } from "@/context/table.context";
 import Confirmation from "@/component/Organisms/Confirmation";
 import { useForm } from "@/context/form.context";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
@@ -11,7 +11,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(false);
-  const { setRefresh } = usePermohonanPembayaran();
+  const { setRefresh } = useTable();
   const reject = async () => {
     try {
       setLoading(true);

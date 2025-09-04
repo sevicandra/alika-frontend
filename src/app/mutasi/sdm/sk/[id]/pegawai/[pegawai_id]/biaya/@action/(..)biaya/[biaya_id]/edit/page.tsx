@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, use } from "react";
 import { useNotification } from "@/context/notifikasi";
-import { useBiaya } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
 import Icon from "@/component/Atoms/LabelIcon";
@@ -26,7 +26,7 @@ export default function Page({
   const [error, setError] = useState<Error | null>(null);
 
   const { addNotification } = useNotification();
-  const { setRefresh } = useBiaya();
+  const { setRefresh } = useTable();
   const [data, setData] = useState<{
     jenis: string;
     sub_jenis: string;

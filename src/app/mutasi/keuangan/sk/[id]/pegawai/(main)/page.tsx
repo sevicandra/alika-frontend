@@ -2,7 +2,8 @@
 import { use, useEffect, useState } from "react";
 import { usePaginator } from "@/context/paginator";
 import { useNotification } from "@/context/notifikasi";
-import { useSkDetail, usePegawai } from "@/context/mutasi/keu";
+import { useSkDetail } from "@/context/mutasi/keu";
+import { useTable } from "@/context/table.context";
 import Loading from "@/component/Molecules/Loading";
 import Link from "next/link";
 import ItemCard from "@/component/Molecules/ItemCard";
@@ -34,7 +35,7 @@ export default function Page({
   const { loading, error, setError, setLoading } = useSkDetail();
   const { addNotification } = useNotification();
   const { setTotalPage, page: currentPage, limit } = usePaginator();
-  const { refresh, search } = usePegawai();
+  const { refresh, searchs } = useTable();
   useEffect(() => {
     const fetchPegawai = async () => {
       setLoading(true);
@@ -42,6 +43,7 @@ export default function Page({
       const searchParams = new URLSearchParams();
       if (limit) searchParams.append("limit", limit.toString());
       if (offset) searchParams.append("offset", offset.toString());
+      const {search} = searchs;
       if (search) searchParams.append("search", search);
       try {
         const res = await fetch(
@@ -69,7 +71,7 @@ export default function Page({
       }
     };
     fetchPegawai();
-  }, [refresh, search, currentPage, limit]);
+  }, [refresh, searchs, currentPage, limit]);
   if (error) throw error;
   return (
     <div className="relative grid grid-rows-[1fr_auto] overflow-hidden">

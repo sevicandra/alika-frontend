@@ -1,6 +1,6 @@
 "use client";
 import { use, useState } from "react";
-import { usePegawai } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Confirmation from "@/component/Organisms/Confirmation";
@@ -13,7 +13,7 @@ export default function Page({
   const router = useRouter();
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
-  const { setRefresh } = usePegawai();
+  const { setRefresh } = useTable();
   const [loading, setLoading] = useState(false);
   async function submitForm() {
     try {

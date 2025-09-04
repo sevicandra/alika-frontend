@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useSk } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Icon from "@/component/Atoms/LabelIcon";
@@ -8,7 +8,7 @@ import Icon from "@/component/Atoms/LabelIcon";
 export default function Page() {
   const router = useRouter();
   const { addNotification } = useNotification();
-  const { setRefresh } = useSk();
+  const { setRefresh } = useTable();
   const [validationErrors, setValidationErrors] = useState<
     {
       field: string | null;

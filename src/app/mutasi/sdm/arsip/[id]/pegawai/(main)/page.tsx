@@ -2,7 +2,7 @@
 import { use, useEffect, useState } from "react";
 import { usePaginator } from "@/context/paginator";
 import { useNotification } from "@/context/notifikasi";
-import { usePegawai } from "@/context/mutasi/sdm";
+import { useTable } from "@/context/table.context";
 import Loading from "@/component/Molecules/Loading";
 import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
@@ -48,15 +48,8 @@ export default function Page({
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
   const { setTotalPage, page: currentPage, limit } = usePaginator();
-  const {
-    refresh,
-    search,
-    dataKeluarga,
-    dataBiaya,
-    dataTermin,
-    searchTerm,
-    setSearchTerm,
-  } = usePegawai();
+  const { refresh, searchs, searchsTerm, setSearchsTerm } =
+    useTable();
   useEffect(() => {
     const fetchPegawai = async () => {
       setLoading(true);
@@ -64,10 +57,8 @@ export default function Page({
       const searchParams = new URLSearchParams();
       if (limit) searchParams.append("limit", limit.toString());
       if (offset) searchParams.append("offset", offset.toString());
+      const { search } = searchs;
       if (search) searchParams.append("search", search);
-      if (dataKeluarga) searchParams.append("process_keluarga", dataKeluarga);
-      if (dataBiaya) searchParams.append("process_biaya", dataBiaya);
-      if (dataTermin) searchParams.append("process_termin", dataTermin);
       searchParams.append("associations", "Golongan,KantorAsal,KantorTujuan");
       try {
         const res = await fetch(
@@ -97,11 +88,8 @@ export default function Page({
     fetchPegawai();
   }, [
     refresh,
-    search,
+    searchs,
     currentPage,
-    dataKeluarga,
-    dataBiaya,
-    dataTermin,
     limit,
   ]);
 
@@ -112,11 +100,11 @@ export default function Page({
       headerRight={
         <div className="">
           <input
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchsTerm({ search: e.target.value })}
             type="text"
             className="input-bordered input input-xs focus:outline-none"
             placeholder="Cari berdasarkan Nama / NIP"
-            value={searchTerm}
+            value={searchsTerm.search}
           />
         </div>
       }
