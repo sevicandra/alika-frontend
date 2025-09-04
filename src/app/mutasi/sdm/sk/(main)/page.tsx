@@ -12,14 +12,8 @@ import Icon from "@/component/Atoms/LabelIcon";
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
-  const {
-    refresh,
-    setFilter,
-    searchsTerm,
-    setSearchsTerm,
-    filter,
-    searchs,
-  } = useTable();
+  const { refresh, setFilter, searchsTerm, setSearchsTerm, filter, searchs } =
+    useTable();
 
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [data, setData] = useState<
@@ -41,8 +35,8 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (limit) searchParams.append("offset", (currentPage - 1).toString());
-        const {jenjang, status} = filter;
-        const {search} = searchs;
+        const { jenjang, status } = filter;
+        const { search } = searchs;
         if (search) searchParams.append("search", search);
         if (jenjang) searchParams.append("jenjang", jenjang);
         if (status) searchParams.append("status", status);
@@ -72,7 +66,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [refresh, filter, currentPage, searchs]);
+  }, [refresh, filter, currentPage, searchs, limit]);
 
   return (
     <ContainerCard

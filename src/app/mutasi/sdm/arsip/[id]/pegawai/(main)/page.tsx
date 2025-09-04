@@ -48,8 +48,7 @@ export default function Page({
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
   const { setTotalPage, page: currentPage, limit } = usePaginator();
-  const { refresh, searchs, searchsTerm, setSearchsTerm } =
-    useTable();
+  const { refresh, searchs, searchsTerm, setSearchsTerm } = useTable();
   useEffect(() => {
     const fetchPegawai = async () => {
       setLoading(true);
@@ -86,12 +85,7 @@ export default function Page({
       }
     };
     fetchPegawai();
-  }, [
-    refresh,
-    searchs,
-    currentPage,
-    limit,
-  ]);
+  }, [refresh, searchs, currentPage, limit]);
 
   if (error) throw error;
   return (
