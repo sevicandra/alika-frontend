@@ -80,7 +80,7 @@ const PdfViewer = ({
       setPdfUrl(url);
     }
     setPdfUrl(undefined);
-  }, [blob, base64]);
+  }, [blob, base64, url]);
 
   const zoomPluginInstance = zoomPlugin({});
   const { ZoomIn, ZoomOut, CurrentScale, Zoom } = zoomPluginInstance;

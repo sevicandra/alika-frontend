@@ -91,7 +91,17 @@ export default function Page({
       }
     };
     fetchData();
-  }, [refresh, currentPage, limit, search, status, tahap]);
+  }, [
+    refresh,
+    currentPage,
+    limit,
+    search,
+    status,
+    tahap,
+    addNotification,
+    id,
+    setTotalPage,
+  ]);
   return (
     <ContainerCard
       title="Payroll Pegawai"

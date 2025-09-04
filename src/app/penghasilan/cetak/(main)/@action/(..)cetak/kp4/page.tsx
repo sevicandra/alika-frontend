@@ -57,7 +57,7 @@ const Page = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification]);
   const { setRefresh } = useTable();
 
   const KirimPermohonan = async () => {

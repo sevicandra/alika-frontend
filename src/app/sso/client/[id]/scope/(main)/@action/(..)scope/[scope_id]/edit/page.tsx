@@ -64,7 +64,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [input, setInput]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -173,7 +173,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [id, scope_id, setInput]);
 
   if (error) throw error;
   return (

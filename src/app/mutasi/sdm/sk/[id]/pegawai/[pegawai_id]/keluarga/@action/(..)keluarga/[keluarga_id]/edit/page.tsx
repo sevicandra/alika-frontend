@@ -69,7 +69,7 @@ export default function Page({
       }
     };
     fetchRef();
-  }, []);
+  }, [addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,7 +110,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id, keluarga_id, pegawai_id]);
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

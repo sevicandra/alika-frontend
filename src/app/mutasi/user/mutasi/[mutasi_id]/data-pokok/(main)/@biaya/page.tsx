@@ -91,7 +91,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, mutasi_id]);
 
   if (error) throw error;
 

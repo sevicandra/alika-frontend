@@ -69,7 +69,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, mutasi_id]);
 
   return (
     <ContainerCard

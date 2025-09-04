@@ -55,7 +55,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id]);
 
   if (error) throw error;
   return (

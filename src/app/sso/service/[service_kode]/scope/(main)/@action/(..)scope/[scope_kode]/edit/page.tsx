@@ -89,7 +89,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [scope_kode, service_kode, setInput]);
 
   if (error) throw error;
   return (

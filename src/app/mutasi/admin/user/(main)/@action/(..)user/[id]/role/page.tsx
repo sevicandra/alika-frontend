@@ -51,7 +51,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [refresh]);
+  }, [refresh, id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -161,9 +161,7 @@ export default function Page({
             <input
               type="checkbox"
               className="checkbox checkbox-accent"
-              checked={
-                !!data.find((d) => d.role_kode === item.kode)
-              }
+              checked={!!data.find((d) => d.role_kode === item.kode)}
               onChange={() => {
                 if (data.find((d) => d.role_kode === item.kode)) {
                   removeRole(item.kode);

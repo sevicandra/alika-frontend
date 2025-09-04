@@ -66,7 +66,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, refresh, limit]);
+  }, [currentPage, refresh, limit, addNotification, setTotalPage]);
   if (error) throw error;
   return (
     <div className="relative grid grid-rows-[auto_1fr_auto] gap-2 overflow-hidden rounded-box bg-base-200 p-2">

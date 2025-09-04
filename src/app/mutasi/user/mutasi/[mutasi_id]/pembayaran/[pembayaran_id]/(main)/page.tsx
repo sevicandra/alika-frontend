@@ -72,7 +72,7 @@ export default function Page({
     };
 
     fetchData();
-  }, [refresh]);
+  }, [refresh, addNotification, mutasi_id, pembayaran_id]);
 
   if (error) throw error;
   return (

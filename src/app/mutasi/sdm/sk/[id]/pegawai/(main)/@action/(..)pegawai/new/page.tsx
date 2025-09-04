@@ -89,7 +89,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
     fetchGolongan();
     fetchKantor();
-  }, []);
+  }, [addNotification]);
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

@@ -64,7 +64,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [refresh, searchs, limit, currentPage]);
+  }, [refresh, searchs, limit, currentPage, addNotification, setTotalPage]);
 
   return (
     <ContainerCard

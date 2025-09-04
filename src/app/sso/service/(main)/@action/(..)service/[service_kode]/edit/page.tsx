@@ -82,7 +82,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [service_kode, setInput]);
 
   if (error) throw error;
   return (

@@ -185,7 +185,7 @@ export function SanggahProvider({
       }
     };
     fetchData();
-  }, []);
+  }, [mutasi_id]);
 
   if (error) throw error;
 

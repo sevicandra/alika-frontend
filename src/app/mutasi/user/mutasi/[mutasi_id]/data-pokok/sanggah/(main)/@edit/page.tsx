@@ -54,7 +54,7 @@ export default function SanggahForm() {
         });
       }
     }
-  }, [selectedData]);
+  }, [selectedData, dataKeluarga]);
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

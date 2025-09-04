@@ -49,7 +49,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification]);
   if (error) throw error;
 
   return (

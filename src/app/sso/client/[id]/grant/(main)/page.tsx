@@ -53,7 +53,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     fetchData();
-  }, [currentPage, limit, refresh]);
+  }, [currentPage, limit, refresh, addNotification, id, setTotalPage]);
 
   return (
     <ContainerCard

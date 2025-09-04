@@ -91,7 +91,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, []);
+  }, [input, setInput]);
 
   useEffect(() => {
     const fetchData = async () => {

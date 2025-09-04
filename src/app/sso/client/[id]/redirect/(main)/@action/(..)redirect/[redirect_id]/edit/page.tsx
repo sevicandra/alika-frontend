@@ -86,7 +86,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [id, redirect_id, setInput]);
 
   if (error) throw error;
   return (

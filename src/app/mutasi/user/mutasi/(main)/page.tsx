@@ -83,7 +83,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [refresh, searchs, currentPage, limit]);
+  }, [refresh, searchs, currentPage, limit, addNotification, setTotalPage]);
 
   return (
     <ContainerCard

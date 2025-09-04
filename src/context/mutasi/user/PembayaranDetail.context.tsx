@@ -54,7 +54,7 @@ export function PembayaranDetailProvider({
       }
     };
     fetchData();
-  }, [Pembayaran_id, refresh]);
+  }, [Pembayaran_id, refresh, Mutasi_id]);
 
   const value = useMemo(
     () => ({

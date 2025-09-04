@@ -363,7 +363,20 @@ function User({
   );
 }
 
-export default {
+// export default {
+//   Logo,
+//   Logout,
+//   Faq,
+//   Announcement,
+//   Penghasilan,
+//   Sentralisasi,
+//   Mutasi,
+//   Monev,
+//   Loading,
+//   User,
+// };
+
+const Icons = {
   Logo,
   Logout,
   Faq,
@@ -375,3 +388,5 @@ export default {
   Loading,
   User,
 };
+
+export default Icons;

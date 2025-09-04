@@ -43,7 +43,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [tahun]);
+  }, [tahun,addNotification]);
   if (error) throw error;
   return (
     <StatCard

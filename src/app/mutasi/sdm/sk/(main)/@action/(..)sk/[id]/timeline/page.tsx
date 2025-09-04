@@ -103,7 +103,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id]);
   if (error) throw error;
   return (
     <form onSubmit={submitForm}>
@@ -170,9 +170,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-semibold">
-                Timeline SPM
-              </span>
+              <span className="label-text font-semibold">Timeline SPM</span>
             </label>
             <div className="relative">
               <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">

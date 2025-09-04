@@ -6,6 +6,7 @@ import {
   useMemo,
   ReactNode,
   useContext,
+  useCallback,
 } from "react";
 import { usePathname } from "next/navigation";
 
@@ -46,7 +47,6 @@ interface SessionContextValue {
   changeCurrentAccount: (kode_satker: string) => void;
 }
 
-
 interface SessionProviderProps {
   children: ReactNode;
 }
@@ -63,7 +63,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
   const [status, setStatus] = useState<
     "authenticated" | "unauthenticated" | "loading"
   >("loading");
-  const changeCurrentAccount = (kode_satker: string) => {
+  const changeCurrentAccount = useCallback((kode_satker: string) => {
     setSession((prev: Session | null) => {
       if (!prev || !prev.account) return null;
       return {
@@ -73,8 +73,8 @@ export function SessionProvider({ children }: SessionProviderProps) {
         ),
       };
     });
-  };
-  const fetchSession = async () => {
+  }, [setSession]);
+  const fetchSession = useCallback(async () => {
     try {
       setStatus("loading");
       const csrf_token = await fetch("/api/auth/csrf").then((res) =>
@@ -103,8 +103,8 @@ export function SessionProvider({ children }: SessionProviderProps) {
       setSession(null);
       setStatus("unauthenticated");
     }
-  };
-  const signOut = async () => {
+  }, [setSession, setStatus, session]);
+  const signOut = useCallback(async () => {
     try {
       const csrf_token = await fetch("/api/auth/csrf").then((res) =>
         res.json(),
@@ -129,11 +129,10 @@ export function SessionProvider({ children }: SessionProviderProps) {
     } catch (error) {
       console.error(error);
     }
-  };
-
+  }, [setSession, setStatus]);
   useEffect(() => {
     fetchSession();
-  }, [pathname]);
+  }, [pathname, fetchSession]);
 
   const value = useMemo(
     () => ({
@@ -143,7 +142,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
       changeCurrentAccount,
       signOut,
     }),
-    [session, status],
+    [session, status, fetchSession, changeCurrentAccount, signOut],
   );
   return (
     <SessionContext.Provider value={value}>{children}</SessionContext.Provider>

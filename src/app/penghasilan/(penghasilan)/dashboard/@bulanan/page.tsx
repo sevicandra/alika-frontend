@@ -88,7 +88,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [tahun]);
+  }, [tahun, addNotification]);
   if (error) throw error;
   return (
     <div className="relative w-full overflow-hidden bg-base-100 p-2">

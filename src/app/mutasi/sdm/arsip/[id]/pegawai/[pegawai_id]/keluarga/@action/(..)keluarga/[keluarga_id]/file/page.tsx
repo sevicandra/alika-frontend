@@ -62,7 +62,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id, pegawai_id, keluarga_id]);
 
   if (error) throw error;
   return (

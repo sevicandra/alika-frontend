@@ -45,7 +45,7 @@ export default function Page() {
     };
 
     fetchData();
-  }, []);
+  }, [addNotification]);
   if (error) throw error;
   return (
     <div className="grid min-h-32 grid-rows-[32px_1fr] gap-2 overflow-hidden rounded-box bg-base-200 px-4 py-2 text-base-content shadow shadow-base-content/10">

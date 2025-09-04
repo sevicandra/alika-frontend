@@ -87,7 +87,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [id, router, session?.user.nip, setInput]);
 
   if (error) throw error;
   return (

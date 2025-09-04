@@ -70,7 +70,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id]);
 
   const ProcessTte = async ({ passphrase }: { passphrase: string }) => {
     try {

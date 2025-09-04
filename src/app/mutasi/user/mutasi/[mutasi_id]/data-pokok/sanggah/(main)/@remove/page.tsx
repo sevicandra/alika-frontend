@@ -49,7 +49,7 @@ export default function SanggahForm() {
         });
       }
     }
-  }, [selectedData]);
+  }, [selectedData, dataKeluarga]);
 
   const handleRemove = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

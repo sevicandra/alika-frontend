@@ -87,7 +87,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [kode_kota, kode_prov, setInput]);
 
   if (error) throw error;
   return (

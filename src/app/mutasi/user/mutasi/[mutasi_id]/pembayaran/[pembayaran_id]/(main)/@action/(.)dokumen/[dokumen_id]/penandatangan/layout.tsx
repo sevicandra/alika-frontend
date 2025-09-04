@@ -60,7 +60,7 @@ export default function Layout({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, mutasi_id, pembayaran_id, dokumen_id]);
   return (
     <PopUp title="Penandatangan SPD" className="w-lg">
       {mutasi && (

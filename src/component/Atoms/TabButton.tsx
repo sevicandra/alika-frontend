@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { useTab } from "./TabMenu";
 
 type DivProps = React.HTMLAttributes<HTMLDivElement>;
@@ -21,7 +21,7 @@ export const TabButton = ({
     }
   };
   const { tab, setTab } = useTab();
-  const updatePosition = () => {
+  const updatePosition = useCallback(() => {
     const currentTab = items.find((item, index) => index === tab);
     const button = currentTab ? buttonRefs.current?.get(currentTab) : undefined;
     if (button) {
@@ -30,11 +30,11 @@ export const TabButton = ({
         left: button.offsetLeft,
       });
     }
-  };
+  },[items, tab]);
 
   useEffect(() => {
     updatePosition();
-  }, [items, tab]);
+  }, [items, tab, updatePosition]);
 
   return (
     <div ref={warperRef} className="relative mx-4 w-full overflow-clip">

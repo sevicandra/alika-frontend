@@ -51,7 +51,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, limit]);
+  }, [currentPage, limit, addNotification, setTotalPage]);
   return (
     <div className="relative grid max-h-full grid-rows-[1fr_auto] overflow-hidden">
       {loading && (

@@ -70,7 +70,7 @@ export default function Page({
       }
     }
     fetchData();
-  }, []);
+  }, [addNotification, biaya_id, id, pegawai_id]);
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {

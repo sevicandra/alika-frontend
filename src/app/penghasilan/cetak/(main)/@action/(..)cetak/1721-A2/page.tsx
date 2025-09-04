@@ -54,7 +54,7 @@ const Page = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, setTahun]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,7 +103,7 @@ const Page = () => {
     if (tahun) {
       fetchData();
     }
-  }, [tahun]);
+  }, [tahun, addNotification, setLoading]);
 
   const KirimPermohonan = async () => {
     if (!tahun || !bulan) {

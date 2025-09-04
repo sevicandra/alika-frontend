@@ -67,7 +67,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id, pegawai_id, termin_id, dokumen_id]);
 
   if (error) throw error;
   return (

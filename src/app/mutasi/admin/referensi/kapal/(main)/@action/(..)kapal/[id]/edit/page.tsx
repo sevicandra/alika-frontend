@@ -100,7 +100,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [id, setInput]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,7 +126,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [input, setInput]);
   useEffect(() => {
     const fetchData = async () => {
       try {

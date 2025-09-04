@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { MenuContext } from "./DropdownMenu";
 import { cn } from "@/lib/utils";
 
@@ -27,7 +27,7 @@ function MenuItems({
     width?: number;
     translate?: string;
   }>();
-  const updatePosition = () => {
+  const updatePosition = useCallback(() => {
     const buttonPosition = buttonRef.current?.getBoundingClientRect();
     switch (anchor + " " + align) {
       case "top start":
@@ -87,7 +87,7 @@ function MenuItems({
         });
         break;
     }
-  };
+  }, [align, anchor, buttonRef, width]);
   useEffect(() => {
     updatePosition();
     window.addEventListener("resize", updatePosition);
@@ -97,11 +97,11 @@ function MenuItems({
       window.removeEventListener("resize", updatePosition);
       window.removeEventListener("scroll", updatePosition);
     };
-  }, []);
+  }, [updatePosition]);
 
   useEffect(() => {
     updatePosition();
-  }, [isOpen]);
+  }, [isOpen, updatePosition]);
 
   return (
     isOpen && (
@@ -116,7 +116,7 @@ function MenuItems({
 
         <div
           ref={itemsRef}
-          className={cn("fixed h-fit z-50 rounded-lg shadow", className)}
+          className={cn("fixed z-50 h-fit rounded-lg shadow", className)}
           {...props}
           onClick={(e) => e.stopPropagation()}
           style={style}

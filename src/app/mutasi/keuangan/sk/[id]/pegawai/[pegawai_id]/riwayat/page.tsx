@@ -70,7 +70,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id, pegawai_id]);
 
   return (
     <ContainerCard

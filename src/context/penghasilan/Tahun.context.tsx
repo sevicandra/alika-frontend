@@ -48,7 +48,7 @@ export function TahunProvider({ children }: { children: React.ReactNode }) {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification]);
 
   const contextValue = {
     tahun,

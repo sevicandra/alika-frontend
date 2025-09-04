@@ -71,7 +71,7 @@ export default function Page({
       }
     };
     fetchPegawai();
-  }, [refresh, searchs, currentPage, limit]);
+  }, [refresh, searchs, currentPage, limit, addNotification, id, setError, setLoading, setTotalPage]);
   if (error) throw error;
   return (
     <div className="relative grid grid-rows-[1fr_auto] overflow-hidden">

@@ -71,7 +71,7 @@ export default function Page({
       }
     };
     fetchPegawai();
-  }, [refresh]);
+  }, [refresh, addNotification, pegawai_id, id]);
   if (error) throw error;
   return (
     <ContainerCard

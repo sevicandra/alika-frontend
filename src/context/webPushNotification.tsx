@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, createContext } from "react";
+import { useEffect, useState, createContext, useCallback } from "react";
 import { useNotification } from "./notifikasi";
 
 type WebPushNotificationContextType = {
@@ -25,60 +25,9 @@ export default function WebPushNotificationProvider({
   const { addNotification } = useNotification();
   const [isSupported, setIsSupported] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription | null>(
-    null
+    null,
   );
-  useEffect(() => {
-    if ("serviceWorker" in navigator && "PushManager" in window) {
-      setIsSupported(true);
-      registerServiceWorker();
-    }
-  }, []);
-  useEffect(() => {
-    if (subscription) {
-      const checkSubscriptionStatus = async () => {
-        try {
-          const response = await fetch("/api/Notifikasi/Subscription", {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-Token": await fetch("/api/auth/csrf").then(
-                async (res) => {
-                  const data = await res.json();
-                  return data.token;
-                }
-              ),
-            },
-            body: JSON.stringify({
-              endpoint: subscription.endpoint,
-            }),
-          });
-          if (!response.ok) {
-            const data = await response.json();
-            await subscription?.unsubscribe();
-            setSubscription(null);
-            if (response.status === 404) {
-              return;
-            }
-            await subscribeToPush();
-            throw new Error(data.message);
-          }
-          console.log("User is subscribed.");
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      checkSubscriptionStatus();
-    }
-  }, [subscription]);
-  async function registerServiceWorker() {
-    const registration = await navigator.serviceWorker.register("/sw.js", {
-      scope: "/",
-      updateViaCache: "none",
-    });
-    const sub = await registration.pushManager.getSubscription();
-    setSubscription(sub);
-  }
-  async function subscribeToPush() {
+  const subscribeToPush = useCallback(async () => {
     try {
       const key = await fetch("/api/Notifikasi/Key");
       if (!key.ok) {
@@ -102,14 +51,75 @@ export default function WebPushNotificationProvider({
         },
         body: JSON.stringify(sub),
       });
+      // Fungsi `setSubscription` adalah dependensi dari luar
       setSubscription(sub);
-    } catch (error: any) {
-      addNotification({
-        title: "Push Notification Registration",
-        variant: "error",
-        message: error.message,
-      });
+    } catch (error: unknown) {
+      // Fungsi `addNotification` adalah dependensi dari luar
+      if (error instanceof Error) {
+        addNotification({
+          title: "Push Notification Registration",
+          variant: "error",
+          message: error.message,
+        });
+      } else {
+        addNotification({
+          title: "Push Notification Registration",
+          variant: "error",
+          message: "Internal Server Error",
+        });
+      }
     }
+  }, [setSubscription, addNotification]);
+  useEffect(() => {
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      setIsSupported(true);
+      registerServiceWorker();
+    }
+  }, []);
+  useEffect(() => {
+    if (subscription) {
+      const checkSubscriptionStatus = async () => {
+        try {
+          const response = await fetch("/api/Notifikasi/Subscription", {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-Token": await fetch("/api/auth/csrf").then(
+                async (res) => {
+                  const data = await res.json();
+                  return data.token;
+                },
+              ),
+            },
+            body: JSON.stringify({
+              endpoint: subscription.endpoint,
+            }),
+          });
+          if (!response.ok) {
+            const data = await response.json();
+            await subscription?.unsubscribe();
+            setSubscription(null);
+            if (response.status === 404) {
+              return;
+            }
+            await subscribeToPush();
+            throw new Error(data.message);
+          }
+          console.log("User is subscribed.");
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      checkSubscriptionStatus();
+    }
+  }, [subscription, subscribeToPush]);
+  async function registerServiceWorker() {
+    const registration = await navigator.serviceWorker.register("/sw.js", {
+      scope: "/",
+      updateViaCache: "none",
+    });
+    const sub = await registration.pushManager.getSubscription();
+    setSubscription(sub);
   }
   async function unsubscribeFromPush() {
     if (subscription) {

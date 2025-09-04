@@ -76,7 +76,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, refresh, limit]);
+  }, [currentPage, refresh, limit, addNotification, setTotalPage]);
 
   const HapusData = async () => {
     try {

@@ -86,7 +86,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id, termin_id, setInput]);
 
   return (
     <Form

@@ -52,7 +52,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [currentPage, limit, refresh]);
+  }, [currentPage, limit, refresh, addNotification, setTotalPage]);
 
   return (
     <ContainerCard

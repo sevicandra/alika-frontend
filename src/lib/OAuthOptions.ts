@@ -86,11 +86,18 @@ export class OAuth2 {
         },
       );
       return NextResponse.redirect(new URL(`${process.env.APP_URL}`, req.url));
-    } catch (error: any) {
-      return NextResponse.json(
-        { status: "failed", message: error.message },
-        { status: 500 },
-      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return NextResponse.json(
+          { status: "failed", message: error.message },
+          { status: 500 },
+        );
+      } else {
+        return NextResponse.json(
+          { status: "failed", message: "Internal Server Error" },
+          { status: 500 },
+        );
+      }
     }
   }
 
@@ -152,8 +159,12 @@ export class OAuth2 {
           );
           resolve();
         }
-      } catch (error: any) {
-        reject(error.message);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          reject(error.message);
+        } else {
+          reject("Error refreshing token");
+        }
       }
     });
   }
@@ -267,7 +278,7 @@ export class OAuth2 {
         (await cookies()).delete(`${process.env.APP_NAME}.refresh_token`);
         (await cookies()).delete(`${process.env.APP_NAME}.session`);
         resolve("Signout success");
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("Error signing out:", error);
         reject("Signout failed");
       }

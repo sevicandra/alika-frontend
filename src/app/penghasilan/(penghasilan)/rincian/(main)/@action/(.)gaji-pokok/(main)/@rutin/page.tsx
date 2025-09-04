@@ -82,7 +82,7 @@ const Page = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, tahun]);
   if (error) throw error;
   return (
     <>

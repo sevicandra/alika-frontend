@@ -54,7 +54,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id, data_id]);
 
   if (error) throw error;
   return (

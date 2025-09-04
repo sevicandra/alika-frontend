@@ -82,7 +82,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [id, setInput]);
 
   if (error) throw error;
   return (

@@ -110,7 +110,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id]);
 
   const submitReview = async () => {
     if (confirm("Apakah anda yakin?")) {

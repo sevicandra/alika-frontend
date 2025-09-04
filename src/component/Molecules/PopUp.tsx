@@ -28,7 +28,7 @@ export default function PopUp({
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [router]);
   return (
     <div
       className={cn(

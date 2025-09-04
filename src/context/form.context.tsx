@@ -1,5 +1,11 @@
 "use client";
-import { createContext, useState, useMemo, useContext } from "react";
+import {
+  createContext,
+  useState,
+  useMemo,
+  useContext,
+  useCallback,
+} from "react";
 type FormContextType = {
   input: { [key: string]: any };
   setInput: (input: { [key: string]: any }) => void;
@@ -27,9 +33,12 @@ export function FormProvider({ children }: { children: React.ReactNode }) {
       message: string;
     }[]
   >([]);
-  const getValidationError = (field: string) => {
-    return validationErrors.find((e) => e.field === field);
-  };
+  const getValidationError = useCallback(
+    (field: string) => {
+      return validationErrors.find((e) => e.field === field);
+    },
+    [validationErrors],
+  );
 
   const value = useMemo(
     () => ({
@@ -38,7 +47,7 @@ export function FormProvider({ children }: { children: React.ReactNode }) {
       getValidationError,
       setValidationErrors,
     }),
-    [input, validationErrors],
+    [input, getValidationError],
   );
   return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
 }

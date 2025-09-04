@@ -72,7 +72,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id]);
   return (
     <ContainerCard
       title="Dokumen Pembayaran"

@@ -51,7 +51,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [refresh]);
+  }, [refresh, id]);
 
   useEffect(() => {
     const fetchData = async () => {

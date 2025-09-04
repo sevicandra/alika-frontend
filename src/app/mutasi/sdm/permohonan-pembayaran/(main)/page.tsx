@@ -12,8 +12,7 @@ import Icon from "@/component/Atoms/LabelIcon";
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
-  const { refresh, searchs, searchsTerm, setSearchsTerm } =
-    useTable();
+  const { refresh, searchs, searchsTerm, setSearchsTerm } = useTable();
 
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [data, setData] = useState<
@@ -91,7 +90,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [refresh, searchs, limit, currentPage]);
+  }, [refresh, searchs, limit, currentPage, addNotification, setTotalPage]);
 
   return (
     <ContainerCard

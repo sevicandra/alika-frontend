@@ -60,8 +60,8 @@ export default function Page({
       const searchParams = new URLSearchParams();
       if (limit) searchParams.append("limit", limit.toString());
       if (offset) searchParams.append("offset", offset.toString());
-      const {search} = searchs;
-      const {dataKeluarga, dataBiaya, dataTermin} = filter;
+      const { search } = searchs;
+      const { dataKeluarga, dataBiaya, dataTermin } = filter;
       if (search) searchParams.append("search", search);
       if (dataKeluarga) searchParams.append("process_keluarga", dataKeluarga);
       if (dataBiaya) searchParams.append("process_biaya", dataBiaya);
@@ -93,7 +93,16 @@ export default function Page({
       }
     };
     fetchPegawai();
-  }, [refresh, searchs, currentPage, filter, limit]);
+  }, [
+    refresh,
+    searchs,
+    currentPage,
+    filter,
+    limit,
+    addNotification,
+    id,
+    setTotalPage,
+  ]);
 
   if (error) throw error;
   return (
@@ -102,7 +111,9 @@ export default function Page({
       headerRight={
         <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
           <input
-            onChange={(e) => setSearchsTerm({ ...searchsTerm, search: e.target.value})}
+            onChange={(e) =>
+              setSearchsTerm({ ...searchsTerm, search: e.target.value })
+            }
             type="text"
             className="input-bordered input input-xs focus:outline-none"
             placeholder="Cari berdasarkan Nama / NIP"
@@ -110,7 +121,9 @@ export default function Page({
           />
           <select
             className="select-bordered select select-xs focus:outline-none"
-            onChange={(e) => setFilter({...filter, dataKeluarga: e.target.value})}
+            onChange={(e) =>
+              setFilter({ ...filter, dataKeluarga: e.target.value })
+            }
             value={filter.dataKeluarga || ""}
           >
             <option value="">Semua Status Data Keluarga</option>
@@ -122,7 +135,9 @@ export default function Page({
           </select>
           <select
             className="select-bordered select select-xs focus:outline-none"
-            onChange={(e) => setFilter({...filter, dataBiaya: e.target.value})}
+            onChange={(e) =>
+              setFilter({ ...filter, dataBiaya: e.target.value })
+            }
             value={filter.dataBiaya || ""}
           >
             <option value="">Semua Status Rincian Biaya</option>
@@ -134,7 +149,9 @@ export default function Page({
           </select>
           <select
             className="select-bordered select select-xs focus:outline-none"
-            onChange={(e) => setSearchsTerm({...searchsTerm, dataTermin: e.target.value})}
+            onChange={(e) =>
+              setSearchsTerm({ ...searchsTerm, dataTermin: e.target.value })
+            }
             value={filter.dataTermin || ""}
           >
             <option value="">Semua Status Termin</option>

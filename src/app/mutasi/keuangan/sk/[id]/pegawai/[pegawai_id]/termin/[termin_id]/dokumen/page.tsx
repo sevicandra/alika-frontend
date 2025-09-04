@@ -50,7 +50,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, id, pegawai_id, termin_id]);
   return (
     <ContainerCard
       title="Dokumen Pembayaran"

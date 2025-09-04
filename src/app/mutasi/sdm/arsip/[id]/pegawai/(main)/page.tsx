@@ -85,7 +85,7 @@ export default function Page({
       }
     };
     fetchPegawai();
-  }, [refresh, searchs, currentPage, limit]);
+  }, [refresh, searchs, currentPage, limit, addNotification, id, setTotalPage]);
 
   if (error) throw error;
   return (

@@ -67,7 +67,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, mutasi_id, pembayaran_id, dokumen_id]);
 
   if (error) throw error;
   return (

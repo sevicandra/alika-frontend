@@ -53,7 +53,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification, mutasi_id, riwayat_id]);
 
   return (
     <div className="relative h-full w-full overflow-hidden rounded-box text-neutral-content shadow">

@@ -64,7 +64,7 @@ export default function Page({
     };
 
     fetchData();
-  }, []);
+  }, [addNotification]);
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
