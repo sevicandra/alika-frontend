@@ -1,5 +1,12 @@
 "use client";
-import { createContext, useState, useEffect, useContext } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useMemo,
+  useCallback,
+} from "react";
 
 type PaginatorContextType = {
   page: number;
@@ -22,47 +29,50 @@ export function PaginatorProvider({ children }: { children: React.ReactNode }) {
   const [totalPage, setTotalPage] = useState(1);
   const [onEachSide, setOnEachSide] = useState(2);
 
-  const setCurrentPage = (page: number) => {
-    if (page > totalPage) {
-      setPage(totalPage);
-      return;
-    }
-    if (page < 1) {
-      setPage(1);
-      return;
-    }
-    setPage(page);
-  };
+  const setCurrentPage = useCallback(
+    (page: number) => {
+      if (page > totalPage) {
+        setPage(totalPage);
+      } else if (page < 1) {
+        setPage(1);
+      } else {
+        setPage(page);
+      }
+    },
+    [totalPage],
+  );
 
-  const setCurrentTotalPage = (totalPage: number) => {
+  const setCurrentTotalPage = useCallback((totalPage: number) => {
     if (totalPage < 1) {
       setTotalPage(1);
-      return;
+    } else {
+      setTotalPage(totalPage);
     }
-    setTotalPage(totalPage);
-  };
+  }, []);
 
   useEffect(() => {
     if (page > totalPage) {
       setPage(totalPage);
     }
   }, [totalPage, page]);
-
-  const contextValue = {
-    page,
-    setPage: setCurrentPage,
-    limit,
-    setLimit,
-    totalPage,
-    setTotalPage: setCurrentTotalPage,
-    onEachSide,
-    setOnEachSide(page: number) {
-      setOnEachSide(page);
-    },
-  };
+  const value = useMemo(
+    () => ({
+      page,
+      setPage: setCurrentPage,
+      limit,
+      setLimit,
+      totalPage,
+      setTotalPage: setCurrentTotalPage,
+      onEachSide,
+      setOnEachSide(page: number) {
+        setOnEachSide(page);
+      },
+    }),
+    [limit, onEachSide, page, totalPage, setCurrentPage, setCurrentTotalPage],
+  );
 
   return (
-    <PaginatorContext.Provider value={contextValue}>
+    <PaginatorContext.Provider value={value}>
       {children}
     </PaginatorContext.Provider>
   );

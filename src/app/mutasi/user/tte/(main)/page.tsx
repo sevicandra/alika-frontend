@@ -56,9 +56,7 @@ export default function Page() {
           variant: "error",
         });
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
+        setLoading(false);
       }
     };
     fetchData();

@@ -70,16 +70,13 @@ export default function Page() {
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
-        console.log(error);
         addNotification({
           title: `Surat Keputusan`,
           message: (error as Error).message,
           variant: "error",
         });
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
+        setLoading(false);
       }
     };
     fetchData();

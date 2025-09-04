@@ -24,9 +24,8 @@ export const TableProvider = ({ children }: { children: React.ReactNode }) => {
   const setRefresh = () => setRefreshState((prev) => prev + 1);
   useEffect(() => {
     const handler = setTimeout(() => {
-      setSearchs(searchsTerm);
+      if (Object.keys(searchsTerm).length > 0) setSearchs(searchsTerm);
     }, 500);
-
     return () => {
       clearTimeout(handler);
     };

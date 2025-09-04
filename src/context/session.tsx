@@ -73,7 +73,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
         ),
       };
     });
-  }, [setSession]);
+  }, []);
   const fetchSession = useCallback(async () => {
     try {
       setStatus("loading");
@@ -94,16 +94,20 @@ export function SessionProvider({ children }: SessionProviderProps) {
         account: data.account,
       });
       setStatus(data.user ? "authenticated" : "unauthenticated");
-      sessionChannel.postMessage({
-        type: "SESSION_UPDATE",
-        session: session,
-      });
     } catch (error) {
       console.error(error);
       setSession(null);
       setStatus("unauthenticated");
     }
-  }, [setSession, setStatus, session]);
+  }, []);
+
+  useEffect(() => {
+    sessionChannel.postMessage({
+      type: "SESSION_UPDATE",
+      session: session,
+    });
+  }, [session]);
+
   const signOut = useCallback(async () => {
     try {
       const csrf_token = await fetch("/api/auth/csrf").then((res) =>
@@ -129,7 +133,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
     } catch (error) {
       console.error(error);
     }
-  }, [setSession, setStatus]);
+  }, []);
   useEffect(() => {
     fetchSession();
   }, [pathname, fetchSession]);
