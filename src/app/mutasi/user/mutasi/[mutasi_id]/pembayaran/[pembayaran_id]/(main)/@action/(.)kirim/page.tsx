@@ -39,7 +39,7 @@ export default function Page({
           },
           method: "POST",
           body: JSON.stringify({
-            passphrase: input.passpharse,
+            passphrase: input.passphrase,
             confirmation: input.confirmation,
           }),
         },

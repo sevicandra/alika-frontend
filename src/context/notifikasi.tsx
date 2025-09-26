@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 type NotificationContextType = {
@@ -13,7 +13,7 @@ type NotificationContextType = {
   addNotification: ({
     message,
     title,
-    variant
+    variant,
   }: {
     message: string;
     title: string;
@@ -45,20 +45,29 @@ export function NotificationProvider({
     }[]
   >([]);
 
-  const addNotification = ({
-    message,
-    title,
-    variant,
-  }: {
-    message: string;
-    title: string;
-    variant?: "info" | "error" | "success" | "warning";
-  }) => {
-    setNotification((notification) => [
-      ...notification,
-      { id: uuidv4(), message, title, show: true, variant: variant || "info" },
-    ]);
-  };
+  const addNotification = useCallback(
+    ({
+      message,
+      title,
+      variant,
+    }: {
+      message: string;
+      title: string;
+      variant?: "info" | "error" | "success" | "warning";
+    }) => {
+      setNotification((notification) => [
+        ...notification,
+        {
+          id: uuidv4(),
+          message,
+          title,
+          show: true,
+          variant: variant || "info",
+        },
+      ]);
+    },
+    [],
+  );
 
   const clearNotification = (id: string) => {
     setNotification(notification.filter((n) => n.id !== id));
@@ -71,7 +80,7 @@ export function NotificationProvider({
           n.show = false;
         }
         return n;
-      })
+      }),
     );
   };
 
@@ -93,7 +102,7 @@ export function useNotification() {
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error(
-      "useNotification must be used within a NotificationProvider" // Pesan error sudah benar, tidak perlu diubah jika nama komponen provider diubah.
+      "useNotification must be used within a NotificationProvider", // Pesan error sudah benar, tidak perlu diubah jika nama komponen provider diubah.
     );
   }
   return context;
