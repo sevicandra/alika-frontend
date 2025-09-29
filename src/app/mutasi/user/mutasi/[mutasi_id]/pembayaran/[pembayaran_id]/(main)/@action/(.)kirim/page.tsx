@@ -45,11 +45,11 @@ export default function Page({
         },
       );
       if (!res.ok) {
-        const { message, errors } = await res.json();
+        const { errors } = await res.json();
         if (res.status === 422) {
           setValidationErrors(errors);
         }
-        throw new Error(message);
+        throw new Error(errors.message);
       }
       addNotification({
         message: `Kirim Tagihan berhasil dibuat`,
