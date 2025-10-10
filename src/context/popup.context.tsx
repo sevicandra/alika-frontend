@@ -20,18 +20,20 @@ export function PopUpProvider({ children }: { children: React.ReactNode }) {
   );
 
   function onClick() {
-    backdropRef.current?.classList.add("scale-105");
+    backdropRef.current?.classList.add("animate-shake");
     backdropRef.current?.classList.add("shadow-error/50");
     backdropRef.current?.classList.add("shadow-[0_0_10px]");
     baseRef.current?.classList.add("inset-shadow-[0_0_20px]");
     baseRef.current?.classList.add("inset-shadow-error");
+    baseRef.current?.classList.add("bg-error/10");
 
     setTimeout(() => {
-      backdropRef.current?.classList.remove("scale-105");
+      backdropRef.current?.classList.remove("animate-shake");
       backdropRef.current?.classList.remove("shadow-error/50");
       backdropRef.current?.classList.remove("shadow-[0_0_10px]");
       baseRef.current?.classList.remove("inset-shadow-[0_0_20px]");
       baseRef.current?.classList.remove("inset-shadow-error");
+      baseRef.current?.classList.remove("bg-error/10");
     }, 300);
   }
 

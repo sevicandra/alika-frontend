@@ -99,7 +99,7 @@ export default function Page({
     };
 
     fetchPegawai();
-  }, [id, pegawai_id]);
+  }, [id, pegawai_id, setInput]);
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
