@@ -2,21 +2,42 @@
 import { createContext, useState, useMemo, useContext, useEffect } from "react";
 type PembayaranDetailData = {
   id: string;
-  sk_id: string;
-  kantor_asal: string;
-  kantor_tujuan: string;
-  nip: string;
-  nama: string;
-  golongan: string;
-  status: string;
-  SuratKeputusan: {
-    nomor: string;
-    tanggal: string;
-    status: string;
-  };
-  CurrentSanggah?: {
+  ref_termin: string;
+  pegawai_id: string;
+  tahun: string;
+  nominal: number;
+  status:
+    | "DRAFT"
+    | "PENDING"
+    | "WAITING_APPROVAL"
+    | "WAITING_APPROVAL_SDM"
+    | "APPROVED_SDM"
+    | "WAITING_APPROVAL_KEU"
+    | "APPROVED_KEU"
+    | "PAID"
+    | "REJECTED";
+  admin_notes: string;
+  submitted_at: Date | null;
+  reviewed_at: Date | null;
+  created_at: Date;
+  Pegawai: {
+    nip: string;
+    nama: string;
     id: string;
   };
+  DokumenTermin: {
+    id: string;
+    termin_id: string;
+    document_type: string;
+    file: string | null;
+    required: boolean;
+    uploadable: boolean;
+    process: "IDLE" | "PROCESSING";
+    processed_by: string;
+  }[];
+  Ref:{
+    nama: string;
+  }
 };
 
 type PembayaranDetailContextType = {

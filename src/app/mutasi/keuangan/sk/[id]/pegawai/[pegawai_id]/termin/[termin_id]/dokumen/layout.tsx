@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { usePathname } from "next/navigation";
+import { usePegawaiDetail, useSkDetail, useTerminDetail } from "@/context/mutasi/keu";
 
 export default function Layout({
   children,
@@ -15,6 +16,9 @@ export default function Layout({
 }) {
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean).slice(2);
+  const { data: pegawai } = usePegawaiDetail();
+  const { data: suratKeputusan } = useSkDetail();
+  const { data: termin } = useTerminDetail();
 
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">
@@ -22,9 +26,26 @@ export default function Layout({
         <Breadcrumb
           data={pathSegments.map((segment, index) => {
             let label;
+            if (pathSegments[index - 1] === "sk") {
+              return {
+                name: suratKeputusan
+                  ? suratKeputusan.nomor.toLocaleUpperCase()
+                  : "Surat Keputusan",
+              };
+            }
+            if (pathSegments[index - 1] === "pegawai") {
+              return {
+                name: pegawai ? pegawai.nama.toLocaleUpperCase() : "Pegawai",
+              };
+            }
+            if (pathSegments[index - 1] === "termin") {
+              return {
+                name: termin ? termin.Ref.nama.toLocaleUpperCase() : "Termin",
+              };
+            }
             return {
               name: label || segment.replace(/-/g, " ").toUpperCase(),
-              href: `/mutasi/sdm/${pathSegments.slice(0, index + 1).join("/")}`,
+              href: `/mutasi/keuangan/${pathSegments.slice(0, index + 1).join("/")}`,
             };
           })}
           renderRow={(row, index) => (
@@ -32,7 +53,7 @@ export default function Layout({
               {row.href ? (
                 <Link href={row.href}>{row.name}</Link>
               ) : (
-                <span>{row.name}</span>
+                <span className="hover:cursor-not-allowed">{row.name}</span>
               )}
             </li>
           )}

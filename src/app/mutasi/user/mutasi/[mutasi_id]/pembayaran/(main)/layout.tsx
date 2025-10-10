@@ -39,7 +39,7 @@ export default function Layout({
               {row.href ? (
                 <Link href={row.href}>{row.name}</Link>
               ) : (
-                <span>{row.name}</span>
+                <span className="hover:cursor-not-allowed">{row.name}</span>
               )}
             </li>
           )}

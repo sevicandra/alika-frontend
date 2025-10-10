@@ -21,7 +21,7 @@ export default function Layout({
         <Breadcrumb
           data={pathSegments.map((segment, index) => ({
             name: segment.replace(/-/g, " ").toUpperCase(),
-            href: `/mutasi/sdm/${pathSegments.slice(0, index + 1).join("/")}`,
+            href: `/mutasi/keuangan/${pathSegments.slice(0, index + 1).join("/")}`,
           }))}
           renderRow={(row, index) => (
             <li key={index}>

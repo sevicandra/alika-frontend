@@ -1,14 +1,9 @@
 "use client";
-import { useRouter } from "next/navigation";
-
+import PopUp from "@/component/Molecules/PopUp";
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   return (
-    <div
-      onClick={() => router.back()}
-      className="fixed inset-0 z-50 grid place-items-center overflow-hidden p-2 shadow-sm backdrop-blur-xs md:p-8"
-    >
+    <PopUp title="" className="mt-0 w-6xl">
       {children}
-    </div>
+    </PopUp>
   );
 }

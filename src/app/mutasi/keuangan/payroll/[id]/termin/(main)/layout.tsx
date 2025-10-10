@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { PayrollProvider } from "@/context/mutasi/keu";
 import { usePaginator } from "@/context/paginator";
 import Paginator from "@/component/Organisms/Paginator";
+import { useSkDetail } from "@/context/mutasi/keu";
 
 export default function Layout({
   children,
@@ -22,12 +23,20 @@ export default function Layout({
   const pathSegments = pathname.split("/").filter(Boolean).slice(2);
   const { totalPage } = usePaginator();
   const { id } = use(params);
+  const { data: suratKeputusan } = useSkDetail();
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">
       <div className="mx-4 mt-4 overflow-x-auto pr-4">
         <Breadcrumb
           data={pathSegments.map((segment, index) => {
             let label;
+            if (pathSegments[index - 1] === "payroll") {
+              return {
+                name: suratKeputusan
+                  ? suratKeputusan.nomor.toUpperCase()
+                  : "Surat Keputusan",
+              };
+            }
             return {
               name: label || segment.replace(/-/g, " ").toUpperCase(),
               href: `/mutasi/keuangan/${pathSegments.slice(0, index + 1).join("/")}`,

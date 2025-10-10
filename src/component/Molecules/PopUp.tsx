@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import Icon from "@/component/Atoms/LabelIcon";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { usePopUp } from "@/context/popup.context";
 
 type PopUpProps = React.HTMLAttributes<HTMLDivElement> & {
   title: string;
@@ -29,6 +30,7 @@ export default function PopUp({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [router]);
+  const { backdropRef } = usePopUp();
   return (
     <div
       className={cn(
@@ -37,6 +39,7 @@ export default function PopUp({
       )}
       onClick={(e) => e.stopPropagation()}
       {...props}
+      ref={backdropRef}
     >
       <div className="flex items-center justify-between bg-primary p-2 text-primary-content">
         <div className="w-8" />

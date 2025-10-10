@@ -40,7 +40,7 @@ export default function Layout({
             }
             return {
               name: label || segment.replace(/-/g, " ").toUpperCase(),
-              href: `/mutasi/arsip/${pathSegments.slice(0, index + 1).join("/")}`,
+              href: `/mutasi/sdm/${pathSegments.slice(0, index + 1).join("/")}`,
             };
           })}
           renderRow={(row, index) => (
@@ -48,7 +48,7 @@ export default function Layout({
               {row.href ? (
                 <Link href={row.href}>{row.name}</Link>
               ) : (
-                <span>{row.name}</span>
+                <span className="hover:cursor-not-allowed">{row.name}</span>
               )}
             </li>
           )}

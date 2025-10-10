@@ -1,35 +1,16 @@
-"use client";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import Breadcrumb from "@/component/Molecules/Breadcrumb";
-
-export default function Layout({
+"use server";
+import { MutasiDetailProvider } from "@/context/mutasi/user";
+export default async function Layout({
   children,
-  action,
+  params,
 }: {
   children: React.ReactNode;
-  action: React.ReactNode;
+  params: Promise<{ mutasi_id: string }>;
 }) {
-  const pathname = usePathname();
-  const pathSegments = pathname.split("/").filter(Boolean).slice(2);
+  const { mutasi_id } = await params;
   return (
-    <div className="grid h-full max-h-full grid-rows-[auto_1fr_auto] gap-2 overflow-hidden">
-      <div className="mx-4 mt-4 overflow-x-auto pr-4">
-        <Breadcrumb
-          data={pathSegments.map((segment, index) => ({
-            name: segment.replace(/-/g, " ").toUpperCase(),
-            href: `/mutasi/user/${pathSegments.slice(0, index + 1).join("/")}`,
-          }))}
-          renderRow={(row, index) => (
-            <li key={index}>
-              <Link href={row.href}>{row.name}</Link>
-            </li>
-          )}
-        />
-      </div>
+    <MutasiDetailProvider mutasi_id={mutasi_id}>
       {children}
-      {action}
-      <div className="mx-4 mb-4 flex justify-between"></div>
-    </div>
+    </MutasiDetailProvider>
   );
 }

@@ -2,7 +2,6 @@
 import Preview from "@/component/Organisms/PdfViewer";
 import { use, useState, useEffect } from "react";
 import { useNotification } from "@/context/notifikasi";
-import { FiX } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import Tte from "@/component/Molecules/Tte";
 import Confirmation from "@/component/Molecules/Confirmation";
@@ -183,12 +182,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       onClick={(e) => e.stopPropagation()}
     >
       <div className="flex flex-wrap justify-between gap-1">
-        <div>
-          <button onClick={() => router.back()} className="btn btn-sm">
-            <FiX className="text-sm" />
-            <p className="hidden md:block">Kembali</p>
-          </button>
-        </div>
+        <div></div>
         <div>
           {data.status === 0 && (
             <div className="flex gap-2">

@@ -38,6 +38,9 @@ export default function Layout({
       status: "PENDING" | "PROCESS" | "SIGNED" | "FAILED";
     };
   }>();
+  const [children, setChildren] = useState<"Kantor_Asal" | "Kantor_Tujuan">(
+    "Kantor_Asal",
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,67 +71,93 @@ export default function Layout({
           kdSatkerAsal={mutasi.kantor_asal}
           kdSatkerTujuan={mutasi.kantor_tujuan}
         >
-          {data && !data.KantorAsal.penandatangan && SetAsal}
-          {data && data.KantorAsal.penandatangan && (
-            <div>
-              <div className="p-4">
-                <label className="label">
-                  <span className="label-text font-semibold text-base-content">
-                    Penandatangan SPD Keberangkatan:
-                  </span>
-                </label>
-                <div className="form-control px-4">
-                  <label className="label">
-                    <span className="label-text font-semibold text-base-content">
-                      Nama: {data.KantorAsal.nama}
-                    </span>
-                  </label>
-                </div>
-                <div className="form-control px-4">
-                  <label className="label">
-                    <span className="label-text font-semibold text-base-content">
-                      NIP: {data.KantorAsal.nip}
-                    </span>
-                  </label>
-                </div>
-              </div>
-              {data &&
-                (data.KantorAsal.status === "FAILED" ||
-                  data.KantorAsal.status === "PENDING") &&
-                ResetAsal}
+          <div className="flex flex-col px-2 py-4">
+            <div className="flex justify-stretch">
+              <button
+                className={`btn grow btn-outline btn-xs btn-info ${children === "Kantor_Asal" ? "btn-active" : ""}`}
+                onClick={() => setChildren("Kantor_Asal")}
+              >
+                Kantor Asal
+              </button>
+              <button
+                className={`btn grow btn-outline btn-xs btn-info ${children === "Kantor_Tujuan" ? "btn-active" : ""}`}
+                onClick={() => setChildren("Kantor_Tujuan")}
+              >
+                Kantor Tujuan
+              </button>
             </div>
-          )}
-
-          {(data && data.KantorAsal.status === "SIGNED" && !data.KantorTujuan.penandatangan) && SetTujuan}
-          {data && data.KantorTujuan.penandatangan && (
             <div>
-              <div className="p-4">
-                <label className="label">
-                  <span className="label-text font-semibold text-base-content">
-                    Penandatangan SPD Kedatangan:
-                  </span>
-                </label>
-                <div className="form-control px-4">
-                  <label className="label">
-                    <span className="label-text font-semibold text-base-content">
-                      Nama: {data.KantorTujuan.nama}
-                    </span>
-                  </label>
+              {data ? (
+                children === "Kantor_Asal" ? (
+                  !data.KantorAsal.penandatangan ? (
+                    SetAsal
+                  ) : (
+                    <div>
+                      <div className="p-4">
+                        <label className="label">
+                          <span className="label-text font-semibold text-base-content">
+                            Penandatangan SPD Keberangkatan:
+                          </span>
+                        </label>
+                        <div className="form-control px-4">
+                          <label className="label">
+                            <span className="label-text font-semibold text-base-content">
+                              Nama: {data.KantorAsal.nama}
+                            </span>
+                          </label>
+                        </div>
+                        <div className="form-control px-4">
+                          <label className="label">
+                            <span className="label-text font-semibold text-base-content">
+                              NIP: {data.KantorAsal.nip}
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                      {data &&
+                        (data.KantorAsal.status === "FAILED" ||
+                          data.KantorAsal.status === "PENDING") &&
+                        ResetAsal}
+                    </div>
+                  )
+                ) : !data.KantorTujuan.penandatangan ? (
+                  SetTujuan
+                ) : (
+                  <div>
+                    <div className="p-4">
+                      <label className="label">
+                        <span className="label-text font-semibold text-base-content">
+                          Penandatangan SPD Kedatangan:
+                        </span>
+                      </label>
+                      <div className="form-control px-4">
+                        <label className="label">
+                          <span className="label-text font-semibold text-base-content">
+                            Nama: {data.KantorTujuan.nama}
+                          </span>
+                        </label>
+                      </div>
+                      <div className="form-control px-4">
+                        <label className="label">
+                          <span className="label-text font-semibold text-base-content">
+                            NIP: {data.KantorTujuan.nip}
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                    {data &&
+                      (data.KantorTujuan.status === "FAILED" ||
+                        data.KantorTujuan.status === "PENDING") &&
+                      ResetTujuan}
+                  </div>
+                )
+              ) : (
+                <div className="flex justify-center p-4">
+                  <span className="loading loading-spinner"></span>
                 </div>
-                <div className="form-control px-4">
-                  <label className="label">
-                    <span className="label-text font-semibold text-base-content">
-                      NIP: {data.KantorTujuan.nip}
-                    </span>
-                  </label>
-                </div>
-              </div>
-              {data &&
-                (data.KantorTujuan.status === "FAILED" ||
-                  data.KantorTujuan.status === "PENDING") &&
-                ResetTujuan}
+              )}
             </div>
-          )}
+          </div>
         </PenandatanganProvider>
       )}
     </PopUp>
