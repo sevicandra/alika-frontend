@@ -3,28 +3,21 @@ import { useState, use } from "react";
 import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
-import Loading from "@/component/Molecules/Loading";
+import { useForm } from "@/context/form.context";
+import Icon from "@/component/Atoms/LabelIcon";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = use(params);
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const { setRefresh } = useTable();
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<{
-    tahun_lunas: string;
-  }>({
-    tahun_lunas: "",
-  });
-  const [validationErrors, setValidationErrors] = useState<
-    {
-      field: string | null;
-      message: string;
-    }[]
-  >([]);
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (loading) return;
     try {
       setLoading(true);
       const res = await fetch(
@@ -40,7 +33,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           method: "POST",
           body: JSON.stringify({
             type: "LUNAS",
-            tahun_lunas: data.tahun_lunas,
+            tahun_lunas: input.tahun_lunas,
           }),
         },
       );
@@ -70,43 +63,66 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <>
-      {loading && (
-        <div className="absolute z-10 flex h-full w-full text-primary-600">
-          <Loading />
-        </div>
-      )}
       <form onSubmit={submitForm}>
-        <fieldset className="fieldset">
-          <legend className="fieldset-legend text-base-content">
-            Input Mekanisme Sekaligus
-          </legend>
-
-          <label className="label text-base-content after:text-error after:content-['*']">
-            Tahun Anggaran:
-          </label>
-          <input
-            type="text"
-            inputMode="numeric"
-            className={`input input-sm w-full bg-base-300 focus:outline-none ${validationErrors.find((e) => e.field === "tahun_lunas") ? "border-error text-error" : "border-base-content/20 text-base-content"}`}
-            placeholder="Masukkan harga satuan"
-            name="tahun_lunas"
-            autoComplete="off"
-            required
-            value={data.tahun_lunas}
-            onChange={(e) => {
-              setData({ ...data, tahun_lunas: e.target.value });
-            }}
-          />
-          {validationErrors.find((e) => e.field === "tahun_lunas") && (
-            <p className="label font-bold text-error">
-              {validationErrors.find((e) => e.field === "tahun_lunas")?.message}
-            </p>
-          )}
-
-          <button type="submit" className="btn mt-4 btn-sm btn-accent">
-            Submit
-          </button>
-        </fieldset>
+        <div className="">
+          <div className="p-4">
+            {/* --- Field Tahun --- */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold">
+                  Tahun Anggaran:
+                </span>
+              </label>
+              <div className="relative">
+                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+                  <Icon icon="FileText" height={20} />
+                </span>
+                <input
+                  type="text"
+                  name="tahun_lunas"
+                  className={`input-bordered input w-full pl-10 ${getValidationError("tahun_lunas") ? "input-error" : ""}`}
+                  required
+                  value={input.tahun_lunas || ""}
+                  onChange={(e) =>
+                    setInput({ ...input, tahun_lunas: e.target.value })
+                  }
+                  autoComplete="off"
+                  placeholder="Masukkan tahun anggaran"
+                  inputMode="numeric"
+                />
+              </div>
+              {getValidationError("tahun_lunas") && (
+                <label className="label">
+                  <span className="label-text-alt flex items-center gap-1 text-error">
+                    <Icon icon="CircleAlert" height={16} />{" "}
+                    {getValidationError("tahun_lunas")?.message}
+                  </span>
+                </label>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
+            <button
+              className="btn btn-ghost"
+              onClick={router.back}
+              disabled={loading}
+              type="button"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              className={`btn btn-success`}
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Lanjutkan"
+              )}
+            </button>
+          </div>
+        </div>
       </form>
     </>
   );

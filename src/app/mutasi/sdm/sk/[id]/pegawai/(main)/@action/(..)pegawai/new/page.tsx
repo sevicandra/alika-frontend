@@ -75,7 +75,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
+    if(loading) return;
     try {
       setLoading(true);
       const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai`, {

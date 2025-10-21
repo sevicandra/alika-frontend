@@ -100,7 +100,6 @@ const Page = () => {
         setLoading(false);
       }
     };
-    fetchData();
     if (tahun) {
       fetchData();
     }

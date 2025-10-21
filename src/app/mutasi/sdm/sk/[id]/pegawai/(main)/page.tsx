@@ -150,7 +150,7 @@ export default function Page({
           <select
             className="select-bordered select select-xs focus:outline-none"
             onChange={(e) =>
-              setSearchsTerm({ ...searchsTerm, dataTermin: e.target.value })
+              setFilter({ ...filter, dataTermin: e.target.value })
             }
             value={filter.dataTermin || ""}
           >

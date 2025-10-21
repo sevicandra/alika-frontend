@@ -27,6 +27,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if(loading) return;
     if (!file) {
       setValidationErrors([{ field: "file", message: "File belum dipilih." }]);
       addNotification({

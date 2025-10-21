@@ -13,6 +13,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const [loading, setLoading] = useState(false);
 
   async function submitForm() {
+    if(loading) return;
     try {
       setLoading(true);
       const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/Hitung`, {
