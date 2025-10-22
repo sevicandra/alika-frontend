@@ -33,9 +33,9 @@ const Page = () => {
         data.sort((a: any, b: any) => {
           return b.tahun - a.tahun;
         });
-        while (data[0].tahun != new Date().getFullYear() - 1) {
-          data.unshift({ tahun: `${Number(data[0].tahun) + 1}` });
-        }
+        // while (data[0].tahun != new Date().getFullYear() - 1) {
+        //   data.unshift({ tahun: `${Number(data[0].tahun) + 1}` });
+        // }
         setTahuns(data);
         setTahun(
           data

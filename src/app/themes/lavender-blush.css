@@ -1,0 +1,83 @@
+@plugin "daisyui/theme" {
+  name: "lavender-blush";
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #fff0f5;
+  --color-base-200: #fde4ee;
+  --color-base-300: #fcd8e7;
+  --color-base-content: #5c2751;
+
+  --color-primary: #c3aed6;
+  --color-primary-content: #2a2438;
+
+  --color-secondary: #db7093;
+  --color-secondary-content: #ffffff;
+
+  --color-accent: #9370db;
+  --color-accent-content: #ffffff;
+
+  --color-neutral: #7d5a83;
+  --color-neutral-content: #ffffff;
+
+  --color-info: #8e9aaf;
+  --color-info-content: #ffffff;
+
+  --color-success: #98c9a3;
+  --color-success-content: #112a17;
+
+  --color-warning: #f7d1ba;
+  --color-warning-content: #4a301e;
+
+  --color-error: #d90429;
+  --color-error-content: #ffffff;
+  /* Color Degradation */
+  --color-primary-50: color-mix(in srgb, var(--color-primary) 10%, white);
+  --color-primary-100: color-mix(in srgb, var(--color-primary) 30%, white);
+  --color-primary-200: color-mix(in srgb, var(--color-primary) 50%, white);
+  --color-primary-300: color-mix(in srgb, var(--color-primary) 70%, white);
+  --color-primary-400: color-mix(in srgb, var(--color-primary) 90%, white);
+  --color-primary-500: var(--color-primary);
+  --color-primary-600: color-mix(in srgb, var(--color-primary) 90%, black);
+  --color-primary-700: color-mix(in srgb, var(--color-primary) 80%, black);
+  --color-primary-800: color-mix(in srgb, var(--color-primary) 70%, black);
+  --color-primary-900: color-mix(in srgb, var(--color-primary) 60%, black);
+  --color-primary-950: color-mix(in srgb, var(--color-primary) 50%, black);
+
+  --color-secondary-50: color-mix(in srgb, var(--color-secondary) 10%, white);
+  --color-secondary-100: color-mix(in srgb, var(--color-secondary) 30%, white);
+  --color-secondary-200: color-mix(in srgb, var(--color-secondary) 50%, white);
+  --color-secondary-300: color-mix(in srgb, var(--color-secondary) 70%, white);
+  --color-secondary-400: color-mix(in srgb, var(--color-secondary) 90%, white);
+  --color-secondary-500: var(--color-secondary);
+  --color-secondary-600: color-mix(in srgb, var(--color-secondary) 90%, black);
+  --color-secondary-700: color-mix(in srgb, var(--color-secondary) 80%, black);
+  --color-secondary-800: color-mix(in srgb, var(--color-secondary) 70%, black);
+  --color-secondary-900: color-mix(in srgb, var(--color-secondary) 60%, black);
+  --color-secondary-950: color-mix(in srgb, var(--color-secondary) 50%, black);
+
+  --color-accent-50: color-mix(in srgb, var(--color-accent) 10%, white);
+  --color-accent-100: color-mix(in srgb, var(--color-accent) 30%, white);
+  --color-accent-200: color-mix(in srgb, var(--color-accent) 50%, white);
+  --color-accent-300: color-mix(in srgb, var(--color-accent) 70%, white);
+  --color-accent-400: color-mix(in srgb, var(--color-accent) 90%, white);
+  --color-accent-500: var(--color-accent);
+  --color-accent-600: color-mix(in srgb, var(--color-accent) 90%, black);
+  --color-accent-700: color-mix(in srgb, var(--color-accent) 80%, black);
+  --color-accent-800: color-mix(in srgb, var(--color-accent) 70%, black);
+  --color-accent-900: color-mix(in srgb, var(--color-accent) 60%, black);
+  --color-accent-950: color-mix(in srgb, var(--color-accent) 50%, black);
+
+  --color-neutral-50: color-mix(in srgb, var(--color-neutral) 10%, white);
+  --color-neutral-100: color-mix(in srgb, var(--color-neutral) 30%, white);
+  --color-neutral-200: color-mix(in srgb, var(--color-neutral) 50%, white);
+  --color-neutral-300: color-mix(in srgb, var(--color-neutral) 70%, white);
+  --color-neutral-400: color-mix(in srgb, var(--color-neutral) 90%, white);
+  --color-neutral-500: var(--color-neutral);
+  --color-neutral-600: color-mix(in srgb, var(--color-neutral) 90%, black);
+  --color-neutral-700: color-mix(in srgb, var(--color-neutral) 80%, black);
+  --color-neutral-800: color-mix(in srgb, var(--color-neutral) 70%, black);
+  --color-neutral-900: color-mix(in srgb, var(--color-neutral) 60%, black);
+  --color-neutral-950: color-mix(in srgb, var(--color-neutral) 50%, black);
+}

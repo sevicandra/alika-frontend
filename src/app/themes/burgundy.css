@@ -1,0 +1,35 @@
+@plugin "daisyui/theme" {
+  name: "burgundy";
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #f7f2f2; /* Background utama (sangat terang) */
+  --color-base-200: #e8dcdc; /* Background sekunder */
+  --color-base-300: #d1b6b6; /* Warna netral untuk elemen UI */
+  --color-base-content: #3f1b1b; /* Warna teks utama di atas base */
+
+  --color-primary: #800020; /* Burgundy utama */
+  --color-primary-content: #fff5f7; /* Warna teks kontras di atas primary */
+
+  --color-secondary: #a0522d; /* Coklat kemerahan sebagai warna sekunder */
+  --color-secondary-content: #fff9f5; /* Warna teks kontras di atas secondary */
+
+  --color-accent: #da627d; /* Merah muda tua untuk aksen */
+  --color-accent-content: #fff9fa; /* Warna teks kontras di atas aksen */
+
+  --color-neutral: #5b3a3a; /* Warna netral dengan sedikit merah */
+  --color-neutral-content: #fff6f6; /* Warna teks di atas netral */
+
+  --color-info: #3b82f6; /* Biru terang untuk status informasi */
+  --color-info-content: #f8faff; /* Warna teks kontras di atas info */
+
+  --color-success: #0faa6d; /* Hijau segar untuk status sukses */
+  --color-success-content: #f8fff9; /* Warna teks kontras di atas success */
+
+  --color-warning: #e9a21b; /* Kuning-oranye untuk peringatan */
+  --color-warning-content: #4a2e00; /* Warna teks kontras di atas warning */
+
+  --color-error: #c53030; /* Merah terang untuk status error */
+  --color-error-content: #fff5f5; /* Warna teks kontras di atas error */
+}

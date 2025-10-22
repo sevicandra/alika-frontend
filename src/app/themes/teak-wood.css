@@ -1,0 +1,132 @@
+@plugin "daisyui/theme" {
+  name: "teak-wood";
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+  /* Kayu ulin Kalimantan */
+  --color-base-100: #faf8f5;
+  --color-base-200: #f5f0e8;
+  --color-base-300: #ebe3d5;
+  --color-base-content: #2c1810;
+
+  --color-primary: #92400e;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #a16207;
+  --color-secondary-content: #ffffff;
+
+  --color-accent: #78350f;
+  --color-accent-content: #ffffff;
+
+  --color-neutral: #57534e;
+  --color-neutral-content: #ffffff;
+
+  --color-info: #3b82f6;
+  --color-info-content: #ffffff;
+
+  --color-success: #16a34a;
+  --color-success-content: #ffffff;
+
+  --color-warning: #ea580c;
+  --color-warning-content: #ffffff;
+
+  --color-error: #dc2626;
+  --color-error-content: #ffffff;
+
+  --color-primary-50: color-mix(in srgb, var(--color-primary) 10%, white);
+  --color-primary-100: color-mix(in srgb, var(--color-primary) 30%, white);
+  --color-primary-200: color-mix(in srgb, var(--color-primary) 50%, white);
+  --color-primary-300: color-mix(in srgb, var(--color-primary) 70%, white);
+  --color-primary-400: color-mix(in srgb, var(--color-primary) 90%, white);
+  --color-primary-500: var(--color-primary);
+  --color-primary-600: color-mix(in srgb, var(--color-primary) 90%, black);
+  --color-primary-700: color-mix(in srgb, var(--color-primary) 80%, black);
+  --color-primary-800: color-mix(in srgb, var(--color-primary) 70%, black);
+  --color-primary-900: color-mix(in srgb, var(--color-primary) 60%, black);
+  --color-primary-950: color-mix(in srgb, var(--color-primary) 50%, black);
+
+  --color-secondary-50: color-mix(in srgb, var(--color-secondary) 10%, white);
+  --color-secondary-100: color-mix(in srgb, var(--color-secondary) 30%, white);
+  --color-secondary-200: color-mix(in srgb, var(--color-secondary) 50%, white);
+  --color-secondary-300: color-mix(in srgb, var(--color-secondary) 70%, white);
+  --color-secondary-400: color-mix(in srgb, var(--color-secondary) 90%, white);
+  --color-secondary-500: var(--color-secondary);
+  --color-secondary-600: color-mix(in srgb, var(--color-secondary) 90%, black);
+  --color-secondary-700: color-mix(in srgb, var(--color-secondary) 80%, black);
+  --color-secondary-800: color-mix(in srgb, var(--color-secondary) 70%, black);
+  --color-secondary-900: color-mix(in srgb, var(--color-secondary) 60%, black);
+  --color-secondary-950: color-mix(in srgb, var(--color-secondary) 50%, black);
+
+  --color-accent-50: color-mix(in srgb, var(--color-accent) 10%, white);
+  --color-accent-100: color-mix(in srgb, var(--color-accent) 30%, white);
+  --color-accent-200: color-mix(in srgb, var(--color-accent) 50%, white);
+  --color-accent-300: color-mix(in srgb, var(--color-accent) 70%, white);
+  --color-accent-400: color-mix(in srgb, var(--color-accent) 90%, white);
+  --color-accent-500: var(--color-accent);
+  --color-accent-600: color-mix(in srgb, var(--color-accent) 90%, black);
+  --color-accent-700: color-mix(in srgb, var(--color-accent) 80%, black);
+  --color-accent-800: color-mix(in srgb, var(--color-accent) 70%, black);
+  --color-accent-900: color-mix(in srgb, var(--color-accent) 60%, black);
+  --color-accent-950: color-mix(in srgb, var(--color-accent) 50%, black);
+
+  --color-neutral-50: color-mix(in srgb, var(--color-neutral) 10%, white);
+  --color-neutral-100: color-mix(in srgb, var(--color-neutral) 30%, white);
+  --color-neutral-200: color-mix(in srgb, var(--color-neutral) 50%, white);
+  --color-neutral-300: color-mix(in srgb, var(--color-neutral) 70%, white);
+  --color-neutral-400: color-mix(in srgb, var(--color-neutral) 90%, white);
+  --color-neutral-500: var(--color-neutral);
+  --color-neutral-600: color-mix(in srgb, var(--color-neutral) 90%, black);
+  --color-neutral-700: color-mix(in srgb, var(--color-neutral) 80%, black);
+  --color-neutral-800: color-mix(in srgb, var(--color-neutral) 70%, black);
+  --color-neutral-900: color-mix(in srgb, var(--color-neutral) 60%, black);
+  --color-neutral-950: color-mix(in srgb, var(--color-neutral) 50%, black);
+
+  --color-info-50: color-mix(in srgb, var(--color-info) 10%, black);
+  --color-info-100: color-mix(in srgb, var(--color-info) 20%, black);
+  --color-info-200: color-mix(in srgb, var(--color-info) 40%, black);
+  --color-info-300: color-mix(in srgb, var(--color-info) 60%, black);
+  --color-info-400: color-mix(in srgb, var(--color-info) 80%, black);
+  --color-info-500: var(--color-info);
+  --color-info-600: color-mix(in srgb, var(--color-info) 80%, white);
+  --color-info-700: color-mix(in srgb, var(--color-info) 60%, white);
+  --color-info-800: color-mix(in srgb, var(--color-info) 40%, white);
+  --color-info-900: color-mix(in srgb, var(--color-info) 20%, white);
+  --color-info-950: color-mix(in srgb, var(--color-info) 10%, white);
+
+  --color-success-50: color-mix(in srgb, var(--color-success) 10%, black);
+  --color-success-100: color-mix(in srgb, var(--color-success) 20%, black);
+  --color-success-200: color-mix(in srgb, var(--color-success) 40%, black);
+  --color-success-300: color-mix(in srgb, var(--color-success) 60%, black);
+  --color-success-400: color-mix(in srgb, var(--color-success) 80%, black);
+  --color-success-500: var(--color-success);
+  --color-success-600: color-mix(in srgb, var(--color-success) 80%, white);
+  --color-success-700: color-mix(in srgb, var(--color-success) 60%, white);
+  --color-success-800: color-mix(in srgb, var(--color-success) 40%, white);
+  --color-success-900: color-mix(in srgb, var(--color-success) 20%, white);
+  --color-success-950: color-mix(in srgb, var(--color-success) 10%, white);
+
+  --color-warning-50: color-mix(in srgb, var(--color-warning) 10%, black);
+  --color-warning-100: color-mix(in srgb, var(--color-warning) 20%, black);
+  --color-warning-200: color-mix(in srgb, var(--color-warning) 40%, black);
+  --color-warning-300: color-mix(in srgb, var(--color-warning) 60%, black);
+  --color-warning-400: color-mix(in srgb, var(--color-warning) 80%, black);
+  --color-warning-500: var(--color-warning);
+  --color-warning-600: color-mix(in srgb, var(--color-warning) 80%, white);
+  --color-warning-700: color-mix(in srgb, var(--color-warning) 60%, white);
+  --color-warning-800: color-mix(in srgb, var(--color-warning) 40%, white);
+  --color-warning-900: color-mix(in srgb, var(--color-warning) 20%, white);
+  --color-warning-950: color-mix(in srgb, var(--color-warning) 10%, white);
+
+  --color-error-50: color-mix(in srgb, var(--color-error) 10%, black);
+  --color-error-100: color-mix(in srgb, var(--color-error) 20%, black);
+  --color-error-200: color-mix(in srgb, var(--color-error) 40%, black);
+  --color-error-300: color-mix(in srgb, var(--color-error) 60%, black);
+  --color-error-400: color-mix(in srgb, var(--color-error) 80%, black);
+  --color-error-500: var(--color-error);
+  --color-error-600: color-mix(in srgb, var(--color-error) 80%, white);
+  --color-error-700: color-mix(in srgb, var(--color-error) 60%, white);
+  --color-error-800: color-mix(in srgb, var(--color-error) 40%, white);
+  --color-error-900: color-mix(in srgb, var(--color-error) 20%, white);
+  --color-error-950: color-mix(in srgb, var(--color-error) 10%, white);
+
+}

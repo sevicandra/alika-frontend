@@ -1,0 +1,83 @@
+@plugin "daisyui/theme" {
+  name: "sky-blue";
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #edf6f9;
+  --color-base-200: #d8eaf2;
+  --color-base-300: #c2dceb;
+  --color-base-content: #0d3b66;
+
+  --color-primary: #00a6fb;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #83c5be;
+  --color-secondary-content: #002923;
+
+  --color-accent: #ffc300;
+  --color-accent-content: #332700;
+
+  --color-neutral: #6c757d;
+  --color-neutral-content: #ffffff;
+
+  --color-info: #00b4d8;
+  --color-info-content: #ffffff;
+
+  --color-success: #40916c;
+  --color-success-content: #ffffff;
+
+  --color-warning: #fca311;
+  --color-warning-content: #ffffff;
+
+  --color-error: #e63946;
+  --color-error-content: #ffffff;
+  /* Color Degradation */
+  --color-primary-50: color-mix(in srgb, var(--color-primary) 10%, white);
+  --color-primary-100: color-mix(in srgb, var(--color-primary) 30%, white);
+  --color-primary-200: color-mix(in srgb, var(--color-primary) 50%, white);
+  --color-primary-300: color-mix(in srgb, var(--color-primary) 70%, white);
+  --color-primary-400: color-mix(in srgb, var(--color-primary) 90%, white);
+  --color-primary-500: var(--color-primary);
+  --color-primary-600: color-mix(in srgb, var(--color-primary) 90%, black);
+  --color-primary-700: color-mix(in srgb, var(--color-primary) 80%, black);
+  --color-primary-800: color-mix(in srgb, var(--color-primary) 70%, black);
+  --color-primary-900: color-mix(in srgb, var(--color-primary) 60%, black);
+  --color-primary-950: color-mix(in srgb, var(--color-primary) 50%, black);
+
+  --color-secondary-50: color-mix(in srgb, var(--color-secondary) 10%, white);
+  --color-secondary-100: color-mix(in srgb, var(--color-secondary) 30%, white);
+  --color-secondary-200: color-mix(in srgb, var(--color-secondary) 50%, white);
+  --color-secondary-300: color-mix(in srgb, var(--color-secondary) 70%, white);
+  --color-secondary-400: color-mix(in srgb, var(--color-secondary) 90%, white);
+  --color-secondary-500: var(--color-secondary);
+  --color-secondary-600: color-mix(in srgb, var(--color-secondary) 90%, black);
+  --color-secondary-700: color-mix(in srgb, var(--color-secondary) 80%, black);
+  --color-secondary-800: color-mix(in srgb, var(--color-secondary) 70%, black);
+  --color-secondary-900: color-mix(in srgb, var(--color-secondary) 60%, black);
+  --color-secondary-950: color-mix(in srgb, var(--color-secondary) 50%, black);
+
+  --color-accent-50: color-mix(in srgb, var(--color-accent) 10%, white);
+  --color-accent-100: color-mix(in srgb, var(--color-accent) 30%, white);
+  --color-accent-200: color-mix(in srgb, var(--color-accent) 50%, white);
+  --color-accent-300: color-mix(in srgb, var(--color-accent) 70%, white);
+  --color-accent-400: color-mix(in srgb, var(--color-accent) 90%, white);
+  --color-accent-500: var(--color-accent);
+  --color-accent-600: color-mix(in srgb, var(--color-accent) 90%, black);
+  --color-accent-700: color-mix(in srgb, var(--color-accent) 80%, black);
+  --color-accent-800: color-mix(in srgb, var(--color-accent) 70%, black);
+  --color-accent-900: color-mix(in srgb, var(--color-accent) 60%, black);
+  --color-accent-950: color-mix(in srgb, var(--color-accent) 50%, black);
+
+  --color-neutral-50: color-mix(in srgb, var(--color-neutral) 10%, white);
+  --color-neutral-100: color-mix(in srgb, var(--color-neutral) 30%, white);
+  --color-neutral-200: color-mix(in srgb, var(--color-neutral) 50%, white);
+  --color-neutral-300: color-mix(in srgb, var(--color-neutral) 70%, white);
+  --color-neutral-400: color-mix(in srgb, var(--color-neutral) 90%, white);
+  --color-neutral-500: var(--color-neutral);
+  --color-neutral-600: color-mix(in srgb, var(--color-neutral) 90%, black);
+  --color-neutral-700: color-mix(in srgb, var(--color-neutral) 80%, black);
+  --color-neutral-800: color-mix(in srgb, var(--color-neutral) 70%, black);
+  --color-neutral-900: color-mix(in srgb, var(--color-neutral) 60%, black);
+  --color-neutral-950: color-mix(in srgb, var(--color-neutral) 50%, black);
+}

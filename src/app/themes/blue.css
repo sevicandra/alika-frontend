@@ -1,0 +1,38 @@
+@plugin "daisyui/theme" {
+  name: "blue";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  /* Base Colors - Diperhalus dan ditingkatkan kontrasnya */
+  --color-base-100: #f5f7ff; /* Lebih putih dan bersih */
+  --color-base-200: #e6ebff; /* Sedikit lebih gelap dari base-100 */
+  --color-base-300: #d0d8ff; /* Lebih kontras untuk elemen UI */
+  --color-base-content: #1a2250; /* Lebih gelap untuk readability */
+
+  /* Primary Colors - Lebih kaya dan konsisten */
+  --color-primary: #0d1a6b; /* Biru lebih dalam (dari #0c1550) */
+  --color-primary-content: #ffffff; /* Putih murni untuk kontras maksimal */
+
+  /* Secondary Colors - Lebih hidup */
+  --color-secondary: #3a6bc8; /* Biru lebih cerah (dari #4a78c2) */
+  --color-secondary-content: #ffffff;
+
+  /* Accent Colors - Lebih segar */
+  --color-accent: #2e9f82; /* Hijau lebih dalam (dari #36a98b) */
+  --color-accent-content: #ffffff;
+
+  /* Neutral Colors - Lebih seimbang */
+  --color-neutral: #3d4266; /* Sedikit lebih terang (dari #3b3f5f) */
+  --color-neutral-content: #ffffff;
+
+  /* Status Colors - Dioptimalkan */
+  --color-info: #2563eb; /* Biru lebih standar */
+  --color-info-content: #ffffff;
+  --color-success: #0d9d6e; /* Hijau lebih natural */
+  --color-success-content: #ffffff;
+  --color-warning: #f59e0b; /* Kuning lebih warm */
+  --color-warning-content: #3e2a00;
+  --color-error: #c52222; /* Merah lebih dalam */
+  --color-error-content: #ffffff;
+}

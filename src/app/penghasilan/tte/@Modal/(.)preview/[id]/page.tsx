@@ -188,13 +188,13 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             <div className="flex gap-2">
               <button
                 onClick={() => setTolak(true)}
-                className="btn btn-sm btn-error md:w-24"
+                className="btn btn-xs btn-error md:w-24"
               >
                 Tolak
               </button>
               <button
                 onClick={() => setTte(true)}
-                className="btn btn-sm btn-success md:w-24"
+                className="btn btn-xs btn-success md:w-24"
               >
                 TTE
               </button>
