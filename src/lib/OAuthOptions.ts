@@ -82,7 +82,7 @@ export class OAuth2 {
           secure: process.env.APP_COOKIES === "secure" ? true : false,
           path: "/",
           sameSite: "lax",
-          maxAge: 60 * 60 * 24 * 30,
+          maxAge: 60 * 60 * 4,
         },
       );
       return NextResponse.redirect(new URL(`${process.env.APP_URL}`, req.url));
