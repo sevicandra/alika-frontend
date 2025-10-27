@@ -22,7 +22,7 @@ export const themes = (): string[] => {
     "mint-choco",
     "burgundy",
     "sunset",
-    "nusantara",
+    "brave-red",
     "cherry-blossom",
     "rose-quartz",
     "coral-breeze",
