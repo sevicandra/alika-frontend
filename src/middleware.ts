@@ -92,7 +92,7 @@ export default async function middleware(req: NextRequest) {
     // return NextResponse.redirect(
     //   new URL("https://mutasi-alika.kemenkeu.go.id", req.url),
     // );
-    if (pathname === "/mutasi/admin") {
+    if (pathname.startsWith("/mutasi/admin")) {
       if (
         !user.account
           .find((a) => a.service.toUpperCase() === "MUTASI")
@@ -100,12 +100,14 @@ export default async function middleware(req: NextRequest) {
       ) {
         return NextResponse.redirect(new URL("/", req.url));
       }
-      return NextResponse.redirect(new URL("/mutasi/admin/user", req.url));
+      if (pathname === "/mutasi/admin") {
+        return NextResponse.redirect(new URL("/mutasi/admin/user", req.url));
+      }
     }
     if (pathname === "/mutasi/user" || pathname === "/mutasi") {
       return NextResponse.redirect(new URL("/mutasi/user/dashboard", req.url));
     }
-    if (pathname === "/mutasi/keuangan" || pathname === "/mutasi") {
+    if (pathname.startsWith("/mutasi/keuangan")) {
       if (
         !user.account
           .find((a) => a.service.toUpperCase() === "MUTASI")
@@ -113,11 +115,11 @@ export default async function middleware(req: NextRequest) {
       ) {
         return NextResponse.redirect(new URL("/", req.url));
       }
-      return NextResponse.redirect(
-        new URL("/mutasi/keuangan/sk", req.url),
-      );
+      if (pathname === "/mutasi/keuangan") {
+        return NextResponse.redirect(new URL("/mutasi/keuangan/sk", req.url));
+      }
     }
-    if (pathname === "/mutasi/sdm") {
+    if (pathname.startsWith("/mutasi/sdm")) {
       if (
         !user.account
           .find((a) => a.service.toUpperCase() === "MUTASI")
@@ -125,7 +127,9 @@ export default async function middleware(req: NextRequest) {
       ) {
         return NextResponse.redirect(new URL("/", req.url));
       }
-      return NextResponse.redirect(new URL("/mutasi/sdm/sk", req.url));
+      if (pathname === "/mutasi/sdm") {
+        return NextResponse.redirect(new URL("/mutasi/sdm/sk", req.url));
+      }
     }
   }
   if (pathname.startsWith("/api")) {
