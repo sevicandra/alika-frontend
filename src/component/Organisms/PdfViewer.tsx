@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import * as pdfjs from "pdfjs-dist";
-import { TextLayer } from "pdfjs-dist";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -137,102 +136,15 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
       canvasWrapper.style.width = `${viewport.width}px`;
       canvasWrapper.style.height = `${viewport.height}px`;
 
-      // Set text layer size
-      textLayerDiv.style.width = `${viewport.width}px`;
-      textLayerDiv.style.height = `${viewport.height}px`;
-
       const renderContext = {
         canvasContext: context,
         viewport: viewport,
       };
 
-      // Render canvas
       await page.render(renderContext).promise;
 
-      // ========== RENDER TEXT LAYER DENGAN CLASS ==========
-      // Jika sudah ada TextLayer sebelumnya, destroy dulu
-      const existingTextLayer = pageData.textLayer;
-      if (existingTextLayer && existingTextLayer.render) {
-        textLayerDiv.innerHTML = ""; // Clear
-      }
-
-      // Buat TextLayer instance baru
-      // Gunakan streamTextContent untuk mendapatkan text content stream
-      const textContent = await page.getTextContent();
-      
-      // Menggunakan approach manual tapi dengan struktur yang benar dari PDF.js
-      // TextLayer dari pdfjs-dist memerlukan konfigurasi tertentu
-      const textLayer = new (pdfjs as any).TextLayer({
-        textContentSource: textContent,
-        container: textLayerDiv,
-        viewport: viewport,
-        textDivs: [],
-        enhanceTextSelection: true,
-      });
-
-      try {
-        await textLayer.render();
-        pageData.textLayer = textLayer;
-      } catch (err) {
-        // Jika TextLayer class tidak tersedia, gunakan fallback
-        console.warn("TextLayer render failed, using manual approach:", err);
-        renderTextLayerManual(page, textLayerDiv, viewport);
-      }
     } catch (err) {
       console.error(`Error merender halaman ${pageNum}:`, err);
-    }
-  };
-
-  // Fallback: Render text layer secara manual (sesuai PDF.js implementation)
-  const renderTextLayerManual = async (
-    page: any,
-    textLayerDiv: HTMLDivElement,
-    viewport: any,
-  ) => {
-    try {
-      textLayerDiv.innerHTML = "";
-      const textContent = await page.getTextContent({
-        normalizeWhitespace: true,
-      });
-
-      const textLayerFrag = document.createDocumentFragment();
-
-      textContent.items.forEach((item: any) => {
-        if (typeof item === "string") return;
-
-        const span = document.createElement("span");
-        span.setAttribute("role", "presentation");
-
-        const text = item.str || "";
-        span.textContent = text;
-
-        // Gunakan transform matrix dari PDF.js
-        const transform = item.transform;
-        const fontHeight = Math.abs(transform[0]);
-        
-        span.style.left = `${transform[4]}px`;
-        span.style.top = `${transform[5]}px`;
-        span.style.fontSize = `${fontHeight}px`;
-        span.style.fontFamily = item.fontName || "sans-serif";
-        span.style.position = "absolute";
-        span.style.whiteSpace = "pre";
-        span.style.cursor = "text";
-        
-        // Handle scaling
-        if (item.width) {
-          const scaleX = item.width / Math.abs(transform[0]);
-          if (Math.abs(scaleX - 1) > 0.001) {
-            span.style.transform = `scaleX(${scaleX})`;
-            span.style.transformOrigin = "0 0";
-          }
-        }
-
-        textLayerFrag.appendChild(span);
-      });
-
-      textLayerDiv.appendChild(textLayerFrag);
-    } catch (err) {
-      console.error("Error in manual text layer rendering:", err);
     }
   };
 

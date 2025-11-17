@@ -202,8 +202,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           )}
         </div>
       </div>
-      <div className="overflow-hidden">
-        <div className="relative grid h-full w-full grid-rows-[auto_1fr] gap-2 overflow-hidden rounded-box bg-neutral text-neutral-content shadow">
+
+        <div className="relative h-full w-full gap-2 overflow-hidden rounded-box bg-neutral text-neutral-content shadow">
           {loading && (
             <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
               <Loading />
@@ -216,7 +216,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             />
           )}
         </div>
-      </div>
+
       <Tte
         isOpen={tte}
         onConfirm={ProcessTte}
