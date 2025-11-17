@@ -42,16 +42,19 @@ export default function SanggahForm() {
         (item) => item.id === selectedData,
       );
       if (selectedKeluarga) {
-        setData({
-          nama: selectedKeluarga.nama || "",
-          nik: selectedKeluarga.nik || "",
-          tanggal_lahir: selectedKeluarga.tanggal_lahir || "",
-          pekerjaan: selectedKeluarga.pekerjaan || "",
-          hubungan: selectedKeluarga.hubungan || "",
-          status: selectedKeluarga.status || "",
-          file: null,
-          catatan: "",
-        });
+        const timer = setTimeout(() => {
+          setData({
+            nama: selectedKeluarga.nama || "",
+            nik: selectedKeluarga.nik || "",
+            tanggal_lahir: selectedKeluarga.tanggal_lahir || "",
+            pekerjaan: selectedKeluarga.pekerjaan || "",
+            hubungan: selectedKeluarga.hubungan || "",
+            status: selectedKeluarga.status || "",
+            file: null,
+            catatan: "",
+          });
+        }, 0);
+        return () => clearTimeout(timer);
       }
     }
   }, [selectedData, dataKeluarga]);

@@ -71,7 +71,7 @@ export async function DELETE(
         { status: getDataCetak.status },
       );
     }
-    revalidateTag("Penghasilan:DataCetak");
+    revalidateTag("Penghasilan:DataCetak", "max");
     const data = await getDataCetak.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {

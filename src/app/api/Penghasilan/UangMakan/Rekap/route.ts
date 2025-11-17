@@ -39,14 +39,14 @@ export async function GET(req: Request) {
     );
 
     if (!umak.ok) {
-      revalidateTag(`Penghasilan:UangMakan:Rekap`);
+      revalidateTag(`Penghasilan:UangMakan:Rekap`, "max");
       const data = await umak.json();
       return NextResponse.json(data, { status: umak.status });
     }
     const data = await umak.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:UangMakan:Rekap`);
+    revalidateTag(`Penghasilan:UangMakan:Rekap`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

@@ -8,7 +8,7 @@ import Paginator from "@/component/Organisms/Paginator";
 export default function Layout({
   children,
 }: {
-  children: React.ReactElement;
+  children: React.ReactNode;
 
 }) {
   const pathname = usePathname();

@@ -35,8 +35,8 @@ async function handler(req: Request) {
       const data = await dataCetak.json();
       return NextResponse.json(data, { status: dataCetak.status });
     }
-    revalidateTag("Penghasilan:DataCetak");
-    revalidateTag("Penghasilan:DataCetak:TTE");
+    revalidateTag("Penghasilan:DataCetak", "max");
+    revalidateTag("Penghasilan:DataCetak:TTE", "max");
     const data = await dataCetak.json();
     return NextResponse.json({ message: data.message }, { status: 200 });
   } catch (error: any) {

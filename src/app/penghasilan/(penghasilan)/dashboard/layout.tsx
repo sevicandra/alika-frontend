@@ -7,12 +7,12 @@ const Layout = ({
   bulanan,
   tahun,
 }: {
-  gapok: React.ReactElement;
-  tukin: React.ReactElement;
-  umak: React.ReactElement;
-  lembur: React.ReactElement;
-  bulanan: React.ReactElement;
-  tahun: React.ReactElement;
+  gapok: React.ReactNode;
+  tukin: React.ReactNode;
+  umak: React.ReactNode;
+  lembur: React.ReactNode;
+  bulanan: React.ReactNode;
+  tahun: React.ReactNode;
 }) => {
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">

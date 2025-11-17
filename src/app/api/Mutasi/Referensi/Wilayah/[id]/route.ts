@@ -60,7 +60,7 @@ export async function GET(
     );
 
     if (!suratKeputusan.ok) {
-      revalidateTag("Mutasi:Wilayah");
+      revalidateTag("Mutasi:Wilayah", "max");
       const data = await suratKeputusan.json();
       return NextResponse.json(data, { status: suratKeputusan.status });
     }

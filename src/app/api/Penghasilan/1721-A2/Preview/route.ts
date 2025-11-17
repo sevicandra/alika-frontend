@@ -31,7 +31,7 @@ async function handler(req: Request) {
       next: { revalidate: 60, tags: [`Penghasilan:1721-A2:${tahun}`] },
     });
     if (!dataCetak.ok) {
-      revalidateTag(`Penghasilan:1721-A2:${tahun}`);
+      revalidateTag(`Penghasilan:1721-A2:${tahun}`, "max");
       const data = await dataCetak.json();
       return NextResponse.json(data, { status: dataCetak.status });
     }
@@ -43,7 +43,7 @@ async function handler(req: Request) {
       },
     });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:1721-A2:${tahun}`);
+    revalidateTag(`Penghasilan:1721-A2:${tahun}`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

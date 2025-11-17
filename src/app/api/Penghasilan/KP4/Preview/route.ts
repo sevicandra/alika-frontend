@@ -27,7 +27,7 @@ async function handler() {
       next: { revalidate: 60, tags: [`Penghasilan:KP4`] },
     });
     if (!kp4.ok) {
-      revalidateTag(`Penghasilan:KP4`);
+      revalidateTag(`Penghasilan:KP4`, "max");
       const data = await kp4.json();
       return NextResponse.json(data, { status: kp4.status });
     }
@@ -39,7 +39,7 @@ async function handler() {
       },
     });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:KP4`);
+    revalidateTag(`Penghasilan:KP4`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

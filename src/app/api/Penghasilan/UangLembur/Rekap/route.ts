@@ -39,7 +39,7 @@ export async function GET(req: Request) {
     );
 
     if (!lembur.ok) {
-      revalidateTag(`Penghasilan:UangLembur:Rekap`);
+      revalidateTag(`Penghasilan:UangLembur:Rekap`, "max");
       const data = await lembur.json();
       return NextResponse.json(data, { status: lembur.status });
 
@@ -47,7 +47,7 @@ export async function GET(req: Request) {
     const data = await lembur.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:UangLembur:Rekap`);
+    revalidateTag(`Penghasilan:UangLembur:Rekap`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

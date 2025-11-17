@@ -57,7 +57,8 @@ export default async function middleware(req: NextRequest) {
   }
   if (
     pathname.startsWith("/api/auth") &&
-    !pathname.startsWith("/api/auth/session")
+    !pathname.startsWith("/api/auth/session") &&
+    !pathname.startsWith("/api/auth/signout")
   ) {
     return NextResponse.next();
   }

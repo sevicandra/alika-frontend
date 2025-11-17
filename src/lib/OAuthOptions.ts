@@ -244,7 +244,10 @@ export class OAuth2 {
     return NextResponse.json({ token });
   }
 
-  static async signout(): Promise<string> {
+  static async signout(): Promise<{
+    redirect?: string;
+    message: string;
+  }> {
     return new Promise(async (resolve, reject) => {
       try {
         const token = (await this.getUser()) ?? "";
@@ -255,7 +258,7 @@ export class OAuth2 {
         if (!refresh_token) {
           (await cookies()).delete(`${process.env.APP_NAME}.session`);
           (await cookies()).delete(`${process.env.APP_NAME}.refresh_token`);
-          resolve("Signout success");
+          resolve({ message: "Signout success" });
         }
         const response = await fetch(
           `${AUTH_BASE_URI_INTERNAL ?? AUTH_BASE_URI}/auth/signout`,
@@ -277,7 +280,10 @@ export class OAuth2 {
         }
         (await cookies()).delete(`${process.env.APP_NAME}.refresh_token`);
         (await cookies()).delete(`${process.env.APP_NAME}.session`);
-        resolve("Signout success");
+        resolve({
+          redirect: (await response.json()).data.redirect as string,
+          message: "Signout success",
+        });
       } catch (error: unknown) {
         console.error("Error signing out:", error);
         reject("Signout failed");

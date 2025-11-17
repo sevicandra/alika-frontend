@@ -89,18 +89,32 @@ function MenuItems({
     }
   }, [align, anchor, buttonRef, width]);
   useEffect(() => {
-    updatePosition();
-    window.addEventListener("resize", updatePosition);
-    window.addEventListener("scroll", updatePosition);
+    const handleUpdate = () => {
+      // Defer updatePosition to avoid synchronous setState in effect
+      requestAnimationFrame(() => {
+        updatePosition();
+      });
+    };
+
+    handleUpdate();
+    window.addEventListener("resize", handleUpdate);
+    window.addEventListener("scroll", handleUpdate);
 
     return () => {
-      window.removeEventListener("resize", updatePosition);
-      window.removeEventListener("scroll", updatePosition);
+      window.removeEventListener("resize", handleUpdate);
+      window.removeEventListener("scroll", handleUpdate);
     };
   }, [updatePosition]);
 
   useEffect(() => {
-    updatePosition();
+    // Defer updatePosition on isOpen change as well
+    const frame = requestAnimationFrame(() => {
+      updatePosition();
+    });
+
+    return () => {
+      cancelAnimationFrame(frame);
+    };
   }, [isOpen, updatePosition]);
 
   return (

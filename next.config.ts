@@ -10,12 +10,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-    webpack: (config) => {
-    config.module.rules.push({
-      test: /\.node$/,
-      use: 'node-loader',
-    });
-    return config;
+  turbopack: {
+    rules: {
+      "*.node": {
+        loaders: ["node-loader"],
+      },
+    },
   },
   reactStrictMode: true,
 };

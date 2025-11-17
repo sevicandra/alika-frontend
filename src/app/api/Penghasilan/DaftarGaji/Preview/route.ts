@@ -35,7 +35,7 @@ async function handler(req: Request) {
       },
     });
     if (!dataCetak.ok) {
-      revalidateTag(`Penghasilan:DaftarGaji:${tahun}:${bulan}`);
+      revalidateTag(`Penghasilan:DaftarGaji:${tahun}:${bulan}`, "max");
       const data = await dataCetak.json();
       return NextResponse.json(data, { status: dataCetak.status });
     }
@@ -47,7 +47,7 @@ async function handler(req: Request) {
       },
     });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:DaftarGaji:${tahun}:${bulan}`);
+    revalidateTag(`Penghasilan:DaftarGaji:${tahun}:${bulan}`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

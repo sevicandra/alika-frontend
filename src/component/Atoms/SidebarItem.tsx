@@ -18,13 +18,21 @@ export default function SidebarItem({
   const [isOpenDelay, setIsOpenDelay] = useState(isOpen);
   const pathname = usePathname();
   useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
     if (!isOpen) {
-      setTimeout(() => {
+      timer = setTimeout(() => {
         setIsOpenDelay(isOpen);
       }, 500);
     } else {
-      setIsOpenDelay(isOpen);
+      timer = setTimeout(() => {
+        setIsOpenDelay(isOpen);
+      }, 0);
     }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [isOpen]);
 
   return (

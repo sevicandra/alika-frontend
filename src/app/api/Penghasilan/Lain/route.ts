@@ -45,14 +45,14 @@ export async function GET(req: Request) {
     );
 
     if (!lain.ok) {
-      revalidateTag(`Penghasilan:Lain`);
+      revalidateTag(`Penghasilan:Lain`, "max");
       const data = await lain.json();
       return NextResponse.json(data, { status: lain.status });
     }
     const data = await lain.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:Lain`);
+    revalidateTag(`Penghasilan:Lain`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

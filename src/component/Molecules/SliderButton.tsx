@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useRef, useState, useEffect } from "react";
 function SliderButton({
   tabs,
@@ -29,19 +29,23 @@ function SliderButton({
       ? buttonRefs.current.get(activeTab.name)
       : undefined;
     if (button) {
-      setSlider({
-        height: button.offsetHeight,
-        width: button.offsetWidth,
-        top: button.offsetTop,
-        left: button.offsetLeft,
-      });
+      const timer = setTimeout(() => {
+        setSlider({
+          height: button.offsetHeight,
+          width: button.offsetWidth,
+          top: button.offsetTop,
+          left: button.offsetLeft,
+        });
+      }, 0);
+
+      return () => clearTimeout(timer);
     }
   }, [tabs]);
 
   return (
-    <span className="rounded-box bg-accent flex gap-2 p-1 relative">
+    <span className="relative flex gap-2 rounded-box bg-accent p-1">
       <div
-        className="absolute z-1 bg-primary/80 rounded-box transition-all duration-700"
+        className="absolute z-1 rounded-box bg-primary/80 transition-all duration-700"
         style={{
           height: slider?.height,
           width: slider?.width,
@@ -52,7 +56,7 @@ function SliderButton({
       {tabs?.map((item) => (
         <div
           key={item.name}
-          className="rounded-box px-2 z-2 cursor-pointer text-xs text-neutral-content"
+          className="z-2 cursor-pointer rounded-box px-2 text-xs text-neutral-content"
           ref={(el) => setButtonRef(item.name, el)}
           onClick={() => {
             item.action();

@@ -33,7 +33,7 @@ export async function GET() {
     );
 
     if (!suratKeputusan.ok) {
-      revalidateTag("HubunganKeluarga");
+      revalidateTag("HubunganKeluarga", "max");
       const data = await suratKeputusan.json();
       return NextResponse.json(data, { status: suratKeputusan.status });
     }

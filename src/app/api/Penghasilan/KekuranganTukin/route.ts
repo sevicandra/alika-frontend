@@ -46,14 +46,14 @@ export async function GET(req: Request) {
     );
 
     if (!tukin.ok) {
-      revalidateTag(`Penghasilan:KekuranganTukin`);
+      revalidateTag(`Penghasilan:KekuranganTukin`, "max");
       const data = await tukin.json();
       return NextResponse.json(data, { status: tukin.status });
     }
     const data = await tukin.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:KekuranganTukin`);
+    revalidateTag(`Penghasilan:KekuranganTukin`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

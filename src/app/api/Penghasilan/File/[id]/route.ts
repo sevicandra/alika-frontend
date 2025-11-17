@@ -35,7 +35,7 @@ export async function GET(
       next: { revalidate: 60, tags: [`Penghasilan:File:${id}`] },
     });
     if (!getFile.ok) {
-      revalidateTag(`Penghasilan:File:${id}`);
+      revalidateTag(`Penghasilan:File:${id}`, "max");
       const data = await getFile.json();
       return NextResponse.json(data, { status: getFile.status });
     }
@@ -47,7 +47,7 @@ export async function GET(
       },
     });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:File:${id}`);
+    revalidateTag(`Penghasilan:File:${id}`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

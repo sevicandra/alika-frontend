@@ -35,14 +35,14 @@ async function handler(req: Request) {
     );
 
     if (!penghasilan.ok) {
-      revalidateTag(`Penghasilan:Penghasilan:Detail`);
+      revalidateTag(`Penghasilan:Penghasilan:Detail`, "max");
       const data = await penghasilan.json();
       return NextResponse.json(data, { status: penghasilan.status });
     }
     const data = await penghasilan.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:Penghasilan:Detail`);
+    revalidateTag(`Penghasilan:Penghasilan:Detail`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

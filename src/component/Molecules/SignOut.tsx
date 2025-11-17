@@ -15,14 +15,13 @@ export default function SignOut() {
 
   const signOutHandler = async () => {
     try {
-      await signOut().then(() => {
-        unsubscribeFromPush();
-        addNotification({
-          title: "Logout",
-          message: "Berhasil logout",
-        });
-        router.push("/");
+      const data = await signOut();
+      unsubscribeFromPush();
+      addNotification({
+        title: "Logout",
+        message: "Berhasil logout",
       });
+      router.push(data.redirect || "/");
     } catch (error) {
       console.log(error);
       addNotification({

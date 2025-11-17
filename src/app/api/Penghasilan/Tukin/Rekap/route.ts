@@ -38,15 +38,14 @@ export async function GET(req: Request) {
     );
 
     if (!tukin.ok) {
-      revalidateTag(`Penghasilan:Tukin:Rekap`);
+      revalidateTag(`Penghasilan:Tukin:Rekap`, "max");
       const data = await tukin.json();
       return NextResponse.json(data, { status: tukin.status });
-
     }
     const data = await tukin.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:Tukin:Rekap`);
+    revalidateTag(`Penghasilan:Tukin:Rekap`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

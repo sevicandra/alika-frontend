@@ -18,7 +18,11 @@ export default function Confirmation({
   const [show, setShow] = useState(false);
   useEffect(() => {
     if (isOpen) {
-      setShow(true);
+      const timer = setTimeout(() => {
+        setShow(true);
+      }, 0);
+
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 

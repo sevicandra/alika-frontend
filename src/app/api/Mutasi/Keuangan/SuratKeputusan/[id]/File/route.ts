@@ -41,7 +41,7 @@ export async function GET(
     );
 
     if (!res.ok) {
-      revalidateTag("Mutasi:SuratKeputusan:File");
+      revalidateTag("Mutasi:SuratKeputusan:File", "max");
       const data = await res.json();
       return NextResponse.json(data, { status: res.status });
     }
@@ -62,7 +62,7 @@ export async function GET(
       },
     });
   } catch (error: any) {
-    revalidateTag("Mutasi:SuratKeputusan:File");
+    revalidateTag("Mutasi:SuratKeputusan:File", "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

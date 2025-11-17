@@ -49,9 +49,9 @@ export async function GET(req: Request) {
         next: { revalidate: 60, tags: ["Mutasi:Wilayah"] },
       }
     );
-    revalidateTag("Mutasi:Wilayah");
+    revalidateTag("Mutasi:Wilayah", "max");
     if (!suratKeputusan.ok) {
-      revalidateTag("Mutasi:Wilayah");
+      revalidateTag("Mutasi:Wilayah", "max");
       const data = await suratKeputusan.json();
       return NextResponse.json(data, { status: suratKeputusan.status });
     }

@@ -5,9 +5,9 @@ const Layout = async ({
   tahun,
   action,
 }: {
-  children: React.ReactElement;
-  tahun: React.ReactElement;
-  action: React.ReactElement;
+  children: React.ReactNode;
+  tahun: React.ReactNode;
+  action: React.ReactNode;
 }) => {
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">

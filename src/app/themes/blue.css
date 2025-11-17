@@ -1,6 +1,6 @@
 @plugin "daisyui/theme" {
   name: "blue";
-  default: true;
+  default: false;
   prefersdark: false;
   color-scheme: light;
 

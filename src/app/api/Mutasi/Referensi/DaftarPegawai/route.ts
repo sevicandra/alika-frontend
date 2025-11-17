@@ -34,11 +34,11 @@ export async function GET(req: Request) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session}`,
         },
-        next: { revalidate: 60, tags: ["Mutasi:DaftarPegawai"] },
+        next: { revalidate: 60, tags: ["Mutasi:DaftarPegawai", "max"] },
       },
     );
     if (!suratKeputusan.ok) {
-      revalidateTag("Mutasi:DaftarPegawai");
+      revalidateTag("Mutasi:DaftarPegawai", "max");
       const data = await suratKeputusan.json();
       return NextResponse.json(data, { status: suratKeputusan.status });
     }

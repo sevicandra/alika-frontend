@@ -14,7 +14,6 @@ export async function POST(
   }: {
     params: Promise<{
       id: string;
-      dokumen_id: string;
     }>;
   },
 ) {

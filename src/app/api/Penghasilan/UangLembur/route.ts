@@ -47,14 +47,14 @@ export async function GET(req: Request) {
     );
 
     if (!lembur.ok) {
-      revalidateTag(`Penghasilan:UangLembur`);
+      revalidateTag(`Penghasilan:UangLembur`, "max");
       const data = await lembur.json();
       return NextResponse.json(data, { status: lembur.status });
     }
     const data = await lembur.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:UangLembur`);
+    revalidateTag(`Penghasilan:UangLembur`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

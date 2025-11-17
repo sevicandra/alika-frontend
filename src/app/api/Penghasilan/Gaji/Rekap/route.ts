@@ -38,14 +38,14 @@ export async function GET(req: Request) {
     );
 
     if (!gaji.ok) {
-      revalidateTag(`Penghasilan:Gaji:Rekap`);
+      revalidateTag(`Penghasilan:Gaji:Rekap`, "max");
       const data = await gaji.json();
       return NextResponse.json(data, { status: gaji.status });
     }
     const data = await gaji.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:Gaji:Rekap`);
+    revalidateTag(`Penghasilan:Gaji:Rekap`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

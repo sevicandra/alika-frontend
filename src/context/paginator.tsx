@@ -2,7 +2,6 @@
 import {
   createContext,
   useState,
-  useEffect,
   useContext,
   useMemo,
   useCallback,
@@ -50,11 +49,12 @@ export function PaginatorProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  useEffect(() => {
-    if (page > totalPage) {
-      setPage(totalPage);
-    }
-  }, [totalPage, page]);
+
+  if (page > totalPage) {
+    setPage(totalPage);
+  }
+
+
   const value = useMemo(
     () => ({
       page,

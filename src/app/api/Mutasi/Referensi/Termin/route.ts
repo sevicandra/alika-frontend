@@ -51,7 +51,7 @@ export async function GET(req: Request) {
     );
 
     if (!suratKeputusan.ok) {
-      revalidateTag("Mutasi:Termin");
+      revalidateTag("Mutasi:Termin", "max");
       const data = await suratKeputusan.json();
       return NextResponse.json(data, { status: suratKeputusan.status });
     }

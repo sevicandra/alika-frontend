@@ -43,7 +43,11 @@ interface SessionContextValue {
   data: Session | null;
   status: "authenticated" | "unauthenticated" | "loading";
   update: () => Promise<void>;
-  signOut: () => Promise<void>;
+  signOut: () => Promise<{
+    status: string;
+    message: string;
+    redirect: string;
+  }>;
   changeCurrentAccount: (kode_satker: string) => void;
 }
 
@@ -108,31 +112,42 @@ export function SessionProvider({ children }: SessionProviderProps) {
     });
   }, [session]);
 
-  const signOut = useCallback(async () => {
-    try {
-      const csrf_token = await fetch("/api/auth/csrf").then((res) =>
-        res.json(),
-      );
-      const res = await fetch("/api/auth/signout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": csrf_token.token,
-        },
-      });
-      if (!res.ok) throw new Error("Sign out failed");
-      const data = await res.json();
-      if (data.status === "success") {
-        setSession(null);
-        setStatus("unauthenticated");
-        sessionChannel.postMessage({
-          type: "SESSION_UPDATE",
-          session: null,
+  const signOut = useCallback(async (): Promise<{
+    status: string;
+    message: string;
+    redirect: string;
+  }> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const csrf_token = await fetch("/api/auth/csrf").then((res) =>
+          res.json(),
+        );
+        const res = await fetch("/api/auth/signout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": csrf_token.token,
+          },
         });
+        if (!res.ok) throw new Error("Sign out failed");
+        const data = await res.json();
+        if (data.status === "success") {
+          setSession(null);
+          setStatus("unauthenticated");
+          sessionChannel.postMessage({
+            type: "SESSION_UPDATE",
+            session: null,
+          });
+        }
+        resolve({
+          status: data.status,
+          message: data.message,
+          redirect: data.redirect,
+        });
+      } catch (error) {
+        reject(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
+    });
   }, []);
   useEffect(() => {
     fetchSession();

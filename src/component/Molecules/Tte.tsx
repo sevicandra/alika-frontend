@@ -1,7 +1,7 @@
 "use client";
 import Button from "../Atoms/Button";
 import { Transition } from "@headlessui/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FiKey } from "react-icons/fi";
 export default function Confirmation({
   isOpen,
@@ -16,12 +16,10 @@ export default function Confirmation({
   message?: string;
   title?: string;
 }) {
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    if (isOpen) {
-      setShow(true);
-    }
-  }, [isOpen]);
+  const [show, setShow] = useState(true);
+
+  const open = isOpen && show;
+  
   const [passphrase, setPassphrase] = useState<string>("");
   const [passphraseError, setPassphraseError] = useState<string | undefined>();
   const handleConfirm = () => {
@@ -33,7 +31,7 @@ export default function Confirmation({
   };
 
   return (
-    show && (
+    open && (
       <div
         className="fixed inset-0 z-50 px-2 transition-all delay-75 duration-300 backdrop-blur-xs"
         onClick={() => onCancel()}

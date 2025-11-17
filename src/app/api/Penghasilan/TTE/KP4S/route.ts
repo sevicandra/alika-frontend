@@ -37,8 +37,8 @@ export async function POST(req: Request) {
       return NextResponse.json(data, { status: tukin.status });
     }
     const data = await tukin.json();
-    revalidateTag("Penghasilan:DataCetak:TTE");
-    revalidateTag("Penghasilan:DataCetak:RiwayatTTE");
+    revalidateTag("Penghasilan:DataCetak:TTE", "max");
+    revalidateTag("Penghasilan:DataCetak:RiwayatTTE", "max");
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });

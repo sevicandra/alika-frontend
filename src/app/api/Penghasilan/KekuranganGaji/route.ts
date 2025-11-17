@@ -47,7 +47,7 @@ export async function GET(req: Request) {
     );
 
     if (!gaji.ok) {
-      revalidateTag(`Penghasilan:KekuranganGaji`);
+      revalidateTag(`Penghasilan:KekuranganGaji`, "max");
       const data = await gaji.json();
       return NextResponse.json(data, { status: gaji.status });
 
@@ -55,7 +55,7 @@ export async function GET(req: Request) {
     const data = await gaji.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag(`Penghasilan:KekuranganGaji`);
+    revalidateTag(`Penghasilan:KekuranganGaji`, "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

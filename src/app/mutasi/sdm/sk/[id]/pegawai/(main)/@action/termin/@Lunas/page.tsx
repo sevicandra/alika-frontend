@@ -6,7 +6,13 @@ import { useRouter } from "next/navigation";
 import { useForm } from "@/context/form.context";
 import Icon from "@/component/Atoms/LabelIcon";
 
-export default function Page({ params }: { params: Promise<{ id: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{
+    id: string;
+  }>;
+}) {
   const router = useRouter();
   const { id } = use(params);
   const { input, setInput, getValidationError, setValidationErrors } =

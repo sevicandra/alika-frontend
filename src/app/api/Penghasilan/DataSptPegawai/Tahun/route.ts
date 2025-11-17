@@ -27,14 +27,14 @@ export async function GET() {
       next: { revalidate: 60, tags: ["Penghasilan:DataSptPegawai:Tahun"] },
     });
     if (!res.ok) {
-      revalidateTag("Penghasilan:DataSptPegawai:Tahun");
+      revalidateTag("Penghasilan:DataSptPegawai:Tahun", "max");
       const data = await res.json();
       return NextResponse.json(data, { status: res.status });
     }
     const data = await res.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    revalidateTag("Penghasilan:DataSptPegawai:Tahun");
+    revalidateTag("Penghasilan:DataSptPegawai:Tahun", "max");
     return NextResponse.json({ message: error }, { status: 500 });
   }
 }

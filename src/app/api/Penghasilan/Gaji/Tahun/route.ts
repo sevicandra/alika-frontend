@@ -28,14 +28,14 @@ export async function GET() {
     });
 
     if (!dataCetak.ok) {
-      revalidateTag("Penghasilan:Gaji:Tahun");
+      revalidateTag("Penghasilan:Gaji:Tahun", "max");
       const data = await dataCetak.json();
       return NextResponse.json(data, { status: dataCetak.status });
     }
     const data = await dataCetak.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    revalidateTag("Penghasilan:Gaji:Tahun");
+    revalidateTag("Penghasilan:Gaji:Tahun", "max");
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

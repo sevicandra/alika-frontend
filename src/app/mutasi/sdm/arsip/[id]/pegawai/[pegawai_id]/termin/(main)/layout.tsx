@@ -7,14 +7,7 @@ import { usePegawaiDetail } from "@/context/mutasi/sdm";
 import { useSkDetail } from "@/context/mutasi/sdm";
 import Paginator from "@/component/Organisms/Paginator";
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-  params: Promise<{
-    mutasi_id: string;
-  }>;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { totalPage } = usePaginator();
   const pathSegments = pathname.split("/").filter(Boolean).slice(2);

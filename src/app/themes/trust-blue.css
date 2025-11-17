@@ -1,6 +1,6 @@
 @plugin "daisyui/theme" {
   name: "trust-blue";
-  default: false;
+  default: true;
   prefersdark: false;
   color-scheme: light;
   /* Kemenkeu Official: Biru navy (02AADC), emas, putih, abu */
