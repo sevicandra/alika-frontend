@@ -56,7 +56,7 @@ export default function Page({
   }, [addNotification, mutasi_id, riwayat_id]);
 
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-box text-neutral-content shadow">
+    <div className="relative h-full w-full overflow-hidden rounded-box text-base-content shadow">
       {loading && (
         <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
           <Loading />

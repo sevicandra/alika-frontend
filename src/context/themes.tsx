@@ -9,7 +9,6 @@ type ThemesContextType = {
   setTheme: (theme: string) => void;
   show: boolean;
   handlerClose: () => void;
-
 };
 
 export const ThemesContext = createContext<ThemesContextType>({
@@ -42,8 +41,10 @@ export function ThemesProvider({ children }: { children?: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("theme", theme);
-    document.documentElement.setAttribute("data-theme", theme);
+    if (theme) {
+      localStorage.setItem("theme", theme);
+      document.documentElement.setAttribute("data-theme", theme);
+    }
   }, [theme]);
 
   return (

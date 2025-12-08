@@ -31,10 +31,8 @@ type PdfViewerProps =
 
 interface PageData {
   canvas: HTMLCanvasElement;
-  textLayerDiv: HTMLDivElement;
   canvasWrapper: HTMLDivElement;
   pageNumber: number;
-  textLayer: any; // TextLayer instance
 }
 
 const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
@@ -121,7 +119,7 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
       const pageData = pageRefs.current[pageNum];
       if (!pageData) return;
 
-      const { canvas, textLayerDiv, canvasWrapper } = pageData;
+      const { canvas, canvasWrapper } = pageData;
       const viewport = page.getViewport({ scale: scale });
 
       // ========== RENDER CANVAS ==========
@@ -130,7 +128,8 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
 
       canvas.height = viewport.height;
       canvas.width = viewport.width;
-      canvas.style.display = "block";
+      canvas.style.width = Math.floor(viewport.width) + "px";
+      canvas.style.height = Math.floor(viewport.height) + "px";
 
       // Set wrapper size
       canvasWrapper.style.width = `${viewport.width}px`;
@@ -139,10 +138,10 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
       const renderContext = {
         canvasContext: context,
         viewport: viewport,
+        intent: "print",
       };
 
       await page.render(renderContext).promise;
-
     } catch (err) {
       console.error(`Error merender halaman ${pageNum}:`, err);
     }
@@ -190,35 +189,14 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
             border: 1px solid #ddd;
           `;
 
-          const textLayerDiv = document.createElement("div");
-          textLayerDiv.className = "textLayer";
-          textLayerDiv.setAttribute("data-page-number", pageNum.toString());
-          textLayerDiv.style.cssText = `
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            overflow: hidden;
-            opacity: 0.2;
-            line-height: 1;
-            text-align: initial;
-            user-select: text;
-            -webkit-user-select: text;
-            cursor: text;
-          `;
-
           canvasWrapper.appendChild(canvas);
-          canvasWrapper.appendChild(textLayerDiv);
           pageWrapper.appendChild(canvasWrapper);
           containerRef.current?.appendChild(pageWrapper);
 
           pageRefs.current[pageNum] = {
             canvas,
-            textLayerDiv,
             canvasWrapper,
             pageNumber: pageNum,
-            textLayer: null,
           };
 
           await renderPage(pageNum);
@@ -355,7 +333,7 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
 
   return (
     <div className="flex h-full bg-accent-50">
-      <div className="flex flex-1 flex-col">
+      <div className="grid h-full w-full grid-rows-[auto_1fr]">
         {/* Toolbar */}
         <div className="sticky top-0 z-10 border-b border-accent-300 bg-accent-100 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-4 px-4 py-3">
@@ -443,7 +421,7 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
         {/* PDF Container */}
         <div className="relative flex-1 overflow-auto bg-accent-50">
           {loading && (
-            <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/20 bg-opacity-75">
+            <div className="bg-opacity-75 absolute inset-0 z-20 flex items-center justify-center bg-white/20">
               <div className="text-center">
                 <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-accent-300 border-t-blue-500"></div>
                 <p className="mt-4 font-medium text-accent-700">
@@ -454,7 +432,7 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
           )}
           <div
             ref={containerRef}
-            className="flex flex-col items-center gap-4 p-4"
+            className="flex flex-col items-center gap-4 py-4"
           />
         </div>
       </div>
