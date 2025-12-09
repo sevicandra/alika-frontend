@@ -109,7 +109,6 @@ export default function Page({
           ...input,
           kode_kota: "",
         });
-        setLoading(true);
         const res = await fetch(`/api/Mutasi/Referensi/Wilayah`, {
           method: "GET",
         });
@@ -121,17 +120,14 @@ export default function Page({
         setProvinsi(data);
       } catch (error) {
         setError(error as Error);
-      } finally {
-        setLoading(false);
       }
     };
     fetchData();
-  }, [input, setInput]);
+  }, [setInput]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
         const res = await fetch(
           `/api/Mutasi/Referensi/Wilayah/${input.kode_provinsi}`,
           {
@@ -144,8 +140,6 @@ export default function Page({
         setKota(data);
       } catch (error) {
         setError(error as Error);
-      } finally {
-        setLoading(false);
       }
     };
     if (input.kode_provinsi) {

@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
         pathname: "**",
       },
     ],
+    unoptimized: true,
   },
   turbopack: {
     rules: {

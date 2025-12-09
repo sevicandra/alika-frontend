@@ -13,9 +13,7 @@ export default function Typer({
   useEffect(() => {
     const words = paragraph.split("");
     let index = 0;
-  
     const timeouts: NodeJS.Timeout[] = [];
-  
     words.forEach((char) => {
       const timeout = setTimeout(() => {
         setText((prev) => prev + char);
@@ -26,7 +24,7 @@ export default function Typer({
   
     return () => {
       timeouts.forEach(clearTimeout);
-      setText(""); // Reset jika paragraph berubah
+      setText("");
     };
   }, [paragraph, delay, interval]);
   

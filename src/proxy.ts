@@ -7,6 +7,12 @@ import { OAuth2 } from "@/lib/OAuthOptions";
 const csrfProtectedMethods = ["POST", "PUT", "PATCH", "DELETE"];
 
 export default async function middleware(req: NextRequest) {
+  const response = NextResponse.next();
+  response.headers.set("X-Frame-Options", "SAMEORIGIN");
+  response.headers.set("Content-Security-Policy", "frame-ancestors 'self'");
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-XSS-Protection", "1; mode=block");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   const cookies = getCookies();
   const { pathname } = req.nextUrl;
   let user: {
@@ -32,7 +38,7 @@ export default async function middleware(req: NextRequest) {
     pathname.startsWith("/api/auth/signin") &&
     pathname.startsWith("/api/auth/callback")
   ) {
-    return NextResponse.next();
+    return response;
   }
   try {
     const csrfTokenCookie = (await cookies).get("csrf_token")?.value;
@@ -60,7 +66,7 @@ export default async function middleware(req: NextRequest) {
     !pathname.startsWith("/api/auth/session") &&
     !pathname.startsWith("/api/auth/signout")
   ) {
-    return NextResponse.next();
+    return response;
   }
   try {
     user = await OAuth2.session();
@@ -84,7 +90,7 @@ export default async function middleware(req: NextRequest) {
     ) {
       return NextResponse.redirect(new URL("/", req.url));
     }
-    return NextResponse.next();
+    return response;
   }
   if (pathname === "/penghasilan") {
     return NextResponse.redirect(new URL("/penghasilan/dashboard", req.url));
@@ -166,7 +172,7 @@ export default async function middleware(req: NextRequest) {
       }
     }
   }
-  return NextResponse.next();
+  return response;
 }
 export const config = {
   matcher: [
