@@ -126,7 +126,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [input, setInput]);
+  }, [setInput]);
   useEffect(() => {
     const fetchData = async () => {
       try {

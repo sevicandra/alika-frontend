@@ -126,7 +126,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [input, setInput]);
+  }, [setInput]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -135,7 +135,7 @@ export default function Page({
           `/api/Mutasi/Referensi/Wilayah/${input.provinsi_asal}`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
         }
@@ -159,7 +159,7 @@ export default function Page({
           `/api/Mutasi/Referensi/Wilayah/${input.provinsi_tujuan}`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
         }
