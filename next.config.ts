@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
     },
   },
   reactStrictMode: true,
+  experimental: {
+    proxyClientMaxBodySize: "100mb",
+  },
 };
 
 export default nextConfig;

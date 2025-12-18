@@ -64,7 +64,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [input, setInput]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,7 +90,7 @@ export default function Page({
       }
     };
     if (input.service_kode) fetchData();
-  }, [input.service_kode]);
+  }, [input.service_kode, setInput]);
 
   useEffect(() => {
     const fetchData = async () => {

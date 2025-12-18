@@ -83,7 +83,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     if (input.service_kode) fetchData();
-  }, [input, setInput]);
+  }, [input.service_kode, setInput]);
 
   useEffect(() => {
     const fetchData = async () => {
