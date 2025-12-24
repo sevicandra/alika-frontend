@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "./jwt";
 import { Mutex } from "async-mutex";
+import { SessionData } from "@/types/auth";
+
 const userLocks = new Map<string, Mutex>();
 async function getUserMutex(userId: string) {
   if (!userLocks.has(userId)) {
@@ -25,7 +27,7 @@ const {
 export class OAuth2 {
   private static async getUser() {
     const token = (await cookies()).get(
-      `${process.env.APP_NAME}.session`,
+      `${process.env.APP_NAME}.session`
     )?.value;
     if (!token) {
       return null;
@@ -35,7 +37,7 @@ export class OAuth2 {
 
   private static async getRefreshToken() {
     const refresh_token = (await cookies()).get(
-      `${process.env.APP_NAME}.refresh_token`,
+      `${process.env.APP_NAME}.refresh_token`
     )?.value;
     if (!refresh_token) {
       return null;
@@ -60,7 +62,7 @@ export class OAuth2 {
             grant_type: AUTH_GRANT_TYPE ?? "",
           }),
           cache: "no-store",
-        },
+        }
       );
       if (!res.ok) {
         const { error } = await res.json();
@@ -83,19 +85,19 @@ export class OAuth2 {
           path: "/",
           sameSite: "lax",
           maxAge: 60 * 60,
-        },
+        }
       );
       return NextResponse.redirect(new URL(`${process.env.APP_URL}`, req.url));
     } catch (error: unknown) {
       if (error instanceof Error) {
         return NextResponse.json(
           { status: "failed", message: error.message },
-          { status: 500 },
+          { status: 500 }
         );
       } else {
         return NextResponse.json(
           { status: "failed", message: "Internal Server Error" },
-          { status: 500 },
+          { status: 500 }
         );
       }
     }
@@ -127,7 +129,7 @@ export class OAuth2 {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
             },
-          },
+          }
         );
         if (!response.ok) {
           const { message } = await response.json();
@@ -144,7 +146,7 @@ export class OAuth2 {
               path: "/",
               sameSite: "lax",
               maxAge: expires_in,
-            },
+            }
           );
           (await cookies()).set(
             `${process.env.APP_NAME}.refresh_token`,
@@ -155,7 +157,7 @@ export class OAuth2 {
               path: "/",
               sameSite: "lax",
               maxAge: 60 * 60,
-            },
+            }
           );
           resolve();
         }
@@ -169,25 +171,7 @@ export class OAuth2 {
     });
   }
 
-  static async session(): Promise<{
-    user: {
-      sub: string;
-      name: string;
-      nik: string;
-      nip: string;
-      kode_satker: string;
-      satker: string;
-      gravatar: string;
-    };
-    account: {
-      service: string;
-      kode_satker: string | null;
-      roles: {
-        kode: string;
-        nama: string;
-      }[];
-    }[];
-  }> {
+  static async session(): Promise<SessionData> {
     return new Promise(async (resolve, reject) => {
       const token = (await this.getUser()) ?? "";
       const user = await verify(token).catch(() => null);
@@ -202,6 +186,31 @@ export class OAuth2 {
           try {
             if (isInitiator) {
               await this.refreshToken({ refresh_token });
+              // Coba ambil token baru setelah refresh
+              const retryToken = (await this.getUser()) ?? "";
+              const retryUser = await verify(retryToken).catch(() => null);
+              if (retryUser) {
+                resolve({
+                  user: {
+                    sub: retryUser.sub as string,
+                    name: retryUser.name as string,
+                    nik: retryUser.nik as string,
+                    nip: retryUser.nip as string,
+                    kode_satker: retryUser.kode_satker as string,
+                    satker: retryUser.satker as string,
+                    gravatar: retryUser.gravatar as string,
+                  },
+                  account: retryUser.account as {
+                    service: string;
+                    kode_satker: string | null;
+                    roles: {
+                      kode: string;
+                      nama: string;
+                    }[];
+                  }[],
+                }); // Return user yang baru di-refresh
+                return;
+              }
             }
             reject("Token expired");
           } catch (error) {
@@ -272,7 +281,7 @@ export class OAuth2 {
               refresh_token: refresh_token,
             }),
             cache: "no-store",
-          },
+          }
         );
         if (!response.ok) {
           const data = await response.json();

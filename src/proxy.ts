@@ -35,7 +35,7 @@ export default async function middleware(req: NextRequest) {
     }[];
   };
   if (
-    pathname.startsWith("/api/auth/signin") &&
+    pathname.startsWith("/api/auth/signin") ||
     pathname.startsWith("/api/auth/callback")
   ) {
     return response;

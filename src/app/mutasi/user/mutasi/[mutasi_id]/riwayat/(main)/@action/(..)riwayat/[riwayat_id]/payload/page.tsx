@@ -4,7 +4,7 @@ import { useNotification } from "@/context/notifikasi";
 import SanggahKeluargaCard from "@/component/Molecules/SanggahKeluargaCard";
 import Loading from "@/component/Molecules/Loading";
 import { snackToTitleCase } from "@/helpers/string.helper";
-import { PengajuanSanggah, ReviewSanggah } from "@/type/pembayaranLog";
+import { PengajuanSanggah, ReviewSanggah } from "@/types/pembayaranLog";
 export default function Page({
   params,
 }: {
