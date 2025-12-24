@@ -26,8 +26,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         method: "DELETE",
       });
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        const { error } = await res.json();
+        throw new Error(error.message || "Terjadi kesalahan pada server.");
       }
       addNotification({
         title: "Hapus Client",

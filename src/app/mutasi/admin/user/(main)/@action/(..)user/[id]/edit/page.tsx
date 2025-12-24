@@ -41,11 +41,16 @@ export default function Page({
         body: JSON.stringify(input),
       });
       if (!res.ok) {
-        const { message, errors } = await res.json();
+        const { error } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          const errorArray: { field: string; message: string }[] =
+            Object.entries(error.details).map(([field, message]) => ({
+              field,
+              message: message as string,
+            }));
+          setValidationErrors(errorArray);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(error.message || "Terjadi kesalahan pada server.");
       }
       addNotification({
         message: "Berhasil di ubah",
@@ -71,8 +76,8 @@ export default function Page({
           method: "GET",
         });
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          throw new Error(error.message || "Terjadi kesalahan pada server.");
         }
         const { data } = await res.json();
         if (data.nip === session?.user.nip) {

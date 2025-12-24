@@ -39,8 +39,8 @@ export default function Page({
           method: "GET",
         });
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          throw new Error(error.message || "Terjadi kesalahan pada server.");
         }
         const { data } = await res.json();
         setData(data);
@@ -61,8 +61,8 @@ export default function Page({
           method: "GET",
         });
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          throw new Error(error.message || "Terjadi kesalahan pada server.");
         }
         const { data } = await res.json();
         setRole(data);

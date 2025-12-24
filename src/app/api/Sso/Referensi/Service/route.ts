@@ -18,19 +18,9 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
 
-  const url = new URL(req.url);
-  const limit = url.searchParams.get("limit")
-    ? Number(url.searchParams.get("limit"))
-    : undefined;
-  const offset = url.searchParams.get("offset")
-    ? Number(url.searchParams.get("offset"))
-    : undefined;
-  const search = url.searchParams.get("search") || undefined;
 
-  const searchParams = new URLSearchParams();
-  if (limit) searchParams.append("limit", limit.toString());
-  if (offset) searchParams.append("offset", offset.toString());
-  if (search) searchParams.append("search", search);
+  const url = new URL(req.url);
+  const searchParams = new URLSearchParams(url.search);
 
   try {
     const res = await fetch(

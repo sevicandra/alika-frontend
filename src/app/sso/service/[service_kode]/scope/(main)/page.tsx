@@ -35,6 +35,7 @@ export default function Page({
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
+        searchParams.append("sort", "kode");
 
         setLoading(true);
         const res = await fetch(

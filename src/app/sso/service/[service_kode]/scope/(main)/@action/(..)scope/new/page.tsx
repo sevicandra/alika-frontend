@@ -131,32 +131,6 @@ export default function Page({
             </label>
           )}
         </div>
-        {/* --- Field Deskripsi --- */}
-        <div className="form-control md:col-span-2">
-          <label className="label">
-            <span className="label-text font-semibold">Deskripsi</span>
-          </label>
-          <textarea
-            name="description"
-            className={`textarea-bordered textarea h-24 w-full ${getValidationError("description") ? "textarea-error" : ""}`}
-            placeholder="Tentang dari Surat Keputusan..."
-            value={input.description || ""}
-            onChange={(e) => {
-              setInput({ ...input, description: e.target.value });
-            }}
-            required
-          ></textarea>
-          {getValidationError("description") && (
-            <label className="label">
-              <span className="label-text-alt grid grid-cols-[auto_1fr] items-center gap-2 pt-1 text-sm text-error">
-                <span>
-                  <Icon icon="CircleAlert" height={16} />{" "}
-                </span>
-                <span>{getValidationError("description")?.message}</span>
-              </span>
-            </label>
-          )}
-        </div>
       </div>
     </Form>
   );

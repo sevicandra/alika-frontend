@@ -37,11 +37,11 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           `/api/Sso/Client/${id}/Redirect?${searchParams}`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          throw new Error(error.message || "Terjadi kesalahan pada server.");
         }
         const { data, meta } = await res.json();
         setData(data);

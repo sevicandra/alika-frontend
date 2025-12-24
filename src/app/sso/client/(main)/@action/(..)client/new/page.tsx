@@ -18,16 +18,6 @@ export default function Page() {
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      if (input.secret !== input.resecret) {
-        setValidationErrors([
-          {
-            field: "resecret",
-            message: "Secret tidak cocok",
-          },
-        ]);
-        return;
-      }
-
       setLoading(true);
       const res = await fetch(`/api/Sso/Client`, {
         headers: {
@@ -41,12 +31,16 @@ export default function Page() {
         body: JSON.stringify(input),
       });
       if (!res.ok) {
-        const { message, errors } = await res.json();
+        const { error } = await res.json();
         if (res.status === 422) {
-          console.log(errors);
-          setValidationErrors(errors);
+          const errorArray: { field: string; message: string }[] =
+            Object.entries(error.details).map(([field, message]) => ({
+              field,
+              message: message as string,
+            }));
+          setValidationErrors(errorArray);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(error.message || "Terjadi kesalahan pada server.");
       }
       addNotification({
         message: "Berhasil ditabahkan",
@@ -88,9 +82,9 @@ export default function Page() {
               type="text"
               name="id"
               className={`input-bordered input w-full pl-10 ${getValidationError("client_id") ? "input-error" : ""}`}
-              value={input.id || ""}
+              value={input.client_id || ""}
               onChange={(e) => {
-                setInput({ ...input, id: e.target.value });
+                setInput({ ...input, client_id: e.target.value });
               }}
               required
             />
@@ -119,9 +113,9 @@ export default function Page() {
               type="password"
               name="secret"
               className={`input-bordered input w-full pl-10 ${getValidationError("client_secret") ? "input-error" : ""}`}
-              value={input.secret || ""}
+              value={input.client_secret || ""}
               onChange={(e) => {
-                setInput({ ...input, secret: e.target.value });
+                setInput({ ...input, client_secret: e.target.value });
               }}
               required
             />
@@ -146,22 +140,22 @@ export default function Page() {
             </span>
             <input
               type="password"
-              name="resecret"
-              className={`input-bordered input w-full pl-10 ${getValidationError("resecret") ? "input-error" : ""}`}
-              value={input.resecret || ""}
+              name="re_client_secret"
+              className={`input-bordered input w-full pl-10 ${getValidationError("re_client_secret") ? "input-error" : ""}`}
+              value={input.re_client_secret || ""}
               onChange={(e) => {
-                setInput({ ...input, resecret: e.target.value });
+                setInput({ ...input, re_client_secret: e.target.value });
               }}
               required
             />
           </div>
-          {getValidationError("resecret") && (
+          {getValidationError("re_client_secret") && (
             <label className="label">
               <span className="label-text-alt grid grid-cols-[auto_1fr] items-center gap-2 pt-1 text-sm text-error">
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("resecret")?.message}</span>
+                <span>{getValidationError("re_client_secret")?.message}</span>
               </span>
             </label>
           )}

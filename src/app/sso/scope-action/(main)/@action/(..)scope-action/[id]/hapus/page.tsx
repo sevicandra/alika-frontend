@@ -8,10 +8,10 @@ import Confirmation from "@/component/Organisms/Confirmation";
 export default function Page({
   params,
 }: {
-  params: Promise<{ service_kode: string }>;
+  params: Promise<{ id: string }>;
 }) {
   const router = useRouter();
-  const { service_kode } = use(params);
+  const { id } = use(params);
   const [loading, setLoading] = useState(false);
   const { addNotification } = useNotification();
   const { setRefresh } = useTable();
@@ -19,7 +19,7 @@ export default function Page({
   async function submitForm() {
     try {
       setLoading(true);
-      const res = await fetch(`/api/Sso/ScopeAction/${service_kode}`, {
+      const res = await fetch(`/api/Sso/ScopeAction/${id}`, {
         headers: {
           "Content-Type": "application/json",
           "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
@@ -30,8 +30,8 @@ export default function Page({
         method: "DELETE",
       });
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        const { error } = await res.json();
+        throw new Error(error.message || "Terjadi kesalahan pada server.");
       }
       addNotification({
         title: "Hapus Scope Action",

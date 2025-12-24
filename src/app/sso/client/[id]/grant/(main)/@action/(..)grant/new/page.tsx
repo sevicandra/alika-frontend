@@ -27,12 +27,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Sso/Referensi/Grant`, {
+        const res = await fetch(`/api/Sso/Grant`, {
           method: "GET",
         });
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          throw new Error(error.message || "Terjadi kesalahan pada server.");
         }
         const { data } = await res.json();
         setGrants(data);
@@ -61,12 +61,17 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         body: JSON.stringify(input),
       });
       if (!res.ok) {
-        const { message, errors } = await res.json();
+        const { error } = await res.json();
+
         if (res.status === 422) {
-          console.log(errors);
-          setValidationErrors(errors);
+          const errorArray: { field: string; message: string }[] =
+            Object.entries(error.details).map(([field, message]) => ({
+              field,
+              message: message as string,
+            }));
+          setValidationErrors(errorArray);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(error.message || "Terjadi kesalahan pada server.");
       }
       addNotification({
         message: "Berhasil ditabahkan",

@@ -30,14 +30,14 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-
+        searchParams.append("sort", "kode");
         setLoading(true);
         const res = await fetch(`/api/Sso/Service?${searchParams}`, {
           method: "GET",
         });
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          throw new Error(error.message || "Terjadi kesalahan pada server.");
         }
         const { data, meta } = await res.json();
         setData(data);

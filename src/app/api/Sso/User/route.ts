@@ -4,12 +4,11 @@ import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
 const apiBaseUrl =
-  process.env.AUTH_BASE_URI_INTERNAL ??
-  process.env.AUTH_BASE_URI;
+  process.env.AUTH_BASE_URI_INTERNAL ?? process.env.AUTH_BASE_URI;
 
 export async function GET(req: Request) {
   const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`,
+    `${process.env.APP_NAME}.session`
   )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
@@ -20,18 +19,8 @@ export async function GET(req: Request) {
   }
 
   const url = new URL(req.url);
-  const limit = url.searchParams.get("limit")
-    ? Number(url.searchParams.get("limit"))
-    : undefined;
-  const offset = url.searchParams.get("offset")
-    ? Number(url.searchParams.get("offset"))
-    : undefined;
-  const search = url.searchParams.get("search") || undefined;
+  const searchParams = new URLSearchParams(url.search);
 
-  const searchParams = new URLSearchParams();
-  if (limit) searchParams.append("limit", limit.toString());
-  if (offset) searchParams.append("offset", offset.toString());
-  if (search) searchParams.append("search", search);
 
   try {
     const res = await fetch(
@@ -43,7 +32,7 @@ export async function GET(req: Request) {
           Authorization: `Bearer ${session}`,
         },
         cache: "no-store",
-      },
+      }
     );
 
     if (!res.ok) {
@@ -59,7 +48,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`,
+    `${process.env.APP_NAME}.session`
   )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
@@ -69,18 +58,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
   try {
-    const ref = await fetch(
-      `${apiBaseUrl}/api/v2/Account/User`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(await req.json()),
-        cache: "no-store",
+    const ref = await fetch(`${apiBaseUrl}/api/v2/Account/User`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session}`,
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(await req.json()),
+      cache: "no-store",
+    });
     if (!ref.ok) {
       const data = await ref.json();
       return NextResponse.json(data, { status: ref.status });

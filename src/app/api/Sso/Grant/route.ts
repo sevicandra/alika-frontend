@@ -19,13 +19,12 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
 
-  
   const url = new URL(req.url);
   const searchParams = new URLSearchParams(url.search);
 
   try {
     const res = await fetch(
-      `${apiBaseUrl}/api/v2/Account/ScopeAction?${searchParams.toString()}`,
+      `${apiBaseUrl}/api/v2/Account/Grant?${searchParams.toString()}`,
       {
         method: "GET",
         headers: {
@@ -60,7 +59,7 @@ export async function POST(req: Request) {
   }
   try {
     const ref = await fetch(
-      `${apiBaseUrl}/api/v2/Account/ScopeAction`,
+      `${apiBaseUrl}/api/v2/Account/Grant`,
       {
         method: "POST",
         headers: {

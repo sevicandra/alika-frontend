@@ -36,9 +36,7 @@ export async function GET(
     );
 
     if (!res.ok) {
-      const data = await res.json();
-      console.log(data);
-      
+      const data = await res.json();      
       return NextResponse.json(data, { status: res.status });
     }
     const data = await res.json();

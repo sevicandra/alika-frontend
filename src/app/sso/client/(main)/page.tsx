@@ -29,14 +29,17 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
+        searchParams.append("sort", "client_id");
 
         setLoading(true);
         const res = await fetch(`/api/Sso/Client?${searchParams}`, {
           method: "GET",
         });
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          console.log(error);
+
+          throw new Error(error.message);
         }
         const { data, meta } = await res.json();
         setData(data);

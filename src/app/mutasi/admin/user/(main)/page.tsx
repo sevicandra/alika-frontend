@@ -35,14 +35,15 @@ export default function Page() {
         if (offset) searchParams.append("offset", offset.toString());
         const { search } = searchs;
         if (search) searchParams.append("search", search);
+        searchParams.append("sort", "nip");
 
         setLoading(true);
         const res = await fetch(`/api/Mutasi/Admin/User?${searchParams}`, {
           method: "GET",
         });
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          throw new Error(error.message || "Terjadi kesalahan pada server.");
         }
         const { data, meta } = await res.json();
         setData(data);
