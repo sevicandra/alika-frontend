@@ -60,12 +60,9 @@ export default function Page({
       if (search) searchParams.append("search", search);
       searchParams.append("associations", "Golongan,KantorAsal,KantorTujuan");
       try {
-        const res = await fetch(
-          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai?${searchParams}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai?${searchParams}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -143,41 +140,23 @@ export default function Page({
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="tooltip" data-tip="keluarga">
-                    <Link
-                      href={`/mutasi/sdm/arsip/${id}/pegawai/${row.id}/keluarga`}
-                    >
+                    <Link href={`/mutasi/sdm/arsip/${id}/pegawai/${row.id}/keluarga`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon
-                          className="hover:scale-110"
-                          icon="Users"
-                          height={16}
-                        />
+                        <Icon className="hover:scale-110" icon="Users" height={16} />
                       </div>
                     </Link>
                   </div>
                   <div className="tooltip" data-tip="termin">
-                    <Link
-                      href={`/mutasi/sdm/arsip/${id}/pegawai/${row.id}/termin`}
-                    >
+                    <Link href={`/mutasi/sdm/arsip/${id}/pegawai/${row.id}/termin`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon
-                          className="hover:scale-110"
-                          icon="Receipt"
-                          height={16}
-                        />
+                        <Icon className="hover:scale-110" icon="Receipt" height={16} />
                       </div>
                     </Link>
                   </div>
                   <div className="tooltip" data-tip="Riwayat">
                     <div className="rounded-box bg-info/80 p-1 text-info-content">
-                      <Link
-                        href={`/mutasi/sdm/arsip/${id}/pegawai/${row.id}/riwayat`}
-                      >
-                        <Icon
-                          className="hover:scale-110"
-                          icon="History"
-                          height={16}
-                        />
+                      <Link href={`/mutasi/sdm/arsip/${id}/pegawai/${row.id}/riwayat`}>
+                        <Icon className="hover:scale-110" icon="History" height={16} />
                       </Link>
                     </div>
                   </div>

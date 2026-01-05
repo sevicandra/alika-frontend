@@ -51,7 +51,7 @@ export default function Page({
             nama_pejabat: dataAsal.nama,
             nip_pejabat: dataAsal.nip,
           }),
-        },
+        }
       );
       if (!res.ok) {
         const { message, errors } = await res.json();
@@ -102,9 +102,7 @@ export default function Page({
                     return (
                       <div
                         key={index}
-                        onClick={() =>
-                          val(`${option.nama} / ${option.nip}`, index)
-                        }
+                        onClick={() => val(`${option.nama} / ${option.nip}`, index)}
                         className="cursor-pointer border-b p-2 last:border-0 hover:bg-base-300"
                       >
                         {option.nama} / {option.nip}
@@ -134,8 +132,7 @@ export default function Page({
             {getValidationError("nama_asal") && (
               <label className="label">
                 <span className="label-text-alt flex items-center gap-1 text-error">
-                  <Icon icon="CircleAlert" height={16} />{" "}
-                  {getValidationError("nama_asal")?.message}
+                  <Icon icon="CircleAlert" height={16} /> {getValidationError("nama_asal")?.message}
                 </span>
               </label>
             )}
@@ -149,8 +146,7 @@ export default function Page({
             {getValidationError("nip_asal") && (
               <label className="label">
                 <span className="label-text-alt flex items-center gap-1 text-error">
-                  <Icon icon="CircleAlert" height={16} />{" "}
-                  {getValidationError("nip_asal")?.message}
+                  <Icon icon="CircleAlert" height={16} /> {getValidationError("nip_asal")?.message}
                 </span>
               </label>
             )}

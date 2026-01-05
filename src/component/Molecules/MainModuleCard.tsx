@@ -15,7 +15,7 @@ export default function MainModuleCard({
       <Link href={href}>
         <Card>{children}</Card>
         <span className="text-center">
-        <h1>{label}</h1>
+          <h1>{label}</h1>
         </span>
       </Link>
     </div>

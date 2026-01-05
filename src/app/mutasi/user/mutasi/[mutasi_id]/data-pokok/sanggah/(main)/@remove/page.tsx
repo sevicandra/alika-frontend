@@ -34,9 +34,7 @@ export default function SanggahForm() {
 
   useEffect(() => {
     if (selectedData) {
-      const selectedKeluarga = dataKeluarga.find(
-        (item) => item.id === selectedData,
-      );
+      const selectedKeluarga = dataKeluarga.find((item) => item.id === selectedData);
       if (selectedKeluarga) {
         const timer = setTimeout(() => {
           setData({
@@ -74,11 +72,7 @@ export default function SanggahForm() {
           return;
         }
 
-        if (
-          revisi
-            .filter((r) => r.action !== "add")
-            .some((r) => r.id === selectedData)
-        ) {
+        if (revisi.filter((r) => r.action !== "add").some((r) => r.id === selectedData)) {
           addNotification({
             message: "Data sudah dibuat, silahkan hapus dan buat ulang",
             title: "Edit keluarga",
@@ -88,8 +82,7 @@ export default function SanggahForm() {
         addRevisi({
           id: selectedData,
           action: "remove",
-          nama:
-            dataKeluarga.find((item) => item.id === selectedData)?.nama || "",
+          nama: dataKeluarga.find((item) => item.id === selectedData)?.nama || "",
           catatan: data.catatan,
         });
         setSelectedData("");
@@ -120,9 +113,7 @@ export default function SanggahForm() {
           {dataKeluarga
             .filter(
               (item) =>
-                revisi
-                  .filter((r) => r.action !== "add")
-                  .some((r) => r.id === item.id) === false,
+                revisi.filter((r) => r.action !== "add").some((r) => r.id === item.id) === false
             )
             .map((item) => (
               <option key={item.id} value={item.id}>
@@ -136,29 +127,16 @@ export default function SanggahForm() {
           <div className="px-4">
             <div className="rounded-box bg-base-200 p-2 text-sm">
               <h1 className="font-bold">Current Data</h1>
-              <p>
-                NIK:{" "}
-                {dataKeluarga.find((item) => item.id === selectedData)?.nik}
-              </p>
+              <p>NIK: {dataKeluarga.find((item) => item.id === selectedData)?.nik}</p>
               <p>
                 Tanggal Lahir:{" "}
-                {
-                  dataKeluarga.find((item) => item.id === selectedData)
-                    ?.tanggal_lahir
-                }
+                {dataKeluarga.find((item) => item.id === selectedData)?.tanggal_lahir}
               </p>
-              <p>
-                Pekerjaan:{" "}
-                {
-                  dataKeluarga.find((item) => item.id === selectedData)
-                    ?.pekerjaan
-                }
-              </p>
+              <p>Pekerjaan: {dataKeluarga.find((item) => item.id === selectedData)?.pekerjaan}</p>
               <p>
                 Status:{" "}
                 {snackToTitleCase(
-                  dataKeluarga.find((item) => item.id === selectedData)
-                    ?.status || "",
+                  dataKeluarga.find((item) => item.id === selectedData)?.status || ""
                 )}
               </p>
             </div>
@@ -174,23 +152,15 @@ export default function SanggahForm() {
                   className={`textarea w-full border-base-content/20 bg-base-200 text-base-content focus:outline-none ${validationErrors.find((item) => item.field === "catatan") ? "border-error" : ""}`}
                   value={data.catatan}
                   placeholder="Type here"
-                  onChange={(e) =>
-                    setData({ ...data, catatan: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, catatan: e.target.value })}
                 />
                 {validationErrors.find((e) => e.field === "catatan") && (
                   <p className="label text-xs font-bold text-error">
-                    {
-                      validationErrors.find((e) => e.field === "catatan")
-                        ?.message
-                    }
+                    {validationErrors.find((e) => e.field === "catatan")?.message}
                   </p>
                 )}
               </div>
-              <button
-                type="submit"
-                className="btn col-span-2 mt-4 btn-sm btn-error"
-              >
+              <button type="submit" className="btn col-span-2 mt-4 btn-sm btn-error">
                 Remove
               </button>
             </div>

@@ -10,11 +10,7 @@ import Link from "next/link";
 import Icon from "@/component/Atoms/LabelIcon";
 import { useTable } from "@/context/table.context";
 
-export default function Page({
-  params,
-}: {
-  params: Promise<{ kode_prov: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ kode_prov: string }> }) {
   const { refresh, searchs, searchsTerm, setSearchsTerm } = useTable();
   const { addNotification } = useNotification();
   const { page: currentPage, limit, setTotalPage } = usePaginator();
@@ -35,7 +31,7 @@ export default function Page({
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        const {search} = searchs;
+        const { search } = searchs;
         if (search) searchParams.append("search", search);
 
         setLoading(true);
@@ -43,7 +39,7 @@ export default function Page({
           `/api/Mutasi/Admin/Referensi/Provinsi/${kode_prov}/Kota?${searchParams}`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -103,11 +99,7 @@ export default function Page({
                         href={`/mutasi/admin/referensi/wilayah/${kode_prov}/kota/${row.kode}/edit`}
                       >
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="SquarePen"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="SquarePen" height={16} />
                         </div>
                       </Link>
                     </div>

@@ -5,8 +5,7 @@ import { snackToTitleCase } from "@/helpers/string.helper";
 import { useNotification } from "@/context/notifikasi";
 
 export default function SanggahForm() {
-  const { referensiHubungan, dataKeluarga, revisi, addRevisi } =
-    useSanggahContext();
+  const { referensiHubungan, dataKeluarga, revisi, addRevisi } = useSanggahContext();
   const { addNotification } = useNotification();
   const [selectedData, setSelectedData] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -38,9 +37,7 @@ export default function SanggahForm() {
 
   useEffect(() => {
     if (selectedData) {
-      const selectedKeluarga = dataKeluarga.find(
-        (item) => item.id === selectedData,
-      );
+      const selectedKeluarga = dataKeluarga.find((item) => item.id === selectedData);
       if (selectedKeluarga) {
         const timer = setTimeout(() => {
           setData({
@@ -65,10 +62,8 @@ export default function SanggahForm() {
       field: string;
       message: string;
     }[] = [];
-    if (!data.nama)
-      validationErrors.push({ field: "nama", message: "Nama belum diisi" });
-    if (!data.nik)
-      validationErrors.push({ field: "nik", message: "NIK belum diisi" });
+    if (!data.nama) validationErrors.push({ field: "nama", message: "Nama belum diisi" });
+    if (!data.nik) validationErrors.push({ field: "nik", message: "NIK belum diisi" });
     if (!/^\d{16}$/.test(data.nik)) {
       validationErrors.push({
         field: "nik",
@@ -90,11 +85,9 @@ export default function SanggahForm() {
         field: "hubungan",
         message: "Hubungan belum diisi",
       });
-    if (!data.status)
-      validationErrors.push({ field: "status", message: "Status belum diisi" });
+    if (!data.status) validationErrors.push({ field: "status", message: "Status belum diisi" });
     if (
-      dataKeluarga.find((item) => item.id === selectedData)?.status ===
-        "TIDAK_TERTANGGUNG" &&
+      dataKeluarga.find((item) => item.id === selectedData)?.status === "TIDAK_TERTANGGUNG" &&
       data.status === "TERTANGGUNG" &&
       !data.file
     )
@@ -111,11 +104,7 @@ export default function SanggahForm() {
       return;
     }
 
-    if (
-      revisi
-        .filter((r) => r.action !== "add")
-        .some((r) => r.id === selectedData)
-    ) {
+    if (revisi.filter((r) => r.action !== "add").some((r) => r.id === selectedData)) {
       addNotification({
         message: "Data sudah dibuat, silahkan hapus dan buat ulang",
         title: "Edit keluarga",
@@ -129,9 +118,7 @@ export default function SanggahForm() {
       };
     } = {};
 
-    if (
-      data.nama !== dataKeluarga.find((item) => item.id === selectedData)?.nama
-    )
+    if (data.nama !== dataKeluarga.find((item) => item.id === selectedData)?.nama)
       dataSanggah.nama = {
         new: data.nama,
         old: dataKeluarga.find((item) => item.id === selectedData)?.nama,
@@ -143,38 +130,25 @@ export default function SanggahForm() {
         old: dataKeluarga.find((item) => item.id === selectedData)?.nik,
       };
 
-    if (
-      data.hubungan !==
-      dataKeluarga.find((item) => item.id === selectedData)?.hubungan
-    )
+    if (data.hubungan !== dataKeluarga.find((item) => item.id === selectedData)?.hubungan)
       dataSanggah.hubungan = {
         new: data.hubungan,
         old: dataKeluarga.find((item) => item.id === selectedData)?.hubungan,
       };
 
-    if (
-      data.tanggal_lahir !==
-      dataKeluarga.find((item) => item.id === selectedData)?.tanggal_lahir
-    )
+    if (data.tanggal_lahir !== dataKeluarga.find((item) => item.id === selectedData)?.tanggal_lahir)
       dataSanggah.tanggal_lahir = {
         new: data.tanggal_lahir,
-        old: dataKeluarga.find((item) => item.id === selectedData)
-          ?.tanggal_lahir,
+        old: dataKeluarga.find((item) => item.id === selectedData)?.tanggal_lahir,
       };
 
-    if (
-      data.pekerjaan !==
-      dataKeluarga.find((item) => item.id === selectedData)?.pekerjaan
-    )
+    if (data.pekerjaan !== dataKeluarga.find((item) => item.id === selectedData)?.pekerjaan)
       dataSanggah.pekerjaan = {
         new: data.pekerjaan,
         old: dataKeluarga.find((item) => item.id === selectedData)?.pekerjaan,
       };
 
-    if (
-      data.status !==
-      dataKeluarga.find((item) => item.id === selectedData)?.status
-    )
+    if (data.status !== dataKeluarga.find((item) => item.id === selectedData)?.status)
       dataSanggah.status = {
         new: data.status,
         old: dataKeluarga.find((item) => item.id === selectedData)?.status,
@@ -223,9 +197,7 @@ export default function SanggahForm() {
           {dataKeluarga
             .filter(
               (item) =>
-                revisi
-                  .filter((r) => r.action !== "add")
-                  .some((r) => r.id === item.id) === false,
+                revisi.filter((r) => r.action !== "add").some((r) => r.id === item.id) === false
             )
             .map((item) => (
               <option key={item.id} value={item.id}>
@@ -239,29 +211,16 @@ export default function SanggahForm() {
           <div className="px-4">
             <div className="rounded-box bg-base-200 p-2 text-sm">
               <h1 className="font-bold">Current Data</h1>
-              <p>
-                NIK:{" "}
-                {dataKeluarga.find((item) => item.id === selectedData)?.nik}
-              </p>
+              <p>NIK: {dataKeluarga.find((item) => item.id === selectedData)?.nik}</p>
               <p>
                 Tanggal Lahir:{" "}
-                {
-                  dataKeluarga.find((item) => item.id === selectedData)
-                    ?.tanggal_lahir
-                }
+                {dataKeluarga.find((item) => item.id === selectedData)?.tanggal_lahir}
               </p>
-              <p>
-                Pekerjaan:{" "}
-                {
-                  dataKeluarga.find((item) => item.id === selectedData)
-                    ?.pekerjaan
-                }
-              </p>
+              <p>Pekerjaan: {dataKeluarga.find((item) => item.id === selectedData)?.pekerjaan}</p>
               <p>
                 Status:{" "}
                 {snackToTitleCase(
-                  dataKeluarga.find((item) => item.id === selectedData)
-                    ?.status || "",
+                  dataKeluarga.find((item) => item.id === selectedData)?.status || ""
                 )}
               </p>
             </div>
@@ -316,9 +275,7 @@ export default function SanggahForm() {
                   className={`select w-full border-base-content/20 bg-base-200 select-sm text-base-content focus:outline-none ${validationErrors.find((item) => item.field === "hubungan") ? "select-error" : ""}`}
                   required
                   value={data.hubungan}
-                  onChange={(e) =>
-                    setData({ ...data, hubungan: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, hubungan: e.target.value })}
                 >
                   <option disabled value="">
                     Hubungan
@@ -331,10 +288,7 @@ export default function SanggahForm() {
                 </select>
                 {validationErrors.find((e) => e.field === "hubungan") && (
                   <p className="label text-xs font-bold text-error">
-                    {
-                      validationErrors.find((e) => e.field === "hubungan")
-                        ?.message
-                    }
+                    {validationErrors.find((e) => e.field === "hubungan")?.message}
                   </p>
                 )}
               </div>
@@ -349,16 +303,11 @@ export default function SanggahForm() {
                   autoComplete="off"
                   required
                   value={data.tanggal_lahir}
-                  onChange={(e) =>
-                    setData({ ...data, tanggal_lahir: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, tanggal_lahir: e.target.value })}
                 />
                 {validationErrors.find((e) => e.field === "tanggal_lahir") && (
                   <p className="label text-xs font-bold text-error">
-                    {
-                      validationErrors.find((e) => e.field === "tanggal_lahir")
-                        ?.message
-                    }
+                    {validationErrors.find((e) => e.field === "tanggal_lahir")?.message}
                   </p>
                 )}
               </div>
@@ -374,16 +323,11 @@ export default function SanggahForm() {
                   required
                   value={data.pekerjaan}
                   placeholder="Type here"
-                  onChange={(e) =>
-                    setData({ ...data, pekerjaan: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, pekerjaan: e.target.value })}
                 />
                 {validationErrors.find((e) => e.field === "pekerjaan") && (
                   <p className="label text-xs font-bold text-error">
-                    {
-                      validationErrors.find((e) => e.field === "pekerjaan")
-                        ?.message
-                    }
+                    {validationErrors.find((e) => e.field === "pekerjaan")?.message}
                   </p>
                 )}
               </div>
@@ -406,10 +350,7 @@ export default function SanggahForm() {
                 </select>
                 {validationErrors.find((e) => e.field === "status") && (
                   <p className="label text-xs font-bold text-error">
-                    {
-                      validationErrors.find((e) => e.field === "status")
-                        ?.message
-                    }
+                    {validationErrors.find((e) => e.field === "status")?.message}
                   </p>
                 )}
               </div>
@@ -422,16 +363,11 @@ export default function SanggahForm() {
                   className={`textarea w-full border-base-content/20 bg-base-200 text-base-content focus:outline-none ${validationErrors.find((item) => item.field === "catatan") ? "border-error" : ""}`}
                   value={data.catatan}
                   placeholder="Type here"
-                  onChange={(e) =>
-                    setData({ ...data, catatan: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, catatan: e.target.value })}
                 />
                 {validationErrors.find((e) => e.field === "catatan") && (
                   <p className="label text-xs font-bold text-error">
-                    {
-                      validationErrors.find((e) => e.field === "catatan")
-                        ?.message
-                    }
+                    {validationErrors.find((e) => e.field === "catatan")?.message}
                   </p>
                 )}
               </div>
@@ -445,9 +381,7 @@ export default function SanggahForm() {
                   type="file"
                   className={`file-input w-full border-base-content/20 bg-base-200 file-input-sm text-base-content focus:outline-none ${validationErrors.find((item) => item.field === "file") ? "file-input-error" : ""}`}
                   accept="application/pdf"
-                  onChange={(e) =>
-                    setData({ ...data, file: e.target.files?.[0] ?? null })
-                  }
+                  onChange={(e) => setData({ ...data, file: e.target.files?.[0] ?? null })}
                 />
                 {validationErrors.find((e) => e.field === "file") && (
                   <p className="label text-xs font-bold text-error">
@@ -455,10 +389,7 @@ export default function SanggahForm() {
                   </p>
                 )}
               </div>
-              <button
-                type="submit"
-                className="btn col-span-2 mt-4 btn-sm btn-accent"
-              >
+              <button type="submit" className="btn col-span-2 mt-4 btn-sm btn-accent">
                 Submit
               </button>
             </div>

@@ -9,12 +9,7 @@ type PopUpProps = React.HTMLAttributes<HTMLDivElement> & {
   title: string;
 };
 
-export default function PopUp({
-  title,
-  children,
-  className,
-  ...props
-}: PopUpProps) {
+export default function PopUp({ title, children, className, ...props }: PopUpProps) {
   const router = useRouter();
 
   useEffect(() => {
@@ -35,7 +30,7 @@ export default function PopUp({
     <div
       className={cn(
         "m-auto grid h-fit max-h-full max-w-full grid-rows-[auto_1fr] overflow-hidden rounded-box border border-base-content/20 bg-base-200 shadow shadow-base-content/10",
-        className,
+        className
       )}
       onClick={(e) => e.stopPropagation()}
       {...props}

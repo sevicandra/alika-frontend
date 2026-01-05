@@ -63,8 +63,7 @@ export default function Page() {
                 Termin {item.termin} ({item.nama})
               </p>
               <p className="text-sm">
-                {item.uploaded_dokumen} dari {item.req_dokumen} dokumen di
-                upload
+                {item.uploaded_dokumen} dari {item.req_dokumen} dokumen di upload
               </p>
             </div>
           ))
@@ -83,9 +82,7 @@ export default function Page() {
               <p className="font-bold">
                 Termin {item.termin} ({item.nama})
               </p>
-              <p className="text-sm">
-                {item.status}
-              </p>
+              <p className="text-sm">{item.status}</p>
             </div>
           ))
         )}

@@ -3,13 +3,10 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 import { revalidateTag } from "next/cache";
-const apiBaseUrl =
-  process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
+const apiBaseUrl = process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
 
 async function handler(req: Request) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`,
-  )?.value;
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -19,7 +16,7 @@ async function handler(req: Request) {
   }
   const { tahun } = await req.json();
   try {
-    const dataCetak = await fetch( `${apiBaseUrl}/api/v2/1721-VII/Cetak/`, {
+    const dataCetak = await fetch(`${apiBaseUrl}/api/v2/1721-VII/Cetak/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

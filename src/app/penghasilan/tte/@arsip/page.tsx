@@ -33,7 +33,7 @@ export default function Page() {
           `/api/Penghasilan/DataTTE?limit=${limit}&offset=${offset}&status=1&sortField=tanggal&sortOrder=desc`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -51,7 +51,7 @@ export default function Page() {
               status: item.status,
               id: item.id,
             };
-          }),
+          })
         );
         setTotalPage(data.meta.totalPages);
       } catch (error) {
@@ -78,15 +78,7 @@ export default function Page() {
           </div>
         )}
         <DataTable
-          columns={[
-            "No",
-            "Jenis",
-            "Nomor",
-            "Tanggal",
-            "Hal",
-            "Pemohon/Tujuan",
-            "Aksi",
-          ]}
+          columns={["No", "Jenis", "Nomor", "Tanggal", "Hal", "Pemohon/Tujuan", "Aksi"]}
           data={data}
           renderRow={(row, index) => (
             <tr key={index}>

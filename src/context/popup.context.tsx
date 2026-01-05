@@ -11,12 +11,11 @@ export function PopUpProvider({ children }: { children: React.ReactNode }) {
   const backdropRef = useRef<HTMLDivElement>(null);
   const baseRef = useRef<HTMLDivElement>(null);
 
-
   const value = useMemo(
     () => ({
       backdropRef,
     }),
-    [backdropRef],
+    [backdropRef]
   );
 
   function onClick() {

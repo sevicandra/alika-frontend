@@ -5,7 +5,7 @@ export const Disclosure = ({
   children,
   title,
   ...props
-}: DivProps &{
+}: DivProps & {
   children: React.ReactNode;
   title: string;
 }) => {

@@ -34,10 +34,7 @@ export default async function middleware(req: NextRequest) {
       }[];
     }[];
   };
-  if (
-    pathname.startsWith("/api/auth/signin") ||
-    pathname.startsWith("/api/auth/callback")
-  ) {
+  if (pathname.startsWith("/api/auth/signin") || pathname.startsWith("/api/auth/callback")) {
     return response;
   }
   try {
@@ -50,16 +47,13 @@ export default async function middleware(req: NextRequest) {
         secure: process.env.APP_COOKIES === "secure",
         sameSite: "strict",
         path: "/",
-        maxAge: 60 * 60, // 1h
+        maxAge: 45 * 60, // 1h
       });
       return NextResponse.redirect(req.url);
     }
   } catch (error) {
     console.error("Failed to set CSRF token:", error);
-    return NextResponse.json(
-      { message: "Internal server error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
   }
   if (
     pathname.startsWith("/api/auth") &&
@@ -78,9 +72,7 @@ export default async function middleware(req: NextRequest) {
     if (pathname.startsWith("/api")) {
       return NextResponse.json({ message: "Session expired" }, { status: 401 });
     }
-    return NextResponse.redirect(
-      new URL(`${process.env.APP_URL}/api/auth/signin`, req.url),
-    );
+    return NextResponse.redirect(new URL(`${process.env.APP_URL}/api/auth/signin`, req.url));
   }
   if (pathname.startsWith("/sso")) {
     if (
@@ -146,24 +138,15 @@ export default async function middleware(req: NextRequest) {
         const csrfTokenCookie = (await cookies).get("csrf_token")?.value;
         const csrfTokenHeader = req.headers.get("x-csrf-token");
         if (!csrfTokenHeader) {
-          return NextResponse.json(
-            { message: "Missing CSRF token" },
-            { status: 403 },
-          );
+          return NextResponse.json({ message: "Missing CSRF token" }, { status: 403 });
         }
         const decrypted = await decrypt(csrfTokenHeader);
         if (!decrypted || csrfTokenHeader !== csrfTokenCookie) {
-          return NextResponse.json(
-            { message: "Invalid CSRF token" },
-            { status: 403 },
-          );
+          return NextResponse.json({ message: "Invalid CSRF token" }, { status: 403 });
         }
       } catch (error) {
         console.error("CSRF validation failed:", error);
-        return NextResponse.json(
-          { message: "CSRF validation error" },
-          { status: 500 },
-        );
+        return NextResponse.json({ message: "CSRF validation error" }, { status: 500 });
       }
       const referer = req.headers.get("Referer") || "";
       const allowedOrigin = process.env.APP_URL || "";

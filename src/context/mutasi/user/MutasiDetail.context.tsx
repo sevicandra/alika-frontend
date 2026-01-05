@@ -16,7 +16,7 @@ type MutasiDetailData = {
   };
   CurrentSanggah?: {
     id: string;
-  }
+  };
 };
 
 type MutasiDetailContextType = {
@@ -24,9 +24,7 @@ type MutasiDetailContextType = {
   setRefresh: () => void;
 };
 
-const MutasiDetailContext = createContext<MutasiDetailContextType | undefined>(
-  undefined
-);
+const MutasiDetailContext = createContext<MutasiDetailContextType | undefined>(undefined);
 
 export function MutasiDetailProvider({
   children,
@@ -41,9 +39,7 @@ export function MutasiDetailProvider({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}`
-        );
+        const response = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}`);
         if (!response.ok) throw new Error("Gagal mengambil data Mutasi");
         const { data } = await response.json();
         setData(data);
@@ -62,19 +58,13 @@ export function MutasiDetailProvider({
     [data]
   );
 
-  return (
-    <MutasiDetailContext.Provider value={value}>
-      {children}
-    </MutasiDetailContext.Provider>
-  );
+  return <MutasiDetailContext.Provider value={value}>{children}</MutasiDetailContext.Provider>;
 }
 
 export const useMutasiDetail = () => {
   const context = useContext(MutasiDetailContext);
   if (!context) {
-    throw new Error(
-      "useMutasiDetail must be used within a MutasiDetailProvider"
-    );
+    throw new Error("useMutasiDetail must be used within a MutasiDetailProvider");
   }
   return context;
 };

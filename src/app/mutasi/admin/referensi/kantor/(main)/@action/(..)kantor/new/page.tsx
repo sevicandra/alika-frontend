@@ -10,8 +10,7 @@ import Form from "@/component/Organisms/Form";
 export default function Page() {
   const { setRefresh } = useTable();
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -93,12 +92,9 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(
-          `/api/Mutasi/Referensi/Wilayah/${input.kode_provinsi}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/Referensi/Wilayah/${input.kode_provinsi}`, {
+          method: "GET",
+        });
         if (!res.ok) {
         }
         const { data } = await res.json();
@@ -138,17 +134,14 @@ export default function Page() {
               name="kode_satker"
               className={`input-bordered input w-full pl-10 ${getValidationError("kode_satker") ? "input-error" : ""}`}
               value={input.kode_satker || ""}
-              onChange={(e) =>
-                setInput({ ...input, kode_satker: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, kode_satker: e.target.value })}
               required
             />
           </div>
           {getValidationError("kode_satker") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kode_satker")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("kode_satker")?.message}
               </span>
             </label>
           )}
@@ -174,8 +167,7 @@ export default function Page() {
           {getValidationError("kantor") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kantor")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("kantor")?.message}
               </span>
             </label>
           )}
@@ -194,9 +186,7 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("kode_provinsi") ? "select-error" : ""}`}
               required
               value={input.kode_provinsi || ""}
-              onChange={(e) =>
-                setInput({ ...input, kode_provinsi: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, kode_provinsi: e.target.value })}
             >
               <option disabled value={""}>
                 Pilih Provinsi
@@ -231,9 +221,7 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("kode_kota") ? "select-error" : ""}`}
               required
               value={input.kode_kota || ""}
-              onChange={(e) =>
-                setInput({ ...input, kode_kota: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, kode_kota: e.target.value })}
             >
               <option value={""}>Pilih Kota</option>
               {kota.map((e) => (
@@ -246,8 +234,7 @@ export default function Page() {
           {getValidationError("kode_kota") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kode_kota")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("kode_kota")?.message}
               </span>
             </label>
           )}

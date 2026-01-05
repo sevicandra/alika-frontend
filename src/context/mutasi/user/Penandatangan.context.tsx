@@ -13,9 +13,7 @@ type PenandatanganContextType = {
   setSearch: (search: string) => void;
 };
 
-const PenandatanganContext = createContext<
-  PenandatanganContextType | undefined
->(undefined);
+const PenandatanganContext = createContext<PenandatanganContextType | undefined>(undefined);
 
 export function PenandatanganProvider({
   children,
@@ -44,16 +42,15 @@ export function PenandatanganProvider({
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `/api/Mutasi/Referensi/DaftarPegawai?kdSatker=${kdSatkerAsal}`,
+          `/api/Mutasi/Referensi/DaftarPegawai?kdSatker=${kdSatkerAsal}`
         );
-        if (!response.ok)
-          throw new Error("Gagal mengambil data Pegawai Kantor Asal");
+        if (!response.ok) throw new Error("Gagal mengambil data Pegawai Kantor Asal");
         const { data } = await response.json();
         setPegawaiAsal(
           data.filter(
             (d: { nama: string; nip: string; jenisJabatan: string }) =>
-              d.jenisJabatan.toLowerCase() === "struktural",
-          ),
+              d.jenisJabatan.toLowerCase() === "struktural"
+          )
         );
       } catch (error) {
         console.error(error);
@@ -66,16 +63,15 @@ export function PenandatanganProvider({
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `/api/Mutasi/Referensi/DaftarPegawai?kdSatker=${kdSatkerTujuan}`,
+          `/api/Mutasi/Referensi/DaftarPegawai?kdSatker=${kdSatkerTujuan}`
         );
-        if (!response.ok)
-          throw new Error("Gagal mengambil data Pegawai Kantor Tujuan");
+        if (!response.ok) throw new Error("Gagal mengambil data Pegawai Kantor Tujuan");
         const { data } = await response.json();
         setPegawaiTujuan(
           data.filter(
             (d: { nama: string; nip: string; jenisJabatan: string }) =>
-              d.jenisJabatan.toLowerCase() === "struktural",
-          ),
+              d.jenisJabatan.toLowerCase() === "struktural"
+          )
         );
       } catch (error) {
         console.error(error);
@@ -91,21 +87,15 @@ export function PenandatanganProvider({
       search,
       setSearch,
     }),
-    [pegawaiAsal, pegawaiTujuan, search],
+    [pegawaiAsal, pegawaiTujuan, search]
   );
-  return (
-    <PenandatanganContext.Provider value={value}>
-      {children}
-    </PenandatanganContext.Provider>
-  );
+  return <PenandatanganContext.Provider value={value}>{children}</PenandatanganContext.Provider>;
 }
 
 export const usePenandatangan = () => {
   const context = useContext(PenandatanganContext);
   if (!context) {
-    throw new Error(
-      "usePenandatangan must be used within a PenandatanganProvider",
-    );
+    throw new Error("usePenandatangan must be used within a PenandatanganProvider");
   }
   return context;
 };

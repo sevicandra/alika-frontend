@@ -2,7 +2,7 @@
 import { Menu, Items, Item } from "../Molecules/Sidebar";
 import { menus } from "@/lib/sidebar";
 
-export default async function Sidebar({ menu, role }: { menu: string, role?: string[] }) {
+export default async function Sidebar({ menu, role }: { menu: string; role?: string[] }) {
   const sidebar = await menus({ module: menu });
   return (
     <Menu>
@@ -16,7 +16,7 @@ export default async function Sidebar({ menu, role }: { menu: string, role?: str
                 </Item>
               ))}
             </Items>
-          ),
+          )
       )}
     </Menu>
   );

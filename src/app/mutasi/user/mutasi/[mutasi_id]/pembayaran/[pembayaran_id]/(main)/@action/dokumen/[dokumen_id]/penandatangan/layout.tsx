@@ -38,15 +38,13 @@ export default function Layout({
       status: "PENDING" | "PROCESS" | "SIGNED" | "FAILED";
     };
   }>();
-  const [children, setChildren] = useState<"Kantor_Asal" | "Kantor_Tujuan">(
-    "Kantor_Asal",
-  );
+  const [children, setChildren] = useState<"Kantor_Asal" | "Kantor_Tujuan">("Kantor_Asal");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Pembayaran/${pembayaran_id}/Dokumen/${dokumen_id}/SPD2/Status`,
+          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Pembayaran/${pembayaran_id}/Dokumen/${dokumen_id}/SPD2/Status`
         );
         if (!res.ok) {
           const { message } = await res.json();

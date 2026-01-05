@@ -47,7 +47,7 @@ export default function Page({
     async function fetchData() {
       try {
         const res = await fetch(
-          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/RincianBiaya/${biaya_id}`,
+          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/RincianBiaya/${biaya_id}`
         );
         const { data } = await res.json();
         setData({
@@ -93,7 +93,7 @@ export default function Page({
             harga_satuan: data.harga_satuan,
             urutan: data.urutan,
           }),
-        },
+        }
       );
       if (!res.ok) {
         const { message, errors } = await res.json();
@@ -291,24 +291,17 @@ export default function Page({
                     Jenis Biaya
                   </option>
                   <option value="BIAYA_ANGKUT_ORANG">BIAYA ANGKUT ORANG</option>
-                  <option value="BIAYA_ANGKUT_BARANG">
-                    BIAYA ANGKUT BARANG
-                  </option>
+                  <option value="BIAYA_ANGKUT_BARANG">BIAYA ANGKUT BARANG</option>
                   <option value="UANG_HARIAN">UANG HARIAN</option>
-                  <option value="BIAYA_ANGKUT_ORANG_ART">
-                    BIAYA ANGKUT ORANG ART
-                  </option>
-                  <option value="BIAYA_ANGKUT_BARANG_ART">
-                    BIAYA ANGKUT BARANG ART
-                  </option>
+                  <option value="BIAYA_ANGKUT_ORANG_ART">BIAYA ANGKUT ORANG ART</option>
+                  <option value="BIAYA_ANGKUT_BARANG_ART">BIAYA ANGKUT BARANG ART</option>
                   <option value="UANG_HARIAN_ART">UANG HARIAN ART</option>
                 </select>
               </div>
               {getValidationError("jenis") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("jenis")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("jenis")?.message}
                   </span>
                 </label>
               )}
@@ -329,9 +322,7 @@ export default function Page({
                   className={`input-bordered input w-full pl-10 ${getValidationError("sub_jenis") ? "input-error" : ""}`}
                   required
                   value={data.sub_jenis}
-                  onChange={(e) =>
-                    setData({ ...data, sub_jenis: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, sub_jenis: e.target.value })}
                 />
               </div>
               {getValidationError("sub_jenis") && (
@@ -359,9 +350,7 @@ export default function Page({
                   className={`input-bordered input w-full pl-10 ${getValidationError("keterangan") ? "input-error" : ""}`}
                   required
                   value={data.keterangan}
-                  onChange={(e) =>
-                    setData({ ...data, keterangan: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, keterangan: e.target.value })}
                 />
               </div>
               {getValidationError("keterangan") && (
@@ -402,8 +391,7 @@ export default function Page({
               {getValidationError("volume") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("volume")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("volume")?.message}
                   </span>
                 </label>
               )}
@@ -468,8 +456,7 @@ export default function Page({
               {getValidationError("urutan") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("urutan")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("urutan")?.message}
                   </span>
                 </label>
               )}
@@ -477,11 +464,7 @@ export default function Page({
           </div>
         </div>
         <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-          <button
-            type="button"
-            className="btn btn-ghost"
-            onClick={() => router.back()}
-          >
+          <button type="button" className="btn btn-ghost" onClick={() => router.back()}>
             <Icon icon="ArrowLeft" height={16} /> Batal
           </button>
           <button type="submit" className="btn text-nowrap btn-primary">

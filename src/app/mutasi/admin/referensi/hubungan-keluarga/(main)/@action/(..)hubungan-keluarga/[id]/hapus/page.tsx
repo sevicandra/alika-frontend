@@ -15,19 +15,16 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   async function submitForm() {
     try {
       setLoading(true);
-      const res = await fetch(
-        `/api/Mutasi/Admin/Referensi/HubunganKeluarga/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
-          },
-          method: "DELETE",
+      const res = await fetch(`/api/Mutasi/Admin/Referensi/HubunganKeluarga/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+            const data = await res.json();
+            return data.token;
+          }),
         },
-      );
+        method: "DELETE",
+      });
       if (!res.ok) {
         const { message } = await res.json();
         throw new Error(message);

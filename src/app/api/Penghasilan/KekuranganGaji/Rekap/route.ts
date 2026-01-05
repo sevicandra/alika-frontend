@@ -3,13 +3,10 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 import { revalidateTag } from "next/cache";
-const apiBaseUrl =
-  process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
+const apiBaseUrl = process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
 
 export async function GET(req: Request) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`,
-  )?.value;
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -34,14 +31,13 @@ export async function GET(req: Request) {
           Authorization: `Bearer ${session}`,
         },
         next: { revalidate: 60, tags: [`Penghasilan:KekuranganGaji:Rekap`] },
-      },
+      }
     );
 
     if (!kekuranganGaji.ok) {
       revalidateTag(`Penghasilan:KekuranganGaji:Rekap`, "max");
       const data = await kekuranganGaji.json();
       return NextResponse.json(data, { status: kekuranganGaji.status });
-
     }
     const data = await kekuranganGaji.json();
     return NextResponse.json(data, { status: 200 });

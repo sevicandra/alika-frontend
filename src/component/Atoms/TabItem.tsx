@@ -12,9 +12,7 @@ export const TabItem = ({
   const { tab } = useTab();
   return (
     tab === index && (
-      <div className={`w-full transition-all ease-in-out ${className}`}>
-        {children}
-      </div>
+      <div className={`w-full transition-all ease-in-out ${className}`}>{children}</div>
     )
   );
 };

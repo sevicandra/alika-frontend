@@ -3,11 +3,7 @@ import Preview from "@/component/Organisms/PdfViewer";
 import { use, useState, useEffect } from "react";
 import { useNotification } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
-export default function Page({
-  params,
-}: {
-  params: Promise<{ id: string; dokumen_id: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ id: string; dokumen_id: string }> }) {
   const { id, dokumen_id } = use(params);
   const [base64, setBase64] = useState<string>();
   const [error, setError] = useState<Error | null>(null);
@@ -24,7 +20,7 @@ export default function Page({
             headers: {
               "Content-Type": "application/json",
             },
-          },
+          }
         );
         if (!file.ok) {
           const { message } = await file.json();

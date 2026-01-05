@@ -12,8 +12,7 @@ import ItemCard from "@/component/Molecules/ItemCard";
 
 export default function Page() {
   const { addNotification } = useNotification();
-  const { refresh, searchsTerm, setSearchsTerm, searchs, filter, setFilter } =
-    useTable();
+  const { refresh, searchsTerm, setSearchsTerm, searchs, filter, setFilter } = useTable();
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<
@@ -32,17 +31,14 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        const {search} = searchs
-        const {status} = filter
+        const { search } = searchs;
+        const { status } = filter;
         if (search) searchParams.append("search", search);
         if (status) searchParams.append("status", status);
         setLoading(true);
-        const res = await fetch(
-          `/api/Mutasi/Admin/Referensi/Faq?${searchParams}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/Admin/Referensi/Faq?${searchParams}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -113,56 +109,32 @@ export default function Page() {
                   {row.status === "DRAFT" ? (
                     <>
                       <div className="tooltip" data-tip="edit">
-                        <Link
-                          href={`/mutasi/admin/referensi/faq/${row.id}/edit`}
-                        >
+                        <Link href={`/mutasi/admin/referensi/faq/${row.id}/edit`}>
                           <div className="rounded-box bg-info/80 p-1 text-info-content">
-                            <Icon
-                              className="hover:scale-110"
-                              icon="SquarePen"
-                              height={16}
-                            />
+                            <Icon className="hover:scale-110" icon="SquarePen" height={16} />
                           </div>
                         </Link>
                       </div>
                       <div className="tooltip" data-tip="hapus">
-                        <Link
-                          href={`/mutasi/admin/referensi/faq/${row.id}/hapus`}
-                        >
+                        <Link href={`/mutasi/admin/referensi/faq/${row.id}/hapus`}>
                           <div className="rounded-box bg-error/80 p-1 text-error-content">
-                            <Icon
-                              className="hover:scale-110"
-                              icon="Trash2"
-                              height={16}
-                            />
+                            <Icon className="hover:scale-110" icon="Trash2" height={16} />
                           </div>
                         </Link>
                       </div>
                       <div className="tooltip" data-tip="publish">
-                        <Link
-                          href={`/mutasi/admin/referensi/faq/${row.id}/publish`}
-                        >
+                        <Link href={`/mutasi/admin/referensi/faq/${row.id}/publish`}>
                           <div className="rounded-box bg-success/80 p-1 text-success-content">
-                            <Icon
-                              className="hover:scale-110"
-                              icon="CircleCheck"
-                              height={16}
-                            />
+                            <Icon className="hover:scale-110" icon="CircleCheck" height={16} />
                           </div>
                         </Link>
                       </div>
                     </>
                   ) : (
                     <div className="tooltip" data-tip="draft">
-                      <Link
-                        href={`/mutasi/admin/referensi/faq/${row.id}/draft`}
-                      >
+                      <Link href={`/mutasi/admin/referensi/faq/${row.id}/draft`}>
                         <div className="rounded-box bg-warning/80 p-1 text-warning-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="CircleAlert"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="CircleAlert" height={16} />
                         </div>
                       </Link>
                     </div>

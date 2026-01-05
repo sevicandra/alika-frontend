@@ -15,8 +15,7 @@ export default function Page({
 }) {
   const router = useRouter();
   const { id } = use(params);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const { setRefresh } = useTable();
   const [loading, setLoading] = useState(false);
@@ -26,23 +25,20 @@ export default function Page({
     if (loading) return;
     try {
       setLoading(true);
-      const res = await fetch(
-        `/api/Mutasi/SDM/SuratKeputusan/${id}/ProcessTermin`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
-          },
-          method: "POST",
-          body: JSON.stringify({
-            type: "LUNAS",
-            tahun_lunas: input.tahun_lunas,
+      const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/ProcessTermin`, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+            const data = await res.json();
+            return data.token;
           }),
         },
-      );
+        method: "POST",
+        body: JSON.stringify({
+          type: "LUNAS",
+          tahun_lunas: input.tahun_lunas,
+        }),
+      });
       if (!res.ok) {
         const { message, errors } = await res.json();
         if (res.status === 422) {
@@ -75,9 +71,7 @@ export default function Page({
             {/* --- Field Tahun --- */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">
-                  Tahun Anggaran:
-                </span>
+                <span className="label-text font-semibold">Tahun Anggaran:</span>
               </label>
               <div className="relative">
                 <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
@@ -89,9 +83,7 @@ export default function Page({
                   className={`input-bordered input w-full pl-10 ${getValidationError("tahun_lunas") ? "input-error" : ""}`}
                   required
                   value={input.tahun_lunas || ""}
-                  onChange={(e) =>
-                    setInput({ ...input, tahun_lunas: e.target.value })
-                  }
+                  onChange={(e) => setInput({ ...input, tahun_lunas: e.target.value })}
                   autoComplete="off"
                   placeholder="Masukkan tahun anggaran"
                   inputMode="numeric"
@@ -116,16 +108,8 @@ export default function Page({
             >
               Batal
             </button>
-            <button
-              type="submit"
-              className={`btn btn-success`}
-              disabled={loading}
-            >
-              {loading ? (
-                <span className="loading loading-spinner"></span>
-              ) : (
-                "Lanjutkan"
-              )}
+            <button type="submit" className={`btn btn-success`} disabled={loading}>
+              {loading ? <span className="loading loading-spinner"></span> : "Lanjutkan"}
             </button>
           </div>
         </div>

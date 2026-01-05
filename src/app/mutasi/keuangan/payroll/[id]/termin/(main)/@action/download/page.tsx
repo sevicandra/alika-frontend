@@ -92,9 +92,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           <div className="grid grid-cols-1 gap-x-8 gap-y-6">
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">
-                  Rincian Payroll
-                </span>
+                <span className="label-text font-semibold">Rincian Payroll</span>
               </label>
               <div className="relative max-h-36 overflow-auto">
                 <DataTable
@@ -137,9 +135,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             {/* --- Field Tanggal --- */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">
-                  Tanggal Payroll
-                </span>
+                <span className="label-text font-semibold">Tanggal Payroll</span>
               </label>
               <div className="relative">
                 <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
@@ -156,8 +152,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               {getValidationError("tanggal") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("tanggal")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggal")?.message}
                   </span>
                 </label>
               )}
@@ -165,11 +160,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           </div>
         </div>
         <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-          <button
-            type="button"
-            className="btn btn-ghost"
-            onClick={() => router.back()}
-          >
+          <button type="button" className="btn btn-ghost" onClick={() => router.back()}>
             <Icon icon="ArrowLeft" height={16} /> Batal
           </button>
           <button type="submit" className="btn text-nowrap btn-primary">

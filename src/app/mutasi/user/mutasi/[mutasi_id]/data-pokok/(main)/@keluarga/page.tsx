@@ -6,11 +6,7 @@ import Loading from "@/component/Molecules/Loading";
 import { snackToTitleCase } from "@/helpers/string.helper";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 
-export default function Page({
-  params,
-}: {
-  params: Promise<{ mutasi_id: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ mutasi_id: string }> }) {
   const { mutasi_id } = use(params);
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(true);
@@ -35,9 +31,7 @@ export default function Page({
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Keluarga`,
-        );
+        const res = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Keluarga`);
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -82,15 +76,7 @@ export default function Page({
               };
               return getPriority(a) - getPriority(b);
             })}
-            columns={[
-              "No",
-              "Nama",
-              "NIK",
-              "Hubungan",
-              "Tanggal Lahir",
-              "Pekerjaan",
-              "Status",
-            ]}
+            columns={["No", "Nama", "NIK", "Hubungan", "Tanggal Lahir", "Pekerjaan", "Status"]}
             renderRow={(item, index) => (
               <tr key={index}>
                 <td className="px-4 py-2">{index + 1}</td>

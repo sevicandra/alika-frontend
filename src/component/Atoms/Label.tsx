@@ -19,9 +19,7 @@ export default function Label({
           <Icon height={"25px"} icon={icon} />
         </span>
       )}
-      {showText && (
-        <span className="truncate text-left text-nowrap">{children}</span>
-      )}
+      {showText && <span className="truncate text-left text-nowrap">{children}</span>}
     </div>
   );
 }

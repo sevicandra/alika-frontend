@@ -4,10 +4,7 @@ import ReferenceCard from "@/component/Molecules/ReferenceCard";
 
 export default function Page() {
   return (
-    <ContainerCard
-      title=""
-      className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden"
-    >
+    <ContainerCard title="" className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden">
       <div className="relative flex flex-wrap overflow-hidden">
         <div className="grid h-full w-full grid-cols-1 gap-6 overflow-y-auto p-2 lg:grid-cols-2 xl:grid-cols-3">
           <ReferenceCard

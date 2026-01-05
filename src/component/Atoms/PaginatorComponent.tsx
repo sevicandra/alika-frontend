@@ -8,7 +8,7 @@ function CloseToEnd({ action }: { action: (page: number) => void }) {
 
   const array = Array.from(
     { length: onEachSide * 2 + 4 },
-    (_, index) => index + (totalPage - (onEachSide * 2 + 4)) + 1,
+    (_, index) => index + (totalPage - (onEachSide * 2 + 4)) + 1
   );
   return (
     <>
@@ -27,10 +27,7 @@ function CloseToEnd({ action }: { action: (page: number) => void }) {
 }
 function CloseToStart({ action }: { action: (page: number) => void }) {
   const { page: currentPage, onEachSide } = usePaginator();
-  const array = Array.from(
-    { length: onEachSide * 2 + 4 },
-    (_, index) => index + 1,
-  );
+  const array = Array.from({ length: onEachSide * 2 + 4 }, (_, index) => index + 1);
   return (
     <>
       {array.map((page) => (
@@ -50,10 +47,7 @@ function End({ action }: { action: (page: number) => void }) {
   const { totalPage } = usePaginator();
   return (
     <>
-      <button
-        disabled={true}
-        className="px-2 py-1 text-sm leading-5 font-medium lg:px-4 lg:py-2"
-      >
+      <button disabled={true} className="px-2 py-1 text-sm leading-5 font-medium lg:px-4 lg:py-2">
         ...
       </button>
       <button
@@ -71,12 +65,7 @@ function End({ action }: { action: (page: number) => void }) {
     </>
   );
 }
-const MainElement = ({
-  className,
-  children,
-  onClick,
-  ...props
-}: ButtonProps) => {
+const MainElement = ({ className, children, onClick, ...props }: ButtonProps) => {
   const { page: currentPage } = usePaginator();
   return (
     <button
@@ -93,12 +82,9 @@ function Main({ action }: { action: (page: number) => void }) {
   const { page: currentPage, onEachSide } = usePaginator();
   const first = Array.from(
     { length: onEachSide },
-    (_, index) => index + (currentPage - onEachSide),
+    (_, index) => index + (currentPage - onEachSide)
   );
-  const last = Array.from(
-    { length: onEachSide },
-    (_, index) => index + (currentPage + 1),
-  );
+  const last = Array.from({ length: onEachSide }, (_, index) => index + (currentPage + 1));
   return (
     <>
       {first.map((page) => (
@@ -106,9 +92,7 @@ function Main({ action }: { action: (page: number) => void }) {
           {page}
         </MainElement>
       ))}
-      <MainElement onClick={() => action(currentPage)}>
-        {currentPage}
-      </MainElement>
+      <MainElement onClick={() => action(currentPage)}>{currentPage}</MainElement>
       {last.map((page) => (
         <MainElement key={page} onClick={() => action(page)}>
           {page}
@@ -174,10 +158,7 @@ function Start({ action }: { action: (page: number) => void }) {
       >
         2
       </button>
-      <button
-        disabled={true}
-        className="px-2 py-1 text-sm leading-5 font-medium lg:px-4 lg:py-2"
-      >
+      <button disabled={true} className="px-2 py-1 text-sm leading-5 font-medium lg:px-4 lg:py-2">
         ...
       </button>
     </>

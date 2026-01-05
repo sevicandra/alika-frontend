@@ -32,7 +32,7 @@
 
   --color-error: #e63946;
   --color-error-content: #ffffff;
-    --color-primary-50: color-mix(in srgb, var(--color-primary) 10%, white);
+  --color-primary-50: color-mix(in srgb, var(--color-primary) 10%, white);
   --color-primary-100: color-mix(in srgb, var(--color-primary) 30%, white);
   --color-primary-200: color-mix(in srgb, var(--color-primary) 50%, white);
   --color-primary-300: color-mix(in srgb, var(--color-primary) 70%, white);
@@ -127,5 +127,4 @@
   --color-error-800: color-mix(in srgb, var(--color-error) 40%, white);
   --color-error-900: color-mix(in srgb, var(--color-error) 20%, white);
   --color-error-950: color-mix(in srgb, var(--color-error) 10%, white);
-
 }

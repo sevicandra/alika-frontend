@@ -25,7 +25,7 @@ export default function Page({
             headers: {
               "Content-Type": "application/json",
             },
-          },
+          }
         );
         if (!file.ok) {
           const { message } = await file.json();

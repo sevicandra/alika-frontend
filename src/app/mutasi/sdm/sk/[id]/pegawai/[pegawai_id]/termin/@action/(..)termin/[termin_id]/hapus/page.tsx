@@ -32,7 +32,7 @@ export default function Page({
             }),
           },
           method: "DELETE",
-        },
+        }
       );
       if (!res.ok) {
         const { message } = await res.json();

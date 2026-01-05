@@ -128,5 +128,4 @@
   --color-error-800: color-mix(in srgb, var(--color-error) 40%, white);
   --color-error-900: color-mix(in srgb, var(--color-error) 20%, white);
   --color-error-950: color-mix(in srgb, var(--color-error) 10%, white);
-
 }

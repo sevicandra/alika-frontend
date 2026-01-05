@@ -30,9 +30,7 @@ export default function Layout({
             let label;
             if (pathSegments[index - 1] === "sk") {
               return {
-                name: suratKeputusan
-                  ? suratKeputusan.nomor.toLocaleUpperCase()
-                  : "Surat Keputusan",
+                name: suratKeputusan ? suratKeputusan.nomor.toLocaleUpperCase() : "Surat Keputusan",
               };
             }
             if (pathSegments[index - 1] === "pegawai") {
@@ -58,28 +56,26 @@ export default function Layout({
       </div>
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1">
-          {pegawai?.process_termin === "DONE" &&
-            suratKeputusan?.status === "DRAFT" && (
-              <>
-                <Link
-                  href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/reset`}
-                  className="btn btn-xs btn-success"
-                >
-                  Reset
-                </Link>
-                <Link
-                  href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/new`}
-                  className="btn btn-xs btn-success"
-                >
-                  Tambah Termin
-                </Link>
-              </>
-            )}
+          {pegawai?.process_termin === "DONE" && suratKeputusan?.status === "DRAFT" && (
+            <>
+              <Link
+                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/reset`}
+                className="btn btn-xs btn-success"
+              >
+                Reset
+              </Link>
+              <Link
+                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/new`}
+                className="btn btn-xs btn-success"
+              >
+                Tambah Termin
+              </Link>
+            </>
+          )}
         </div>
       </div>
-        {children}
-      <div className="mx-4 mb-4 flex justify-between">
-      </div>
+      {children}
+      <div className="mx-4 mb-4 flex justify-between"></div>
     </div>
   );
 }

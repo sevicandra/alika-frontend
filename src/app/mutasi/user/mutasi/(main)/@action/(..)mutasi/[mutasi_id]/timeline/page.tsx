@@ -5,11 +5,7 @@ import { DataTable } from "@/component/Organisms/DataTable";
 import Loading from "@/component/Molecules/Loading";
 import { snackToTitleCase } from "@/helpers/string.helper";
 
-export default function Page({
-  params,
-}: {
-  params: Promise<{ mutasi_id: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ mutasi_id: string }> }) {
   const [data, setData] = useState<
     {
       jenis: string;
@@ -24,9 +20,7 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Timeline`,
-        );
+        const response = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Timeline`);
         if (!response.ok) {
           const { message } = await response.json();
           throw new Error(message);

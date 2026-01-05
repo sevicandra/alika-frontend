@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,14 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const options = {
   maintainAspectRatio: false,
@@ -30,7 +23,7 @@ const options = {
       labels: {
         usePointStyle: true,
       },
-      display: false
+      display: false,
     },
   },
   scales: {
@@ -58,7 +51,6 @@ export default function RiwayatPenghasilanCart({
     umak: number;
     lembur: number;
   }[];
-
 }) {
   const labels: string[] = [];
   const gaji: Data = {

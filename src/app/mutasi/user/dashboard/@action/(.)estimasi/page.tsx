@@ -12,8 +12,7 @@ export default function Page() {
   const router = useRouter();
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(false);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const [data, setData] = useState<{ jenis: string; total: number }[]>();
   const [kantor, setKantor] = useState<
     {
@@ -124,8 +123,7 @@ export default function Page() {
           {getValidationError("golongan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("golongan")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("golongan")?.message}
               </span>
             </label>
           )}
@@ -153,8 +151,7 @@ export default function Page() {
           {getValidationError("pasangan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("pasangan")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("pasangan")?.message}
               </span>
             </label>
           )}
@@ -172,11 +169,7 @@ export default function Page() {
               type="text"
               name="tanggungan_invant"
               className={`input-bordered input w-full pl-10 ${getValidationError("tanggungan_invant") ? "input-error" : ""}`}
-              value={
-                input.tanggungan_invant
-                  ? input.tanggungan_invant.toLocaleString("id-ID")
-                  : ""
-              }
+              value={input.tanggungan_invant ? input.tanggungan_invant.toLocaleString("id-ID") : ""}
               onChange={(e) => {
                 const rawValue = e.target.value.replace(/[^\d]/g, "");
                 const numericValue = /^(0|[1-9]\d*)$/.test(rawValue);
@@ -209,9 +202,7 @@ export default function Page() {
               type="text"
               name="tanggungan"
               className={`input-bordered input w-full pl-10 ${getValidationError("tanggungan") ? "input-error" : ""}`}
-              value={
-                input.tanggungan ? input.tanggungan.toLocaleString("id-ID") : ""
-              }
+              value={input.tanggungan ? input.tanggungan.toLocaleString("id-ID") : ""}
               onChange={(e) => {
                 const rawValue = e.target.value.replace(/[^\d]/g, "");
                 const numericValue = /^(0|[1-9]\d*)$/.test(rawValue);
@@ -225,8 +216,7 @@ export default function Page() {
           {getValidationError("tanggungan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("tanggungan")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggungan")?.message}
               </span>
             </label>
           )}
@@ -262,8 +252,7 @@ export default function Page() {
           {getValidationError("kantor_asal") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kantor_asal")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("kantor_asal")?.message}
               </span>
             </label>
           )}
@@ -310,9 +299,7 @@ export default function Page() {
         <div className="relative mt-6 p-4 before:absolute before:top-0 before:left-0 before:h-1 before:w-full before:rounded-lg before:bg-base-content/50 before:content-['']">
           {data.map((item) => (
             <div key={item.jenis} className="flex justify-between">
-              <p className="text-sm font-semibold">
-                {snackToTitleCase(item.jenis)}
-              </p>
+              <p className="text-sm font-semibold">{snackToTitleCase(item.jenis)}</p>
               <p className="text-lg font-bold">
                 {item.total.toLocaleString("id-ID", {
                   style: "currency",
@@ -336,8 +323,7 @@ export default function Page() {
       )}
       <div className="relative mt-4 before:absolute before:-top-2 before:left-0 before:h-1 before:w-full before:rounded-lg before:bg-base-content/50 before:content-['']">
         <p className="text-sm text-error">
-          * hitungan ini hanya bersifat estimasi dan dapat berbeda dengan
-          hitungan pembayaran.
+          * hitungan ini hanya bersifat estimasi dan dapat berbeda dengan hitungan pembayaran.
         </p>
         <p className="text-sm text-error">
           * Jika ada pertanyaan, silakan hubungi petugas terkait.

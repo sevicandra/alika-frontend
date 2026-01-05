@@ -31,23 +31,20 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
     try {
       setLoading(true);
-      const res = await fetch(
-        `/api/Mutasi/SDM/SuratKeputusan/${id}/SetTimeline`,
-        {
-          headers: {
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
-          },
-          method: "POST",
-          body: JSON.stringify({
-            timeline_sanggah: tanggalSanggah,
-            timeline_verifikasi: tanggalVerifikasi,
-            timeline_spm: tanggalSpm,
+      const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/SetTimeline`, {
+        headers: {
+          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+            const data = await res.json();
+            return data.token;
           }),
         },
-      );
+        method: "POST",
+        body: JSON.stringify({
+          timeline_sanggah: tanggalSanggah,
+          timeline_verifikasi: tanggalVerifikasi,
+          timeline_spm: tanggalSpm,
+        }),
+      });
       if (!res.ok) {
         const { message, errors } = await res.json();
         if (res.status === 422) {
@@ -82,15 +79,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           throw new Error(message);
         }
         const { data } = await res.json();
-        setTanggalSanggah(
-          data.Timeline.find((e: any) => e.ref_kode === "01")?.tanggal ?? "",
-        );
-        setTanggalVerifikasi(
-          data.Timeline.find((e: any) => e.ref_kode === "02")?.tanggal ?? "",
-        );
-        setTanggalSpm(
-          data.Timeline.find((e: any) => e.ref_kode === "03")?.tanggal ?? "",
-        );
+        setTanggalSanggah(data.Timeline.find((e: any) => e.ref_kode === "01")?.tanggal ?? "");
+        setTanggalVerifikasi(data.Timeline.find((e: any) => e.ref_kode === "02")?.tanggal ?? "");
+        setTanggalSpm(data.Timeline.find((e: any) => e.ref_kode === "03")?.tanggal ?? "");
       } catch (error) {
         addNotification({
           title: `Surat Keputusan`,
@@ -133,8 +124,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             {getValidationError("tanggal") && (
               <label className="label">
                 <span className="label-text-alt flex items-center gap-1 text-error">
-                  <Icon icon="CircleAlert" height={16} />{" "}
-                  {getValidationError("tanggal")?.message}
+                  <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggal")?.message}
                 </span>
               </label>
             )}
@@ -142,9 +132,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-semibold">
-                Timeline Verifikasi
-              </span>
+              <span className="label-text font-semibold">Timeline Verifikasi</span>
             </label>
             <div className="relative">
               <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
@@ -161,8 +149,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             {getValidationError("tanggal") && (
               <label className="label">
                 <span className="label-text-alt flex items-center gap-1 text-error">
-                  <Icon icon="CircleAlert" height={16} />{" "}
-                  {getValidationError("tanggal")?.message}
+                  <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggal")?.message}
                 </span>
               </label>
             )}
@@ -187,8 +174,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             {getValidationError("tanggal") && (
               <label className="label">
                 <span className="label-text-alt flex items-center gap-1 text-error">
-                  <Icon icon="CircleAlert" height={16} />{" "}
-                  {getValidationError("tanggal")?.message}
+                  <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggal")?.message}
                 </span>
               </label>
             )}
@@ -197,11 +183,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       </div>
       <div className="bg-base-100 shadow-xl">
         <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-          <button
-            type="button"
-            className="btn btn-ghost"
-            onClick={() => router.back()}
-          >
+          <button type="button" className="btn btn-ghost" onClick={() => router.back()}>
             <Icon icon="ArrowLeft" height={16} /> Batal
           </button>
           <button type="submit" className="btn text-nowrap btn-primary">

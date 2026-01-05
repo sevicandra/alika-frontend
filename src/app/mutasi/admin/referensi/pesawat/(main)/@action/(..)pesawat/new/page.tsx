@@ -10,8 +10,7 @@ import Form from "@/component/Organisms/Form";
 export default function Page() {
   const { setRefresh } = useTable();
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -104,12 +103,9 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `/api/Mutasi/Referensi/Wilayah/${input.provinsi_asal}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/Referensi/Wilayah/${input.provinsi_asal}`, {
+          method: "GET",
+        });
         if (!res.ok) {
         }
         const { data } = await res.json();
@@ -129,12 +125,9 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `/api/Mutasi/Referensi/Wilayah/${input.provinsi_tujuan}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/Referensi/Wilayah/${input.provinsi_tujuan}`, {
+          method: "GET",
+        });
         if (!res.ok) {
         }
         const { data } = await res.json();
@@ -183,8 +176,7 @@ export default function Page() {
           {getValidationError("rute") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("rute")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("rute")?.message}
               </span>
             </label>
           )}
@@ -203,9 +195,7 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("provinsi_asal") ? "select-error" : ""}`}
               required
               value={input.provinsi_asal || ""}
-              onChange={(e) =>
-                setInput({ ...input, provinsi_asal: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, provinsi_asal: e.target.value })}
             >
               <option disabled value={""}>
                 Pilih Provinsi
@@ -240,9 +230,7 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("kota_asal") ? "select-error" : ""}`}
               required
               value={input.kota_asal || ""}
-              onChange={(e) =>
-                setInput({ ...input, kota_asal: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, kota_asal: e.target.value })}
             >
               <option value={""}>Pilih Kota</option>
               {kotaAsal.map((e) => (
@@ -255,8 +243,7 @@ export default function Page() {
           {getValidationError("kota_asal") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kota_asal")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("kota_asal")?.message}
               </span>
             </label>
           )}
@@ -275,9 +262,7 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("provinsi_tujuan") ? "select-error" : ""}`}
               required
               value={input.provinsi_tujuan || ""}
-              onChange={(e) =>
-                setInput({ ...input, provinsi_tujuan: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, provinsi_tujuan: e.target.value })}
             >
               <option disabled value={""}>
                 Pilih Provinsi
@@ -312,9 +297,7 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("kota_tujuan") ? "select-error" : ""}`}
               required
               value={input.kota_tujuan || ""}
-              onChange={(e) =>
-                setInput({ ...input, kota_tujuan: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, kota_tujuan: e.target.value })}
             >
               <option value={""}>Pilih Kota</option>
               {kotaTujuan.map((e) => (
@@ -327,8 +310,7 @@ export default function Page() {
           {getValidationError("kota_tujuan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kota_tujuan")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("kota_tujuan")?.message}
               </span>
             </label>
           )}
@@ -347,9 +329,7 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("jenis_tarif") ? "select-error" : ""}`}
               required
               value={input.jenis_tarif || ""}
-              onChange={(e) =>
-                setInput({ ...input, jenis_tarif: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, jenis_tarif: e.target.value })}
             >
               <option value={""}>Pilih Jenis</option>
               <option value="SBM">SBM</option>
@@ -359,8 +339,7 @@ export default function Page() {
           {getValidationError("jenis_tarif") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("jenis_tarif")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("jenis_tarif")?.message}
               </span>
             </label>
           )}
@@ -392,8 +371,7 @@ export default function Page() {
           {getValidationError("ekonomi") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("ekonomi")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("ekonomi")?.message}
               </span>
             </label>
           )}
@@ -425,8 +403,7 @@ export default function Page() {
           {getValidationError("bisnis") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("bisnis")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("bisnis")?.message}
               </span>
             </label>
           )}

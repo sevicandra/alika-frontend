@@ -11,9 +11,7 @@ type CetakContextType = {
   loading: boolean;
 };
 
-const CetakContext = createContext<CetakContextType | undefined>(
-  undefined,
-);
+const CetakContext = createContext<CetakContextType | undefined>(undefined);
 
 export function CetakProvider({ children }: { children: React.ReactNode }) {
   const [dataBulan, setBulan] = useState(`${new Date().getMonth() + 1}`);
@@ -30,19 +28,13 @@ export function CetakProvider({ children }: { children: React.ReactNode }) {
     open,
     setOpen,
   };
-  return (
-    <CetakContext.Provider value={contextValue}>
-      {children}
-    </CetakContext.Provider>
-  );
+  return <CetakContext.Provider value={contextValue}>{children}</CetakContext.Provider>;
 }
 
 export const useCetak = () => {
   const context = useContext(CetakContext);
   if (!context) {
-    throw new Error(
-      "useCetakDoc must be used within a CetakContextProvider",
-    );
+    throw new Error("useCetakDoc must be used within a CetakContextProvider");
   }
   return context;
 };

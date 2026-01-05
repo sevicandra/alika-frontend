@@ -19,17 +19,9 @@ type DokumenDetailContextType = {
   setRefresh: () => void;
 };
 
-const DokumenDetailContext = createContext<
-  DokumenDetailContextType | undefined
->(undefined);
+const DokumenDetailContext = createContext<DokumenDetailContextType | undefined>(undefined);
 
-export function DokumenDetailProvider({
-  children,
-  id,
-}: {
-  children: React.ReactNode;
-  id: string;
-}) {
+export function DokumenDetailProvider({ children, id }: { children: React.ReactNode; id: string }) {
   const [data, setData] = useState<DokumenDetailAttributes>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -67,9 +59,7 @@ export function DokumenDetailProvider({
 export function useDokumenDetail() {
   const context = useContext(DokumenDetailContext);
   if (!context) {
-    throw new Error(
-      "DokumenDetail harus digunakan di dalam SanggahDetailProvider",
-    );
+    throw new Error("DokumenDetail harus digunakan di dalam SanggahDetailProvider");
   }
   return context;
 }

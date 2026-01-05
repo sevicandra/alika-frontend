@@ -28,9 +28,7 @@ export default function Layout({
             let label;
             if (pathSegments[index - 1] === "sk") {
               return {
-                name: suratKeputusan
-                  ? suratKeputusan.nomor.toLocaleUpperCase()
-                  : "Surat Keputusan",
+                name: suratKeputusan ? suratKeputusan.nomor.toLocaleUpperCase() : "Surat Keputusan",
               };
             }
             if (pathSegments[index - 1] === "pegawai") {

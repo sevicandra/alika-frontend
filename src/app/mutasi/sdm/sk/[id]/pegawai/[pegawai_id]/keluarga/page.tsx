@@ -4,7 +4,7 @@ import { useNotification } from "@/context/notifikasi";
 import { DataTable } from "@/component/Organisms/DataTable";
 import Loading from "@/component/Molecules/Loading";
 import { usePegawaiDetail } from "@/context/mutasi/sdm";
-import {useTable} from "@/context/table.context"
+import { useTable } from "@/context/table.context";
 import Onproccess from "@/component/Molecules/Onproccess";
 import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
@@ -51,7 +51,7 @@ export default function Page({
           `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Keluarga?${searchParams}`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -109,8 +109,7 @@ export default function Page({
                 ]}
                 data={data.sort(
                   (a, b) =>
-                    new Date(a.tanggal_lahir).getTime() -
-                    new Date(b.tanggal_lahir).getTime(),
+                    new Date(a.tanggal_lahir).getTime() - new Date(b.tanggal_lahir).getTime()
                 )}
                 renderRow={(row, index) => (
                   <tr key={index}>
@@ -126,12 +125,8 @@ export default function Page({
                       })}
                     </td>
                     <td className="px-4 py-2">{row.pekerjaan}</td>
-                    <td className="px-4 py-2">
-                      {row.is_invant ? "Ya" : "Tidak"}
-                    </td>
-                    <td className="px-4 py-2">
-                      {snackToTitleCase(row.status)}
-                    </td>
+                    <td className="px-4 py-2">{row.is_invant ? "Ya" : "Tidak"}</td>
+                    <td className="px-4 py-2">{snackToTitleCase(row.status)}</td>
                     <td className="px-4 py-2">
                       {pegawai?.process_biaya === "IDLE" &&
                         pegawai?.process_keluarga === "DONE" && (
@@ -141,11 +136,7 @@ export default function Page({
                                 href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/keluarga/${row.id}/edit`}
                               >
                                 <div className="rounded-box bg-info/80 p-1 text-info-content">
-                                  <Icon
-                                    className="hover:scale-110"
-                                    icon="SquarePen"
-                                    height={16}
-                                  />
+                                  <Icon className="hover:scale-110" icon="SquarePen" height={16} />
                                 </div>
                               </Link>
                             </div>
@@ -154,11 +145,7 @@ export default function Page({
                                 href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/keluarga/${row.id}/hapus`}
                               >
                                 <div className="rounded-box bg-error/80 p-1 text-error-content">
-                                  <Icon
-                                    className="hover:scale-110"
-                                    icon="Trash2"
-                                    height={16}
-                                  />
+                                  <Icon className="hover:scale-110" icon="Trash2" height={16} />
                                 </div>
                               </Link>
                             </div>

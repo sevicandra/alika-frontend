@@ -18,8 +18,7 @@ export default function Page({
   const { setRefresh } = useTable();
   const { kode_prov, kode_kota } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -39,7 +38,7 @@ export default function Page({
           },
           method: "PATCH",
           body: JSON.stringify(input),
-        },
+        }
       );
       if (!res.ok) {
         const { message, errors } = await res.json();
@@ -72,7 +71,7 @@ export default function Page({
           `/api/Mutasi/Admin/Referensi/Provinsi/${kode_prov}/Kota/${kode_kota}`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -122,8 +121,7 @@ export default function Page({
           {getValidationError("kode") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kode")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("kode")?.message}
               </span>
             </label>
           )}
@@ -149,8 +147,7 @@ export default function Page({
           {getValidationError("kota") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kota")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("kota")?.message}
               </span>
             </label>
           )}

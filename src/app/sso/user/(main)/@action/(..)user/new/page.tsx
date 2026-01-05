@@ -9,8 +9,7 @@ import Form from "@/component/Organisms/Form";
 
 export default function Page() {
   const { setRefresh } = useTable();
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -33,11 +32,12 @@ export default function Page() {
       if (!res.ok) {
         const { error } = await res.json();
         if (res.status === 422) {
-          const errorArray: { field: string; message: string }[] =
-            Object.entries(error.details).map(([field, message]) => ({
-              field,
-              message: message as string,
-            }));
+          const errorArray: { field: string; message: string }[] = Object.entries(
+            error.details
+          ).map(([field, message]) => ({
+            field,
+            message: message as string,
+          }));
           setValidationErrors(errorArray);
         }
         throw new Error(error.message || "Terjadi kesalahan pada server.");

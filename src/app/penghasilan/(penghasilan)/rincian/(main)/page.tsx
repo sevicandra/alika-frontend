@@ -27,12 +27,9 @@ const Page = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `/api/Penghasilan/Penghasilan/Detail?tahun=${tahun}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Penghasilan/Penghasilan/Detail?tahun=${tahun}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -56,7 +53,7 @@ const Page = () => {
                 item.lembur.netto +
                 item.lain.netto,
             };
-          }),
+          })
         );
       } catch (error) {
         setError(error as Error);
@@ -104,9 +101,7 @@ const Page = () => {
                 <td className="p-4">{row.gaji.toLocaleString("id-ID")}</td>
                 <td className="p-4">{row.tukin.toLocaleString("id-ID")}</td>
                 <td className="p-4">{row.uangMakan.toLocaleString("id-ID")}</td>
-                <td className="p-4">
-                  {row.uangLembur.toLocaleString("id-ID")}
-                </td>
+                <td className="p-4">{row.uangLembur.toLocaleString("id-ID")}</td>
                 <td className="p-4">{row.lainLain.toLocaleString("id-ID")}</td>
                 <td className="p-4">{row.total.toLocaleString("id-ID")}</td>
               </tr>

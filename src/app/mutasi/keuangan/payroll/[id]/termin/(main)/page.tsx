@@ -67,12 +67,9 @@ export default function Page({
         if (search) searchParams.append("search", search);
         if (status) searchParams.append("status", status);
         if (tahap) searchParams.append("tahap", `Tahap ${tahap}`);
-        const res = await fetch(
-          `/api/Mutasi/Keuangan/Payroll/${id}/Termin?${searchParams}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/Keuangan/Payroll/${id}/Termin?${searchParams}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -91,17 +88,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [
-    refresh,
-    currentPage,
-    limit,
-    search,
-    status,
-    tahap,
-    addNotification,
-    id,
-    setTotalPage,
-  ]);
+  }, [refresh, currentPage, limit, search, status, tahap, addNotification, id, setTotalPage]);
   return (
     <ContainerCard
       title="Payroll Pegawai"
@@ -142,16 +129,7 @@ export default function Page({
         )}
         <div className="overflow-y-auto">
           <DataTable
-            columns={[
-              "",
-              "No",
-              "Nama/NIP",
-              "Rekening",
-              "Biaya",
-              "Termin",
-              "Tahap",
-              "",
-            ]}
+            columns={["", "No", "Nama/NIP", "Rekening", "Biaya", "Termin", "Tahap", ""]}
             data={data}
             renderRow={(row, index) => (
               <tr key={index}>
@@ -162,19 +140,12 @@ export default function Page({
                       className="checkbox checkbox-sm checkbox-info"
                       onChange={(e) => {
                         if (e.target.checked) {
-                          addTerminId(
-                            row.id,
-                            row.nominal,
-                            row.pegawai.nama,
-                            row.pegawai.nip,
-                          );
+                          addTerminId(row.id, row.nominal, row.pegawai.nama, row.pegawai.nip);
                         } else {
                           removeTerminId(row.id);
                         }
                       }}
-                      checked={termin.some(
-                        (terminId) => terminId.id === row.id,
-                      )}
+                      checked={termin.some((terminId) => terminId.id === row.id)}
                     />
                   )}
                 </td>
@@ -208,14 +179,11 @@ export default function Page({
                     <div>{row.payroll.tahap}</div>
                     <div>
                       {row.payroll.tanggal
-                        ? new Date(row.payroll.tanggal).toLocaleDateString(
-                            "id-ID",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            },
-                          )
+                        ? new Date(row.payroll.tanggal).toLocaleDateString("id-ID", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })
                         : "Belum Dibayar"}
                     </div>
                   </div>
@@ -224,29 +192,17 @@ export default function Page({
                   <div className="flex gap-1">
                     {row.status === "APPROVED_KEU" && (
                       <div className="tooltip" data-tip="edit">
-                        <Link
-                          href={`/mutasi/keuangan/payroll/${id}/termin/${row.id}/edit`}
-                        >
+                        <Link href={`/mutasi/keuangan/payroll/${id}/termin/${row.id}/edit`}>
                           <div className="rounded-box bg-info/80 p-1 text-info-content">
-                            <Icon
-                              className="hover:scale-110"
-                              icon="SquarePen"
-                              height={16}
-                            />
+                            <Icon className="hover:scale-110" icon="SquarePen" height={16} />
                           </div>
                         </Link>
                       </div>
                     )}
                     <div className="tooltip" data-tip="tolak">
-                      <Link
-                        href={`/mutasi/keuangan/payroll/${id}/termin/${row.id}/tolak`}
-                      >
+                      <Link href={`/mutasi/keuangan/payroll/${id}/termin/${row.id}/tolak`}>
                         <div className="rounded-box bg-error/80 p-1 text-error-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="CircleX"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="CircleX" height={16} />
                         </div>
                       </Link>
                     </div>

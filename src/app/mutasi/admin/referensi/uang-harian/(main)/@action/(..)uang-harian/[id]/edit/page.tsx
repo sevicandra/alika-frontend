@@ -17,8 +17,7 @@ export default function Page({
   const { setRefresh } = useTable();
   const { id } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -72,12 +71,9 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `/api/Mutasi/Admin/Referensi/UangHarian/${id}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/Admin/Referensi/UangHarian/${id}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -145,9 +141,7 @@ export default function Page({
               className={`select-bordered select w-full pl-10 ${getValidationError("kode_provinsi") ? "select-error" : ""}`}
               required
               value={input.kode_provinsi || ""}
-              onChange={(e) =>
-                setInput({ ...input, kode_provinsi: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, kode_provinsi: e.target.value })}
             >
               <option disabled value={""}>
                 Pilih Provinsi
@@ -195,8 +189,7 @@ export default function Page({
           {getValidationError("tarif") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("tarif")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("tarif")?.message}
               </span>
             </label>
           )}

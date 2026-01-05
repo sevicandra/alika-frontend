@@ -19,12 +19,9 @@ export default function Page() {
         const gaji = await fetch("/api/Penghasilan/Gaji/Rekap?tahun=" + tahun, {
           method: "GET",
         });
-        const kekurangan = await fetch(
-          "/api/Penghasilan/KekuranganGaji/Rekap?tahun=" + tahun,
-          {
-            method: "GET",
-          },
-        );
+        const kekurangan = await fetch("/api/Penghasilan/KekuranganGaji/Rekap?tahun=" + tahun, {
+          method: "GET",
+        });
         if (!gaji.ok) {
           const { message } = await gaji.json();
           throw new Error(message);

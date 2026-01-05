@@ -3,17 +3,10 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl =
-  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
-  process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
-  )?.value;
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -27,17 +20,14 @@ export async function GET(
   }
 
   try {
-    const suratKeputusan = await fetch(
-      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        cache: "no-store",
-      }
-    );
+    const suratKeputusan = await fetch(`${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
+      },
+      cache: "no-store",
+    });
 
     if (!suratKeputusan.ok) {
       const data = await suratKeputusan.json();
@@ -50,13 +40,8 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
-  )?.value;
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -82,17 +67,14 @@ export async function PATCH(
   if (tmt) backendForm.set("tmt", tmt);
   if (jenjang) backendForm.set("jenjang", jenjang);
   try {
-    const suratKeputusan = await fetch(
-      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${session}`,
-        },
-        body: backendForm as any,
-        cache: "no-store",
-      }
-    );
+    const suratKeputusan = await fetch(`${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${session}`,
+      },
+      body: backendForm as any,
+      cache: "no-store",
+    });
     if (!suratKeputusan.ok) {
       const data = await suratKeputusan.json();
       return NextResponse.json(data, { status: suratKeputusan.status });
@@ -104,13 +86,8 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
-  )?.value;
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -121,17 +98,14 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    const suratKeputusan = await fetch(
-      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        cache: "no-store",
-      }
-    );
+    const suratKeputusan = await fetch(`${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
+      },
+      cache: "no-store",
+    });
 
     if (!suratKeputusan.ok) {
       const data = await suratKeputusan.json();

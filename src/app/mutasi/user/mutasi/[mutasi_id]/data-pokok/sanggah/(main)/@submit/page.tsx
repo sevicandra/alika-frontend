@@ -39,7 +39,7 @@ export default function Submit({
               `data[${i}][data]`,
               JSON.stringify({
                 ...item.data,
-              }),
+              })
             );
             formData.append(`data[${i}][file]`, item.file);
             formData.append(`data[${i}][catatan]`, item.catatan);
@@ -50,7 +50,7 @@ export default function Submit({
               `data[${i}][data]`,
               JSON.stringify({
                 ...item.data,
-              }),
+              })
             );
             if (item.file) formData.append(`data[${i}][file]`, item.file);
             formData.append(`data[${i}][catatan]`, item.catatan);
@@ -64,21 +64,16 @@ export default function Submit({
 
           formData.append(`data[${i}][action]`, item.action);
         });
-        const res = await fetch(
-          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Sanggah`,
-          {
-            headers: {
-              "X-CSRF-Token": await fetch("/api/auth/csrf").then(
-                async (res) => {
-                  const data = await res.json();
-                  return data.token;
-                },
-              ),
-            },
-            method: "POST",
-            body: formData,
+        const res = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Sanggah`, {
+          headers: {
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
           },
-        );
+          method: "POST",
+          body: formData,
+        });
         if (!res.ok) {
           const { message, errors } = await res.json();
           if (res.status === 422 && errors && Array.isArray(errors)) {
@@ -121,9 +116,9 @@ export default function Submit({
             checked={checked}
             onChange={() => setChecked(!checked)}
           />
-          Saya menyatakan bahwa data yang saya berikan adalah benar dan dapat
-          dipertanggungjawabkan. Saya bersedia menerima konsekuensi hukum
-          apabila data yang saya berikan tidak sesuai dengan keadaan sebenarnya.
+          Saya menyatakan bahwa data yang saya berikan adalah benar dan dapat dipertanggungjawabkan.
+          Saya bersedia menerima konsekuensi hukum apabila data yang saya berikan tidak sesuai
+          dengan keadaan sebenarnya.
         </label>
         <div className="mt-4 flex justify-end">
           <Link

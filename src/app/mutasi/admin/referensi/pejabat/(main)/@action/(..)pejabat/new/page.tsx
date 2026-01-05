@@ -9,8 +9,7 @@ import Form from "@/component/Organisms/Form";
 
 export default function Page() {
   const { setRefresh } = useTable();
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -91,8 +90,7 @@ export default function Page() {
           {getValidationError("jenis") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("jenis")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("jenis")?.message}
               </span>
             </label>
           )}
@@ -120,8 +118,7 @@ export default function Page() {
           {getValidationError("nama") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("nama")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("nama")?.message}
               </span>
             </label>
           )}
@@ -149,8 +146,7 @@ export default function Page() {
           {getValidationError("nip") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("nip")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("nip")?.message}
               </span>
             </label>
           )}

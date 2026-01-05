@@ -3,13 +3,10 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl =
-  process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
+const apiBaseUrl = process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
 
 export async function GET(request: Request) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`,
-  )?.value;
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -18,9 +15,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
   const url = new URL(request.url);
-  const limit = url.searchParams.get("limit")
-    ? Number(url.searchParams.get("limit"))
-    : undefined;
+  const limit = url.searchParams.get("limit") ? Number(url.searchParams.get("limit")) : undefined;
   const offset = url.searchParams.get("offset")
     ? Number(url.searchParams.get("offset"))
     : undefined;
@@ -41,16 +36,13 @@ export async function GET(request: Request) {
   if (sortField) searchParams.append("sortField", sortField);
   if (sortOrder) searchParams.append("sortOrder", sortOrder);
   try {
-    const getDataCetak = await fetch(
-      apiBaseUrl + `/api/v2/DataCetak/?${searchParams.toString()}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
+    const getDataCetak = await fetch(apiBaseUrl + `/api/v2/DataCetak/?${searchParams.toString()}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
       },
-    );
+    });
     if (!getDataCetak.ok) {
       const data = await getDataCetak.json();
       return NextResponse.json(data, { status: getDataCetak.status });

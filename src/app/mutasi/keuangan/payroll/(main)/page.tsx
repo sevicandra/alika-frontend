@@ -12,8 +12,7 @@ import Icon from "@/component/Atoms/LabelIcon";
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
-  const { refresh, searchs, searchsTerm, setSearchsTerm, filter, setFilter } =
-    useTable();
+  const { refresh, searchs, searchsTerm, setSearchsTerm, filter, setFilter } = useTable();
 
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [data, setData] = useState<
@@ -42,12 +41,9 @@ export default function Page() {
         if (jenjang) searchParams.append("jenjang", jenjang);
         if (status) searchParams.append("status", status);
         if (search) searchParams.append("search", search);
-        const res = await fetch(
-          `/api/Mutasi/Keuangan/Payroll?${searchParams}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/Keuangan/Payroll?${searchParams}`, {
+          method: "GET",
+        });
 
         if (!res.ok) {
           const { message } = await res.json();
@@ -69,15 +65,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [
-    refresh,
-    searchs,
-    filter,
-    limit,
-    currentPage,
-    addNotification,
-    setTotalPage,
-  ]);
+  }, [refresh, searchs, filter, limit, currentPage, addNotification, setTotalPage]);
 
   return (
     <ContainerCard
@@ -146,8 +134,7 @@ export default function Page() {
                       })}
                     </li>
                     <li>
-                      <span className="font-semibold">Perihal:</span>{" "}
-                      {row.uraian}
+                      <span className="font-semibold">Perihal:</span> {row.uraian}
                     </li>
                   </ul>
                 </>
@@ -155,8 +142,7 @@ export default function Page() {
               detail={
                 <ul>
                   <li>
-                    <span className="font-semibold">Jenjang:</span>{" "}
-                    {row.jenjang}
+                    <span className="font-semibold">Jenjang:</span> {row.jenjang}
                   </li>
                   <li>
                     <span className="font-semibold">TMT:</span>{" "}
@@ -189,15 +175,9 @@ export default function Page() {
                   {row.status !== "DRAFT" && (
                     <>
                       <div className="tooltip" data-tip="detail">
-                        <Link
-                          href={`/mutasi/keuangan/payroll/${row.id}/termin`}
-                        >
+                        <Link href={`/mutasi/keuangan/payroll/${row.id}/termin`}>
                           <div className="rounded-box bg-info/80 p-1 text-info-content">
-                            <Icon
-                              className="hover:scale-110"
-                              icon="Eye"
-                              height={16}
-                            />
+                            <Icon className="hover:scale-110" icon="Eye" height={16} />
                           </div>
                         </Link>
                       </div>

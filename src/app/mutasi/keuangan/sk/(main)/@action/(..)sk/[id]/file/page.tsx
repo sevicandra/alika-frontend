@@ -14,15 +14,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const file = await fetch(
-          `/api/Mutasi/Keuangan/SuratKeputusan/${id}/File`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+        const file = await fetch(`/api/Mutasi/Keuangan/SuratKeputusan/${id}/File`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+        });
         if (!file.ok) {
           const { message } = await file.json();
           throw new Error(message);

@@ -56,11 +56,7 @@ export function TahunProvider({ children }: { children: React.ReactNode }) {
     tahuns,
     loading,
   };
-  return (
-    <TahunContext.Provider value={contextValue}>
-      {children}
-    </TahunContext.Provider>
-  );
+  return <TahunContext.Provider value={contextValue}>{children}</TahunContext.Provider>;
 }
 
 export const useTahun = () => {

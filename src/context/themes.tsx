@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useCallback, useMemo } from "react";
 
 type ThemesContextType = {
   isOpen: boolean;
@@ -26,14 +26,19 @@ export function ThemesProvider({ children }: { children?: React.ReactNode }) {
   const [theme, setTheme] = useState("");
   const [show, setShow] = useState(true);
 
-  const handlerClose = () => {
+  // Memoize handler functions
+  const handlerClose = useCallback(() => {
     setShow(false);
-  };
+  }, []);
 
-  const handlerOpen = () => {
+  const handlerOpen = useCallback(() => {
     setShow(true);
     setIsOpen(true);
-  };
+  }, []);
+
+  const closeMenu = useCallback(() => setIsOpen(false), []);
+  const openMenu = useCallback(() => handlerOpen(), [handlerOpen]);
+  const handleSetTheme = useCallback((newTheme: string) => setTheme(newTheme), []);
 
   useEffect(() => {
     const initialTheme = localStorage.getItem("theme") || "";
@@ -47,19 +52,19 @@ export function ThemesProvider({ children }: { children?: React.ReactNode }) {
     }
   }, [theme]);
 
-  return (
-    <ThemesContext.Provider
-      value={{
-        isOpen,
-        closeMenu: () => setIsOpen(false),
-        openMenu: () => handlerOpen(),
-        theme,
-        setTheme: (newTheme: string) => setTheme(newTheme),
-        show,
-        handlerClose,
-      }}
-    >
-      {children}
-    </ThemesContext.Provider>
+  // Memoize context value to prevent unnecessary re-renders
+  const value = useMemo(
+    () => ({
+      isOpen,
+      closeMenu,
+      openMenu,
+      theme,
+      setTheme: handleSetTheme,
+      show,
+      handlerClose,
+    }),
+    [isOpen, closeMenu, openMenu, theme, handleSetTheme, show, handlerClose]
   );
+
+  return <ThemesContext.Provider value={value}>{children}</ThemesContext.Provider>;
 }

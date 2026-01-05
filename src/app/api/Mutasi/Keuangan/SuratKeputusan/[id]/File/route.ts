@@ -4,17 +4,10 @@ import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 import { revalidateTag } from "next/cache";
 
-const apiBaseUrl =
-  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
-  process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`,
-  )?.value;
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -28,17 +21,14 @@ export async function GET(
   }
 
   try {
-    const res = await fetch(
-      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/File`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        next: { revalidate: 60, tags: ["Mutasi:SuratKeputusan:File"] },
+    const res = await fetch(`${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/File`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
       },
-    );
+      next: { revalidate: 60, tags: ["Mutasi:SuratKeputusan:File"] },
+    });
 
     if (!res.ok) {
       revalidateTag("Mutasi:SuratKeputusan:File", "max");

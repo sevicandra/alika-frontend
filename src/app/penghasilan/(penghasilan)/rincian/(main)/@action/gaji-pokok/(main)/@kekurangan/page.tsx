@@ -35,12 +35,9 @@ const Page = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          `/api/Penghasilan/KekuranganGaji?tahun=${tahun}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Penghasilan/KekuranganGaji?tahun=${tahun}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -63,13 +60,12 @@ const Page = () => {
                 iwp: item.iwp,
                 pph: item.pph,
                 rumdin: item.sewarmh,
-                potlain:
-                  item.pberas + item.tunggakan + item.utanglebih + item.potlain,
+                potlain: item.pberas + item.tunggakan + item.utanglebih + item.potlain,
                 taperum: item.taperum,
                 bpjs: item.bpjs,
                 bpjs2: item.bpjs2,
               };
-            }),
+            })
           );
         }
       } catch (error) {
@@ -173,13 +169,7 @@ const Page = () => {
                 row.beras +
                 row.pajak +
                 row.lain -
-                (row.iwp +
-                  row.pph +
-                  row.rumdin +
-                  row.potlain +
-                  row.taperum +
-                  row.bpjs +
-                  row.bpjs2)
+                (row.iwp + row.pph + row.rumdin + row.potlain + row.taperum + row.bpjs + row.bpjs2)
               ).toLocaleString("id-ID")}
             </td>
           </tr>

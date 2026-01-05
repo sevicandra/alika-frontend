@@ -56,10 +56,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   }, [currentPage, limit, refresh, addNotification, id, setTotalPage]);
 
   return (
-    <ContainerCard
-      title="Grant"
-      className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden"
-    >
+    <ContainerCard title="Grant" className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden">
       <div className="relative grid grid-rows-[1fr_auto] overflow-hidden">
         {loading && (
           <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
@@ -79,11 +76,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                     <div className="tooltip" data-tip="hapus">
                       <Link href={`/sso/client/${id}/grant/${row.id}/hapus`}>
                         <div className="rounded-box bg-error/80 p-1 text-error-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="Trash2"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="Trash2" height={16} />
                         </div>
                       </Link>
                     </div>

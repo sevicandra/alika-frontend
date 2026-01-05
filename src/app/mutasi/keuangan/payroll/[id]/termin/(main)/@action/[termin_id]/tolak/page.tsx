@@ -7,14 +7,9 @@ import { useForm } from "@/context/form.context";
 import { usePayroll } from "@/context/mutasi/keu";
 import Form from "@/component/Organisms/Form";
 
-export default function Page({
-  params,
-}: {
-  params: Promise<{ id: string; termin_id: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ id: string; termin_id: string }> }) {
   const { setRefresh } = usePayroll();
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -23,19 +18,16 @@ export default function Page({
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(
-        `/api/Mutasi/Keuangan/Payroll/${id}/Termin/${termin_id}/Tolak`,
-        {
-          headers: {
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
-          },
-          method: "POST",
-          body: JSON.stringify(input),
+      const res = await fetch(`/api/Mutasi/Keuangan/Payroll/${id}/Termin/${termin_id}/Tolak`, {
+        headers: {
+          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+            const data = await res.json();
+            return data.token;
+          }),
         },
-      );
+        method: "POST",
+        body: JSON.stringify(input),
+      });
       if (!res.ok) {
         const { message, errors } = await res.json();
         if (res.status === 422) {
@@ -86,8 +78,7 @@ export default function Page({
           {getValidationError("catatan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("catatan")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("catatan")?.message}
               </span>
             </label>
           )}

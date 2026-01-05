@@ -15,21 +15,18 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const reject = async () => {
     try {
       setLoading(true);
-      const res = await fetch(
-        `/api/Mutasi/Keuangan/PermohonanPembayaran/${id}/Setuju`,
-        {
-          method: "POST",
-          headers: {
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
-          },
-          body: JSON.stringify({
-            catatan: input.catatan,
+      const res = await fetch(`/api/Mutasi/Keuangan/PermohonanPembayaran/${id}/Setuju`, {
+        method: "POST",
+        headers: {
+          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+            const data = await res.json();
+            return data.token;
           }),
         },
-      );
+        body: JSON.stringify({
+          catatan: input.catatan,
+        }),
+      });
       if (!res.ok) {
         const { message, errors } = await res.json();
         if (res.status === 422) {

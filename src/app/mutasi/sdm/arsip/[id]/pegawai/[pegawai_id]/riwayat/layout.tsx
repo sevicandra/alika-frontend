@@ -20,13 +20,11 @@ export default function Layout({
     <div className="grid h-full max-h-full grid-rows-[auto_1fr_auto] gap-2 overflow-hidden">
       <div className="mx-4 mt-4 overflow-x-auto pr-4">
         <Breadcrumb
-           data={pathSegments.map((segment, index) => {
+          data={pathSegments.map((segment, index) => {
             let label;
             if (pathSegments[index - 1] === "arsip") {
               return {
-                name: suratKeputusan
-                  ? suratKeputusan.nomor.toLocaleUpperCase()
-                  : "Surat Keputusan",
+                name: suratKeputusan ? suratKeputusan.nomor.toLocaleUpperCase() : "Surat Keputusan",
               };
             }
             if (pathSegments[index - 1] === "pegawai") {

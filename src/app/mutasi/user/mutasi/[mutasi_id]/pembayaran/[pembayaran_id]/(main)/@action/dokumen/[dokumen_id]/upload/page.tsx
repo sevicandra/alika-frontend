@@ -55,7 +55,7 @@ export default function Page({
           },
           method: "POST",
           body: formData,
-        },
+        }
       );
 
       if (!res.ok) {
@@ -109,9 +109,7 @@ export default function Page({
         setFile(droppedFiles[0]);
         setValidationErrors([]);
       } else {
-        setValidationErrors([
-          { field: "file", message: "Hanya file PDF yang diizinkan." },
-        ]);
+        setValidationErrors([{ field: "file", message: "Hanya file PDF yang diizinkan." }]);
       }
     }
   };
@@ -134,8 +132,7 @@ export default function Page({
         )}
         <div className="card-body">
           <p className="text-sm text-base-content/70">
-            Pastikan file yang diunggah dalam format PDF dan ukuran tidak
-            melebihi 5MB.
+            Pastikan file yang diunggah dalam format PDF dan ukuran tidak melebihi 5MB.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-4 space-y-4">
@@ -144,11 +141,7 @@ export default function Page({
                 isDragging
                   ? "border-primary bg-primary/10"
                   : "border-base-content/20 bg-base-200 hover:border-primary/50"
-              } ${
-                validationErrors.find((item) => item.field === "file")
-                  ? "border-error"
-                  : ""
-              }`}
+              } ${validationErrors.find((item) => item.field === "file") ? "border-error" : ""}`}
               onClick={() => fileInputRef.current?.click()}
               onDragEnter={handleDragEnter}
               onDragLeave={handleDragLeave}
@@ -157,10 +150,8 @@ export default function Page({
             >
               <Icon icon="CloudUpload" height={20} />
               <p className="text-center text-sm text-base-content/70">
-                <span className="font-semibold text-primary">
-                  Klik untuk mengunggah
-                </span>{" "}
-                atau seret dan lepas
+                <span className="font-semibold text-primary">Klik untuk mengunggah</span> atau seret
+                dan lepas
               </p>
               <p className="text-xs text-base-content/50">Hanya PDF</p>
               <input
@@ -200,11 +191,7 @@ export default function Page({
             )}
 
             <div className="card-actions justify-end">
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="btn btn-ghost"
-              >
+              <button type="button" onClick={() => router.back()} className="btn btn-ghost">
                 Batal
               </button>
               <button

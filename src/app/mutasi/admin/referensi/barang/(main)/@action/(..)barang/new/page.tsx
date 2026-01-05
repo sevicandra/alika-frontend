@@ -9,8 +9,7 @@ import Form from "@/component/Organisms/Form";
 
 export default function Page() {
   const { setRefresh } = useTable();
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -93,8 +92,7 @@ export default function Page() {
           {getValidationError("golongan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("golongan")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("golongan")?.message}
               </span>
             </label>
           )}
@@ -117,19 +115,14 @@ export default function Page() {
             >
               <option value={""}>Pilih Status</option>
               <option value="TIDAK_BERKELUARGA">Tidak Berkeluarga</option>
-              <option value="BERKELUARGA_TANPA_ANAK">
-                Berkeluarga Tanpa Anak
-              </option>
-              <option value="BERKELUARGA_DENGAN_ANAK">
-                Berkeluarga Dengan Anak
-              </option>
+              <option value="BERKELUARGA_TANPA_ANAK">Berkeluarga Tanpa Anak</option>
+              <option value="BERKELUARGA_DENGAN_ANAK">Berkeluarga Dengan Anak</option>
             </select>
           </div>
           {getValidationError("status") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("status")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("status")?.message}
               </span>
             </label>
           )}
@@ -161,8 +154,7 @@ export default function Page() {
           {getValidationError("volume") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("volume")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("volume")?.message}
               </span>
             </label>
           )}

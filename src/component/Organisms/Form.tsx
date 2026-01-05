@@ -42,19 +42,10 @@ export default function Confirmation({
         <div className="bg-base-100 shadow-xl">
           <div className="p-4">{children}</div>
           <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-            <button
-              className="btn btn-ghost"
-              onClick={onCancel}
-              disabled={loading}
-              type="button"
-            >
+            <button className="btn btn-ghost" onClick={onCancel} disabled={loading} type="button">
               {cancelText}
             </button>
-            <button
-              type="submit"
-              className={`btn ${buttonClass}`}
-              disabled={loading}
-            >
+            <button type="submit" className={`btn ${buttonClass}`} disabled={loading}>
               {loading ? (
                 <span className="loading loading-spinner"></span>
               ) : (

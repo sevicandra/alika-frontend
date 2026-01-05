@@ -81,8 +81,7 @@ export default function MenuCard({ menu }: { menu: Menu[] }) {
                     <Link
                       href={item.url}
                       className={`hover:bg-accent-300/20 ${
-                        pathname.startsWith(item.url) &&
-                        "bg-accent text-accent-content"
+                        pathname.startsWith(item.url) && "bg-accent text-accent-content"
                       }`}
                     >
                       <div className="flex items-center gap-4">

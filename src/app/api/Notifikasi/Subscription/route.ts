@@ -3,13 +3,10 @@ import { NextResponse, NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl =
-  process.env.WEB_PUSH_BASE_URI_INTERNAL ?? process.env.WEB_PUSH_BASE_URI;
+const apiBaseUrl = process.env.WEB_PUSH_BASE_URI_INTERNAL ?? process.env.WEB_PUSH_BASE_URI;
 
 export const POST = async (req: NextRequest) => {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
-  )?.value;
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -40,10 +37,7 @@ export const POST = async (req: NextRequest) => {
 
     if (!subscribe.ok) {
       const data = await subscribe.json();
-      return NextResponse.json(
-        { message: data.message },
-        { status: subscribe.status }
-      );
+      return NextResponse.json({ message: data.message }, { status: subscribe.status });
     }
 
     return NextResponse.json({ message: "success" }, { status: 200 });
@@ -52,9 +46,7 @@ export const POST = async (req: NextRequest) => {
   }
 };
 export const PATCH = async (req: NextRequest) => {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
-  )?.value;
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -64,28 +56,22 @@ export const PATCH = async (req: NextRequest) => {
   }
   try {
     const { endpoint } = await req.json();
-    
-    const subscription = await fetch(
-      apiBaseUrl + "/subscription/endpoint",
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        body: JSON.stringify({
-          endpoint: endpoint,
-        }),
-        cache: "no-store",
-      }
-    );
+
+    const subscription = await fetch(apiBaseUrl + "/subscription/endpoint", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
+      },
+      body: JSON.stringify({
+        endpoint: endpoint,
+      }),
+      cache: "no-store",
+    });
 
     if (!subscription.ok) {
       const data = await subscription.json();
-      return NextResponse.json(
-        data,
-        { status: subscription.status }
-      );
+      return NextResponse.json(data, { status: subscription.status });
     }
     return NextResponse.json({ message: "success" }, { status: 200 });
   } catch (error) {
@@ -93,9 +79,7 @@ export const PATCH = async (req: NextRequest) => {
   }
 };
 export const DELETE = async (req: NextRequest) => {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
-  )?.value;
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -105,27 +89,21 @@ export const DELETE = async (req: NextRequest) => {
   }
   try {
     const { endpoint } = await req.json();
-    const subscription = await fetch(
-      apiBaseUrl + "/subscription/endpoint",
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        body: JSON.stringify({
-          endpoint: endpoint,
-        }),
-        cache: "no-store",
-      }
-    );
+    const subscription = await fetch(apiBaseUrl + "/subscription/endpoint", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
+      },
+      body: JSON.stringify({
+        endpoint: endpoint,
+      }),
+      cache: "no-store",
+    });
 
     if (!subscription.ok) {
       const data = await subscription.json();
-      return NextResponse.json(
-        data,
-        { status: subscription.status }
-      );
+      return NextResponse.json(data, { status: subscription.status });
     }
     return NextResponse.json({ message: "success" }, { status: 200 });
   } catch (error) {

@@ -10,8 +10,7 @@ import Form from "@/component/Organisms/Form";
 export default function Page() {
   const { setRefresh } = useTable();
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -113,9 +112,7 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("kode_provinsi") ? "select-error" : ""}`}
               required
               value={input.kode_provinsi || ""}
-              onChange={(e) =>
-                setInput({ ...input, kode_provinsi: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, kode_provinsi: e.target.value })}
             >
               <option disabled value={""}>
                 Pilih Provinsi
@@ -163,8 +160,7 @@ export default function Page() {
           {getValidationError("tarif") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("tarif")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("tarif")?.message}
               </span>
             </label>
           )}

@@ -24,10 +24,7 @@ export default function Layout({
         {biaya}
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:overflow-hidden">
-        <ContainerCard
-          title="Quick Access"
-          className="md:col-start-3 md:col-end-3 md:row-start-1"
-        >
+        <ContainerCard title="Quick Access" className="md:col-start-3 md:col-end-3 md:row-start-1">
           {quickAccess}
         </ContainerCard>
         <ContainerCard

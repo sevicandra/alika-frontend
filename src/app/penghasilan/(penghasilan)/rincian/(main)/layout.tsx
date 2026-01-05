@@ -16,34 +16,19 @@ const Layout = async ({
       </div>
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1">
-          <Link
-            href="/penghasilan/rincian/gaji-pokok"
-            className="btn btn-xs btn-success"
-          >
+          <Link href="/penghasilan/rincian/gaji-pokok" className="btn btn-xs btn-success">
             Gaji Pokok
           </Link>
-          <Link
-            href="/penghasilan/rincian/tunjangan-kinerja"
-            className="btn btn-xs btn-success"
-          >
+          <Link href="/penghasilan/rincian/tunjangan-kinerja" className="btn btn-xs btn-success">
             Tukin
           </Link>
-          <Link
-            href="/penghasilan/rincian/uang-makan"
-            className="btn btn-xs btn-success"
-          >
+          <Link href="/penghasilan/rincian/uang-makan" className="btn btn-xs btn-success">
             Uang Makan
           </Link>
-          <Link
-            href="/penghasilan/rincian/uang-lembur"
-            className="btn btn-xs btn-success"
-          >
+          <Link href="/penghasilan/rincian/uang-lembur" className="btn btn-xs btn-success">
             Uang Lembur
           </Link>
-          <Link
-            href="/penghasilan/rincian/lain-lain"
-            className="btn btn-xs btn-success"
-          >
+          <Link href="/penghasilan/rincian/lain-lain" className="btn btn-xs btn-success">
             Lain-Lain
           </Link>
         </div>

@@ -53,10 +53,7 @@ export const TextInput: React.FC<TextInputProps> = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={cn(
-            "input-bordered input w-full pl-10",
-            error ? "input-error" : "",
-          )}
+          className={cn("input-bordered input w-full pl-10", error ? "input-error" : "")}
         />
       </div>
       {error && (
@@ -106,10 +103,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={cn(
-            "input-bordered input w-full pl-10",
-            error ? "input-error" : "",
-          )}
+          className={cn("input-bordered input w-full pl-10", error ? "input-error" : "")}
         />
       </div>
       {error && (
@@ -159,10 +153,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
           name={name}
           value={value}
           onChange={onChange}
-          className={cn(
-            "select-bordered select w-full pl-10",
-            error ? "select-error" : "",
-          )}
+          className={cn("select-bordered select w-full pl-10", error ? "select-error" : "")}
         >
           <option disabled value="">
             {placeholder}
@@ -218,10 +209,7 @@ export const DateInput: React.FC<DateInputProps> = ({
           type="date"
           value={value}
           onChange={onChange}
-          className={cn(
-            "input-bordered input w-full pl-10",
-            error ? "input-error" : "",
-          )}
+          className={cn("input-bordered input w-full pl-10", error ? "input-error" : "")}
         />
       </div>
       {error && (
@@ -266,10 +254,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={cn(
-          "textarea-bordered textarea h-24 w-full",
-          error ? "textarea-error" : "",
-        )}
+        className={cn("textarea-bordered textarea h-24 w-full", error ? "textarea-error" : "")}
       />
       {error && (
         <label className="label">
@@ -320,7 +305,7 @@ export const FileInput: React.FC<FileInputProps> = ({
           accept={accept}
           className={cn(
             "file-input-bordered file-input w-full pl-10",
-            error ? "file-input-error" : "",
+            error ? "file-input-error" : ""
           )}
           {...props}
         />
@@ -350,7 +335,7 @@ export function SearchableSelect<T>({
   renderRow: (
     handleSelect: (val: string, i: number) => void,
     row: T,
-    index: number,
+    index: number
   ) => React.ReactNode;
 }) {
   const [inputValue, setInputValue] = useState("");
@@ -363,10 +348,7 @@ export function SearchableSelect<T>({
 
   useEffect(() => {
     const handleClickOutside = (event: globalThis.MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setShowOptions(false);
       }
     };
@@ -382,9 +364,7 @@ export function SearchableSelect<T>({
 
     const lowerCaseValue = value.toLowerCase();
     const newFilteredOptions = options.filter((option: any) =>
-      Object.values(option).some((val) =>
-        String(val).toLowerCase().includes(lowerCaseValue),
-      ),
+      Object.values(option).some((val) => String(val).toLowerCase().includes(lowerCaseValue))
     );
     setFilteredOptions(newFilteredOptions);
     setShowOptions(true);
@@ -415,7 +395,7 @@ export function SearchableSelect<T>({
         <div className="absolute z-50 mt-1 max-h-32 w-full overflow-y-auto border bg-base-200 p-1 shadow">
           {filteredOptions.length > 0 ? (
             filteredOptions.map((option, index) =>
-              renderRow((val, i) => handleOptionClick(val, i), option, index),
+              renderRow((val, i) => handleOptionClick(val, i), option, index)
             )
           ) : (
             <div className="cursor-pointer border-b p-2 last:border-0 hover:bg-base-300">

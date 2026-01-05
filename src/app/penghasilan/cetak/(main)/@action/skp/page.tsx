@@ -27,16 +27,7 @@ const bulans = [
 const Page = () => {
   const [base64, setBase64] = useState<string>();
   const [error, setError] = useState<Error | null>(null);
-  const {
-    tahun,
-    bulan,
-    setLoading,
-    open,
-    setOpen,
-    loading,
-    setTahun,
-    setBulan,
-  } = useCetak();
+  const { tahun, bulan, setLoading, open, setOpen, loading, setTahun, setBulan } = useCetak();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [tahuns, setTahuns] = useState<{ tahun: number }[]>([]);
@@ -112,11 +103,8 @@ const Page = () => {
           setTahuns(data);
           setTahun(
             data
-              .sort(
-                (a: { tahun: number }, b: { tahun: number }) =>
-                  b.tahun - a.tahun,
-              )[0]
-              .tahun.toString(),
+              .sort((a: { tahun: number }, b: { tahun: number }) => b.tahun - a.tahun)[0]
+              .tahun.toString()
           );
         }
       } catch (error) {

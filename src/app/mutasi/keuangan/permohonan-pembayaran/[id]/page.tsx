@@ -49,12 +49,9 @@ export default function Page({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(
-          `/api/Mutasi/Keuangan/PermohonanPembayaran/${id}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/Keuangan/PermohonanPembayaran/${id}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -100,15 +97,9 @@ export default function Page({
               <td className="p-4">
                 {row.file && (
                   <div className="tooltip" data-tip="Detail">
-                    <Link
-                      href={`/mutasi/keuangan/permohonan-pembayaran/${id}/dokumen/${row.id}`}
-                    >
+                    <Link href={`/mutasi/keuangan/permohonan-pembayaran/${id}/dokumen/${row.id}`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon
-                          className="hover:scale-110"
-                          icon="File"
-                          height={16}
-                        />
+                        <Icon className="hover:scale-110" icon="File" height={16} />
                       </div>
                     </Link>
                   </div>
@@ -133,29 +124,21 @@ export default function Page({
           {getValidationError("catatan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("catatan")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("catatan")?.message}
               </span>
             </label>
           )}
         </div>
       </div>
       <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-        <Link
-          href={`/mutasi/keuangan/permohonan-pembayaran/${id}/tolak`}
-          className="btn btn-error"
-        >
+        <Link href={`/mutasi/keuangan/permohonan-pembayaran/${id}/tolak`} className="btn btn-error">
           Tolak
         </Link>
         <Link
           href={`/mutasi/keuangan/permohonan-pembayaran/${id}/setuju`}
           className={`btn btn-success`}
         >
-          {loading ? (
-            <span className="loading loading-spinner"></span>
-          ) : (
-            "Approve"
-          )}
+          {loading ? <span className="loading loading-spinner"></span> : "Approve"}
         </Link>
       </div>
     </ContainerCard>

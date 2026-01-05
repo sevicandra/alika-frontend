@@ -88,9 +88,7 @@ export default function SanggahSummary() {
               )}
               {r.data.hubungan && (
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                  <label className="col-span-1 label md:col-span-2">
-                    Hubungan
-                  </label>
+                  <label className="col-span-1 label md:col-span-2">Hubungan</label>
                   <div className="rounded-box bg-error/50 p-4 text-error-content">
                     <label>Data Lama</label>
                     <p>{r.data.hubungan.old || "-"}</p>
@@ -103,9 +101,7 @@ export default function SanggahSummary() {
               )}
               {r.data.tanggal_lahir && (
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                  <label className="col-span-1 label md:col-span-2">
-                    Tanggal Lahir
-                  </label>
+                  <label className="col-span-1 label md:col-span-2">Tanggal Lahir</label>
                   <div className="rounded-box bg-error/50 p-4 text-error-content">
                     <label>Data Lama</label>
                     <p>{r.data.tanggal_lahir.old || "-"}</p>
@@ -118,9 +114,7 @@ export default function SanggahSummary() {
               )}
               {r.data.pekerjaan && (
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                  <label className="col-span-1 label md:col-span-2">
-                    Pekerjaan
-                  </label>
+                  <label className="col-span-1 label md:col-span-2">Pekerjaan</label>
                   <div className="rounded-box bg-error/50 p-4 text-error-content">
                     <label>Data Lama</label>
                     <p>{r.data.pekerjaan.old || "-"}</p>
@@ -133,9 +127,7 @@ export default function SanggahSummary() {
               )}
               {r.data.status && (
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                  <label className="col-span-1 label md:col-span-2">
-                    Status
-                  </label>
+                  <label className="col-span-1 label md:col-span-2">Status</label>
                   <div className="rounded-box bg-error/50 p-4 text-error-content">
                     <label>Data Lama</label>
                     <p>{r.data.status.old || "-"}</p>
@@ -162,10 +154,7 @@ export default function SanggahSummary() {
             </div>
           )}
           <div className="flex justify-end">
-            <button
-              onClick={() => handleDelete(index)}
-              className="btn btn-xs btn-error"
-            >
+            <button onClick={() => handleDelete(index)} className="btn btn-xs btn-error">
               Delete
             </button>
           </div>

@@ -52,7 +52,7 @@ export default function Page({
       try {
         setLoading(true);
         const response = await fetch(
-          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Pembayaran/${pembayaran_id}`,
+          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Pembayaran/${pembayaran_id}`
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
@@ -112,63 +112,44 @@ export default function Page({
                           href={`/mutasi/user/mutasi/${mutasi_id}/pembayaran/${pembayaran_id}/dokumen/${row.id}/file`}
                         >
                           <div className="rounded-box bg-info/80 p-1 text-info-content">
-                            <Icon
-                              className="hover:scale-110"
-                              icon="File"
-                              height={16}
-                            />
+                            <Icon className="hover:scale-110" icon="File" height={16} />
                           </div>
                         </Link>
                       </div>
                     )}
                     {row.uploadable &&
-                      (data?.status === "DRAFT" ||
-                        data?.status === "REJECTED") && (
+                      (data?.status === "DRAFT" || data?.status === "REJECTED") && (
                         <div className="tooltip" data-tip="Upload">
                           <Link
                             href={`/mutasi/user/mutasi/${mutasi_id}/pembayaran/${pembayaran_id}/dokumen/${row.id}/upload`}
                           >
                             <div className="rounded-box bg-info/80 p-1 text-info-content">
-                              <Icon
-                                className="hover:scale-110"
-                                icon="Upload"
-                                height={16}
-                              />
+                              <Icon className="hover:scale-110" icon="Upload" height={16} />
                             </div>
                           </Link>
                         </div>
                       )}
                     {row.uploadable &&
                       row.file &&
-                      (data?.status === "DRAFT" ||
-                        data?.status === "REJECTED") && (
+                      (data?.status === "DRAFT" || data?.status === "REJECTED") && (
                         <div className="tooltip" data-tip="Hapus">
                           <Link
                             href={`/mutasi/user/mutasi/${mutasi_id}/pembayaran/${pembayaran_id}/dokumen/${row.id}/hapus`}
                           >
                             <div className="rounded-box bg-error/80 p-1 text-error-content">
-                              <Icon
-                                className="hover:scale-110"
-                                icon="Trash2"
-                                height={16}
-                              />
+                              <Icon className="hover:scale-110" icon="Trash2" height={16} />
                             </div>
                           </Link>
                         </div>
                       )}
-                    {(data?.status === "DRAFT" ||
-                      data?.status === "REJECTED") &&
+                    {(data?.status === "DRAFT" || data?.status === "REJECTED") &&
                       row.document_type === "SPD2" && (
                         <div className="tooltip" data-tip="Penandatangan">
                           <Link
                             href={`/mutasi/user/mutasi/${mutasi_id}/pembayaran/${pembayaran_id}/dokumen/${row.id}/penandatangan`}
                           >
                             <div className="rounded-box bg-info/80 p-1 text-info-content">
-                              <Icon
-                                className="hover:scale-110"
-                                icon="FilePen"
-                                height={16}
-                              />
+                              <Icon className="hover:scale-110" icon="FilePen" height={16} />
                             </div>
                           </Link>
                         </div>

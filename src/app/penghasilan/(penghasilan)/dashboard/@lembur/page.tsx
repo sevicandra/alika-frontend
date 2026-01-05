@@ -16,12 +16,9 @@ export default function Page() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          "/api/Penghasilan/UangLembur/Rekap/?tahun=" + tahun,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch("/api/Penghasilan/UangLembur/Rekap/?tahun=" + tahun, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -43,7 +40,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [tahun,addNotification]);
+  }, [tahun, addNotification]);
   if (error) throw error;
   return (
     <StatCard

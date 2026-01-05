@@ -11,9 +11,7 @@ export default function Loading({
       <LuLoader
         className={`animate-spin ${direction === "vertical" ? "h-12 w-12" : "max-h-full"}`}
       />
-      <p className="animate-pulse text-lg font-medium">
-        Sedang memuat konten...
-      </p>
+      <p className="animate-pulse text-lg font-medium">Sedang memuat konten...</p>
     </div>
   );
 }

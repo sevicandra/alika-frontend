@@ -43,14 +43,14 @@ export default function Page({
       const searchParams = new URLSearchParams();
       if (limit) searchParams.append("limit", limit.toString());
       if (offset) searchParams.append("offset", offset.toString());
-      const {search} = searchs;
+      const { search } = searchs;
       if (search) searchParams.append("search", search);
       try {
         const res = await fetch(
           `/api/Mutasi/Keuangan/SuratKeputusan/${id}/Pegawai?${searchParams}`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -71,7 +71,17 @@ export default function Page({
       }
     };
     fetchPegawai();
-  }, [refresh, searchs, currentPage, limit, addNotification, id, setError, setLoading, setTotalPage]);
+  }, [
+    refresh,
+    searchs,
+    currentPage,
+    limit,
+    addNotification,
+    id,
+    setError,
+    setLoading,
+    setTotalPage,
+  ]);
   if (error) throw error;
   return (
     <div className="relative grid grid-rows-[1fr_auto] overflow-hidden">
@@ -113,41 +123,23 @@ export default function Page({
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="tooltip" data-tip="keluarga">
-                  <Link
-                    href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/keluarga`}
-                  >
+                  <Link href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/keluarga`}>
                     <div className="rounded-box bg-info/80 p-1 text-info-content">
-                      <Icon
-                        className="hover:scale-110"
-                        icon="Users"
-                        height={16}
-                      />
+                      <Icon className="hover:scale-110" icon="Users" height={16} />
                     </div>
                   </Link>
                 </div>
                 <div className="tooltip" data-tip="termin">
-                  <Link
-                    href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/termin`}
-                  >
+                  <Link href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/termin`}>
                     <div className="rounded-box bg-info/80 p-1 text-info-content">
-                      <Icon
-                        className="hover:scale-110"
-                        icon="Receipt"
-                        height={16}
-                      />
+                      <Icon className="hover:scale-110" icon="Receipt" height={16} />
                     </div>
                   </Link>
                 </div>
                 <div className="tooltip" data-tip="history">
-                  <Link
-                    href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/riwayat`}
-                  >
+                  <Link href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/riwayat`}>
                     <div className="rounded-box bg-info/80 p-1 text-info-content">
-                      <Icon
-                        className="hover:scale-110"
-                        icon="History"
-                        height={16}
-                      />
+                      <Icon className="hover:scale-110" icon="History" height={16} />
                     </div>
                   </Link>
                 </div>

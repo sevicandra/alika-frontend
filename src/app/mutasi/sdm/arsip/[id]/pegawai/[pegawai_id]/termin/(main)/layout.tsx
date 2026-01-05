@@ -21,9 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             let label;
             if (pathSegments[index - 1] === "arsip") {
               return {
-                name: suratKeputusan
-                  ? suratKeputusan.nomor.toLocaleUpperCase()
-                  : "Surat Keputusan",
+                name: suratKeputusan ? suratKeputusan.nomor.toLocaleUpperCase() : "Surat Keputusan",
               };
             }
             if (pathSegments[index - 1] === "pegawai") {
@@ -52,9 +50,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
 
       {children}
-      <div className="mx-4 mb-4 flex justify-between">
-        {totalPage && <Paginator />}
-      </div>
+      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
     </div>
   );
 }

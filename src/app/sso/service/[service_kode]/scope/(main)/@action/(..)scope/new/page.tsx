@@ -7,15 +7,10 @@ import { useForm } from "@/context/form.context";
 import { useTable } from "@/context/table.context";
 import Form from "@/component/Organisms/Form";
 
-export default function Page({
-  params,
-}: {
-  params: Promise<{ service_kode: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ service_kode: string }> }) {
   const { service_kode } = use(params);
   const { setRefresh } = useTable();
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);

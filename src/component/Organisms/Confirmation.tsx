@@ -2,7 +2,6 @@
 import PopUp from "@/component/Molecules/PopUp";
 import Icon from "@/component/Atoms/LabelIcon";
 
-
 export type ConfirmationProps = {
   title: string;
   message: string;
@@ -54,9 +53,15 @@ export default function Confirmation({
         <h2 className="text-2xl font-bold">Anda Yakin?</h2>
         <p className="text-base-content/80">{message}</p>
         <div className="flex w-full justify-center gap-4 pt-4">
-          <button className="btn btn-ghost" onClick={onCancel} disabled={loading}>{cancelText}</button>
+          <button className="btn btn-ghost" onClick={onCancel} disabled={loading}>
+            {cancelText}
+          </button>
           <button className={`btn ${buttonClass}`} onClick={onConfirm} disabled={loading}>
-            {loading ? <span className="loading loading-spinner"></span> : (confirmText || defaultConfirmText)}
+            {loading ? (
+              <span className="loading loading-spinner"></span>
+            ) : (
+              confirmText || defaultConfirmText
+            )}
           </button>
         </div>
       </div>

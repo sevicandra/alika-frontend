@@ -30,9 +30,5 @@ export default function Dropdown({ children }: { children: React.ReactNode }) {
     closeMenu: () => setIsOpen(false),
   };
 
-  return (
-    <MenuContext.Provider value={contextValue}>
-      {children}
-    </MenuContext.Provider>
-  );
+  return <MenuContext.Provider value={contextValue}>{children}</MenuContext.Provider>;
 }

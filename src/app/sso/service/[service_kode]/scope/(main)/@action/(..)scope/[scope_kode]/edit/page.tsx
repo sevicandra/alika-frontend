@@ -18,8 +18,7 @@ export default function Page({
   const { setRefresh } = useTable();
   const { service_kode, scope_kode } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -28,20 +27,17 @@ export default function Page({
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(
-        `/api/Sso/Service/${service_kode}/Scope/${scope_kode}`,
-        {
-          headers: {
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
-            "Content-Type": "application/json",
-          },
-          method: "PATCH",
-          body: JSON.stringify(input),
+      const res = await fetch(`/api/Sso/Service/${service_kode}/Scope/${scope_kode}`, {
+        headers: {
+          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+            const data = await res.json();
+            return data.token;
+          }),
+          "Content-Type": "application/json",
         },
-      );
+        method: "PATCH",
+        body: JSON.stringify(input),
+      });
       if (!res.ok) {
         const { message, errors } = await res.json();
         if (res.status === 422) {
@@ -70,12 +66,9 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `/api/Sso/Service/${service_kode}/Scope/${scope_kode}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Sso/Service/${service_kode}/Scope/${scope_kode}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);

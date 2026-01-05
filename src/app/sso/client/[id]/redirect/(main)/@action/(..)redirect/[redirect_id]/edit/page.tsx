@@ -18,8 +18,7 @@ export default function Page({
   const { setRefresh } = useTable();
   const { id, redirect_id } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -43,11 +42,12 @@ export default function Page({
         const { error } = await res.json();
 
         if (res.status === 422) {
-          const errorArray: { field: string; message: string }[] =
-            Object.entries(error.details).map(([field, message]) => ({
-              field,
-              message: message as string,
-            }));
+          const errorArray: { field: string; message: string }[] = Object.entries(
+            error.details
+          ).map(([field, message]) => ({
+            field,
+            message: message as string,
+          }));
           setValidationErrors(errorArray);
         }
         throw new Error(error.message || "Terjadi kesalahan pada server.");
@@ -73,12 +73,9 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `/api/Sso/Client/${id}/Redirect/${redirect_id}`,
-          {
-            method: "GET",
-          }
-        );
+        const res = await fetch(`/api/Sso/Client/${id}/Redirect/${redirect_id}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);

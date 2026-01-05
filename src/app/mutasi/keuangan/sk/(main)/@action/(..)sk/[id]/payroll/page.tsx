@@ -38,19 +38,16 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await fetch(
-        `/api/Mutasi/Keuangan/SuratKeputusan/${id}/Payroll`,
-        {
-          headers: {
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
-          },
-          method: "POST",
-          body: formData,
+      const res = await fetch(`/api/Mutasi/Keuangan/SuratKeputusan/${id}/Payroll`, {
+        headers: {
+          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+            const data = await res.json();
+            return data.token;
+          }),
         },
-      );
+        method: "POST",
+        body: formData,
+      });
 
       if (!res.ok) {
         const { message, errors } = await res.json();
@@ -102,9 +99,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         setFile(droppedFiles[0]);
         setValidationErrors([]);
       } else {
-        setValidationErrors([
-          { field: "file", message: "Hanya file PDF yang diizinkan." },
-        ]);
+        setValidationErrors([{ field: "file", message: "Hanya file PDF yang diizinkan." }]);
       }
     }
   };
@@ -145,10 +140,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             >
               <Icon icon="CloudUpload" height={20} />
               <p className="text-center text-sm text-base-content/70">
-                <span className="font-semibold text-primary">
-                  Klik untuk mengunggah
-                </span>{" "}
-                atau seret dan lepas
+                <span className="font-semibold text-primary">Klik untuk mengunggah</span> atau seret
+                dan lepas
               </p>
               <p className="text-xs text-base-content/50">Hanya CSV</p>
               <input
@@ -163,8 +156,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             {getValidationError("file") && (
               <label className="label">
                 <span className="label-text-alt flex items-center gap-1 text-error">
-                  <Icon icon="CircleAlert" height={16} />{" "}
-                  {getValidationError("file")?.message}
+                  <Icon icon="CircleAlert" height={16} /> {getValidationError("file")?.message}
                 </span>
               </label>
             )}
@@ -190,11 +182,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             )}
 
             <div className="card-actions justify-end">
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="btn btn-ghost"
-              >
+              <button type="button" onClick={() => router.back()} className="btn btn-ghost">
                 Batal
               </button>
               <button

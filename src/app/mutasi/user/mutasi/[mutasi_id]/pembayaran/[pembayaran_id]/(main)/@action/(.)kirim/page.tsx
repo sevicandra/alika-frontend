@@ -20,8 +20,7 @@ export default function Page({
   const { mutasi_id, pembayaran_id } = use(params);
   const { setRefresh } = useTable();
   const { setRefresh: refreshPembayaran } = usePembayaranDetail();
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(false);
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
@@ -42,7 +41,7 @@ export default function Page({
             passphrase: input.passphrase,
             confirmation: input.confirmation,
           }),
-        },
+        }
       );
       if (!res.ok) {
         const { errors } = await res.json();
@@ -103,8 +102,7 @@ export default function Page({
           {getValidationError("passphrase") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("passphrase")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("passphrase")?.message}
               </span>
             </label>
           )}
@@ -123,10 +121,9 @@ export default function Page({
             />
             <label className="label">
               <span className="label-text text-justify text-wrap">
-                Dengan ini saya menyatakan bahwa data yang saya kirimkan
-                merupakan data yang benar dan sah. Saya bersedia
-                mempertanggungjawabkan dan mengembalikan dana apabila terdapat
-                kekeliruan.
+                Dengan ini saya menyatakan bahwa data yang saya kirimkan merupakan data yang benar
+                dan sah. Saya bersedia mempertanggungjawabkan dan mengembalikan dana apabila
+                terdapat kekeliruan.
               </span>
             </label>
           </div>

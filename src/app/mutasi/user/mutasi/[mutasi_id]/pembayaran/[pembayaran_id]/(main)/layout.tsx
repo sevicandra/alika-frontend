@@ -56,8 +56,7 @@ export default function Layout({
       </div>
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1">
-          {(pembayaran?.status === "DRAFT" ||
-            pembayaran?.status === "REJECTED") && (
+          {(pembayaran?.status === "DRAFT" || pembayaran?.status === "REJECTED") && (
             <>
               <Link
                 href={`/mutasi/user/mutasi/${mutasi_id}/pembayaran/${pembayaran_id}/kirim`}

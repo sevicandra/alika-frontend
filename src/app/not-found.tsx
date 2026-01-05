@@ -4,7 +4,7 @@ import { LuGhost } from "react-icons/lu";
 
 export default function NotFoundPage() {
   return (
-    <div className="from-primary-300 via-secondary-300 to-accent-300 flex h-full items-center justify-center bg-gradient-to-tr px-4">
+    <div className="from-primary-300 via-secondary-300 to-accent-300 flex h-full items-center justify-center bg-linear-to-tr px-4">
       <div className="bg-neutral w-full max-w-md rounded-2xl p-10 text-center shadow-xl">
         <div className="mb-6 flex justify-center">
           <LuGhost className="text-accent-500 h-20 w-20" />

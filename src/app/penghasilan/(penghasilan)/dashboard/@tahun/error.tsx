@@ -15,7 +15,9 @@ export default function Error({
 
   return (
     <div className="w-full">
-      <button className="btn btn-xs btn-outline" onClick={() => reset()}>Try again</button>
+      <button className="btn btn-xs btn-outline" onClick={() => reset()}>
+        Try again
+      </button>
     </div>
   );
 }

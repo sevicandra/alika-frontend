@@ -16,15 +16,12 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(
-          "/api/Penghasilan/DataCetak?limit=5&sortField=id&sortOrder=desc",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+        const res = await fetch("/api/Penghasilan/DataCetak?limit=5&sortField=id&sortOrder=desc", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -36,7 +33,7 @@ export default function Page() {
               dokumen: item.perihal,
               status: item.status,
               file: item.file,
-            })),
+            }))
           );
         }
       } catch (error) {
@@ -66,11 +63,7 @@ export default function Page() {
             <tr key={index}>
               <td className="p-4">{row.dokumen}</td>
               <td className="p-4">
-                {row.status === 0
-                  ? "Menunggu TTE"
-                  : row.status === 1
-                    ? "Sudah di TTE"
-                    : "Ditolak"}
+                {row.status === 0 ? "Menunggu TTE" : row.status === 1 ? "Sudah di TTE" : "Ditolak"}
               </td>
               <td className="p-4">
                 {row.status === 0 ? (

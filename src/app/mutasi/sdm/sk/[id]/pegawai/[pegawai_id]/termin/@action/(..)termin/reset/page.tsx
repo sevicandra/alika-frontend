@@ -5,11 +5,7 @@ import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Confirmation from "@/component/Organisms/Confirmation";
-export default function Page({
-  params,
-}: {
-  params: Promise<{ id: string; pegawai_id: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ id: string; pegawai_id: string }> }) {
   const router = useRouter();
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
@@ -30,7 +26,7 @@ export default function Page({
             }),
           },
           method: "POST",
-        },
+        }
       );
       if (!res.ok) {
         const { message } = await res.json();

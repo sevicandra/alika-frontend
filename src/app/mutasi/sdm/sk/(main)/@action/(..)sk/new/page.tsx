@@ -83,8 +83,7 @@ export default function Page() {
               {getValidationError("nomor") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("nomor")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("nomor")?.message}
                   </span>
                 </label>
               )}
@@ -112,9 +111,7 @@ export default function Page() {
                   <option value={"ESELON II"}>ESELON II</option>
                   <option value={"ESELON III"}>ESELON III</option>
                   <option value={"ESELON IV"}>ESELON IV</option>
-                  <option value={"JABATAN FUNGSIONAL"}>
-                    JABATAN FUNGSIONAL
-                  </option>
+                  <option value={"JABATAN FUNGSIONAL"}>JABATAN FUNGSIONAL</option>
                   <option value={"PELAKSANA"}>PELAKSANA</option>
                   <option value={"PENSIUNAN"}>PENSIUNAN</option>
                 </select>
@@ -122,8 +119,7 @@ export default function Page() {
               {getValidationError("jenjang") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("jenjang")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("jenjang")?.message}
                   </span>
                 </label>
               )}
@@ -143,8 +139,7 @@ export default function Page() {
               {getValidationError("uraian") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("uraian")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("uraian")?.message}
                   </span>
                 </label>
               )}
@@ -153,9 +148,7 @@ export default function Page() {
             {/* --- Field Tanggal --- */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">
-                  Tanggal Ditetapkan
-                </span>
+                <span className="label-text font-semibold">Tanggal Ditetapkan</span>
               </label>
               <div className="relative">
                 <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
@@ -171,8 +164,7 @@ export default function Page() {
               {getValidationError("tanggal") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("tanggal")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggal")?.message}
                   </span>
                 </label>
               )}
@@ -181,9 +173,7 @@ export default function Page() {
             {/* --- Field TMT --- */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">
-                  Tanggal Mulai Berlaku (TMT)
-                </span>
+                <span className="label-text font-semibold">Tanggal Mulai Berlaku (TMT)</span>
               </label>
               <div className="relative">
                 <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
@@ -199,8 +189,7 @@ export default function Page() {
               {getValidationError("tmt") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("tmt")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("tmt")?.message}
                   </span>
                 </label>
               )}
@@ -226,26 +215,19 @@ export default function Page() {
               {getValidationError("file") ? (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("file")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("file")?.message}
                   </span>
                 </label>
               ) : (
                 <label className="label">
-                  <span className="label-text-alt">
-                    Format file: PDF, Ukuran maksimal: 50MB
-                  </span>
+                  <span className="label-text-alt">Format file: PDF, Ukuran maksimal: 50MB</span>
                 </label>
               )}
             </div>
           </div>
         </div>
         <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-          <button
-            type="button"
-            className="btn btn-ghost"
-            onClick={() => router.back()}
-          >
+          <button type="button" className="btn btn-ghost" onClick={() => router.back()}>
             <Icon icon="ArrowLeft" height={16} /> Batal
           </button>
           <button type="submit" className="btn text-nowrap btn-primary">

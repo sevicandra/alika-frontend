@@ -33,11 +33,7 @@ export default function Home() {
           title="Sentralisasi"
           icon={<Icon.Sentralisasi height={"138"} />}
         />
-        <ModuleCard
-          href="/mutasi"
-          title="Mutasi"
-          icon={<Icon.Mutasi height={"138"} />}
-        />
+        <ModuleCard href="/mutasi" title="Mutasi" icon={<Icon.Mutasi height={"138"} />} />
         <ModuleCard
           href="https://monev-alika.kemenkeu.go.id"
           title="Monev"

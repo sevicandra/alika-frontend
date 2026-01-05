@@ -1,7 +1,6 @@
 // import { DataTable } from "@/component/Organisms/DataTable";
 import GroupButton from "@/component/Molecules/GroupButton";
 
-
 const Content = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_1fr] gap-2 overflow-hidden p-2">

@@ -1,17 +1,13 @@
 "use client";
 import { useEffect, useState, use } from "react";
 import { usePegawaiDetail } from "@/context/mutasi/sdm";
-import {useTable} from "@/context/table.context";
+import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
 import Icon from "@/component/Atoms/LabelIcon";
 
-export default function Page({
-  params,
-}: {
-  params: Promise<{ id: string; pegawai_id: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ id: string; pegawai_id: string }> }) {
   const router = useRouter();
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
@@ -70,24 +66,21 @@ export default function Page({
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(
-        `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
-          },
-          method: "POST",
-          body: JSON.stringify({
-            ref_termin: data.ref_termin,
-            tahun: data.tahun,
-            nominal: data.nominal,
+      const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin`, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+            const data = await res.json();
+            return data.token;
           }),
         },
-      );
+        method: "POST",
+        body: JSON.stringify({
+          ref_termin: data.ref_termin,
+          tahun: data.tahun,
+          nominal: data.nominal,
+        }),
+      });
       if (!res.ok) {
         const { message, errors } = await res.json();
         if (res.status === 422) {
@@ -137,9 +130,7 @@ export default function Page({
                   className={`select-bordered select w-full pl-10 ${getValidationError("ref_termin") ? "select-error" : ""}`}
                   required
                   value={data.ref_termin}
-                  onChange={(e) =>
-                    setData({ ...data, ref_termin: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, ref_termin: e.target.value })}
                 >
                   <option disabled={true} value={""}>
                     Pilih Jenis Termin
@@ -186,8 +177,7 @@ export default function Page({
               {getValidationError("tahun") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("tahun")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("tahun")?.message}
                   </span>
                 </label>
               )}
@@ -200,13 +190,10 @@ export default function Page({
                   Nominal{" "}
                   <p className="text-info">
                     (Sisa Tagihan:{" "}
-                    {pegawai?.MonitoringTagihan.sisa_tagihan.toLocaleString(
-                      "id-ID",
-                      {
-                        style: "currency",
-                        currency: "IDR",
-                      },
-                    )}
+                    {pegawai?.MonitoringTagihan.sisa_tagihan.toLocaleString("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    })}
                     )
                   </p>
                 </span>
@@ -235,8 +222,7 @@ export default function Page({
               {getValidationError("nominal") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("nominal")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("nominal")?.message}
                   </span>
                 </label>
               )}
@@ -244,11 +230,7 @@ export default function Page({
           </div>
         </div>
         <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-          <button
-            type="button"
-            className="btn btn-ghost"
-            onClick={() => router.back()}
-          >
+          <button type="button" className="btn btn-ghost" onClick={() => router.back()}>
             <Icon icon="ArrowLeft" height={16} /> Batal
           </button>
           <button type="submit" className="btn text-nowrap btn-primary">

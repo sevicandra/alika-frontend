@@ -10,5 +10,4 @@ function MenuButton({ children }: { children: React.ReactNode }) {
   );
 }
 
-
-export default MenuButton
+export default MenuButton;

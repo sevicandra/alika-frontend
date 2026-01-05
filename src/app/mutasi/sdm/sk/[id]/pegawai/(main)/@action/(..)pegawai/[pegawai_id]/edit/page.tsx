@@ -9,16 +9,11 @@ import { useForm } from "@/context/form.context";
 import Form from "@/component/Organisms/Form";
 import { SearchableSelect } from "@/component/Molecules/InputForm";
 
-export default function Page({
-  params,
-}: {
-  params: Promise<{ id: string; pegawai_id: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ id: string; pegawai_id: string }> }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
 
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
@@ -56,9 +51,7 @@ export default function Page({
     };
     const fetchKantor = async () => {
       try {
-        const res = await fetch(
-          "/api/Mutasi/Referensi/Kantor?sortField=kode_kota&sortOrder=asc",
-        );
+        const res = await fetch("/api/Mutasi/Referensi/Kantor?sortField=kode_kota&sortOrder=asc");
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -82,9 +75,7 @@ export default function Page({
     const fetchPegawai = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`,
-        );
+        const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`);
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -103,20 +94,17 @@ export default function Page({
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const res = await fetch(
-        `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
-          },
-          method: "PATCH",
-          body: JSON.stringify(input),
+      const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+            const data = await res.json();
+            return data.token;
+          }),
         },
-      );
+        method: "PATCH",
+        body: JSON.stringify(input),
+      });
       if (!res.ok) {
         const { message, errors } = await res.json();
         if (res.status === 422) {
@@ -172,8 +160,7 @@ export default function Page({
           {getValidationError("nama") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("nama")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("nama")?.message}
               </span>
             </label>
           )}
@@ -200,8 +187,7 @@ export default function Page({
           {getValidationError("nip") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("nip")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("nip")?.message}
               </span>
             </label>
           )}
@@ -236,8 +222,7 @@ export default function Page({
           {getValidationError("golongan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("golongan")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("golongan")?.message}
               </span>
             </label>
           )}
@@ -274,8 +259,7 @@ export default function Page({
           {getValidationError("kantor_asal") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kantor_asal")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("kantor_asal")?.message}
               </span>
             </label>
           )}

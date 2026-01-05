@@ -31,15 +31,12 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        const {search} = searchs
+        const { search } = searchs;
         if (search) searchParams.append("search", search);
         setLoading(true);
-        const res = await fetch(
-          `/api/Mutasi/Admin/Referensi/Kantor?${searchParams}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/Admin/Referensi/Kantor?${searchParams}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -84,14 +81,7 @@ export default function Page() {
         )}
         <div className="overflow-y-auto">
           <DataTable
-            columns={[
-              "No.",
-              "Kode Satker",
-              "Nama Kantor",
-              "Provinsi",
-              "Kota",
-              "",
-            ]}
+            columns={["No.", "Kode Satker", "Nama Kantor", "Provinsi", "Kota", ""]}
             data={data}
             renderRow={(row, index) => (
               <tr key={index}>
@@ -103,15 +93,9 @@ export default function Page() {
                 <td className="p-4">
                   <div className="flex gap-1">
                     <div className="tooltip" data-tip="edit">
-                      <Link
-                        href={`/mutasi/admin/referensi/kantor/${row.kode_satker}/edit`}
-                      >
+                      <Link href={`/mutasi/admin/referensi/kantor/${row.kode_satker}/edit`}>
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="SquarePen"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="SquarePen" height={16} />
                         </div>
                       </Link>
                     </div>

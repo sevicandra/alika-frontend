@@ -54,9 +54,7 @@ export default function Page() {
         <p className="text-sm">Status Mutasi</p>
       </div>
       {loading && <Loading direction="horizontal" />}
-      {!loading && !data && (
-        <p className="text-sm text-base-content/60">Tidak ada data</p>
-      )}
+      {!loading && !data && <p className="text-sm text-base-content/60">Tidak ada data</p>}
       {!loading && data && (
         <div className="">
           <p className="font-bold">{data?.nomor}</p>

@@ -5,11 +5,7 @@ import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Confirmation from "@/component/Organisms/Confirmation";
 
-export default function Page({
-  params,
-}: {
-  params: Promise<{ id: string; redirect_id: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ id: string; redirect_id: string }> }) {
   const router = useRouter();
   const { id, redirect_id } = use(params);
   const [loading, setLoading] = useState(false);

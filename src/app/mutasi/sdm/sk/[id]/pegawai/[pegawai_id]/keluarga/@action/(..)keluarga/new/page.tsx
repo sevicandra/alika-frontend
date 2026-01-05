@@ -6,11 +6,7 @@ import { useRouter } from "next/navigation";
 import Loading from "@/component/Molecules/Loading";
 import Icon from "@/component/Atoms/LabelIcon";
 
-export default function Page({
-  params,
-}: {
-  params: Promise<{ id: string; pegawai_id: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ id: string; pegawai_id: string }> }) {
   const router = useRouter();
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
@@ -91,7 +87,7 @@ export default function Page({
             pekerjaan: data.pekerjaan,
             status: data.status,
           }),
-        },
+        }
       );
       if (!res.ok) {
         const { message, errors } = await res.json();
@@ -148,8 +144,7 @@ export default function Page({
               {getValidationError("nama") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("nama")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("nama")?.message}
                   </span>
                 </label>
               )}
@@ -176,8 +171,7 @@ export default function Page({
               {getValidationError("nik") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("nik")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("nik")?.message}
                   </span>
                 </label>
               )}
@@ -196,9 +190,7 @@ export default function Page({
                   name="hubungan"
                   className={`select-bordered select w-full pl-10 ${getValidationError("hubungan") ? "select-error" : ""}`}
                   required
-                  onChange={(e) =>
-                    setData({ ...data, hubungan: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, hubungan: e.target.value })}
                   value={data.hubungan}
                 >
                   <option disabled={true} value="">
@@ -224,9 +216,7 @@ export default function Page({
             {/* --- Field Status --- */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">
-                  Status Tanggungan
-                </span>
+                <span className="label-text font-semibold">Status Tanggungan</span>
               </label>
               <div className="relative">
                 <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
@@ -249,8 +239,7 @@ export default function Page({
               {getValidationError("status") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("status")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("status")?.message}
                   </span>
                 </label>
               )}
@@ -270,16 +259,13 @@ export default function Page({
                   type="date"
                   className={`input-bordered input w-full pl-10 ${getValidationError("tanggal_lahir") ? "input-error" : ""}`}
                   value={data.tanggal_lahir}
-                  onChange={(e) =>
-                    setData({ ...data, tanggal_lahir: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, tanggal_lahir: e.target.value })}
                 />
               </div>
               {getValidationError("tanggal") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("tanggal")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggal")?.message}
                   </span>
                 </label>
               )}
@@ -300,9 +286,7 @@ export default function Page({
                   className={`input-bordered input w-full pl-10 ${getValidationError("pekerjaan") ? "input-error" : ""}`}
                   required
                   value={data.pekerjaan}
-                  onChange={(e) =>
-                    setData({ ...data, pekerjaan: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, pekerjaan: e.target.value })}
                 />
               </div>
               {getValidationError("pekerjaan") && (
@@ -317,11 +301,7 @@ export default function Page({
           </div>
         </div>
         <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-          <button
-            type="button"
-            className="btn btn-ghost"
-            onClick={() => router.back()}
-          >
+          <button type="button" className="btn btn-ghost" onClick={() => router.back()}>
             <Icon icon="ArrowLeft" height={16} /> Batal
           </button>
           <button type="submit" className="btn text-nowrap btn-primary">

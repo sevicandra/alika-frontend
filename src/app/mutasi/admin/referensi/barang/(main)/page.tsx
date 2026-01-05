@@ -35,12 +35,9 @@ export default function Page() {
         if (searchs.search) searchParams.append("search", searchs.search);
 
         setLoading(true);
-        const res = await fetch(
-          `/api/Mutasi/Admin/Referensi/Barang?${searchParams}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/Admin/Referensi/Barang?${searchParams}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -85,28 +82,16 @@ export default function Page() {
                 <td className="p-4">
                   <div className="flex gap-1">
                     <div className="tooltip" data-tip="edit">
-                      <Link
-                        href={`/mutasi/admin/referensi/barang/${row.id}/edit`}
-                      >
+                      <Link href={`/mutasi/admin/referensi/barang/${row.id}/edit`}>
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="SquarePen"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="SquarePen" height={16} />
                         </div>
                       </Link>
                     </div>
                     <div className="tooltip" data-tip="hapus">
-                      <Link
-                        href={`/mutasi/admin/referensi/barang/${row.id}/hapus`}
-                      >
+                      <Link href={`/mutasi/admin/referensi/barang/${row.id}/hapus`}>
                         <div className="rounded-box bg-error/80 p-1 text-error-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="Trash2"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="Trash2" height={16} />
                         </div>
                       </Link>
                     </div>

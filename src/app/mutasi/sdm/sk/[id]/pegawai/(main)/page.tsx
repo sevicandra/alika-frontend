@@ -49,8 +49,7 @@ export default function Page({
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
   const { setTotalPage, page: currentPage, limit } = usePaginator();
-  const { refresh, searchs, filter, searchsTerm, setSearchsTerm, setFilter } =
-    useTable();
+  const { refresh, searchs, filter, searchsTerm, setSearchsTerm, setFilter } = useTable();
   const { data: SuratKeputusan } = useSkDetail();
 
   useEffect(() => {
@@ -68,12 +67,9 @@ export default function Page({
       if (dataTermin) searchParams.append("process_termin", dataTermin);
       searchParams.append("associations", "Golongan,KantorAsal,KantorTujuan");
       try {
-        const res = await fetch(
-          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai?${searchParams}`,
-          {
-            method: "GET",
-          },
-        );
+        const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai?${searchParams}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -93,16 +89,7 @@ export default function Page({
       }
     };
     fetchPegawai();
-  }, [
-    refresh,
-    searchs,
-    currentPage,
-    filter,
-    limit,
-    addNotification,
-    id,
-    setTotalPage,
-  ]);
+  }, [refresh, searchs, currentPage, filter, limit, addNotification, id, setTotalPage]);
 
   if (error) throw error;
   return (
@@ -111,9 +98,7 @@ export default function Page({
       headerRight={
         <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
           <input
-            onChange={(e) =>
-              setSearchsTerm({ ...searchsTerm, search: e.target.value })
-            }
+            onChange={(e) => setSearchsTerm({ ...searchsTerm, search: e.target.value })}
             type="text"
             className="input-bordered input input-xs focus:outline-none"
             placeholder="Cari berdasarkan Nama / NIP"
@@ -121,9 +106,7 @@ export default function Page({
           />
           <select
             className="select-bordered select select-xs focus:outline-none"
-            onChange={(e) =>
-              setFilter({ ...filter, dataKeluarga: e.target.value })
-            }
+            onChange={(e) => setFilter({ ...filter, dataKeluarga: e.target.value })}
             value={filter.dataKeluarga || ""}
           >
             <option value="">Semua Status Data Keluarga</option>
@@ -135,9 +118,7 @@ export default function Page({
           </select>
           <select
             className="select-bordered select select-xs focus:outline-none"
-            onChange={(e) =>
-              setFilter({ ...filter, dataBiaya: e.target.value })
-            }
+            onChange={(e) => setFilter({ ...filter, dataBiaya: e.target.value })}
             value={filter.dataBiaya || ""}
           >
             <option value="">Semua Status Rincian Biaya</option>
@@ -149,9 +130,7 @@ export default function Page({
           </select>
           <select
             className="select-bordered select select-xs focus:outline-none"
-            onChange={(e) =>
-              setFilter({ ...filter, dataTermin: e.target.value })
-            }
+            onChange={(e) => setFilter({ ...filter, dataTermin: e.target.value })}
             value={filter.dataTermin || ""}
           >
             <option value="">Semua Status Termin</option>
@@ -205,81 +184,47 @@ export default function Page({
                 >
                   {row.process_keluarga === "IDLE" && (
                     <div className="tooltip" data-tip="edit">
-                      <Link
-                        href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/edit`}
-                      >
+                      <Link href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/edit`}>
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="SquarePen"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="SquarePen" height={16} />
                         </div>
                       </Link>
                     </div>
                   )}
                   <div className="tooltip" data-tip="keluarga">
-                    <Link
-                      href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/keluarga`}
-                    >
+                    <Link href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/keluarga`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon
-                          className="hover:scale-110"
-                          icon="Users"
-                          height={16}
-                        />
+                        <Icon className="hover:scale-110" icon="Users" height={16} />
                       </div>
                     </Link>
                   </div>
                   <div className="tooltip" data-tip="biaya">
                     <Link href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/biaya`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon
-                          className="hover:scale-110"
-                          icon="CreditCard"
-                          height={16}
-                        />
+                        <Icon className="hover:scale-110" icon="CreditCard" height={16} />
                       </div>
                     </Link>
                   </div>
                   <div className="tooltip" data-tip="termin">
-                    <Link
-                      href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/termin`}
-                    >
+                    <Link href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/termin`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon
-                          className="hover:scale-110"
-                          icon="Receipt"
-                          height={16}
-                        />
+                        <Icon className="hover:scale-110" icon="Receipt" height={16} />
                       </div>
                     </Link>
                   </div>
                   {SuratKeputusan?.status === "DRAFT" && (
                     <>
                       <div className="tooltip" data-tip="reset">
-                        <Link
-                          href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/reset-data`}
-                        >
+                        <Link href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/reset-data`}>
                           <div className="rounded-box bg-warning/80 p-1 text-warning-content">
-                            <Icon
-                              className="hover:scale-110"
-                              icon="Reset"
-                              height={16}
-                            />
+                            <Icon className="hover:scale-110" icon="Reset" height={16} />
                           </div>
                         </Link>
                       </div>
                       <div className="tooltip" data-tip="hapus">
-                        <Link
-                          href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/hapus`}
-                        >
+                        <Link href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/hapus`}>
                           <div className="rounded-box bg-error/80 p-1 text-error-content">
-                            <Icon
-                              className="hover:scale-110"
-                              icon="Trash2"
-                              height={16}
-                            />
+                            <Icon className="hover:scale-110" icon="Trash2" height={16} />
                           </div>
                         </Link>
                       </div>

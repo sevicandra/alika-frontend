@@ -47,9 +47,5 @@ export default function Paginator({ children }: { children: React.ReactNode }) {
     },
   };
 
-  return (
-    <PaginatorContext.Provider value={contextValue}>
-      {children}
-    </PaginatorContext.Provider>
-  );
+  return <PaginatorContext.Provider value={contextValue}>{children}</PaginatorContext.Provider>;
 }

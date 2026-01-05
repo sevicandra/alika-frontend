@@ -10,8 +10,7 @@ import Form from "@/component/Organisms/Form";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { setRefresh } = useTable();
   const { id } = use(params);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -64,12 +63,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       setInput({ ...input, scope_kode: undefined });
       try {
         setLoading(true);
-        const res = await fetch(
-          `/api/Sso/Service/${input.service_kode}/Scope`,
-          {
-            method: "GET",
-          }
-        );
+        const res = await fetch(`/api/Sso/Service/${input.service_kode}/Scope`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { error } = await res.json();
           throw new Error(error.message || "Terjadi kesalahan pada server.");
@@ -109,7 +105,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    try {      
+    try {
       setLoading(true);
       const res = await fetch(`/api/Sso/Client/${id}/Scope`, {
         headers: {
@@ -126,11 +122,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         const { error } = await res.json();
 
         if (res.status === 422) {
-          const errorArray: { field: string; message: string }[] =
-            Object.entries(error.details).map(([field, message]) => ({
-              field,
-              message: message as string,
-            }));
+          const errorArray: { field: string; message: string }[] = Object.entries(
+            error.details
+          ).map(([field, message]) => ({
+            field,
+            message: message as string,
+          }));
           setValidationErrors(errorArray);
         }
         throw new Error(error.message || "Terjadi kesalahan pada server.");
@@ -178,9 +175,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               className={`select-bordered select w-full pl-10 ${getValidationError("service_kode") ? "select-error" : ""}`}
               required
               value={input.service_kode || ""}
-              onChange={(e) =>
-                setInput({ ...input, service_kode: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, service_kode: e.target.value })}
             >
               <option disabled value={""}>
                 Pilih Service
@@ -230,8 +225,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           {getValidationError("scope_id") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("scope_id")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("scope_id")?.message}
               </span>
             </label>
           )}
@@ -250,9 +244,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               className={`select-bordered select w-full pl-10 ${getValidationError("action_kode") ? "select-error" : ""}`}
               required
               value={input.action_kode || ""}
-              onChange={(e) =>
-                setInput({ ...input, action_kode: e.target.value })
-              }
+              onChange={(e) => setInput({ ...input, action_kode: e.target.value })}
             >
               <option disabled value={""}>
                 Pilih Action
@@ -267,8 +259,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           {getValidationError("action_kode") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("action_kode")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("action_kode")?.message}
               </span>
             </label>
           )}

@@ -21,7 +21,7 @@ async function handler(req: NextRequest) {
       switch (action) {
         case "signin":
           return NextResponse.redirect(
-            `${AUTH_BASE_URI}/${AUTH_AUTHORIZE_ENDPOINT}?client_id=${AUTH_CLIENT_ID}&scope=${AUTH_SCOPE}&response_type=${AUTH_RESPONSE_TYPE}&grant_type=${AUTH_GRANT_TYPE}&redirect_uri=${AUTH_REDIRECT_URI}`,
+            `${AUTH_BASE_URI}/${AUTH_AUTHORIZE_ENDPOINT}?client_id=${AUTH_CLIENT_ID}&scope=${AUTH_SCOPE}&response_type=${AUTH_RESPONSE_TYPE}&grant_type=${AUTH_GRANT_TYPE}&redirect_uri=${AUTH_REDIRECT_URI}`
           );
           break;
         case "callback":
@@ -42,10 +42,7 @@ async function handler(req: NextRequest) {
               redirect: response.redirect,
             });
           } catch (error) {
-            return NextResponse.json(
-              { status: "failed", error },
-              { status: 401 },
-            );
+            return NextResponse.json({ status: "failed", error }, { status: 401 });
           }
           break;
         case "session":
@@ -61,10 +58,7 @@ async function handler(req: NextRequest) {
             if (error === "Token expired") {
               return NextResponse.redirect(new URL(req.url));
             }
-            return NextResponse.json(
-              { status: "failed", error },
-              { status: 401 },
-            );
+            return NextResponse.json({ status: "failed", error }, { status: 401 });
           }
           break;
       }

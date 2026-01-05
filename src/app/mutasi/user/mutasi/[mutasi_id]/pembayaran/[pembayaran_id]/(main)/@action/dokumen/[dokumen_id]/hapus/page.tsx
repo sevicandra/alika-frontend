@@ -31,7 +31,7 @@ export default function Page({
               return data.token;
             }),
           },
-        },
+        }
       );
       if (!res.ok) {
         const { message } = await res.json();

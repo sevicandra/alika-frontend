@@ -117,10 +117,7 @@ const Page = () => {
         </div>
         <div className="overflow-hidden">
           {base64 && (
-            <Preview
-              base64={base64}
-              fileName={`KP4 Tahun ${new Date().toLocaleDateString()}`}
-            />
+            <Preview base64={base64} fileName={`KP4 Tahun ${new Date().toLocaleDateString()}`} />
           )}
         </div>
       </div>

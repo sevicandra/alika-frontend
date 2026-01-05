@@ -9,8 +9,7 @@ import Form from "@/component/Organisms/Form";
 
 export default function Page() {
   const { setRefresh } = useTable();
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -84,12 +83,8 @@ export default function Page() {
               <option disabled value={""}>
                 Pilih jenis
               </option>
-              <option value="TRANSPORT_DARAT_ORANG">
-                Transport Darat Orang
-              </option>
-              <option value="TRANSPORT_DARAT_BARANG">
-                Transport Darat Barang
-              </option>
+              <option value="TRANSPORT_DARAT_ORANG">Transport Darat Orang</option>
+              <option value="TRANSPORT_DARAT_BARANG">Transport Darat Barang</option>
               <option value="PACKING_DARAT">Packing Darat</option>
               <option value="PACKING_LAUT">Packing Laut</option>
               <option value="PACKING_UDARA">Packing Udara</option>
@@ -99,8 +94,7 @@ export default function Page() {
           {getValidationError("jenis") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("jenis")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("jenis")?.message}
               </span>
             </label>
           )}
@@ -132,8 +126,7 @@ export default function Page() {
           {getValidationError("tarif") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("tarif")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("tarif")?.message}
               </span>
             </label>
           )}

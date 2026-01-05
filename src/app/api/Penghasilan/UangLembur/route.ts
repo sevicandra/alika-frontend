@@ -3,13 +3,10 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 import { revalidateTag } from "next/cache";
-const apiBaseUrl =
-  process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
+const apiBaseUrl = process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
 
 export async function GET(req: Request) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`,
-  )?.value;
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -34,17 +31,14 @@ export async function GET(req: Request) {
   if (sortOrder) searchParams.append("sortOrder", sortOrder);
 
   try {
-    const lembur = await fetch(
-      `${apiBaseUrl}/api/v2/UangLembur/?${searchParams.toString()}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        next: { revalidate: 60, tags: [`Penghasilan:UangLembur`] },
+    const lembur = await fetch(`${apiBaseUrl}/api/v2/UangLembur/?${searchParams.toString()}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
       },
-    );
+      next: { revalidate: 60, tags: [`Penghasilan:UangLembur`] },
+    });
 
     if (!lembur.ok) {
       revalidateTag(`Penghasilan:UangLembur`, "max");

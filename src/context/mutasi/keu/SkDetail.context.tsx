@@ -21,17 +21,9 @@ type SkDetailContextType = {
   setError: (error: Error | null) => void;
 };
 
-const SkDetailContext = createContext<SkDetailContextType | undefined>(
-  undefined,
-);
+const SkDetailContext = createContext<SkDetailContextType | undefined>(undefined);
 
-export function SkDetailProvider({
-  children,
-  id,
-}: {
-  children: React.ReactNode;
-  id: string;
-}) {
+export function SkDetailProvider({ children, id }: { children: React.ReactNode; id: string }) {
   const [data, setData] = useState<SkDetailData>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -45,7 +37,7 @@ export function SkDetailProvider({
           const { message } = await response.json();
           console.log(message);
           throw new Error(message);
-        };
+        }
         const { data } = await response.json();
         setData(data);
       } catch (error) {
@@ -58,9 +50,7 @@ export function SkDetailProvider({
   }, [id]);
 
   return (
-    <SkDetailContext.Provider
-      value={{ data, loading, error, setLoading, setError }}
-    >
+    <SkDetailContext.Provider value={{ data, loading, error, setLoading, setError }}>
       {children}
     </SkDetailContext.Provider>
   );

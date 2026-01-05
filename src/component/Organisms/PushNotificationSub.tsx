@@ -3,9 +3,7 @@ import Confirmation from "../Molecules/Confirmation";
 import { useContext, useState } from "react";
 import { WebPushNotificationContext } from "@/context/webPushNotification";
 export default function PushNotificationSub() {
-  const { isSupported, subscription, subscribeToPush } = useContext(
-    WebPushNotificationContext,
-  );
+  const { isSupported, subscription, subscribeToPush } = useContext(WebPushNotificationContext);
 
   const [isShow, setIsShow] = useState(true);
 

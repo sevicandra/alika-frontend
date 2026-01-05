@@ -17,12 +17,7 @@ export default function Page() {
     {
       id: string;
       dokumen_id: string;
-      role:
-        | "PEGAWAI"
-        | "PEJABAT_KANTOR_ASAL"
-        | "PEJABAT_KANTOR_TUJUAN"
-        | "BENDAHARA"
-        | "PPK";
+      role: "PEGAWAI" | "PEJABAT_KANTOR_ASAL" | "PEJABAT_KANTOR_TUJUAN" | "BENDAHARA" | "PPK";
       nama: string;
       nip: string;
       jenis: string;
@@ -98,33 +93,21 @@ export default function Page() {
                       <div className="tooltip" data-tip="Detail">
                         <Link href={`/mutasi/user/tte/${row.id}/file`}>
                           <div className="rounded-box bg-info/80 p-1 text-info-content">
-                            <Icon
-                              className="hover:scale-110"
-                              icon="Eye"
-                              height={16}
-                            />
+                            <Icon className="hover:scale-110" icon="Eye" height={16} />
                           </div>
                         </Link>
                       </div>
                       <div className="tooltip" data-tip="Kirim">
                         <Link href={`/mutasi/user/tte/${row.id}/process`}>
                           <div className="rounded-box bg-info/80 p-1 text-info-content">
-                            <Icon
-                              className="hover:scale-110"
-                              icon="Send"
-                              height={16}
-                            />
+                            <Icon className="hover:scale-110" icon="Send" height={16} />
                           </div>
                         </Link>
                       </div>
                       <div className="tooltip" data-tip="Tolak">
                         <Link href={`/mutasi/user/tte/${row.id}/tolak`}>
                           <div className="rounded-box bg-error/80 p-1 text-error-content">
-                            <Icon
-                              className="hover:scale-110"
-                              icon="CircleX"
-                              height={16}
-                            />
+                            <Icon className="hover:scale-110" icon="CircleX" height={16} />
                           </div>
                         </Link>
                       </div>

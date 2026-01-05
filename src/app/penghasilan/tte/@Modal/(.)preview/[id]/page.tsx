@@ -186,16 +186,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         <div>
           {data.status === 0 && (
             <div className="flex gap-2">
-              <button
-                onClick={() => setTolak(true)}
-                className="btn btn-xs btn-error md:w-24"
-              >
+              <button onClick={() => setTolak(true)} className="btn btn-xs btn-error md:w-24">
                 Tolak
               </button>
-              <button
-                onClick={() => setTte(true)}
-                className="btn btn-xs btn-success md:w-24"
-              >
+              <button onClick={() => setTte(true)} className="btn btn-xs btn-success md:w-24">
                 TTE
               </button>
             </div>
@@ -203,19 +197,19 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         </div>
       </div>
 
-        <div className="relative h-full w-full gap-2 overflow-hidden rounded-box bg-neutral text-neutral-content shadow">
-          {loading && (
-            <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
-              <Loading />
-            </div>
-          )}
-          {base64 && (
-            <Preview
-              base64={base64}
-              fileName={`[${data?.jenis}] ${data?.perihal} ${data?.nip_tujuan}`}
-            />
-          )}
-        </div>
+      <div className="relative h-full w-full gap-2 overflow-hidden rounded-box bg-neutral text-neutral-content shadow">
+        {loading && (
+          <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
+            <Loading />
+          </div>
+        )}
+        {base64 && (
+          <Preview
+            base64={base64}
+            fileName={`[${data?.jenis}] ${data?.perihal} ${data?.nip_tujuan}`}
+          />
+        )}
+      </div>
 
       <Tte
         isOpen={tte}

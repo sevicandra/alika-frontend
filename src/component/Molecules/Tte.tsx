@@ -19,7 +19,7 @@ export default function Confirmation({
   const [show, setShow] = useState(true);
 
   const open = isOpen && show;
-  
+
   const [passphrase, setPassphrase] = useState<string>("");
   const [passphraseError, setPassphraseError] = useState<string | undefined>();
   const handleConfirm = () => {
@@ -69,9 +69,7 @@ export default function Confirmation({
                   onChange={(e) => setPassphrase(e.target.value)}
                 />
               </label>
-              {passphraseError && (
-                <span className="text-error-600 text-sm">{passphraseError}</span>
-              )}
+              {passphraseError && <span className="text-error-600 text-sm">{passphraseError}</span>}
             </div>
             <div className="flex justify-center gap-2">
               <Button className="btn-sm btn-error" onClick={() => onCancel()}>

@@ -10,8 +10,7 @@ import { SearchableSelect } from "@/component/Molecules/InputForm";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { id } = use(params);
   const { addNotification } = useNotification();
   const { setRefresh } = useTable();
@@ -50,9 +49,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     };
     const fetchKantor = async () => {
       try {
-        const res = await fetch(
-          "/api/Mutasi/Referensi/Kantor?sortField=kode_kota&sortOrder=asc",
-        );
+        const res = await fetch("/api/Mutasi/Referensi/Kantor?sortField=kode_kota&sortOrder=asc");
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -75,7 +72,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if(loading) return;
+    if (loading) return;
     try {
       setLoading(true);
       const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai`, {
@@ -145,8 +142,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           {getValidationError("nama") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("nama")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("nama")?.message}
               </span>
             </label>
           )}
@@ -173,8 +169,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           {getValidationError("nip") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("nip")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("nip")?.message}
               </span>
             </label>
           )}
@@ -209,8 +204,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           {getValidationError("golongan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("golongan")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("golongan")?.message}
               </span>
             </label>
           )}
@@ -247,8 +241,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           {getValidationError("kantor_asal") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kantor_asal")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("kantor_asal")?.message}
               </span>
             </label>
           )}

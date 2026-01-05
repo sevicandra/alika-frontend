@@ -50,7 +50,7 @@ export default function Page({
           `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -73,10 +73,7 @@ export default function Page({
   }, [refresh, addNotification, pegawai_id, id]);
   if (error) throw error;
   return (
-    <ContainerCard
-      title="Termin"
-      className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden"
-    >
+    <ContainerCard title="Termin" className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden">
       <div className="relative grid grid-rows-[1fr_auto] overflow-hidden">
         <div className="overflow-y-auto py-2">
           {loading && (
@@ -94,9 +91,7 @@ export default function Page({
                 <td className="px-4 py-2">
                   {row.Ref.required_doc.map((doc, idx) => (
                     <div key={idx} className="mb-1">
-                      <span className="font-semibold">
-                        {snackToTitleCase(doc.jenis)}:
-                      </span>{" "}
+                      <span className="font-semibold">{snackToTitleCase(doc.jenis)}:</span>{" "}
                       {doc.optional ? "Opsional" : "Wajib"} - Penandatangan:{" "}
                       {doc.penandatatangan
                         .map((penandatangan) => snackToTitleCase(penandatangan))
@@ -111,37 +106,28 @@ export default function Page({
                   })}
                 </td>
                 <td className="px-4 py-2">
-                  {pegawai?.process_termin === "DONE" &&
-                    suratKeputusan?.status === "DRAFT" && (
-                      <div className="flex gap-1">
-                        <div className="tooltip" data-tip="edit">
-                          <Link
-                            href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/${row.id}/edit`}
-                          >
-                            <div className="rounded-box bg-info/80 p-1 text-info-content">
-                              <Icon
-                                className="hover:scale-110"
-                                icon="SquarePen"
-                                height={16}
-                              />
-                            </div>
-                          </Link>
-                        </div>
-                        <div className="tooltip" data-tip="hapus">
-                          <Link
-                            href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/${row.id}/hapus`}
-                          >
-                            <div className="rounded-box bg-error/80 p-1 text-error-content">
-                              <Icon
-                                className="hover:scale-110"
-                                icon="Trash2"
-                                height={16}
-                              />
-                            </div>
-                          </Link>
-                        </div>
+                  {pegawai?.process_termin === "DONE" && suratKeputusan?.status === "DRAFT" && (
+                    <div className="flex gap-1">
+                      <div className="tooltip" data-tip="edit">
+                        <Link
+                          href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/${row.id}/edit`}
+                        >
+                          <div className="rounded-box bg-info/80 p-1 text-info-content">
+                            <Icon className="hover:scale-110" icon="SquarePen" height={16} />
+                          </div>
+                        </Link>
                       </div>
-                    )}
+                      <div className="tooltip" data-tip="hapus">
+                        <Link
+                          href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/${row.id}/hapus`}
+                        >
+                          <div className="rounded-box bg-error/80 p-1 text-error-content">
+                            <Icon className="hover:scale-110" icon="Trash2" height={16} />
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  )}
                 </td>
               </tr>
             )}

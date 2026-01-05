@@ -90,14 +90,7 @@ export default function Page() {
         )}
         <div className="overflow-y-auto py-2">
           <DataTable
-            columns={[
-              "No",
-              "Nomor Tiket",
-              "Tanggal",
-              "Nama/NIP",
-              "Nomor SK",
-              "Action",
-            ]}
+            columns={["No", "Nomor Tiket", "Tanggal", "Nama/NIP", "Nomor SK", "Action"]}
             data={data}
             renderRow={(row, index) => (
               <tr key={index}>
@@ -118,11 +111,7 @@ export default function Page() {
                   <div className="tooltip" data-tip="Detail">
                     <Link href={`/mutasi/sdm/sanggah/${row.id}`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon
-                          className="hover:scale-110"
-                          icon="Eye"
-                          height={16}
-                        />
+                        <Icon className="hover:scale-110" icon="Eye" height={16} />
                       </div>
                     </Link>
                   </div>

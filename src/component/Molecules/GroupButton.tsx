@@ -18,11 +18,7 @@ export type GroupButtonProps = {
 };
 type ButtonProps = React.HTMLAttributes<HTMLButtonElement>;
 
-const GroupButton = ({
-  button,
-  className,
-  ...props
-}: GroupButtonProps & ButtonProps) => {
+const GroupButton = ({ button, className, ...props }: GroupButtonProps & ButtonProps) => {
   return (
     <div className="flex gap-1">
       {button.map((item, index) =>
@@ -36,14 +32,10 @@ const GroupButton = ({
             {item.name}
           </Button>
         ) : (
-          <Link
-            href={item.href}
-            className={cn("btn btn-xs", className)}
-            key={index}
-          >
+          <Link href={item.href} className={cn("btn btn-xs", className)} key={index}>
             {item.name}
           </Link>
-        ),
+        )
       )}
     </div>
   );

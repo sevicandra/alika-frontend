@@ -3,16 +3,10 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl =
-  process.env.AUTH_BASE_URI_INTERNAL ?? process.env.AUTH_BASE_URI;
+const apiBaseUrl = process.env.AUTH_BASE_URI_INTERNAL ?? process.env.AUTH_BASE_URI;
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`,
-  )?.value;
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -22,17 +16,14 @@ export async function GET(
   }
   const { id } = await params;
   try {
-    const res = await fetch(
-      `${apiBaseUrl}/api/v2/Account/Grant/${id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        cache: "no-store",
+    const res = await fetch(`${apiBaseUrl}/api/v2/Account/Grant/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
       },
-    );
+      cache: "no-store",
+    });
 
     if (!res.ok) {
       const data = await res.json();
@@ -45,13 +36,8 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`,
-  )?.value;
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -61,18 +47,15 @@ export async function PATCH(
   }
   const { id } = await params;
   try {
-    const ref = await fetch(
-      `${apiBaseUrl}/api/v2/Account/Grant/${id}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${session}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(await req.json()),
-        cache: "no-store",
+    const ref = await fetch(`${apiBaseUrl}/api/v2/Account/Grant/${id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${session}`,
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(await req.json()),
+      cache: "no-store",
+    });
     if (!ref.ok) {
       const data = await ref.json();
       return NextResponse.json(data, { status: ref.status });
@@ -84,13 +67,8 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`,
-  )?.value;
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -100,17 +78,14 @@ export async function DELETE(
   }
   const { id } = await params;
   try {
-    const ref = await fetch(
-      `${apiBaseUrl}/api/v2/Account/Grant/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${session}`,
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
+    const ref = await fetch(`${apiBaseUrl}/api/v2/Account/Grant/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${session}`,
+        "Content-Type": "application/json",
       },
-    );
+      cache: "no-store",
+    });
     if (!ref.ok) {
       const data = await ref.json();
       return NextResponse.json(data, { status: ref.status });

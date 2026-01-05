@@ -45,12 +45,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     formData.append("uraian", data.uraian);
     formData.append(
       "tanggal",
-      data.tanggal ? new Date(data.tanggal).toISOString().slice(0, 10) : "",
+      data.tanggal ? new Date(data.tanggal).toISOString().slice(0, 10) : ""
     );
-    formData.append(
-      "tmt",
-      data.tmt ? new Date(data.tmt).toISOString().slice(0, 10) : "",
-    );
+    formData.append("tmt", data.tmt ? new Date(data.tmt).toISOString().slice(0, 10) : "");
     formData.append("jenjang", data.jenjang);
     if (data.file) {
       formData.append("file", data.file);
@@ -155,8 +152,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               {getValidationError("nomor") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("nomor")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("nomor")?.message}
                   </span>
                 </label>
               )}
@@ -175,9 +171,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   name="jenjang"
                   className={`select-bordered select w-full pl-10 ${getValidationError("jenjang") ? "select-error" : ""}`}
                   value={data.jenjang}
-                  onChange={(e) =>
-                    setData({ ...data, jenjang: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, jenjang: e.target.value })}
                 >
                   <option disabled value={""}>
                     Pilih Jenjang
@@ -185,9 +179,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   <option value={"ESELON I"}>ESELON I</option>
                   <option value={"ESELON II"}>ESELON II</option>
                   <option value={"ESELON III"}>ESELON III</option>
-                  <option value={"JABATAN FUNGSIONAL"}>
-                    JABATAN FUNGSIONAL
-                  </option>
+                  <option value={"JABATAN FUNGSIONAL"}>JABATAN FUNGSIONAL</option>
                   <option value={"PELAKSANA"}>PELAKSANA</option>
                   <option value={"PENSIUNAN"}>PENSIUNAN</option>
                 </select>
@@ -195,8 +187,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               {getValidationError("jenjang") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("jenjang")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("jenjang")?.message}
                   </span>
                 </label>
               )}
@@ -217,8 +208,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               {getValidationError("uraian") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("uraian")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("uraian")?.message}
                   </span>
                 </label>
               )}
@@ -227,9 +217,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             {/* --- Field Tanggal --- */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">
-                  Tanggal Ditetapkan
-                </span>
+                <span className="label-text font-semibold">Tanggal Ditetapkan</span>
               </label>
               <div className="relative">
                 <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
@@ -239,21 +227,14 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   name="tanggal"
                   type="date"
                   className={`input-bordered input w-full pl-10 ${getValidationError("tanggal") ? "input-error" : ""}`}
-                  value={
-                    data?.tanggal
-                      ? new Date(data.tanggal).toISOString().slice(0, 10)
-                      : ""
-                  }
-                  onChange={(e) =>
-                    setData({ ...data, tanggal: new Date(e.target.value) })
-                  }
+                  value={data?.tanggal ? new Date(data.tanggal).toISOString().slice(0, 10) : ""}
+                  onChange={(e) => setData({ ...data, tanggal: new Date(e.target.value) })}
                 />
               </div>
               {getValidationError("tanggal") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("tanggal")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggal")?.message}
                   </span>
                 </label>
               )}
@@ -262,9 +243,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             {/* --- Field TMT --- */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">
-                  Tanggal Mulai Berlaku (TMT)
-                </span>
+                <span className="label-text font-semibold">Tanggal Mulai Berlaku (TMT)</span>
               </label>
               <div className="relative">
                 <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
@@ -274,21 +253,14 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   name="tmt"
                   type="date"
                   className={`input-bordered input w-full pl-10 ${getValidationError("tmt") ? "input-error" : ""}`}
-                  value={
-                    data?.tmt
-                      ? new Date(data.tmt).toISOString().slice(0, 10)
-                      : ""
-                  }
-                  onChange={(e) =>
-                    setData({ ...data, tmt: new Date(e.target.value) })
-                  }
+                  value={data?.tmt ? new Date(data.tmt).toISOString().slice(0, 10) : ""}
+                  onChange={(e) => setData({ ...data, tmt: new Date(e.target.value) })}
                 />
               </div>
               {getValidationError("tmt") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("tmt")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("tmt")?.message}
                   </span>
                 </label>
               )}
@@ -309,34 +281,25 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   type="file"
                   className={`file-input-bordered file-input w-full pl-10 ${getValidationError("file") ? "file-input-error" : ""}`}
                   accept="application/pdf"
-                  onChange={(e) =>
-                    setData({ ...data, file: e.target.files?.[0] ?? null })
-                  }
+                  onChange={(e) => setData({ ...data, file: e.target.files?.[0] ?? null })}
                 />
               </div>
               {getValidationError("file") ? (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("file")?.message}
+                    <Icon icon="CircleAlert" height={16} /> {getValidationError("file")?.message}
                   </span>
                 </label>
               ) : (
                 <label className="label">
-                  <span className="label-text-alt">
-                    Format file: PDF, Ukuran maksimal: 50MB
-                  </span>
+                  <span className="label-text-alt">Format file: PDF, Ukuran maksimal: 50MB</span>
                 </label>
               )}
             </div>
           </div>
         </div>
         <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-          <button
-            type="button"
-            className="btn btn-ghost"
-            onClick={() => router.back()}
-          >
+          <button type="button" className="btn btn-ghost" onClick={() => router.back()}>
             <Icon icon="ArrowLeft" height={16} /> Batal
           </button>
           <button type="submit" className="btn text-nowrap btn-primary">

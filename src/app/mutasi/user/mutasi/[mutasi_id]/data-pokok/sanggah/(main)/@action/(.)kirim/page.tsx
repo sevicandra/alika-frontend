@@ -37,7 +37,7 @@ export default function Page({
             `data[${i}][data]`,
             JSON.stringify({
               ...item.data,
-            }),
+            })
           );
           formData.append(`data[${i}][file]`, item.file);
           formData.append(`data[${i}][catatan]`, item.catatan);
@@ -48,7 +48,7 @@ export default function Page({
             `data[${i}][data]`,
             JSON.stringify({
               ...item.data,
-            }),
+            })
           );
           if (item.file) formData.append(`data[${i}][file]`, item.file);
           formData.append(`data[${i}][catatan]`, item.catatan);
@@ -62,19 +62,16 @@ export default function Page({
 
         formData.append(`data[${i}][action]`, item.action);
       });
-      const res = await fetch(
-        `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Sanggah`,
-        {
-          headers: {
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
-          },
-          method: "POST",
-          body: formData,
+      const res = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Sanggah`, {
+        headers: {
+          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+            const data = await res.json();
+            return data.token;
+          }),
         },
-      );
+        method: "POST",
+        body: formData,
+      });
       if (!res.ok) {
         const { message, errors } = await res.json();
         if (res.status === 422 && errors && Array.isArray(errors)) {
@@ -97,7 +94,7 @@ export default function Page({
       addNotification({
         title: "Sanggah Mutasi",
         message: (error as Error).message,
-        variant: "error"
+        variant: "error",
       });
     } finally {
       setLoading(false);

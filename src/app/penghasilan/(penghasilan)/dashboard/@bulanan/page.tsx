@@ -23,24 +23,15 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const penghasilan = await fetch(
-          `/api/Penghasilan/Penghasilan/Detail?tahun=${tahun}`,
-          {
-            method: "GET",
-          },
-        );
-        const penghasilan2 = await fetch(
-          `/api/Penghasilan/Penghasilan/Detail?tahun=${tahun - 1}`,
-          {
-            method: "GET",
-          },
-        );
-        const penghasilan3 = await fetch(
-          `/api/Penghasilan/Penghasilan/Detail?tahun=${tahun - 2}`,
-          {
-            method: "GET",
-          },
-        );
+        const penghasilan = await fetch(`/api/Penghasilan/Penghasilan/Detail?tahun=${tahun}`, {
+          method: "GET",
+        });
+        const penghasilan2 = await fetch(`/api/Penghasilan/Penghasilan/Detail?tahun=${tahun - 1}`, {
+          method: "GET",
+        });
+        const penghasilan3 = await fetch(`/api/Penghasilan/Penghasilan/Detail?tahun=${tahun - 2}`, {
+          method: "GET",
+        });
         if (!penghasilan.ok || !penghasilan2.ok || !penghasilan3.ok) {
           const data = await penghasilan.json();
           throw new Error(data.error_description);
@@ -81,7 +72,7 @@ export default function Page() {
         addNotification({
           message: (error as Error).message,
           title: "Penghasilan Bulanan",
-          variant: "error"
+          variant: "error",
         });
       } finally {
         setLoading(false);

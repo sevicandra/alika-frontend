@@ -26,7 +26,7 @@ export default function Page({
       try {
         setLoading(true);
         const response = await fetch(
-          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin`,
+          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin`
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
@@ -83,11 +83,7 @@ export default function Page({
                       href={`/mutasi/sdm/arsip/${id}/pegawai/${pegawai_id}/termin/${row.id}/dokumen`}
                     >
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon
-                          className="hover:scale-110"
-                          icon="Eye"
-                          height={16}
-                        />
+                        <Icon className="hover:scale-110" icon="Eye" height={16} />
                       </div>
                     </Link>
                   </div>

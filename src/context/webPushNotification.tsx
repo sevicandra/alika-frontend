@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, createContext, useCallback } from "react";
+import { useEffect, useState, createContext, useCallback, useMemo } from "react";
 import { useNotification } from "./notifikasi";
 
 type WebPushNotificationContextType = {
@@ -9,24 +9,35 @@ type WebPushNotificationContextType = {
   subscription: PushSubscription | null;
 };
 
-export const WebPushNotificationContext =
-  createContext<WebPushNotificationContextType>({
-    isSupported: false,
-    subscribeToPush: () => {},
-    unsubscribeFromPush: () => {},
-    subscription: null,
-  });
+export const WebPushNotificationContext = createContext<WebPushNotificationContextType>({
+  isSupported: false,
+  subscribeToPush: () => {},
+  unsubscribeFromPush: () => {},
+  subscription: null,
+});
 
-export default function WebPushNotificationProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function WebPushNotificationProvider({ children }: { children: React.ReactNode }) {
   const { addNotification } = useNotification();
   const [isSupported, setIsSupported] = useState(false);
-  const [subscription, setSubscription] = useState<PushSubscription | null>(
-    null,
-  );
+  const [subscription, setSubscription] = useState<PushSubscription | null>(null);
+  const [csrfToken, setCsrfToken] = useState<string>("");
+
+  // Fetch CSRF token once on mount
+  useEffect(() => {
+    const fetchCsrfToken = async () => {
+      try {
+        const res = await fetch("/api/auth/csrf");
+        const data = await res.json();
+        setCsrfToken(data.token);
+      } catch (error) {
+        console.error("Failed to fetch CSRF token:", error);
+      }
+    };
+
+    fetchCsrfToken();
+  }, []);
+
+  // ✅ FIXED: Only addNotification dependency (state setters are not needed)
   const subscribeToPush = useCallback(async () => {
     try {
       const key = await fetch("/api/Notifikasi/Key");
@@ -40,21 +51,18 @@ export default function WebPushNotificationProvider({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array((await key.json()).data),
       });
+
       await fetch("/api/Notifikasi/Subscription", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
+          "X-CSRF-Token": csrfToken,
         },
         body: JSON.stringify(sub),
       });
-      // Fungsi `setSubscription` adalah dependensi dari luar
+
       setSubscription(sub);
     } catch (error: unknown) {
-      // Fungsi `addNotification` adalah dependensi dari luar
       if (error instanceof Error) {
         addNotification({
           title: "Push Notification Registration",
@@ -69,50 +77,57 @@ export default function WebPushNotificationProvider({
         });
       }
     }
-  }, [setSubscription, addNotification]);
+  }, [addNotification, csrfToken]);
+
+  // Service worker registration
   useEffect(() => {
     if ("serviceWorker" in navigator && "PushManager" in window) {
       setIsSupported(true);
       registerServiceWorker();
     }
   }, []);
+
+  // ✅ FIXED: Removed subscribeToPush from dependencies to prevent infinite loop
   useEffect(() => {
-    if (subscription) {
-      const checkSubscriptionStatus = async () => {
-        try {
-          const response = await fetch("/api/Notifikasi/Subscription", {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-Token": await fetch("/api/auth/csrf").then(
-                async (res) => {
-                  const data = await res.json();
-                  return data.token;
-                },
-              ),
-            },
-            body: JSON.stringify({
-              endpoint: subscription.endpoint,
-            }),
-          });
-          if (!response.ok) {
-            const data = await response.json();
-            await subscription?.unsubscribe();
-            setSubscription(null);
-            if (response.status === 404) {
-              return;
-            }
-            await subscribeToPush();
-            throw new Error(data.message);
+    if (!subscription || !csrfToken) return;
+
+    const checkSubscriptionStatus = async () => {
+      try {
+        const response = await fetch("/api/Notifikasi/Subscription", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": csrfToken,
+          },
+          body: JSON.stringify({
+            endpoint: subscription.endpoint,
+          }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          await subscription?.unsubscribe();
+          setSubscription(null);
+
+          if (response.status === 404) {
+            // Not found - re-subscribe
+            // BUT: Don't call subscribeToPush here to prevent infinite loop
+            // Instead, user should manually trigger re-subscription
+            return;
           }
-          console.log("User is subscribed.");
-        } catch (error) {
-          console.error(error);
+
+          throw new Error(data.message);
         }
-      };
-      checkSubscriptionStatus();
-    }
-  }, [subscription, subscribeToPush]);
+
+        console.log("User is subscribed.");
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    checkSubscriptionStatus();
+  }, [subscription, csrfToken]); // ✅ Only real dependencies
+
   async function registerServiceWorker() {
     const registration = await navigator.serviceWorker.register("/sw.js", {
       scope: "/",
@@ -121,6 +136,8 @@ export default function WebPushNotificationProvider({
     const sub = await registration.pushManager.getSubscription();
     setSubscription(sub);
   }
+
+  // ✅ FIXED: Better error handling
   async function unsubscribeFromPush() {
     if (subscription) {
       try {
@@ -129,33 +146,38 @@ export default function WebPushNotificationProvider({
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
+            "X-CSRF-Token": csrfToken,
           },
           body: JSON.stringify({
             endpoint: subscription.endpoint,
           }),
         });
+
         if (!unsubscribe.ok) {
           const data = await unsubscribe.json();
           throw new Error(data.message);
         }
+
         setSubscription(null);
       } catch (error) {
-        addNotification({
-          title: "Push Notification Unsubscribe",
-          message: (error as Error).message,
-        });
+        if (error instanceof Error) {
+          addNotification({
+            title: "Push Notification Unsubscribe",
+            message: error.message,
+          });
+        } else {
+          addNotification({
+            title: "Push Notification Unsubscribe",
+            message: "Unknown error occurred",
+          });
+        }
       }
     }
   }
+
   function urlBase64ToUint8Array(base64String: string) {
     const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding)
-      .replace(/-/g, "+")
-      .replace(/_/g, "/");
+    const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
 
     const rawData = window.atob(base64);
     const outputArray = new Uint8Array(rawData.length);
@@ -165,12 +187,18 @@ export default function WebPushNotificationProvider({
     }
     return outputArray;
   }
-  const value = {
-    isSupported,
-    subscribeToPush,
-    unsubscribeFromPush,
-    subscription,
-  };
+
+  // ✅ FIXED: Memoize context value
+  const value = useMemo(
+    () => ({
+      isSupported,
+      subscribeToPush,
+      unsubscribeFromPush,
+      subscription,
+    }),
+    [isSupported, subscribeToPush, subscription]
+  );
+
   return (
     <WebPushNotificationContext.Provider value={value}>
       {children}

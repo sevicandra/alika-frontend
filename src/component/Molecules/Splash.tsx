@@ -7,10 +7,14 @@ import { Transition } from "@headlessui/react";
 export default function Splash() {
   const [open, setOpen] = useState(true);
   const [loading, setLoading] = useState(true);
+  // ✅ CORRECT: Cleanup timeout on unmount
   useEffect(() => {
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setOpen(false);
     }, 2200);
+
+    // Cleanup function
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (

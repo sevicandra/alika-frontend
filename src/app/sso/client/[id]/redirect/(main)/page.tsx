@@ -33,12 +33,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         if (offset) searchParams.append("offset", offset.toString());
 
         setLoading(true);
-        const res = await fetch(
-          `/api/Sso/Client/${id}/Redirect?${searchParams}`,
-          {
-            method: "GET",
-          }
-        );
+        const res = await fetch(`/api/Sso/Client/${id}/Redirect?${searchParams}`, {
+          method: "GET",
+        });
         if (!res.ok) {
           const { error } = await res.json();
           throw new Error(error.message || "Terjadi kesalahan pada server.");
@@ -83,22 +80,14 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                     <div className="tooltip" data-tip="edit">
                       <Link href={`/sso/client/${id}/redirect/${row.id}/edit`}>
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="SquarePen"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="SquarePen" height={16} />
                         </div>
                       </Link>
                     </div>
                     <div className="tooltip" data-tip="hapus">
                       <Link href={`/sso/client/${id}/redirect/${row.id}/hapus`}>
                         <div className="rounded-box bg-error/80 p-1 text-error-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="Trash2"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="Trash2" height={16} />
                         </div>
                       </Link>
                     </div>

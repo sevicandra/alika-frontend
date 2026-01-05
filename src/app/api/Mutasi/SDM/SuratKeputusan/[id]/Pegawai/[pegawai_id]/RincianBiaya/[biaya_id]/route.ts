@@ -3,19 +3,13 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl =
-  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
-  process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
 
 export async function GET(
   req: Request,
-  {
-    params,
-  }: { params: Promise<{ id: string; pegawai_id: string; biaya_id: string }> }
+  { params }: { params: Promise<{ id: string; pegawai_id: string; biaya_id: string }> }
 ) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
-  )?.value;
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -54,13 +48,9 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  {
-    params,
-  }: { params: Promise<{ id: string; pegawai_id: string; biaya_id: string }> }
+  { params }: { params: Promise<{ id: string; pegawai_id: string; biaya_id: string }> }
 ) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
-  )?.value;
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -104,9 +94,7 @@ export async function DELETE(
     params: Promise<{ id: string; pegawai_id: string; biaya_id: string }>;
   }
 ) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
-  )?.value;
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }

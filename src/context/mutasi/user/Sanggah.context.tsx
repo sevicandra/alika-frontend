@@ -109,9 +109,7 @@ export function SanggahProvider({
   children: React.ReactNode;
   mutasi_id: string;
 }) {
-  const [referensiHubungan, setReferensiHubungan] = useState<
-    ReferensiHubunganKeluarga[]
-  >([]);
+  const [referensiHubungan, setReferensiHubungan] = useState<ReferensiHubunganKeluarga[]>([]);
   const [dataKeluarga, setDataKeluarga] = useState<dataKeluarga[]>([]);
   const [revisi, setRevisi] = useState<Revisi[]>([]);
   const [error, setError] = useState<Error | null>(null);
@@ -135,22 +133,18 @@ export function SanggahProvider({
       form,
       setForm,
     }),
-    [referensiHubungan, revisi, dataKeluarga, form],
+    [referensiHubungan, revisi, dataKeluarga, form]
   );
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch("/api/Mutasi/Referensi/HubunganKeluarga");
-        if (!response.ok)
-          throw new Error("Gagal mengambil referensi hubungan keluarga");
+        if (!response.ok) throw new Error("Gagal mengambil referensi hubungan keluarga");
         const { data } = await response.json();
         setReferensiHubungan(
           data
-            .filter(
-              (d: any) =>
-                d.jenis === "PASANGAN" || d.jenis === "ANAK" || d.kode === 99,
-            )
+            .filter((d: any) => d.jenis === "PASANGAN" || d.jenis === "ANAK" || d.kode === 99)
             .sort((a: any, b: any) => {
               const getPriority = (d: any) => {
                 if (d.jenis === "PASANGAN") return 0;
@@ -159,7 +153,7 @@ export function SanggahProvider({
                 return 3;
               };
               return getPriority(a) - getPriority(b);
-            }),
+            })
         );
       } catch (error) {
         console.error(error);
@@ -171,9 +165,7 @@ export function SanggahProvider({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(
-          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Keluarga`,
-        );
+        const res = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Keluarga`);
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -189,9 +181,7 @@ export function SanggahProvider({
 
   if (error) throw error;
 
-  return (
-    <SanggahContext.Provider value={value}>{children}</SanggahContext.Provider>
-  );
+  return <SanggahContext.Provider value={value}>{children}</SanggahContext.Provider>;
 }
 
 export function useSanggahContext() {

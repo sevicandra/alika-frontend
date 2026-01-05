@@ -39,7 +39,7 @@ const Page = () => {
               bruto: item.bruto,
               pph: item.pph,
             };
-          }),
+          })
         );
       } catch (error) {
         setError(error as Error);
@@ -81,9 +81,7 @@ const Page = () => {
             <td className="p-4">{row.tarif.toLocaleString("id-ID")}</td>
             <td className="p-4">{row.bruto.toLocaleString("id-ID")}</td>
             <td className="p-4">{row.pph.toLocaleString("id-ID")}</td>
-            <td className="p-4">
-              {(row.bruto - row.pph).toLocaleString("id-ID")}
-            </td>
+            <td className="p-4">{(row.bruto - row.pph).toLocaleString("id-ID")}</td>
           </tr>
         )}
       />

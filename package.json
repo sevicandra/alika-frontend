@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@faker-js/faker": "^9.7.0",
@@ -46,7 +47,7 @@
     "daisyui": "^5.5.8",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
-    "prettier": "^3.5.3",
+    "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.6.12",
     "tailwindcss": "^4.1.17",
     "typescript": "^5"

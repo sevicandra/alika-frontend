@@ -9,8 +9,7 @@ import Form from "@/component/Organisms/Form";
 
 export default function Page() {
   const { setRefresh } = useTable();
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -86,8 +85,7 @@ export default function Page() {
           {getValidationError("question") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("question")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("question")?.message}
               </span>
             </label>
           )}
@@ -113,8 +111,7 @@ export default function Page() {
           {getValidationError("answer") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("answer")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("answer")?.message}
               </span>
             </label>
           )}

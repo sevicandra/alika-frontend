@@ -25,9 +25,7 @@ function SliderButton({
 
   useEffect(() => {
     const activeTab = tabs.find((item) => item.active === true);
-    const button = activeTab
-      ? buttonRefs.current.get(activeTab.name)
-      : undefined;
+    const button = activeTab ? buttonRefs.current.get(activeTab.name) : undefined;
     if (button) {
       const timer = setTimeout(() => {
         setSlider({

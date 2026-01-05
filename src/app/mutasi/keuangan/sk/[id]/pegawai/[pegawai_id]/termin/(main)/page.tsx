@@ -39,7 +39,7 @@ export default function Page({
           `/api/Mutasi/Keuangan/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -62,10 +62,7 @@ export default function Page({
   }, [addNotification, id, pegawai_id]);
   if (error) throw error;
   return (
-    <ContainerCard
-      title="Termin"
-      className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden"
-    >
+    <ContainerCard title="Termin" className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden">
       <div className="relative grid grid-rows-[1fr_auto] overflow-hidden">
         <div className="overflow-y-auto py-2">
           {loading && (
@@ -94,11 +91,7 @@ export default function Page({
                         href={`/mutasi/keuangan/sk/${id}/pegawai/${pegawai_id}/termin/${row.id}/dokumen`}
                       >
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="Eye"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="Eye" height={16} />
                         </div>
                       </Link>
                     </div>

@@ -17,8 +17,7 @@ export default function Page({
   const router = useRouter();
   const { id } = use(params);
   const { setRefresh } = useTable();
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError, setValidationErrors } = useForm();
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(false);
 
@@ -97,8 +96,7 @@ export default function Page({
           {getValidationError("tanggal") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("tanggal")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggal")?.message}
               </span>
             </label>
           )}
@@ -126,8 +124,7 @@ export default function Page({
           {getValidationError("passphrase") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("passphrase")?.message}
+                <Icon icon="CircleAlert" height={16} /> {getValidationError("passphrase")?.message}
               </span>
             </label>
           )}
@@ -140,14 +137,14 @@ export default function Page({
               className="checkbox"
               required
               value={input.confirmation || ""}
-              onChange={(e) => {                
+              onChange={(e) => {
                 setInput({ ...input, confirmation: e.target.checked });
               }}
             />
             <label className="label">
               <span className="label-text text-justify text-wrap">
-                Dengan ini saya menyatakan bahwa pegawai yang bersangkutan benar
-                akan berangkat dari kantor asal/telah sampai di kantor Tujuan
+                Dengan ini saya menyatakan bahwa pegawai yang bersangkutan benar akan berangkat dari
+                kantor asal/telah sampai di kantor Tujuan
               </span>
             </label>
           </div>

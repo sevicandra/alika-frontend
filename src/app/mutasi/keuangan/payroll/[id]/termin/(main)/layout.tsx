@@ -32,9 +32,7 @@ export default function Layout({
             let label;
             if (pathSegments[index - 1] === "payroll") {
               return {
-                name: suratKeputusan
-                  ? suratKeputusan.nomor.toUpperCase()
-                  : "Surat Keputusan",
+                name: suratKeputusan ? suratKeputusan.nomor.toUpperCase() : "Surat Keputusan",
               };
             }
             return {
@@ -44,11 +42,7 @@ export default function Layout({
           })}
           renderRow={(row, index) => (
             <li key={index}>
-              {row.href ? (
-                <Link href={row.href}>{row.name}</Link>
-              ) : (
-                <span>{row.name}</span>
-              )}
+              {row.href ? <Link href={row.href}>{row.name}</Link> : <span>{row.name}</span>}
             </li>
           )}
         />
@@ -67,9 +61,7 @@ export default function Layout({
         {children}
         {action}
       </PayrollProvider>
-      <div className="mx-4 mb-4 flex justify-between">
-        {totalPage && <Paginator />}
-      </div>
+      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
     </div>
   );
 }

@@ -81,22 +81,14 @@ export default function Page() {
                     <div className="tooltip" data-tip="edit">
                       <Link href={`/sso/scope-action/${row.id}/edit`}>
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="SquarePen"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="SquarePen" height={16} />
                         </div>
                       </Link>
                     </div>
                     <div className="tooltip" data-tip="hapus">
                       <Link href={`/sso/scope-action/${row.id}/hapus`}>
                         <div className="rounded-box bg-error/80 p-1 text-error-content">
-                          <Icon
-                            className="hover:scale-110"
-                            icon="Trash2"
-                            height={16}
-                          />
+                          <Icon className="hover:scale-110" icon="Trash2" height={16} />
                         </div>
                       </Link>
                     </div>

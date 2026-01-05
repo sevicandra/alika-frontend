@@ -44,9 +44,7 @@ export default function SidebarItem({
           <Icon height={"28px"} icon={icon} />
         </span>
         {isOpenDelay && (
-          <span className="truncate pl-2 text-left text-lg font-bold text-nowrap">
-            {children}
-          </span>
+          <span className="truncate pl-2 text-left text-lg font-bold text-nowrap">{children}</span>
         )}
       </div>
     </Link>

@@ -37,10 +37,8 @@ export default function SanggahForm() {
       field: string;
       message: string;
     }[] = [];
-    if (!data.nama)
-      validationErrors.push({ field: "nama", message: "Nama belum diisi" });
-    if (!data.nik)
-      validationErrors.push({ field: "nik", message: "NIK belum diisi" });
+    if (!data.nama) validationErrors.push({ field: "nama", message: "Nama belum diisi" });
+    if (!data.nik) validationErrors.push({ field: "nik", message: "NIK belum diisi" });
     if (!/^\d{16}$/.test(data.nik)) {
       validationErrors.push({
         field: "nik",
@@ -62,11 +60,9 @@ export default function SanggahForm() {
         field: "hubungan",
         message: "Hubungan belum diisi",
       });
-    if (!data.status)
-      validationErrors.push({ field: "status", message: "Status belum diisi" });
-    if (!data.file)
-      validationErrors.push({ field: "file", message: "File belum diisi" });
-        if (!data.catatan)
+    if (!data.status) validationErrors.push({ field: "status", message: "Status belum diisi" });
+    if (!data.file) validationErrors.push({ field: "file", message: "File belum diisi" });
+    if (!data.catatan)
       validationErrors.push({
         field: "catatan",
         message: "Catatan belum diisi",
@@ -197,16 +193,11 @@ export default function SanggahForm() {
             autoComplete="off"
             required
             value={data.tanggal_lahir}
-            onChange={(e) =>
-              setData({ ...data, tanggal_lahir: e.target.value })
-            }
+            onChange={(e) => setData({ ...data, tanggal_lahir: e.target.value })}
           />
           {validationErrors.find((e) => e.field === "tanggal_lahir") && (
             <p className="label text-xs font-bold text-error">
-              {
-                validationErrors.find((e) => e.field === "tanggal_lahir")
-                  ?.message
-              }
+              {validationErrors.find((e) => e.field === "tanggal_lahir")?.message}
             </p>
           )}
         </div>
@@ -280,9 +271,7 @@ export default function SanggahForm() {
             type="file"
             className={`file-input w-full border-base-content/20 bg-base-200 file-input-sm text-base-content focus:outline-none ${validationErrors.find((item) => item.field === "file") ? "file-input-error" : ""}`}
             accept="application/pdf"
-            onChange={(e) =>
-              setData({ ...data, file: e.target.files?.[0] ?? null })
-            }
+            onChange={(e) => setData({ ...data, file: e.target.files?.[0] ?? null })}
           />
           {validationErrors.find((e) => e.field === "file") && (
             <p className="label text-xs font-bold text-error">

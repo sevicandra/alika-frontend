@@ -15,18 +15,21 @@ export default function Typer({
     let index = 0;
     const timeouts: NodeJS.Timeout[] = [];
     words.forEach((char) => {
-      const timeout = setTimeout(() => {
-        setText((prev) => prev + char);
-      }, (delay || 0) + index * interval);
+      const timeout = setTimeout(
+        () => {
+          setText((prev) => prev + char);
+        },
+        (delay || 0) + index * interval
+      );
       timeouts.push(timeout);
       index++;
     });
-  
+
     return () => {
       timeouts.forEach(clearTimeout);
       setText("");
     };
   }, [paragraph, delay, interval]);
-  
+
   return <>{text}</>;
 }

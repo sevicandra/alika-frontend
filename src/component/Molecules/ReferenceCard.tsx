@@ -9,13 +9,7 @@ type props = {
   actionText?: string;
 };
 
-export default function Card({
-  title,
-  icon,
-  description,
-  href,
-  actionText = "Buka",
-}: props) {
+export default function Card({ title, icon, description, href, actionText = "Buka" }: props) {
   return (
     <div className="grid grid-rows-[1fr_auto] overflow-clip rounded-lg bg-base-100 shadow hover:-translate-y-1 hover:shadow-lg">
       <div className="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] items-center gap-2 p-4">
@@ -27,7 +21,11 @@ export default function Card({
       </div>
       <div className="bg-base-200 px-4 py-2">
         <div className="flex justify-end">
-          {href && <Link href={href} className="hover:text-accent hover:underline">{actionText}</Link>}
+          {href && (
+            <Link href={href} className="hover:text-accent hover:underline">
+              {actionText}
+            </Link>
+          )}
         </div>
       </div>
     </div>

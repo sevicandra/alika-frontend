@@ -52,7 +52,7 @@ export default function Page({
           `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Keluarga?${searchParams}`,
           {
             method: "GET",
-          },
+          }
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -110,8 +110,7 @@ export default function Page({
                 ]}
                 data={data.sort(
                   (a, b) =>
-                    new Date(a.tanggal_lahir).getTime() -
-                    new Date(b.tanggal_lahir).getTime(),
+                    new Date(a.tanggal_lahir).getTime() - new Date(b.tanggal_lahir).getTime()
                 )}
                 renderRow={(row, index) => (
                   <tr key={index}>
@@ -127,12 +126,8 @@ export default function Page({
                       })}
                     </td>
                     <td className="px-4 py-2">{row.pekerjaan}</td>
-                    <td className="px-4 py-2">
-                      {row.is_invant ? "Ya" : "Tidak"}
-                    </td>
-                    <td className="px-4 py-2">
-                      {snackToTitleCase(row.status)}
-                    </td>
+                    <td className="px-4 py-2">{row.is_invant ? "Ya" : "Tidak"}</td>
+                    <td className="px-4 py-2">{snackToTitleCase(row.status)}</td>
                     <td className="px-4 py-2">
                       {row.file && (
                         <div className="tooltip" data-tip="keluarga">
@@ -140,11 +135,7 @@ export default function Page({
                             href={`/mutasi/sdm/arsip/${id}/pegawai/${pegawai_id}/keluarga/${row.id}/file`}
                           >
                             <div className="rounded-box bg-info/80 p-1 text-info-content">
-                              <Icon
-                                className="hover:scale-110"
-                                icon="File"
-                                height={16}
-                              />
+                              <Icon className="hover:scale-110" icon="File" height={16} />
                             </div>
                           </Link>
                         </div>

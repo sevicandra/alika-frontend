@@ -13,22 +13,19 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const [loading, setLoading] = useState(false);
 
   async function submitForm() {
-    if(loading) return;
+    if (loading) return;
     try {
       setLoading(true);
-      const res = await fetch(
-        `/api/Mutasi/SDM/SuratKeputusan/${id}/ProcessKeluarga`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-              const data = await res.json();
-              return data.token;
-            }),
-          },
-          method: "POST",
+      const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/ProcessKeluarga`, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+            const data = await res.json();
+            return data.token;
+          }),
         },
-      );
+        method: "POST",
+      });
       if (!res.ok) {
         const { message } = await res.json();
         throw new Error(message);

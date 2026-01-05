@@ -57,10 +57,7 @@ export default function Confirmation({
               <Button className="btn-sm btn-error" onClick={() => onCancel()}>
                 Cancel
               </Button>
-              <Button
-                className="btn-sm btn-success"
-                onClick={() => onConfirm()}
-              >
+              <Button className="btn-sm btn-success" onClick={() => onConfirm()}>
                 Confirm
               </Button>
             </div>

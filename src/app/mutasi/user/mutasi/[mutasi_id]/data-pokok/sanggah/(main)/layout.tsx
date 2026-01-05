@@ -8,7 +8,7 @@ export default function Page({
   summary,
   remove,
   submit,
-  action
+  action,
 }: {
   selector: React.ReactNode;
   add: React.ReactNode;
@@ -29,10 +29,7 @@ export default function Page({
           {form === "edit" && edit}
           {form === "remove" && remove}
         </ContainerCard>
-        <ContainerCard
-          title="Summary"
-          className="md:col-start-2 md:row-start-1 md:row-end-3"
-        >
+        <ContainerCard title="Summary" className="md:col-start-2 md:row-start-1 md:row-end-3">
           {summary}
         </ContainerCard>
         <ContainerCard className="md:col-span-2">{submit}</ContainerCard>

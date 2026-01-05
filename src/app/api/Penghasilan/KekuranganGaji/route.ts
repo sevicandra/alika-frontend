@@ -3,13 +3,10 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 import { revalidateTag } from "next/cache";
-const apiBaseUrl =
-  process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
+const apiBaseUrl = process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
 
 export async function GET(req: Request) {
-  const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`,
-  )?.value;
+  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -34,23 +31,19 @@ export async function GET(req: Request) {
   if (sortField) searchParams.append("sortField", sortField);
   if (sortOrder) searchParams.append("sortOrder", sortOrder);
   try {
-    const gaji = await fetch(
-      `${apiBaseUrl}/api/v2/KekuranganGaji/?${searchParams.toString()}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        next: { revalidate: 60, tags: [`Penghasilan:KekuranganGaji`] },
+    const gaji = await fetch(`${apiBaseUrl}/api/v2/KekuranganGaji/?${searchParams.toString()}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
       },
-    );
+      next: { revalidate: 60, tags: [`Penghasilan:KekuranganGaji`] },
+    });
 
     if (!gaji.ok) {
       revalidateTag(`Penghasilan:KekuranganGaji`, "max");
       const data = await gaji.json();
       return NextResponse.json(data, { status: gaji.status });
-
     }
     const data = await gaji.json();
     return NextResponse.json(data, { status: 200 });

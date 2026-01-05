@@ -6,11 +6,7 @@ import Loading from "@/component/Molecules/Loading";
 import { snackToTitleCase } from "@/helpers/string.helper";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 
-export default function Page({
-  params,
-}: {
-  params: Promise<{ mutasi_id: string }>;
-}) {
+export default function Page({ params }: { params: Promise<{ mutasi_id: string }> }) {
   const { mutasi_id } = use(params);
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(true);
@@ -34,9 +30,7 @@ export default function Page({
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Biaya`,
-        );
+        const res = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Biaya`);
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -67,16 +61,14 @@ export default function Page({
             urutan: number;
           }) => {
             if (groupedByJenis.find((group) => group.jenis === item.jenis)) {
-              groupedByJenis
-                .find((group) => group.jenis === item.jenis)
-                ?.items.push(item);
+              groupedByJenis.find((group) => group.jenis === item.jenis)?.items.push(item);
             } else {
               groupedByJenis.push({
                 jenis: item.jenis,
                 items: [item],
               });
             }
-          },
+          }
         );
         setData(groupedByJenis);
       } catch (error) {
@@ -142,11 +134,8 @@ export default function Page({
             items: data.reduce(
               (total, item) =>
                 total +
-                item.items.reduce(
-                  (total, item) => total + item.volume * item.harga_satuan,
-                  0,
-                ),
-              0,
+                item.items.reduce((total, item) => total + item.volume * item.harga_satuan, 0),
+              0
             ),
           },
         ]}
