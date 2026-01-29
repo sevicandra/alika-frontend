@@ -10,7 +10,8 @@ import Form from "@/component/Organisms/Form";
 export default function Page() {
   const { setRefresh } = useTable();
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -49,23 +50,27 @@ export default function Page() {
         method: "POST",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil ditambahkan",
-        title: "Data Rute Kapal",
+        message: `${message} (Status: ${res.status})`,
+        title: "Referensi Rute Kapal",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Data Rute Kapal",
+        title: "Referensi Rute Kapal",
         variant: "error",
       });
     } finally {
@@ -84,14 +89,21 @@ export default function Page() {
         const res = await fetch(`/api/Mutasi/Referensi/Wilayah`, {
           method: "GET",
         });
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setProvinsi(data);
       } catch (error) {
-        setError(error as Error);
+        addNotification({
+          title: "Referensi Provinsi",
+          message: (error as Error).message,
+          variant: "error",
+        });
       } finally {
         setLoading(false);
       }
@@ -103,15 +115,27 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Mutasi/Referensi/Wilayah/${input.provinsi_asal}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Mutasi/Referensi/Wilayah/${input.provinsi_asal}`,
+          {
+            method: "GET",
+          },
+        );
+        const { data, error } = await res.json();
         if (!res.ok) {
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setKotaAsal(data);
       } catch (error) {
-        setError(error as Error);
+        addNotification({
+          title: "Referensi Kota",
+          message: (error as Error).message,
+          variant: "error",
+        });
       } finally {
         setLoading(false);
       }
@@ -125,12 +149,20 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Mutasi/Referensi/Wilayah/${input.provinsi_tujuan}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Mutasi/Referensi/Wilayah/${input.provinsi_tujuan}`,
+          {
+            method: "GET",
+          },
+        );
+        const { data, error } = await res.json();
         if (!res.ok) {
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setKotaTujuan(data);
       } catch (error) {
         setError(error as Error);
@@ -176,7 +208,8 @@ export default function Page() {
           {getValidationError("rute") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("rute")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("rute")}
               </span>
             </label>
           )}
@@ -202,7 +235,8 @@ export default function Page() {
           {getValidationError("kapal") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kapal")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kapal")}
               </span>
             </label>
           )}
@@ -221,7 +255,9 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("provinsi_asal") ? "select-error" : ""}`}
               required
               value={input.provinsi_asal || ""}
-              onChange={(e) => setInput({ ...input, provinsi_asal: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, provinsi_asal: e.target.value })
+              }
             >
               <option disabled value={""}>
                 Pilih Provinsi
@@ -237,7 +273,7 @@ export default function Page() {
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
                 <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("provinsi_asal")?.message}
+                {getValidationError("provinsi_asal")}
               </span>
             </label>
           )}
@@ -256,7 +292,9 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("kota_asal") ? "select-error" : ""}`}
               required
               value={input.kota_asal || ""}
-              onChange={(e) => setInput({ ...input, kota_asal: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, kota_asal: e.target.value })
+              }
             >
               <option value={""}>Pilih Kota</option>
               {kotaAsal.map((e) => (
@@ -269,7 +307,8 @@ export default function Page() {
           {getValidationError("kota_asal") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kota_asal")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kota_asal")}
               </span>
             </label>
           )}
@@ -288,7 +327,9 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("provinsi_tujuan") ? "select-error" : ""}`}
               required
               value={input.provinsi_tujuan || ""}
-              onChange={(e) => setInput({ ...input, provinsi_tujuan: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, provinsi_tujuan: e.target.value })
+              }
             >
               <option disabled value={""}>
                 Pilih Provinsi
@@ -304,7 +345,7 @@ export default function Page() {
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
                 <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("provinsi_tujuan")?.message}
+                {getValidationError("provinsi_tujuan")}
               </span>
             </label>
           )}
@@ -323,7 +364,9 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("kota_tujuan") ? "select-error" : ""}`}
               required
               value={input.kota_tujuan || ""}
-              onChange={(e) => setInput({ ...input, kota_tujuan: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, kota_tujuan: e.target.value })
+              }
             >
               <option value={""}>Pilih Kota</option>
               {kotaTujuan.map((e) => (
@@ -336,7 +379,8 @@ export default function Page() {
           {getValidationError("kota_tujuan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kota_tujuan")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kota_tujuan")}
               </span>
             </label>
           )}
@@ -368,7 +412,8 @@ export default function Page() {
           {getValidationError("tarif") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("tarif")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("tarif")}
               </span>
             </label>
           )}

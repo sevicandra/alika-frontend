@@ -6,7 +6,11 @@ import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Confirmation from "@/component/Organisms/Confirmation";
 
-export default function Page({ params }: { params: Promise<{ id: string; pegawai_id: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ id: string; pegawai_id: string }>;
+}) {
   const router = useRouter();
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
@@ -27,15 +31,19 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
             }),
           },
           method: "POST",
-        }
+        },
       );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: "Reset Data Biaya",
-        message: "Data berhasil dihapus",
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
       setRefresh();

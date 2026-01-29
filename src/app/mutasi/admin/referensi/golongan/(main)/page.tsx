@@ -34,14 +34,20 @@ export default function Page() {
         if (search) searchParams.append("search", search);
 
         setLoading(true);
-        const res = await fetch(`/api/Mutasi/Admin/Referensi/Golongan?${searchParams}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Mutasi/Admin/Referensi/Golongan?${searchParams}`,
+          {
+            method: "GET",
+          },
+        );
+        const { data, meta, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data, meta } = await res.json();
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
@@ -67,7 +73,7 @@ export default function Page() {
             onChange={(e) => setSearchsTerm({ search: e.target.value })}
             type="text"
             className="input-bordered input input-xs w-xs max-w-full focus:outline-none"
-            placeholder="nama rute"
+            placeholder="nama"
             value={searchsTerm.search || ""}
           />
         </div>
@@ -91,16 +97,28 @@ export default function Page() {
                 <td className="p-4">
                   <div className="flex gap-1">
                     <div className="tooltip" data-tip="edit">
-                      <Link href={`/mutasi/admin/referensi/golongan/${row.id}/edit`}>
+                      <Link
+                        href={`/mutasi/admin/referensi/golongan/${row.id}/edit`}
+                      >
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon className="hover:scale-110" icon="SquarePen" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="SquarePen"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>
                     <div className="tooltip" data-tip="hapus">
-                      <Link href={`/mutasi/admin/referensi/golongan/${row.id}/hapus`}>
+                      <Link
+                        href={`/mutasi/admin/referensi/golongan/${row.id}/hapus`}
+                      >
                         <div className="rounded-box bg-error/80 p-1 text-error-content">
-                          <Icon className="hover:scale-110" icon="Trash2" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="Trash2"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>

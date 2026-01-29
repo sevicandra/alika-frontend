@@ -3,7 +3,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl =
+  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
+  process.env.MUTASI_ALIKA_BASE_URL;
 
 export async function GET(
   req: Request,
@@ -15,9 +17,11 @@ export async function GET(
       pembayaran_id: string;
       dokumen_id: string;
     }>;
-  }
+  },
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -36,7 +40,7 @@ export async function GET(
           "Content-Type": "application/json",
           Authorization: `Bearer ${session}`,
         },
-      }
+      },
     );
 
     if (!res.ok) {
@@ -74,9 +78,11 @@ export async function POST(
       pembayaran_id: string;
       dokumen_id: string;
     }>;
-  }
+  },
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -85,12 +91,7 @@ export async function POST(
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
   const { mutasi_id, pembayaran_id, dokumen_id } = await params;
-  const formData = await req.formData();
 
-  const file = formData.get("file") as File;
-
-  const backendForm = new FormData();
-  backendForm.set("file", file, file.name);
   try {
     const suratKeputusan = await fetch(
       `${apiBaseUrl}/api/v2/Pegawai/Mutasi/${mutasi_id}/Pembayaran/${pembayaran_id}/Dokumen/${dokumen_id}/File`,
@@ -99,9 +100,9 @@ export async function POST(
         headers: {
           Authorization: `Bearer ${session}`,
         },
-        body: backendForm as any,
+        body: await req.formData(),
         cache: "no-store",
-      }
+      },
     );
     if (!suratKeputusan.ok) {
       const data = await suratKeputusan.json();
@@ -124,9 +125,11 @@ export async function DELETE(
       pembayaran_id: string;
       dokumen_id: string;
     }>;
-  }
+  },
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -145,7 +148,7 @@ export async function DELETE(
           Authorization: `Bearer ${session}`,
         },
         cache: "no-store",
-      }
+      },
     );
     if (!suratKeputusan.ok) {
       const data = await suratKeputusan.json();

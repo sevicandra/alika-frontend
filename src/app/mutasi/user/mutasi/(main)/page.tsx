@@ -61,17 +61,19 @@ export default function Page() {
           method: "GET",
         });
 
+        const { error, data, meta } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-
-        const { data, meta } = await res.json();
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
         addNotification({
-          title: `Surat Keputusan`,
+          title: `Fetch Surat Keputusan`,
           message: (error as Error).message,
           variant: "error",
         });
@@ -111,11 +113,14 @@ export default function Page() {
                 <div className="flex flex-col">
                   <span>{item.SuratKeputusan.uraian}</span>
                   <span>
-                    {new Date(item.SuratKeputusan.tanggal).toLocaleDateString("id-ID", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
+                    {new Date(item.SuratKeputusan.tanggal).toLocaleDateString(
+                      "id-ID",
+                      {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      },
+                    )}
                   </span>
                   <span className="text-wrap">
                     {item.KantorAsal.kantor} → {item.KantorTujuan.kantor}
@@ -136,14 +141,22 @@ export default function Page() {
                   <div className="tooltip" data-tip="timeline">
                     <Link href={`/mutasi/user/mutasi/${item.id}/timeline`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon className="hover:scale-110" icon="CalendarDays" height={16} />
+                        <Icon
+                          className="hover:scale-110"
+                          icon="CalendarDays"
+                          height={16}
+                        />
                       </div>
                     </Link>
                   </div>
                   <div className="tooltip" data-tip="data pokok">
                     <Link href={`/mutasi/user/mutasi/${item.id}/data-pokok`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon className="hover:scale-110" icon="Users" height={16} />
+                        <Icon
+                          className="hover:scale-110"
+                          icon="Users"
+                          height={16}
+                        />
                       </div>
                     </Link>
                   </div>
@@ -151,7 +164,11 @@ export default function Page() {
                     <div className="tooltip" data-tip="pembayaran">
                       <Link href={`/mutasi/user/mutasi/${item.id}/pembayaran`}>
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon className="hover:scale-110" icon="CreditCard" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="CreditCard"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>
@@ -159,7 +176,11 @@ export default function Page() {
                   <div className="tooltip" data-tip="riwayat">
                     <Link href={`/mutasi/user/mutasi/${item.id}/riwayat`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon className="hover:scale-110" icon="History" height={16} />
+                        <Icon
+                          className="hover:scale-110"
+                          icon="History"
+                          height={16}
+                        />
                       </div>
                     </Link>
                   </div>

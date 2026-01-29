@@ -5,7 +5,11 @@ import { DataTable } from "@/component/Organisms/DataTable";
 import Loading from "@/component/Molecules/Loading";
 import { snackToTitleCase } from "@/helpers/string.helper";
 
-export default function Page({ params }: { params: Promise<{ mutasi_id: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ mutasi_id: string }>;
+}) {
   const [data, setData] = useState<
     {
       jenis: string;
@@ -20,12 +24,17 @@ export default function Page({ params }: { params: Promise<{ mutasi_id: string }
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Timeline`);
-        if (!response.ok) {
-          const { message } = await response.json();
-          throw new Error(message);
+        const res = await fetch(
+          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Timeline`,
+        );
+        const { error, data } = await res.json();
+        if (!res.ok) {
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await response.json();
         const timeline: { jenis: string; tanggal: string }[] = [];
         timeline.push({
           jenis: "Surat Keputusan",
@@ -40,7 +49,7 @@ export default function Page({ params }: { params: Promise<{ mutasi_id: string }
         setData(timeline);
       } catch (error) {
         addNotification({
-          title: "Timeline",
+          title: "Fetch Timeline",
           message: (error as Error).message,
           variant: "error",
         });

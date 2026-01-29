@@ -31,7 +31,9 @@ export default function Layout({
             let label;
             if (pathSegments[index - 1] === "sk") {
               return {
-                name: suratKeputusan ? suratKeputusan.nomor.toLocaleUpperCase() : "Surat Keputusan",
+                name: suratKeputusan
+                  ? suratKeputusan.nomor.toLocaleUpperCase()
+                  : "Surat Keputusan",
               };
             }
             if (pathSegments[index - 1] === "pegawai") {
@@ -57,22 +59,23 @@ export default function Layout({
       </div>
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1">
-          {pegawai?.process_termin === "IDLE" && pegawai?.process_biaya === "DONE" && (
-            <>
-              <Link
-                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/biaya/reset`}
-                className="btn btn-xs btn-success"
-              >
-                Reset
-              </Link>
-              <Link
-                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/biaya/new`}
-                className="btn btn-xs btn-success"
-              >
-                Tambah Biaya
-              </Link>
-            </>
-          )}
+          {pegawai?.process_termin === "IDLE" &&
+            pegawai?.process_biaya === "DONE" && (
+              <>
+                <Link
+                  href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/biaya/reset`}
+                  className="btn btn-xs btn-success"
+                >
+                  Reset
+                </Link>
+                <Link
+                  href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/biaya/new`}
+                  className="btn btn-xs btn-success"
+                >
+                  Tambah Biaya
+                </Link>
+              </>
+            )}
         </div>
       </div>
       <TableProvider>

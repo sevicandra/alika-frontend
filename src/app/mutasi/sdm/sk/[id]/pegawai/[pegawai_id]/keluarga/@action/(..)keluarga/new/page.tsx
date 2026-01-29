@@ -3,10 +3,15 @@ import { useEffect, useState, use } from "react";
 import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
-import Loading from "@/component/Molecules/Loading";
+import Form from "@/component/Organisms/Form";
 import Icon from "@/component/Atoms/LabelIcon";
+import { useForm } from "@/context/form.context";
 
-export default function Page({ params }: { params: Promise<{ id: string; pegawai_id: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ id: string; pegawai_id: string }>;
+}) {
   const router = useRouter();
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
@@ -19,39 +24,20 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
       jenis: string;
     }[]
   >([]);
-  const [validationErrors, setValidationErrors] = useState<
-    {
-      field: string | null;
-      message: string;
-    }[]
-  >([]);
-  const getValidationError = (field: string) => {
-    return validationErrors.find((e) => e.field === field);
-  };
-  const [data, setData] = useState<{
-    nama: string;
-    nik: string;
-    hubungan: string;
-    tanggal_lahir: string;
-    pekerjaan: string;
-    status: string;
-  }>({
-    nama: "",
-    nik: "",
-    tanggal_lahir: "",
-    pekerjaan: "",
-    hubungan: "",
-    status: "",
-  });
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   useEffect(() => {
     const fetchRef = async () => {
       try {
         const res = await fetch("/api/Mutasi/Referensi/HubunganKeluarga");
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setHubungan(data);
       } catch (error) {
         addNotification({
@@ -66,8 +52,12 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (loading) {
+      return;
+    }
     try {
       setLoading(true);
+      setValidationErrors({}); // Reset validation errors
       const res = await fetch(
         `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Keluarga`,
         {
@@ -79,26 +69,23 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
             }),
           },
           method: "POST",
-          body: JSON.stringify({
-            nama: data.nama,
-            nik: data.nik,
-            hubungan: data.hubungan,
-            tanggal_lahir: data.tanggal_lahir,
-            pekerjaan: data.pekerjaan,
-            status: data.status,
-          }),
-        }
+          body: JSON.stringify(input),
+        },
       );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: "Data Keluarga",
-        message: "Data Keluarga berhasil dibuat",
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
       setRefresh();
@@ -114,201 +101,200 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
   }
 
   return (
-    <form onSubmit={submitForm} noValidate>
-      {loading && (
-        <div className="absolute z-10 flex h-full w-full text-primary-600">
-          <Loading />
-        </div>
-      )}
-      <div className="bg-base-100 shadow-xl">
-        <div className="p-4">
-          <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
-            {/* --- Field Nama --- */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Nama</span>
-              </label>
-              <div className="relative">
-                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
-                  <Icon icon="FileText" height={20} />
-                </span>
-                <input
-                  type="text"
-                  name="nama"
-                  className={`input-bordered input w-full pl-10 ${getValidationError("nama") ? "input-error" : ""}`}
-                  required
-                  value={data.nama}
-                  onChange={(e) => setData({ ...data, nama: e.target.value })}
-                />
-              </div>
-              {getValidationError("nama") && (
-                <label className="label">
-                  <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} /> {getValidationError("nama")?.message}
-                  </span>
-                </label>
-              )}
-            </div>
-
-            {/* --- Field NIK --- */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">NIK</span>
-              </label>
-              <div className="relative">
-                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
-                  <Icon icon="FileText" height={20} />
-                </span>
-                <input
-                  type="text"
-                  name="nik"
-                  className={`input-bordered input w-full pl-10 ${getValidationError("nik") ? "input-error" : ""}`}
-                  required
-                  value={data.nik}
-                  onChange={(e) => setData({ ...data, nik: e.target.value })}
-                />
-              </div>
-              {getValidationError("nik") && (
-                <label className="label">
-                  <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} /> {getValidationError("nik")?.message}
-                  </span>
-                </label>
-              )}
-            </div>
-
-            {/* --- Field Hubungan --- */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Hubungan</span>
-              </label>
-              <div className="relative">
-                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
-                  <Icon icon="ChevronsUpDown" height={20} />
-                </span>
-                <select
-                  name="hubungan"
-                  className={`select-bordered select w-full pl-10 ${getValidationError("hubungan") ? "select-error" : ""}`}
-                  required
-                  onChange={(e) => setData({ ...data, hubungan: e.target.value })}
-                  value={data.hubungan}
-                >
-                  <option disabled={true} value="">
-                    Hubungan
-                  </option>
-                  {hubungan.map((item) => (
-                    <option key={item.kode} value={item.kode}>
-                      {item.nama}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              {getValidationError("golongan") && (
-                <label className="label">
-                  <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("golongan")?.message}
-                  </span>
-                </label>
-              )}
-            </div>
-
-            {/* --- Field Status --- */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Status Tanggungan</span>
-              </label>
-              <div className="relative">
-                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
-                  <Icon icon="ChevronsUpDown" height={20} />
-                </span>
-                <select
-                  name="status"
-                  className={`select-bordered select w-full pl-10 ${getValidationError("status") ? "select-error" : ""}`}
-                  required
-                  onChange={(e) => setData({ ...data, status: e.target.value })}
-                  value={data.status}
-                >
-                  <option disabled={true} value={""}>
-                    Status Tanggungan
-                  </option>
-                  <option value="TIDAK_TERTANGGUNG">TIDAK TERTANGGUNG</option>
-                  <option value="TERTANGGUNG">TERTANGGUNG</option>
-                </select>
-              </div>
-              {getValidationError("status") && (
-                <label className="label">
-                  <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} /> {getValidationError("status")?.message}
-                  </span>
-                </label>
-              )}
-            </div>
-
-            {/* --- Field Tanggal Lahir --- */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Tanggal Lahir</span>
-              </label>
-              <div className="relative">
-                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
-                  <Icon icon="CalendarDays" height={20} />
-                </span>
-                <input
-                  name="tanggal_lahir"
-                  type="date"
-                  className={`input-bordered input w-full pl-10 ${getValidationError("tanggal_lahir") ? "input-error" : ""}`}
-                  value={data.tanggal_lahir}
-                  onChange={(e) => setData({ ...data, tanggal_lahir: e.target.value })}
-                />
-              </div>
-              {getValidationError("tanggal") && (
-                <label className="label">
-                  <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggal")?.message}
-                  </span>
-                </label>
-              )}
-            </div>
-
-            {/* --- Field Pekerjaan --- */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Pekerjaan</span>
-              </label>
-              <div className="relative">
-                <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
-                  <Icon icon="FileText" height={20} />
-                </span>
-                <input
-                  type="text"
-                  name="pekerjaan"
-                  className={`input-bordered input w-full pl-10 ${getValidationError("pekerjaan") ? "input-error" : ""}`}
-                  required
-                  value={data.pekerjaan}
-                  onChange={(e) => setData({ ...data, pekerjaan: e.target.value })}
-                />
-              </div>
-              {getValidationError("pekerjaan") && (
-                <label className="label">
-                  <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("pekerjaan")?.message}
-                  </span>
-                </label>
-              )}
-            </div>
+    <Form
+      title="Tambah Keluarga"
+      onCancel={() => router.back()}
+      submitForm={submitForm}
+      loading={loading}
+      variant="positive"
+      confirmText="Tambah"
+      cancelText="Batalkan"
+    >
+      <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
+        {/* --- Field Nama --- */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-semibold">Nama</span>
+          </label>
+          <div className="relative">
+            <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+              <Icon icon="FileText" height={20} />
+            </span>
+            <input
+              type="text"
+              name="nama"
+              className={`input-bordered input w-full pl-10 ${getValidationError("nama") ? "input-error" : ""}`}
+              required
+              value={input.nama || ""}
+              onChange={(e) => setInput({ ...input, nama: e.target.value })}
+            />
           </div>
+          {getValidationError("nama") && (
+            <label className="label">
+              <span className="label-text-alt flex items-center gap-1 text-error">
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("nama")}
+              </span>
+            </label>
+          )}
         </div>
-        <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-          <button type="button" className="btn btn-ghost" onClick={() => router.back()}>
-            <Icon icon="ArrowLeft" height={16} /> Batal
-          </button>
-          <button type="submit" className="btn text-nowrap btn-primary">
-            <Icon icon="FileText" height={16} /> Tambah Keluarga
-          </button>
+
+        {/* --- Field NIK --- */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-semibold">NIK</span>
+          </label>
+          <div className="relative">
+            <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+              <Icon icon="FileText" height={20} />
+            </span>
+            <input
+              type="text"
+              name="nik"
+              className={`input-bordered input w-full pl-10 ${getValidationError("nik") ? "input-error" : ""}`}
+              required
+              value={input.nik || ""}
+              onChange={(e) => setInput({ ...input, nik: e.target.value })}
+            />
+          </div>
+          {getValidationError("nik") && (
+            <label className="label">
+              <span className="label-text-alt flex items-center gap-1 text-error">
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("nik")}
+              </span>
+            </label>
+          )}
+        </div>
+
+        {/* --- Field Hubungan --- */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-semibold">Hubungan</span>
+          </label>
+          <div className="relative">
+            <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+              <Icon icon="ChevronsUpDown" height={20} />
+            </span>
+            <select
+              name="hubungan"
+              className={`select-bordered select w-full pl-10 ${getValidationError("hubungan") ? "select-error" : ""}`}
+              required
+              onChange={(e) => setInput({ ...input, hubungan: e.target.value })}
+              value={input.hubungan || ""}
+            >
+              <option disabled={true} value="">
+                Hubungan
+              </option>
+              {hubungan.map((item) => (
+                <option key={item.kode} value={item.kode}>
+                  {item.nama}
+                </option>
+              ))}
+            </select>
+          </div>
+          {getValidationError("hubungan") && (
+            <label className="label">
+              <span className="label-text-alt flex items-center gap-1 text-error">
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("hubungan")}
+              </span>
+            </label>
+          )}
+        </div>
+
+        {/* --- Field Status --- */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-semibold">Status Tanggungan</span>
+          </label>
+          <div className="relative">
+            <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+              <Icon icon="ChevronsUpDown" height={20} />
+            </span>
+            <select
+              name="status"
+              className={`select-bordered select w-full pl-10 ${getValidationError("status") ? "select-error" : ""}`}
+              required
+              onChange={(e) => setInput({ ...input, status: e.target.value })}
+              value={input.status || ""}
+            >
+              <option disabled={true} value={""}>
+                Status Tanggungan
+              </option>
+              <option value="TIDAK_TERTANGGUNG">TIDAK TERTANGGUNG</option>
+              <option value="TERTANGGUNG">TERTANGGUNG</option>
+            </select>
+          </div>
+          {getValidationError("status") && (
+            <label className="label">
+              <span className="label-text-alt flex items-center gap-1 text-error">
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("status")}
+              </span>
+            </label>
+          )}
+        </div>
+
+        {/* --- Field Tanggal Lahir --- */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-semibold">Tanggal Lahir</span>
+          </label>
+          <div className="relative">
+            <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+              <Icon icon="CalendarDays" height={20} />
+            </span>
+            <input
+              name="tanggal_lahir"
+              type="date"
+              className={`input-bordered input w-full pl-10 ${getValidationError("tanggal_lahir") ? "input-error" : ""}`}
+              value={input.tanggal_lahir || ""}
+              onChange={(e) =>
+                setInput({ ...input, tanggal_lahir: e.target.value })
+              }
+            />
+          </div>
+          {getValidationError("tanggal_lahir") && (
+            <label className="label">
+              <span className="label-text-alt flex items-center gap-1 text-error">
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("tanggal_lahir")}
+              </span>
+            </label>
+          )}
+        </div>
+
+        {/* --- Field Pekerjaan --- */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-semibold">Pekerjaan</span>
+          </label>
+          <div className="relative">
+            <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
+              <Icon icon="FileText" height={20} />
+            </span>
+            <input
+              type="text"
+              name="pekerjaan"
+              className={`input-bordered input w-full pl-10 ${getValidationError("pekerjaan") ? "input-error" : ""}`}
+              required
+              value={input.pekerjaan || ""}
+              onChange={(e) =>
+                setInput({ ...input, pekerjaan: e.target.value })
+              }
+            />
+          </div>
+          {getValidationError("pekerjaan") && (
+            <label className="label">
+              <span className="label-text-alt flex items-center gap-1 text-error">
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("pekerjaan")}
+              </span>
+            </label>
+          )}
         </div>
       </div>
-    </form>
+    </Form>
   );
 }

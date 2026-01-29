@@ -25,8 +25,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         method: "GET",
       });
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        const { error } = await res.json();
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       router.back();
       // set pdf dokumen to download
@@ -49,9 +53,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       window.URL.revokeObjectURL(url);
 
       addNotification({
-        message: "Berhasil mengunduh dokumen.",
+        message: `Success get overview Surat Keputusan (Status: ${res.status})`,
         title: "Overview Surat Keputusan",
-        variant: "success",
       });
     } catch (error) {
       addNotification({

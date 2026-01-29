@@ -15,7 +15,8 @@ export default function Page({
 }) {
   const router = useRouter();
   const { id } = use(params);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const { setRefresh } = useTable();
   const [loading, setLoading] = useState(false);
@@ -25,29 +26,38 @@ export default function Page({
     if (loading) return;
     try {
       setLoading(true);
-      const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/ProcessTermin`, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
+      const res = await fetch(
+        `/api/Mutasi/SDM/SuratKeputusan/${id}/ProcessTermin`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+          },
+          method: "POST",
+          body: JSON.stringify({
+            ...input,
+            type: "LUNAS",
           }),
         },
-        method: "POST",
-        body: JSON.stringify({
-          type: "LUNAS",
-          tahun_lunas: input.tahun_lunas,
-        }),
-      });
+      );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
+        console.log(error);
+
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di proses",
+        message: `${message} (Status: ${res.status})`,
         title: "Termin",
       });
       router.back();
@@ -71,7 +81,9 @@ export default function Page({
             {/* --- Field Tahun --- */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">Tahun Anggaran:</span>
+                <span className="label-text font-semibold">
+                  Tahun Anggaran:
+                </span>
               </label>
               <div className="relative">
                 <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
@@ -81,9 +93,10 @@ export default function Page({
                   type="text"
                   name="tahun_lunas"
                   className={`input-bordered input w-full pl-10 ${getValidationError("tahun_lunas") ? "input-error" : ""}`}
-                  required
                   value={input.tahun_lunas || ""}
-                  onChange={(e) => setInput({ ...input, tahun_lunas: e.target.value })}
+                  onChange={(e) =>
+                    setInput({ ...input, tahun_lunas: e.target.value })
+                  }
                   autoComplete="off"
                   placeholder="Masukkan tahun anggaran"
                   inputMode="numeric"
@@ -93,7 +106,7 @@ export default function Page({
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
                     <Icon icon="CircleAlert" height={16} />{" "}
-                    {getValidationError("tahun_lunas")?.message}
+                    {getValidationError("tahun_lunas")}
                   </span>
                 </label>
               )}
@@ -108,8 +121,16 @@ export default function Page({
             >
               Batal
             </button>
-            <button type="submit" className={`btn btn-success`} disabled={loading}>
-              {loading ? <span className="loading loading-spinner"></span> : "Lanjutkan"}
+            <button
+              type="submit"
+              className={`btn btn-success`}
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Lanjutkan"
+              )}
             </button>
           </div>
         </div>

@@ -18,7 +18,8 @@ export default function Page({
   const { setRefresh } = useTable();
   const { service_kode, scope_kode } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -27,34 +28,42 @@ export default function Page({
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/Sso/Service/${service_kode}/Scope/${scope_kode}`, {
-        headers: {
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `/api/Sso/Service/${service_kode}/Scope/${scope_kode}`,
+        {
+          headers: {
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+            "Content-Type": "application/json",
+          },
+          method: "PATCH",
+          body: JSON.stringify(input),
         },
-        method: "PATCH",
-        body: JSON.stringify(input),
-      });
+      );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
+
       addNotification({
-        message: "Berhasil di ubah",
-        title: "Scope",
+        message: `${message} (Status: ${res.status})`,
+        title: "Edit Scope",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Scope",
+        title: "Edit Scope",
         variant: "error",
       });
     } finally {
@@ -66,16 +75,27 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Sso/Service/${service_kode}/Scope/${scope_kode}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Sso/Service/${service_kode}/Scope/${scope_kode}`,
+          {
+            method: "GET",
+          },
+        );
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setInput(data);
       } catch (error) {
+        addNotification({
+          message: (error as Error).message,
+          title: "Fetch Scope",
+          variant: "error",
+        });
         setError(error as Error);
       } finally {
         setLoading(false);
@@ -122,7 +142,7 @@ export default function Page({
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("kode")?.message}</span>
+                <span>{getValidationError("kode")}</span>
               </span>
             </label>
           )}
@@ -153,7 +173,33 @@ export default function Page({
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("scope")?.message}</span>
+                <span>{getValidationError("scope")}</span>
+              </span>
+            </label>
+          )}
+        </div>
+        {/* --- Field Deskripsi --- */}
+        <div className="form-control md:col-span-2">
+          <label className="label">
+            <span className="label-text font-semibold">Deskripsi</span>
+          </label>
+          <textarea
+            name="description"
+            className={`textarea-bordered textarea h-24 w-full ${getValidationError("description") ? "textarea-error" : ""}`}
+            placeholder="Tentang dari Surat Keputusan..."
+            value={input.description || ""}
+            onChange={(e) => {
+              setInput({ ...input, description: e.target.value });
+            }}
+            required
+          ></textarea>
+          {getValidationError("description") && (
+            <label className="label">
+              <span className="label-text-alt grid grid-cols-[auto_1fr] items-center gap-2 pt-1 text-sm text-error">
+                <span>
+                  <Icon icon="CircleAlert" height={16} />{" "}
+                </span>
+                <span>{getValidationError("description")}</span>
               </span>
             </label>
           )}

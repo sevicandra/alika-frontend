@@ -1,81 +1,11 @@
 "use client";
 import { createContext, useState, useMemo, useContext, useEffect } from "react";
+import { useNotification } from "@/context/notifikasi";
 
 type ReferensiHubunganKeluarga = {
   kode: string;
   nama: string;
 };
-
-type RevisiAdd = {
-  action: "add";
-  nama: string;
-  data: {
-    nama: {
-      new: string;
-    };
-    nik: {
-      new: string;
-    };
-    hubungan: {
-      new: string;
-    };
-    tanggal_lahir: {
-      new: string;
-    };
-    pekerjaan: {
-      new: string;
-    };
-    status: {
-      new: string;
-    };
-  };
-  catatan: string;
-  file: File;
-};
-
-type RevisiEdit = {
-  id: string;
-  action: "edit";
-  nama: string;
-  data: {
-    nama?: {
-      old: string | undefined;
-      new: string;
-    };
-    nik?: {
-      old: string | undefined;
-      new: string;
-    };
-    hubungan?: {
-      old: string | undefined;
-      new: string;
-    };
-    tanggal_lahir?: {
-      old: string | undefined;
-      new: string;
-    };
-    pekerjaan?: {
-      old: string | undefined;
-      new: string;
-    };
-    status?: {
-      old: string | undefined;
-      new: string;
-    };
-  };
-  catatan: string;
-  file?: File;
-};
-
-type RevisiRemove = {
-  id: string;
-  nama: string;
-  action: "remove";
-  catatan: string;
-};
-
-type Revisi = RevisiAdd | RevisiEdit | RevisiRemove;
-
 type dataKeluarga = {
   id: string;
   nik: string;
@@ -92,12 +22,7 @@ type dataKeluarga = {
 };
 type SanggahContextType = {
   referensiHubungan: ReferensiHubunganKeluarga[];
-  revisi: Revisi[];
   dataKeluarga: dataKeluarga[];
-  form: "add" | "edit" | "remove";
-  addRevisi: (revisi: Revisi) => void;
-  deleteRevisi: (index: number) => void;
-  setForm: (form: "add" | "edit" | "remove") => void;
 };
 
 const SanggahContext = createContext<SanggahContextType | null>(null);
@@ -109,42 +34,38 @@ export function SanggahProvider({
   children: React.ReactNode;
   mutasi_id: string;
 }) {
-  const [referensiHubungan, setReferensiHubungan] = useState<ReferensiHubunganKeluarga[]>([]);
+  const [referensiHubungan, setReferensiHubungan] = useState<
+    ReferensiHubunganKeluarga[]
+  >([]);
   const [dataKeluarga, setDataKeluarga] = useState<dataKeluarga[]>([]);
-  const [revisi, setRevisi] = useState<Revisi[]>([]);
   const [error, setError] = useState<Error | null>(null);
-  const [form, setForm] = useState<"add" | "edit" | "remove">("add");
-
-  const addRevisi = (revisi: Revisi) => {
-    setRevisi((prevRevisi) => [...prevRevisi, revisi]);
-  };
-
-  const deleteRevisi = (index: number) => {
-    setRevisi((prevRevisi) => prevRevisi.filter((_, i) => i !== index));
-  };
+  const { addNotification } = useNotification();
 
   const value = useMemo(
     () => ({
       referensiHubungan,
-      revisi,
       dataKeluarga,
-      addRevisi,
-      deleteRevisi,
-      form,
-      setForm,
     }),
-    [referensiHubungan, revisi, dataKeluarga, form]
+    [referensiHubungan, dataKeluarga],
   );
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/Mutasi/Referensi/HubunganKeluarga");
-        if (!response.ok) throw new Error("Gagal mengambil referensi hubungan keluarga");
-        const { data } = await response.json();
+        const res = await fetch("/api/Mutasi/Referensi/HubunganKeluarga");
+        if (!res.ok) {
+          const { error } = await res.json();
+          throw new Error(
+            error.message || "Gagal mengambil referensi hubungan keluarga",
+          );
+        }
+        const { data } = await res.json();
         setReferensiHubungan(
           data
-            .filter((d: any) => d.jenis === "PASANGAN" || d.jenis === "ANAK" || d.kode === 99)
+            .filter(
+              (d: any) =>
+                d.jenis === "PASANGAN" || d.jenis === "ANAK" || d.kode === 99,
+            )
             .sort((a: any, b: any) => {
               const getPriority = (d: any) => {
                 if (d.jenis === "PASANGAN") return 0;
@@ -153,10 +74,14 @@ export function SanggahProvider({
                 return 3;
               };
               return getPriority(a) - getPriority(b);
-            })
+            }),
         );
       } catch (error) {
-        console.error(error);
+        addNotification({
+          variant: "error",
+          title: "Gagal mengambil referensi hubungan keluarga",
+          message: (error as Error).message,
+        });
       }
     };
     fetchData();
@@ -165,10 +90,12 @@ export function SanggahProvider({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Keluarga`);
+        const res = await fetch(
+          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Keluarga`,
+        );
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          throw new Error(error.message);
         }
         const { data } = await res.json();
         setDataKeluarga(data);
@@ -181,7 +108,9 @@ export function SanggahProvider({
 
   if (error) throw error;
 
-  return <SanggahContext.Provider value={value}>{children}</SanggahContext.Provider>;
+  return (
+    <SanggahContext.Provider value={value}>{children}</SanggahContext.Provider>
+  );
 }
 
 export function useSanggahContext() {

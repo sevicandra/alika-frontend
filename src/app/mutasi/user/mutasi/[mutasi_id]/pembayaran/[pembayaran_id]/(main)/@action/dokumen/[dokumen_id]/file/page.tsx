@@ -30,11 +30,15 @@ export default function Page({
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         );
         if (!file.ok) {
-          const { message } = await file.json();
-          throw new Error(message);
+          const { error } = await file.json();
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${file.status})`
+              : "Unknown Server Error",
+          );
         }
         const contentDisposition = file.headers.get("Content-Disposition");
         if (contentDisposition) {
@@ -56,7 +60,6 @@ export default function Page({
         const base64 = arrayBufferToBase64(dataFile);
         setBase64(base64);
       } catch (error) {
-        setError(error as Error);
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,

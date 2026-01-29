@@ -22,21 +22,25 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           }),
         },
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
 
       addNotification({
-        message: "Berhasil dihapus",
-        title: "Surat Keputusan",
+        message: `${message} (Status: ${res.status})`,
+        title: "Hapus Surat Keputusan",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Surat Keputusan",
+        title: "Hapus Surat Keputusan",
         variant: "error",
       });
     } finally {
@@ -46,7 +50,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <Confirmation
-      title="Surat Keputusan"
+      title="Hapus Surat Keputusan"
       message="Data yang sudah dihapus tidak dapat dikembalikan"
       onConfirm={deleteData}
       onCancel={() => router.back()}

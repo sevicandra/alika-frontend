@@ -29,15 +29,19 @@ export default function Page({
             }),
           },
           method: "DELETE",
-        }
+        },
       );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: `SPD Lembar 2`,
-        message: "Permohonan SPD Lembar 2 Berhasil Dibatalkan",
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
     } catch (error) {

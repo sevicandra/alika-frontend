@@ -26,7 +26,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <div className="max-w-full overflow-x-auto px-4"></div>
       <>{children}</>
-      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
     </div>
   );
 }

@@ -6,7 +6,11 @@ import Loading from "@/component/Molecules/Loading";
 import { snackToTitleCase } from "@/helpers/string.helper";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 
-export default function Page({ params }: { params: Promise<{ mutasi_id: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ mutasi_id: string }>;
+}) {
   const { mutasi_id } = use(params);
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(true);
@@ -31,16 +35,21 @@ export default function Page({ params }: { params: Promise<{ mutasi_id: string }
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Keluarga`);
+        const res = await fetch(
+          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Keluarga`,
+        );
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const data = (await res.json()).data;
         setData(data);
       } catch (error) {
         addNotification({
-          title: "Data Keluarga",
+          title: "Fetch Data Keluarga",
           message: (error as Error).message,
           variant: "error",
         });
@@ -76,7 +85,15 @@ export default function Page({ params }: { params: Promise<{ mutasi_id: string }
               };
               return getPriority(a) - getPriority(b);
             })}
-            columns={["No", "Nama", "NIK", "Hubungan", "Tanggal Lahir", "Pekerjaan", "Status"]}
+            columns={[
+              "No",
+              "Nama",
+              "NIK",
+              "Hubungan",
+              "Tanggal Lahir",
+              "Pekerjaan",
+              "Status",
+            ]}
             renderRow={(item, index) => (
               <tr key={index}>
                 <td className="px-4 py-2">{index + 1}</td>

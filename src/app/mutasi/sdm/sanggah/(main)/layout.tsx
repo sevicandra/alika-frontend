@@ -5,7 +5,12 @@ import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { usePaginator } from "@/context/paginator";
 import Paginator from "@/component/Organisms/Paginator";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+
+}) {
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean).slice(2);
   const { totalPage } = usePaginator();
@@ -26,7 +31,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <div className="max-w-full overflow-x-auto px-4"></div>
       {children}
-      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
     </div>
   );
 }

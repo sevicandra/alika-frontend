@@ -31,23 +31,27 @@ export default function Page({
               return data.token;
             }),
           },
-        }
+        },
       );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
 
       addNotification({
-        message: "Berhasil dihapus",
-        title: "Dokumen",
+        message: `${message} (Status: ${res.status})`,
+        title: "Hapus Dokumen",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Dokumen",
+        title: "Hapus Dokumen",
         variant: "error",
       });
     } finally {

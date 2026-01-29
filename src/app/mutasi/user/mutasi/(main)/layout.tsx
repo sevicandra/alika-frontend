@@ -32,7 +32,9 @@ export default function Layout({
       </div>
       {children}
       {action}
-      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
     </div>
   );
 }

@@ -2,14 +2,11 @@
 import Link from "next/link";
 import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { usePathname } from "next/navigation";
-import { usePaginator } from "@/context/paginator";
 import { usePegawaiDetail } from "@/context/mutasi/sdm";
 import { useSkDetail } from "@/context/mutasi/sdm";
-import Paginator from "@/component/Organisms/Paginator";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { totalPage } = usePaginator();
   const pathSegments = pathname.split("/").filter(Boolean).slice(2);
   const { data: suratKeputusan } = useSkDetail();
   const { data: pegawai } = usePegawaiDetail();
@@ -21,7 +18,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             let label;
             if (pathSegments[index - 1] === "arsip") {
               return {
-                name: suratKeputusan ? suratKeputusan.nomor.toLocaleUpperCase() : "Surat Keputusan",
+                name: suratKeputusan
+                  ? suratKeputusan.nomor.toLocaleUpperCase()
+                  : "Surat Keputusan",
               };
             }
             if (pathSegments[index - 1] === "pegawai") {
@@ -50,7 +49,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
 
       {children}
-      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
+      <div className="mx-4 mb-4 flex justify-between">
+      </div>
     </div>
   );
 }

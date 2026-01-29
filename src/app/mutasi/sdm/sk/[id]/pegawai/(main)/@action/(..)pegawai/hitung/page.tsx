@@ -26,12 +26,16 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         },
         method: "POST",
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil diproses",
+        message: `${message} (Status: ${res.status})`,
         title: "Hitung Biaya Mutasi",
       });
       router.back();

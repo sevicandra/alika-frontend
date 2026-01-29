@@ -10,7 +10,11 @@ import Link from "next/link";
 import Icon from "@/component/Atoms/LabelIcon";
 import { useTable } from "@/context/table.context";
 
-export default function Page({ params }: { params: Promise<{ kode_prov: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ kode_prov: string }>;
+}) {
   const { refresh, searchs, searchsTerm, setSearchsTerm } = useTable();
   const { addNotification } = useNotification();
   const { page: currentPage, limit, setTotalPage } = usePaginator();
@@ -39,11 +43,15 @@ export default function Page({ params }: { params: Promise<{ kode_prov: string }
           `/api/Mutasi/Admin/Referensi/Provinsi/${kode_prov}/Kota?${searchParams}`,
           {
             method: "GET",
-          }
+          },
         );
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
         const { data, meta } = await res.json();
         setData(data);
@@ -59,7 +67,15 @@ export default function Page({ params }: { params: Promise<{ kode_prov: string }
       }
     };
     fetchData();
-  }, [currentPage, limit, refresh, searchs, addNotification, kode_prov, setTotalPage]);
+  }, [
+    currentPage,
+    limit,
+    refresh,
+    searchs,
+    addNotification,
+    kode_prov,
+    setTotalPage,
+  ]);
 
   return (
     <ContainerCard
@@ -99,7 +115,11 @@ export default function Page({ params }: { params: Promise<{ kode_prov: string }
                         href={`/mutasi/admin/referensi/wilayah/${kode_prov}/kota/${row.kode}/edit`}
                       >
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon className="hover:scale-110" icon="SquarePen" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="SquarePen"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>

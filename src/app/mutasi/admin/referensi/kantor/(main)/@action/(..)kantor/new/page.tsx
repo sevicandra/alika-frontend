@@ -9,8 +9,8 @@ import Form from "@/component/Organisms/Form";
 
 export default function Page() {
   const { setRefresh } = useTable();
-  const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -42,23 +42,27 @@ export default function Page() {
         method: "POST",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil ditambahkan",
-        title: "Data Kantor",
+        message: `${message} (Status: ${res.status})`,
+        title: "Referensi Kantor",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Data Kantor",
+        title: "Referensi Kantor",
         variant: "error",
       });
     } finally {
@@ -69,6 +73,7 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         setInput({
           ...input,
           kode_kota: "",
@@ -76,14 +81,26 @@ export default function Page() {
         const res = await fetch(`/api/Mutasi/Referensi/Wilayah`, {
           method: "GET",
         });
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          if (res.status === 422) {
+            setValidationErrors(error.details);
+          }
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setProvinsi(data);
       } catch (error) {
-        setError(error as Error);
+        addNotification({
+          message: (error as Error).message,
+          title: "Referensi Provinsi",
+          variant: "error",
+        });
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -92,15 +109,30 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`/api/Mutasi/Referensi/Wilayah/${input.kode_provinsi}`, {
-          method: "GET",
-        });
+        setLoading(true);
+        const res = await fetch(
+          `/api/Mutasi/Referensi/Wilayah/${input.kode_provinsi}`,
+          {
+            method: "GET",
+          },
+        );
+        const { data, error } = await res.json();
         if (!res.ok) {
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setKota(data);
       } catch (error) {
-        setError(error as Error);
+        addNotification({
+          message: (error as Error).message,
+          title: "Referensi Kota",
+          variant: "error",
+        });
+      } finally {
+        setLoading(false);
       }
     };
     if (input.kode_provinsi) {
@@ -108,10 +140,9 @@ export default function Page() {
     }
   }, [input.kode_provinsi]);
 
-  if (error) throw error;
   return (
     <Form
-      title="Tambah Provinsi"
+      title="Tambah Kantor"
       onCancel={() => router.back()}
       submitForm={submitForm}
       loading={loading}
@@ -134,14 +165,17 @@ export default function Page() {
               name="kode_satker"
               className={`input-bordered input w-full pl-10 ${getValidationError("kode_satker") ? "input-error" : ""}`}
               value={input.kode_satker || ""}
-              onChange={(e) => setInput({ ...input, kode_satker: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, kode_satker: e.target.value })
+              }
               required
             />
           </div>
           {getValidationError("kode_satker") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kode_satker")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kode_satker")}
               </span>
             </label>
           )}
@@ -167,7 +201,8 @@ export default function Page() {
           {getValidationError("kantor") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kantor")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kantor")}
               </span>
             </label>
           )}
@@ -186,7 +221,9 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("kode_provinsi") ? "select-error" : ""}`}
               required
               value={input.kode_provinsi || ""}
-              onChange={(e) => setInput({ ...input, kode_provinsi: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, kode_provinsi: e.target.value })
+              }
             >
               <option disabled value={""}>
                 Pilih Provinsi
@@ -202,7 +239,7 @@ export default function Page() {
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
                 <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kode_provinsi")?.message}
+                {getValidationError("kode_provinsi")}
               </span>
             </label>
           )}
@@ -221,7 +258,9 @@ export default function Page() {
               className={`select-bordered select w-full pl-10 ${getValidationError("kode_kota") ? "select-error" : ""}`}
               required
               value={input.kode_kota || ""}
-              onChange={(e) => setInput({ ...input, kode_kota: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, kode_kota: e.target.value })
+              }
             >
               <option value={""}>Pilih Kota</option>
               {kota.map((e) => (
@@ -234,7 +273,8 @@ export default function Page() {
           {getValidationError("kode_kota") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kode_kota")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kode_kota")}
               </span>
             </label>
           )}

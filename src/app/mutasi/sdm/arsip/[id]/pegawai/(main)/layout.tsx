@@ -27,7 +27,9 @@ export default function Layout({
             let label;
             if (pathSegments[index - 1] === "arsip") {
               return {
-                name: suratKeputusan ? suratKeputusan.nomor.toUpperCase() : "Surat Keputusan",
+                name: suratKeputusan
+                  ? suratKeputusan.nomor.toUpperCase()
+                  : "Surat Keputusan",
               };
             }
             return {
@@ -48,7 +50,9 @@ export default function Layout({
       </div>
       <div className="max-w-full overflow-x-auto px-4"></div>
       {children}
-      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
     </div>
   );
 }

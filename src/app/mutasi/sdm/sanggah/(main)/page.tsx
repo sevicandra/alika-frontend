@@ -43,19 +43,20 @@ export default function Page() {
         const res = await fetch(`/api/Mutasi/SDM/Sanggah?${searchParams}`, {
           method: "GET",
         });
-
+        const { error, data, meta } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-
-        const { data, meta } = await res.json();
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
         console.log(error);
         addNotification({
-          title: `Surat Keputusan`,
+          title: `Fetch Sanggah`,
           message: (error as Error).message,
           variant: "error",
         });
@@ -90,7 +91,14 @@ export default function Page() {
         )}
         <div className="overflow-y-auto py-2">
           <DataTable
-            columns={["No", "Nomor Tiket", "Tanggal", "Nama/NIP", "Nomor SK", "Action"]}
+            columns={[
+              "No",
+              "Nomor Tiket",
+              "Tanggal",
+              "Nama/NIP",
+              "Nomor SK",
+              "Action",
+            ]}
             data={data}
             renderRow={(row, index) => (
               <tr key={index}>
@@ -111,7 +119,11 @@ export default function Page() {
                   <div className="tooltip" data-tip="Detail">
                     <Link href={`/mutasi/sdm/sanggah/${row.id}`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon className="hover:scale-110" icon="Eye" height={16} />
+                        <Icon
+                          className="hover:scale-110"
+                          icon="Eye"
+                          height={16}
+                        />
                       </div>
                     </Link>
                   </div>

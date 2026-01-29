@@ -35,7 +35,9 @@ export default function Layout({
             let label;
             if (pathSegments[index - 1] === "sk") {
               return {
-                name: suratKeputusan ? suratKeputusan.nomor.toUpperCase() : "Surat Keputusan",
+                name: suratKeputusan
+                  ? suratKeputusan.nomor.toUpperCase()
+                  : "Surat Keputusan",
               };
             }
             return {
@@ -69,7 +71,7 @@ export default function Layout({
         headerRight={
           <div className="">
             <input
-              onChange={(e) => setSearchsTerm({ ...searchsTerm, search: e.target.value })}
+              onChange={(e) => setSearchsTerm({...searchsTerm, search: e.target.value})}
               type="text"
               className="input-bordered input input-xs w-md max-w-full focus:outline-none"
               placeholder="Cari berdasarkan Nama / NIP"
@@ -81,7 +83,9 @@ export default function Layout({
       >
         {children}
       </ContainerCard>
-      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
       {action}
     </div>
   );

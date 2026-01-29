@@ -1,99 +1,53 @@
 "use client";
-import { useState, use } from "react";
-import { useSanggahContext } from "@/context/mutasi/user";
-import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
+import { use, useState } from "react";
+import { useTable } from "@/context/table.context";
+import { useNotification } from "@/context/notifikasi";
 import Confirmation from "@/component/Organisms/Confirmation";
 export default function Page({
   params,
 }: {
-  params: Promise<{
-    mutasi_id: string;
-  }>;
+  params: Promise<{ mutasi_id: string }>;
 }) {
-  const { revisi } = useSanggahContext();
+  const router = useRouter();
+  const { mutasi_id } = use(params);
+  const { setRefresh } = useTable();
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(false);
-  const { mutasi_id } = use(params);
-  const router = useRouter();
-  const handleSubmit = async () => {
-    setLoading(true);
-
-    if (revisi.length === 0) {
-      addNotification({
-        title: "Sanggah Mutasi",
-        message: "Tidak ada data revisi untuk dikirim.",
-        variant: "error",
-      });
-      setLoading(false);
-      return;
-    }
-
+  const publishSk = async () => {
     try {
-      const formData = new FormData();
-      revisi.forEach((item, i) => {
-        if (item.action === "add") {
-          formData.append(
-            `data[${i}][data]`,
-            JSON.stringify({
-              ...item.data,
-            })
-          );
-          formData.append(`data[${i}][file]`, item.file);
-          formData.append(`data[${i}][catatan]`, item.catatan);
-        }
-
-        if (item.action === "edit") {
-          formData.append(
-            `data[${i}][data]`,
-            JSON.stringify({
-              ...item.data,
-            })
-          );
-          if (item.file) formData.append(`data[${i}][file]`, item.file);
-          formData.append(`data[${i}][catatan]`, item.catatan);
-          formData.append(`data[${i}][id]`, item.id);
-        }
-
-        if (item.action === "remove") {
-          formData.append(`data[${i}][id]`, item.id);
-          formData.append(`data[${i}][catatan]`, item.catatan);
-        }
-
-        formData.append(`data[${i}][action]`, item.action);
-      });
-      const res = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Sanggah`, {
-        headers: {
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
+      setLoading(true);
+      const res = await fetch(
+        `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Sanggah/Kirim`,
+        {
+          method: "POST",
+          headers: {
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+          },
         },
-        method: "POST",
-        body: formData,
-      });
+      );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
-        if (res.status === 422 && errors && Array.isArray(errors)) {
-          for (const error of errors) {
-            addNotification({
-              title: "Sanggah Mutasi",
-              message: error.message,
-              variant: "error",
-            });
-          }
-        }
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
+
       addNotification({
-        title: "Sanggah Mutasi",
-        message: "Data berhasil dikirimkan",
+        message: `${message} (Status: ${res.status})`,
+        title: "Kirim Sanggah",
       });
-      router.replace("/mutasi/user/mutasi");
+      setRefresh();
+      router.replace(`/mutasi/user/mutasi`);
     } catch (error) {
       addNotification({
-        title: "Sanggah Mutasi",
         message: (error as Error).message,
+        title: "Kirim Sanggah",
         variant: "error",
       });
     } finally {
@@ -103,9 +57,9 @@ export default function Page({
 
   return (
     <Confirmation
-      title="Kirim Permohonan Sanggah"
-      message="apakah anda yakin ingin mengirimkan data ini?"
-      onConfirm={handleSubmit}
+      title="Kirim Sanggah"
+      message="Data Sanggah ini akan di kirim!"
+      onConfirm={publishSk}
       onCancel={() => router.back()}
       loading={loading}
       icon="CircleCheck"

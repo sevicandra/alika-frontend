@@ -38,11 +38,14 @@ export default function Page({
         const res = await fetch(`/api/Mutasi/Admin/User/${id}/Role`, {
           method: "GET",
         });
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { error } = await res.json();
-          throw new Error(error.message || "Terjadi kesalahan pada server.");
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setData(data);
       } catch (error) {
         setError(error as Error);
@@ -60,11 +63,14 @@ export default function Page({
         const res = await fetch(`/api/Mutasi/Admin/Referensi/Role`, {
           method: "GET",
         });
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { error } = await res.json();
-          throw new Error(error.message || "Terjadi kesalahan pada server.");
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setRole(data);
       } catch (error) {
         setError(error as Error);
@@ -93,12 +99,16 @@ export default function Page({
           role: kode,
         }),
       });
+      const { error, message } = await res.json();
       if (!res.ok) {
-        const { error } = await res.json();
-        throw new Error(error.message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di tabah",
+        message: `${message} (Status: ${res.status})`,
         title: "Role",
       });
       setRefresh(refresh + 1);
@@ -128,12 +138,16 @@ export default function Page({
           role: data,
         }),
       });
+      const { error, message } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di hapus",
+        message: `${message} (Status: ${res.status})`,
         title: "Role",
       });
       setRefresh(refresh + 1);

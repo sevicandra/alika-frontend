@@ -17,7 +17,8 @@ export default function Page({
   const { kode_prov } = use(params);
   const { setRefresh } = useTable();
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -25,34 +26,41 @@ export default function Page({
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/Mutasi/Admin/Referensi/Provinsi/${kode_prov}`, {
-        headers: {
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `/api/Mutasi/Admin/Referensi/Provinsi/${kode_prov}`,
+        {
+          headers: {
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+            "Content-Type": "application/json",
+          },
+          method: "PATCH",
+          body: JSON.stringify(input),
         },
-        method: "PATCH",
-        body: JSON.stringify(input),
-      });
+      );
+      const { error, message } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di ubah",
-        title: "Data Provinsi",
+        message: `${message} (Status: ${res.status})`,
+        title: "Referensi Provinsi",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Data Provinsi",
+        title: "Referensi Provinsi",
         variant: "error",
       });
     } finally {
@@ -63,12 +71,19 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Mutasi/Admin/Referensi/Provinsi/${kode_prov}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Mutasi/Admin/Referensi/Provinsi/${kode_prov}`,
+          {
+            method: "GET",
+          },
+        );
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
         const { data } = await res.json();
         setInput(data);
@@ -114,7 +129,8 @@ export default function Page({
           {getValidationError("kode") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kode")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kode")}
               </span>
             </label>
           )}
@@ -140,7 +156,8 @@ export default function Page({
           {getValidationError("provinsi") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("provinsi")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("provinsi")}
               </span>
             </label>
           )}

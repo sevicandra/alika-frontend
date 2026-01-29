@@ -10,7 +10,8 @@ import Form from "@/component/Organisms/Form";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { setRefresh } = useTable();
   const { id } = use(params);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -30,22 +31,19 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         method: "POST",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { error } = await res.json();
-
         if (res.status === 422) {
-          const errorArray: { field: string; message: string }[] = Object.entries(
-            error.details
-          ).map(([field, message]) => ({
-            field,
-            message: message as string,
-          }));
-          setValidationErrors(errorArray);
+          setValidationErrors(error.details);
         }
-        throw new Error(error.message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil ditabahkan",
+        message: `${message} (Status: ${res.status})`,
         title: "Redirect",
       });
       router.back();
@@ -97,7 +95,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("uri")?.message}</span>
+                <span>{getValidationError("uri")}</span>
               </span>
             </label>
           )}

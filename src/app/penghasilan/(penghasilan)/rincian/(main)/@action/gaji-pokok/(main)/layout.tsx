@@ -2,7 +2,13 @@
 import { Suspense } from "react";
 import { useState } from "react";
 import Tab from "@/component/Molecules/SliderButton";
-const Page = ({ rutin, kekurangan }: { rutin: React.ReactNode; kekurangan: React.ReactNode }) => {
+const Page = ({
+  rutin,
+  kekurangan,
+}: {
+  rutin: React.ReactNode;
+  kekurangan: React.ReactNode;
+}) => {
   const [rutinTab, setRutinTab] = useState(true);
   return (
     <div className="grid h-full max-h-full gap-2 overflow-hidden p-2">

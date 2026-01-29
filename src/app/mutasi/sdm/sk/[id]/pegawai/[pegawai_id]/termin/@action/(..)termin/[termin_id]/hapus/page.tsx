@@ -32,15 +32,19 @@ export default function Page({
             }),
           },
           method: "DELETE",
-        }
+        },
       );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: "Hapus Termin",
-        message: "Data berhasil dihapus",
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
       setRefresh();
@@ -58,7 +62,7 @@ export default function Page({
 
   return (
     <Confirmation
-      title="Reset Data Termin"
+      title="Hapus Termin"
       message="Data Termin ini akan dihapus, dan tidak dapat dikembalikan lagi."
       onConfirm={submitForm}
       onCancel={() => router.back()}

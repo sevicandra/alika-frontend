@@ -37,11 +37,14 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         const res = await fetch(`/api/Sso/Client/${id}/Scope?${searchParams}`, {
           method: "GET",
         });
+        const { error, data, meta } = await res.json();
         if (!res.ok) {
-          const { error } = await res.json();
-          throw new Error(error.message || "Terjadi kesalahan pada server.");
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data, meta } = await res.json();
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
@@ -58,7 +61,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   }, [currentPage, limit, refresh, addNotification, setTotalPage, id]);
 
   return (
-    <ContainerCard title="Scope URL" className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden">
+    <ContainerCard
+      title="Scope URL"
+      className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden"
+    >
       <div className="relative grid grid-rows-[1fr_auto] overflow-hidden">
         {loading && (
           <div className="absolute z-10 flex h-full w-full bg-base-300/50 text-primary-600">
@@ -80,14 +86,22 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                     <div className="tooltip" data-tip="edit">
                       <Link href={`/sso/client/${id}/scope/${row.id}/edit`}>
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon className="hover:scale-110" icon="SquarePen" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="SquarePen"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>
                     <div className="tooltip" data-tip="hapus">
                       <Link href={`/sso/client/${id}/scope/${row.id}/hapus`}>
                         <div className="rounded-box bg-error/80 p-1 text-error-content">
-                          <Icon className="hover:scale-110" icon="Trash2" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="Trash2"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>

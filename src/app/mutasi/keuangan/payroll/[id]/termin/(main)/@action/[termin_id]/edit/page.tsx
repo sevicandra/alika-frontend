@@ -7,9 +7,14 @@ import { useForm } from "@/context/form.context";
 import { usePayroll } from "@/context/mutasi/keu";
 import Form from "@/component/Organisms/Form";
 
-export default function Page({ params }: { params: Promise<{ id: string; termin_id: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ id: string; termin_id: string }>;
+}) {
   const { setRefresh } = usePayroll();
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -18,25 +23,32 @@ export default function Page({ params }: { params: Promise<{ id: string; termin_
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/Mutasi/Keuangan/Payroll/${id}/Termin/${termin_id}/Rekening`, {
-        headers: {
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
+      const res = await fetch(
+        `/api/Mutasi/Keuangan/Payroll/${id}/Termin/${termin_id}/Rekening`,
+        {
+          headers: {
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+          },
+          method: "PATCH",
+          body: JSON.stringify(input),
         },
-        method: "PATCH",
-        body: JSON.stringify(input),
-      });
+      );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di ubah",
+        message: `${message} (Status: ${res.status})`,
         title: "Data Rekening",
       });
       router.back();
@@ -55,14 +67,20 @@ export default function Page({ params }: { params: Promise<{ id: string; termin_
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Mutasi/Keuangan/Payroll/${id}/Termin/${termin_id}/Rekening`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Mutasi/Keuangan/Payroll/${id}/Termin/${termin_id}/Rekening`,
+          {
+            method: "GET",
+          },
+        );
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setInput(data);
       } catch (error: any) {
         addNotification({
@@ -102,7 +120,9 @@ export default function Page({ params }: { params: Promise<{ id: string; termin_
               name="nama_rekening"
               className={`input-bordered input w-full pl-10 ${getValidationError("nama_rekening") ? "input-error" : ""}`}
               value={input.nama_rekening || ""}
-              onChange={(e) => setInput({ ...input, nama_rekening: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, nama_rekening: e.target.value })
+              }
               required
             />
           </div>
@@ -110,7 +130,7 @@ export default function Page({ params }: { params: Promise<{ id: string; termin_
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
                 <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("nama_rekening")?.message}
+                {getValidationError("nama_rekening")}
               </span>
             </label>
           )}
@@ -129,7 +149,9 @@ export default function Page({ params }: { params: Promise<{ id: string; termin_
               name="nomor_rekening"
               className={`input-bordered input w-full pl-10 ${getValidationError("nomor_rekening") ? "input-error" : ""}`}
               value={input.nomor_rekening || ""}
-              onChange={(e) => setInput({ ...input, nomor_rekening: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, nomor_rekening: e.target.value })
+              }
               required
             />
           </div>
@@ -137,7 +159,7 @@ export default function Page({ params }: { params: Promise<{ id: string; termin_
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
                 <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("nomor_rekening")?.message}
+                {getValidationError("nomor_rekening")}
               </span>
             </label>
           )}
@@ -156,14 +178,17 @@ export default function Page({ params }: { params: Promise<{ id: string; termin_
               name="nama_bank"
               className={`input-bordered input w-full pl-10 ${getValidationError("nama_bank") ? "input-error" : ""}`}
               value={input.nama_bank || ""}
-              onChange={(e) => setInput({ ...input, nama_bank: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, nama_bank: e.target.value })
+              }
               required
             />
           </div>
           {getValidationError("nama_bank") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("nama_bank")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("nama_bank")}
               </span>
             </label>
           )}

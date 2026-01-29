@@ -9,11 +9,16 @@ import { useForm } from "@/context/form.context";
 import Form from "@/component/Organisms/Form";
 import { SearchableSelect } from "@/component/Molecules/InputForm";
 
-export default function Page({ params }: { params: Promise<{ id: string; pegawai_id: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ id: string; pegawai_id: string }>;
+}) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
 
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
@@ -34,37 +39,49 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
     const fetchGolongan = async () => {
       try {
         const res = await fetch("/api/Mutasi/Referensi/Golongan");
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          if (res.status === 422) {
+            setValidationErrors(error.details);
+          }
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const data = await res.json();
-        setGolongan(data.data);
+        setGolongan(data);
       } catch (error) {
         addNotification({
-          title: `Golongan`,
+          title: `Referensi Golongan`,
           message: (error as Error).message,
           variant: "error",
         });
-        setError(error as Error);
       }
     };
     const fetchKantor = async () => {
       try {
-        const res = await fetch("/api/Mutasi/Referensi/Kantor?sortField=kode_kota&sortOrder=asc");
+        const res = await fetch(
+          "/api/Mutasi/Referensi/Kantor?sortField=kode_kota&sortOrder=asc",
+        );
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          if (res.status === 422) {
+            setValidationErrors(error.details);
+          }
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const data = await res.json();
-        setKantor(data.data);
+        setKantor(data);
       } catch (error) {
         addNotification({
-          title: `Kantor`,
+          title: `Referensi Kantor`,
           message: (error as Error).message,
           variant: "error",
         });
-        setError(error as Error);
       }
     };
 
@@ -75,14 +92,27 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
     const fetchPegawai = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`);
+        const res = await fetch(
+          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`,
+        );
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          if (res.status === 422) {
+            setValidationErrors(error.details);
+          }
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setInput(data);
       } catch (error) {
+        addNotification({
+          title: `Fetch pegawai`,
+          message: (error as Error).message,
+          variant: "error",
+        });
         setError(error as Error);
       } finally {
         setLoading(false);
@@ -94,35 +124,41 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
+      const res = await fetch(
+        `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+          },
+          method: "PATCH",
+          body: JSON.stringify(input),
         },
-        method: "PATCH",
-        body: JSON.stringify(input),
-      });
+      );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil diubah",
-        title: "Data pegawai",
+        message: `${message} (Status: ${res.status})`,
+        title: "Ubah pegawai",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Data pegawai",
+        title: "Ubah pegawai",
         variant: "error",
       });
     }
@@ -135,7 +171,7 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
       submitForm={(e) => submitForm(e)}
       loading={loading}
       variant="positive"
-      confirmText="Tambah Pegawai"
+      confirmText="Ubah"
       cancelText="Kembali"
     >
       <div className="grid grid-cols-1 gap-x-8 gap-y-6">
@@ -160,7 +196,8 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
           {getValidationError("nama") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("nama")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("nama")}
               </span>
             </label>
           )}
@@ -187,7 +224,8 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
           {getValidationError("nip") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("nip")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("nip")}
               </span>
             </label>
           )}
@@ -222,7 +260,8 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
           {getValidationError("golongan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("golongan")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("golongan")}
               </span>
             </label>
           )}
@@ -259,7 +298,8 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
           {getValidationError("kantor_asal") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kantor_asal")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kantor_asal")}
               </span>
             </label>
           )}
@@ -296,7 +336,7 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
                 <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kantor_tujuan")?.message}
+                {getValidationError("kantor_tujuan")}
               </span>
             </label>
           )}

@@ -5,7 +5,11 @@ import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Confirmation from "@/component/Organisms/Confirmation";
-export default function Page({ params }: { params: Promise<{ id: string; pegawai_id: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ id: string; pegawai_id: string }>;
+}) {
   const router = useRouter();
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
@@ -26,23 +30,27 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
             }),
           },
           method: "POST",
-        }
+        },
       );
-      if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+      const { message, error } = await res.json();
+      if (!res.ok) {        
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        title: "Reset Data Termin",
-        message: "Data berhasil dihapus",
+        title: "Reset Termin",
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
       setRefresh();
       setRefreshPegawai();
-    } catch (error) {
+    } catch (error) {      
       addNotification({
         message: (error as Error).message,
-        title: "Reset Data Termin",
+        title: "Reset Termin",
         variant: "error",
       });
     } finally {
@@ -52,7 +60,7 @@ export default function Page({ params }: { params: Promise<{ id: string; pegawai
 
   return (
     <Confirmation
-      title="Reset Data Termin"
+      title="Reset Termin"
       message="Seluruh Data Termin akan dihapus, dan tidak dapat dikembalikan lagi."
       onConfirm={submitForm}
       onCancel={() => router.back()}

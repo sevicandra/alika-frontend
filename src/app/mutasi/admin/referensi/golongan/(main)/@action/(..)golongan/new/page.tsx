@@ -9,7 +9,8 @@ import Form from "@/component/Organisms/Form";
 
 export default function Page() {
   const { setRefresh } = useTable();
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -29,23 +30,27 @@ export default function Page() {
         method: "POST",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil ditambahkan",
-        title: "Data Golongan",
+        message: `${message} (Status: ${res.status})`,
+        title: "Referensi Golongan",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Data Golongan",
+        title: "Referensi Golongan",
         variant: "error",
       });
     } finally {
@@ -55,7 +60,7 @@ export default function Page() {
 
   return (
     <Form
-      title="Tambah Data Golongan"
+      title="Tambah Referensi Golongan"
       onCancel={() => router.back()}
       submitForm={submitForm}
       loading={loading}
@@ -85,7 +90,8 @@ export default function Page() {
           {getValidationError("kode") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kode")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kode")}
               </span>
             </label>
           )}
@@ -111,7 +117,8 @@ export default function Page() {
           {getValidationError("nama") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("nama")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("nama")}
               </span>
             </label>
           )}

@@ -11,7 +11,10 @@ export default function Layout({
 }) {
   const { pembayaran_id, mutasi_id } = use(params);
   return (
-    <PembayaranDetailProvider Pembayaran_id={pembayaran_id} Mutasi_id={mutasi_id}>
+    <PembayaranDetailProvider
+      Pembayaran_id={pembayaran_id}
+      Mutasi_id={mutasi_id}
+    >
       <TableProvider>{children}</TableProvider>
     </PembayaranDetailProvider>
   );

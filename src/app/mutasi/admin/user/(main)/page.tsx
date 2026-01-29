@@ -35,17 +35,19 @@ export default function Page() {
         if (offset) searchParams.append("offset", offset.toString());
         const { search } = searchs;
         if (search) searchParams.append("search", search);
-        searchParams.append("sort", "nip");
 
         setLoading(true);
         const res = await fetch(`/api/Mutasi/Admin/User?${searchParams}`, {
           method: "GET",
         });
+        const { data, meta, error } = await res.json();
         if (!res.ok) {
-          const { error } = await res.json();
-          throw new Error(error.message || "Terjadi kesalahan pada server.");
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data, meta } = await res.json();
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
@@ -70,7 +72,7 @@ export default function Page() {
             onChange={(e) => setSearchsTerm({ search: e.target.value })}
             type="text"
             className="input-bordered input input-xs w-xs max-w-full focus:outline-none"
-            placeholder="nama provinsi"
+            placeholder="search"
             value={searchsTerm.search || ""}
           />
         </div>
@@ -97,7 +99,11 @@ export default function Page() {
                       <div className="tooltip" data-tip="edit">
                         <Link href={`/mutasi/admin/user/${row.id}/edit`}>
                           <div className="rounded-box bg-info/80 p-1 text-info-content">
-                            <Icon className="hover:scale-110" icon="SquarePen" height={16} />
+                            <Icon
+                              className="hover:scale-110"
+                              icon="SquarePen"
+                              height={16}
+                            />
                           </div>
                         </Link>
                       </div>
@@ -105,7 +111,11 @@ export default function Page() {
                     <div className="tooltip" data-tip="role">
                       <Link href={`/mutasi/admin/user/${row.id}/role`}>
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon className="hover:scale-110" icon="Eye" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="Eye"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>
@@ -113,7 +123,11 @@ export default function Page() {
                       <div className="tooltip" data-tip="hapus">
                         <Link href={`/mutasi/admin/user/${row.id}/hapus`}>
                           <div className="rounded-box bg-error/80 p-1 text-error-content">
-                            <Icon className="hover:scale-110" icon="Trash2" height={16} />
+                            <Icon
+                              className="hover:scale-110"
+                              icon="Trash2"
+                              height={16}
+                            />
                           </div>
                         </Link>
                       </div>

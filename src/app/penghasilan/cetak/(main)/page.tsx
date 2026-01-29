@@ -39,9 +39,12 @@ export default function Page() {
       try {
         setIsLoading(true);
         const offset = (Number(currentPage) - 1) * limit;
-        const res = await fetch(`/api/Penghasilan/DataCetak?limit=${limit}&offset=${offset}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Penghasilan/DataCetak?limit=${limit}&offset=${offset}`,
+          {
+            method: "GET",
+          },
+        );
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -58,7 +61,7 @@ export default function Page() {
               status: item.status,
               id: item.id,
             };
-          })
+          }),
         );
         setTotalPage(data.meta.totalPages);
       } catch (error) {
@@ -116,7 +119,16 @@ export default function Page() {
           </div>
         )}
         <DataTable
-          columns={["No", "Jenis", "Nomor", "Tanggal", "Hal", "Penandatangan", "Status", "Aksi"]}
+          columns={[
+            "No",
+            "Jenis",
+            "Nomor",
+            "Tanggal",
+            "Hal",
+            "Penandatangan",
+            "Status",
+            "Aksi",
+          ]}
           data={data}
           renderRow={(row, index) => (
             <tr key={row.id}>
@@ -133,7 +145,11 @@ export default function Page() {
               <td className="p-4">{row.hal}</td>
               <td className="p-4">{row.penandatangan}</td>
               <td className="p-4">
-                {row.status === 0 ? "Menunggu TTE" : row.status === 1 ? "Sudah di TTE" : "Ditolak"}
+                {row.status === 0
+                  ? "Menunggu TTE"
+                  : row.status === 1
+                    ? "Sudah di TTE"
+                    : "Ditolak"}
               </td>
               <td className="p-4">
                 <div className="flex justify-center gap-1">

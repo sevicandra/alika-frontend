@@ -34,7 +34,9 @@ export default function Layout({
         <div className="flex min-w-max justify-end gap-1"></div>
       </div>
       {children}
-      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
       {action}
     </div>
   );

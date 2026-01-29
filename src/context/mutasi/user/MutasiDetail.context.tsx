@@ -1,5 +1,7 @@
 "use client";
 import { createContext, useState, useMemo, useContext, useEffect } from "react";
+import { useNotification } from "@/context/notifikasi";
+
 type MutasiDetailData = {
   id: string;
   sk_id: string;
@@ -24,7 +26,9 @@ type MutasiDetailContextType = {
   setRefresh: () => void;
 };
 
-const MutasiDetailContext = createContext<MutasiDetailContextType | undefined>(undefined);
+const MutasiDetailContext = createContext<MutasiDetailContextType | undefined>(
+  undefined,
+);
 
 export function MutasiDetailProvider({
   children,
@@ -35,16 +39,24 @@ export function MutasiDetailProvider({
 }) {
   const [data, setData] = useState<MutasiDetailData>();
   const [refresh, setRefresh] = useState(0);
+  const { addNotification } = useNotification();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}`);
-        if (!response.ok) throw new Error("Gagal mengambil data Mutasi");
-        const { data } = await response.json();
+        const res = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}`);
+        if (!res.ok) {
+          const { error } = await res.json();
+          throw new Error(error || "Gagal mengambil data Mutasi");
+        }
+        const { data } = await res.json();
         setData(data);
       } catch (error) {
-        console.error(error);
+        addNotification({
+          variant: "error",
+          title: "Gagal mengambil data Mutasi",
+          message: (error as Error).message,
+        });
       }
     };
     fetchData();
@@ -55,16 +67,22 @@ export function MutasiDetailProvider({
       data,
       setRefresh: () => setRefresh((prev) => prev + 1),
     }),
-    [data]
+    [data],
   );
 
-  return <MutasiDetailContext.Provider value={value}>{children}</MutasiDetailContext.Provider>;
+  return (
+    <MutasiDetailContext.Provider value={value}>
+      {children}
+    </MutasiDetailContext.Provider>
+  );
 }
 
 export const useMutasiDetail = () => {
   const context = useContext(MutasiDetailContext);
   if (!context) {
-    throw new Error("useMutasiDetail must be used within a MutasiDetailProvider");
+    throw new Error(
+      "useMutasiDetail must be used within a MutasiDetailProvider",
+    );
   }
   return context;
 };

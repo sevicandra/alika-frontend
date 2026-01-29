@@ -21,14 +21,15 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/Mutasi/Pegawai/Dashboard/Dokumen");
-        if (!response.ok) {
-          if (response.status === 404) {
+        const res = await fetch("/api/Mutasi/Pegawai/Dashboard/Dokumen");
+        if (!res.ok) {
+          if (res.status == 404) {
             return;
           }
-          throw new Error("Network response was not ok");
+          const { message } = await res.json();
+          throw new Error(message || "Network response was not ok");
         }
-        const { data } = await response.json();
+        const { data } = await res.json();
 
         setData(data);
       } catch (error) {
@@ -63,7 +64,8 @@ export default function Page() {
                 Termin {item.termin} ({item.nama})
               </p>
               <p className="text-sm">
-                {item.uploaded_dokumen} dari {item.req_dokumen} dokumen di upload
+                {item.uploaded_dokumen} dari {item.req_dokumen} dokumen di
+                upload
               </p>
             </div>
           ))

@@ -12,11 +12,12 @@ import { useTable } from "@/context/table.context";
 const Page = () => {
   const [base64, setBase64] = useState<string>();
   const [error, setError] = useState<Error | null>(null);
-  const { tahun, bulan, setLoading, open, setOpen, loading, setTahun } = useCetak();
+  const { setRefresh } = useTable();
+  const { tahun, bulan, setLoading, open, setOpen, loading, setTahun } =
+    useCetak();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [tahuns, setTahuns] = useState<{ tahun: number }[]>([]);
-  const { setRefresh } = useTable();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,8 +39,10 @@ const Page = () => {
         setTahuns(data);
         setTahun(
           data
-            .sort((a: { tahun: number }, b: { tahun: number }) => b.tahun - a.tahun)[0]
-            .tahun.toString()
+            .sort(
+              (a: { tahun: number }, b: { tahun: number }) => b.tahun - a.tahun,
+            )[0]
+            .tahun.toString(),
         );
       } catch (error) {
         setError(error as Error);
@@ -57,7 +60,7 @@ const Page = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const file = await fetch("/api/Penghasilan/1721-VII/Preview", {
+        const file = await fetch("/api/Penghasilan/1721-A2/Preview", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -114,7 +117,7 @@ const Page = () => {
     try {
       setLoading(true);
       setOpen(false);
-      const res = await fetch("/api/Penghasilan/1721-VII/Cetak", {
+      const res = await fetch("/api/Penghasilan/1721-A2/Cetak", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -135,8 +138,8 @@ const Page = () => {
         title: `Kirim Permohonan`,
         message: `Permohonan telah dikirim`,
       });
-      router.back();
       setRefresh();
+      router.back();
     } catch (error) {
       addNotification({
         title: `Kirim Permohonan`,

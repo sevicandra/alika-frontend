@@ -21,14 +21,12 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/Mutasi/Pegawai/Dashboard/Biaya");
-        if (!response.ok) {
-          if (response.status === 404) {
-            return;
-          }
-          throw new Error("Network response was not ok");
+        const res = await fetch("/api/Mutasi/Pegawai/Dashboard/Biaya");
+        if (!res.ok) {
+          const { message } = await res.json();
+          throw new Error(message || "Network response was not ok");
         }
-        const { data } = await response.json();
+        const { data } = await res.json();
 
         setData(data);
       } catch (error) {

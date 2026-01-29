@@ -29,7 +29,10 @@ export default function Page({
       action: string;
       description: string | null;
       created_at: Date;
-      action_type: "GENERAL_ACTION" | "SANGGAHAN_DIAJUKAN" | "SANGGAHAN_DIREVIEW";
+      action_type:
+        | "GENERAL_ACTION"
+        | "SANGGAHAN_DIAJUKAN"
+        | "SANGGAHAN_DIREVIEW";
     }[]
   >([]);
 
@@ -38,9 +41,12 @@ export default function Page({
       try {
         setLoading(true);
 
-        const res = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/History`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/History`,
+          {
+            method: "GET",
+          },
+        );
 
         if (!res.ok) {
           const { message } = await res.json();
@@ -82,13 +88,16 @@ export default function Page({
               {!item.description ? (
                 <ItemCard
                   title={item.action}
-                  subtitle={new Date(item.created_at).toLocaleDateString("id-ID", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                  })}
+                  subtitle={new Date(item.created_at).toLocaleDateString(
+                    "id-ID",
+                    {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                    },
+                  )}
                   status={
                     <span className="badge badge-sm text-nowrap badge-info">
                       {snackToUpperCase(item.actor_role)}
@@ -106,7 +115,11 @@ export default function Page({
                             href={`/mutasi/user/mutasi/${mutasi_id}/riwayat/${item.id}/payload`}
                           >
                             <div className="rounded-box bg-info/80 p-1 text-info-content">
-                              <Icon className="hover:scale-110" icon="Eye" height={16} />
+                              <Icon
+                                className="hover:scale-110"
+                                icon="Eye"
+                                height={16}
+                              />
                             </div>
                           </Link>
                         </div>
@@ -117,13 +130,16 @@ export default function Page({
               ) : (
                 <ExpandableItemCard
                   title={item.action}
-                  subtitle={new Date(item.created_at).toLocaleDateString("id-ID", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                  })}
+                  subtitle={new Date(item.created_at).toLocaleDateString(
+                    "id-ID",
+                    {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                    },
+                  )}
                   status={
                     <span className="badge badge-sm text-nowrap badge-info">
                       {snackToUpperCase(item.actor_role)}
@@ -142,7 +158,11 @@ export default function Page({
                             href={`/mutasi/user/mutasi/${mutasi_id}/riwayat/${item.id}/payload`}
                           >
                             <div className="rounded-box bg-info/80 p-1 text-info-content">
-                              <Icon className="hover:scale-110" icon="Eye" height={16} />
+                              <Icon
+                                className="hover:scale-110"
+                                icon="Eye"
+                                height={16}
+                              />
                             </div>
                           </Link>
                         </div>

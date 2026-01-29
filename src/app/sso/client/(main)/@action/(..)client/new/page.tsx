@@ -9,7 +9,8 @@ import Form from "@/component/Organisms/Form";
 
 export default function Page() {
   const { setRefresh } = useTable();
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -17,6 +18,14 @@ export default function Page() {
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
+      if (input.secret !== input.resecret) {
+        setValidationErrors({
+          field: "resecret",
+          message: "Secret tidak cocok",
+        });
+        return;
+      }
+
       setLoading(true);
       const res = await fetch(`/api/Sso/Client`, {
         headers: {
@@ -29,21 +38,19 @@ export default function Page() {
         method: "POST",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { error } = await res.json();
         if (res.status === 422) {
-          const errorArray: { field: string; message: string }[] = Object.entries(
-            error.details
-          ).map(([field, message]) => ({
-            field,
-            message: message as string,
-          }));
-          setValidationErrors(errorArray);
+          setValidationErrors(error.details);
         }
-        throw new Error(error.message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil ditabahkan",
+        message: `${message} (Status: ${res.status})`,
         title: "Client",
       });
       router.back();
@@ -82,9 +89,9 @@ export default function Page() {
               type="text"
               name="id"
               className={`input-bordered input w-full pl-10 ${getValidationError("client_id") ? "input-error" : ""}`}
-              value={input.client_id || ""}
+              value={input.id || ""}
               onChange={(e) => {
-                setInput({ ...input, client_id: e.target.value });
+                setInput({ ...input, id: e.target.value });
               }}
               required
             />
@@ -95,7 +102,7 @@ export default function Page() {
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("client_id")?.message}</span>
+                <span>{getValidationError("client_id")}</span>
               </span>
             </label>
           )}
@@ -113,9 +120,9 @@ export default function Page() {
               type="password"
               name="secret"
               className={`input-bordered input w-full pl-10 ${getValidationError("client_secret") ? "input-error" : ""}`}
-              value={input.client_secret || ""}
+              value={input.secret || ""}
               onChange={(e) => {
-                setInput({ ...input, client_secret: e.target.value });
+                setInput({ ...input, secret: e.target.value });
               }}
               required
             />
@@ -125,7 +132,7 @@ export default function Page() {
               <span>
                 <Icon icon="CircleAlert" height={16} />{" "}
               </span>
-              <span>{getValidationError("client_secret")?.message}</span>
+              <span>{getValidationError("client_secret")}</span>
             </span>
           )}
         </div>
@@ -140,22 +147,22 @@ export default function Page() {
             </span>
             <input
               type="password"
-              name="re_client_secret"
-              className={`input-bordered input w-full pl-10 ${getValidationError("re_client_secret") ? "input-error" : ""}`}
-              value={input.re_client_secret || ""}
+              name="resecret"
+              className={`input-bordered input w-full pl-10 ${getValidationError("resecret") ? "input-error" : ""}`}
+              value={input.resecret || ""}
               onChange={(e) => {
-                setInput({ ...input, re_client_secret: e.target.value });
+                setInput({ ...input, resecret: e.target.value });
               }}
               required
             />
           </div>
-          {getValidationError("re_client_secret") && (
+          {getValidationError("resecret") && (
             <label className="label">
               <span className="label-text-alt grid grid-cols-[auto_1fr] items-center gap-2 pt-1 text-sm text-error">
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("re_client_secret")?.message}</span>
+                <span>{getValidationError("resecret")}</span>
               </span>
             </label>
           )}

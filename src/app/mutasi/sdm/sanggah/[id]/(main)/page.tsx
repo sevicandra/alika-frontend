@@ -71,7 +71,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const updateReview = (
     id: string,
     field: "is_approved" | "admin_notes",
-    value: boolean | string
+    value: boolean | string,
   ) => {
     setReviewData((prev) => {
       const existing = prev.find((r) => r.id === id);
@@ -129,13 +129,18 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           }),
         });
 
+        const { message, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
+
         addNotification({
-          title: `Review Sanggah`,
-          message: "Review berhasil disimpan",
+          message: `${message} (Status: ${res.status})`,
+          title: "Review Sanggah",
         });
         setRefresh();
         router.replace(`/mutasi/sdm/sanggah`);
@@ -225,7 +230,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   </div>
                   {r.new_value?.nama && (
                     <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                      <label className="col-span-1 label md:col-span-2">NIK</label>
+                      <label className="col-span-1 label md:col-span-2">
+                        NIK
+                      </label>
                       <div className="rounded-box bg-error/50 p-4 text-error-content">
                         <label>Data Lama</label>
                         <p>{r.new_value?.nama.old || "-"}</p>
@@ -238,7 +245,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   )}
                   {r.new_value?.nik && (
                     <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                      <label className="col-span-1 label md:col-span-2">NIK</label>
+                      <label className="col-span-1 label md:col-span-2">
+                        NIK
+                      </label>
                       <div className="rounded-box bg-error/50 p-4 text-error-content">
                         <label>Data Lama</label>
                         <p>{r.new_value?.nik.old || "-"}</p>
@@ -251,7 +260,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   )}
                   {r.new_value?.hubungan && (
                     <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                      <label className="col-span-1 label md:col-span-2">Hubungan</label>
+                      <label className="col-span-1 label md:col-span-2">
+                        Hubungan
+                      </label>
                       <div className="rounded-box bg-error/50 p-4 text-error-content">
                         <label>Data Lama</label>
                         <p>{r.new_value?.hubungan.old || "-"}</p>
@@ -264,7 +275,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   )}
                   {r.new_value?.tanggal_lahir && (
                     <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                      <label className="col-span-1 label md:col-span-2">Tanggal Lahir</label>
+                      <label className="col-span-1 label md:col-span-2">
+                        Tanggal Lahir
+                      </label>
                       <div className="rounded-box bg-error/50 p-4 text-error-content">
                         <label>Data Lama</label>
                         <p>{r.new_value?.tanggal_lahir.old || "-"}</p>
@@ -277,7 +290,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   )}
                   {r.new_value?.pekerjaan && (
                     <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                      <label className="col-span-1 label md:col-span-2">Pekerjaan</label>
+                      <label className="col-span-1 label md:col-span-2">
+                        Pekerjaan
+                      </label>
                       <div className="rounded-box bg-error/50 p-4 text-error-content">
                         <label>Data Lama</label>
                         <p>{r.new_value?.pekerjaan.old || "-"}</p>
@@ -290,7 +305,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   )}
                   {r.new_value?.status && (
                     <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                      <label className="col-span-1 label md:col-span-2">Status</label>
+                      <label className="col-span-1 label md:col-span-2">
+                        Status
+                      </label>
                       <div className="rounded-box bg-error/50 p-4 text-error-content">
                         <label>Data Lama</label>
                         <p>{r.new_value?.status.old || "-"}</p>
@@ -333,7 +350,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                     <input
                       type="checkbox"
                       className="mr-2"
-                      checked={reviewData.find((d) => d.id === r.id)?.is_approved === true}
+                      checked={
+                        reviewData.find((d) => d.id === r.id)?.is_approved ===
+                        true
+                      }
                       onChange={() => updateReview(r.id, "is_approved", true)}
                     />
                     <span className="font-medium text-green-600">Setujui</span>
@@ -342,7 +362,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                     <input
                       type="checkbox"
                       className="mr-2"
-                      checked={reviewData.find((d) => d.id === r.id)?.is_approved === false}
+                      checked={
+                        reviewData.find((d) => d.id === r.id)?.is_approved ===
+                        false
+                      }
                       onChange={() => updateReview(r.id, "is_approved", false)}
                     />
                     <span className="font-medium text-red-600">Tolak</span>
@@ -363,8 +386,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   name="catatan"
                   className={`textarea w-full border-base-content/20 bg-base-100 text-base-content focus:outline-none`}
                   placeholder="catatan (opsional)"
-                  value={reviewData.find((d) => d.id === r.id)?.admin_notes || ""}
-                  onChange={(e) => updateReview(r.id, "admin_notes", e.target.value)}
+                  value={
+                    reviewData.find((d) => d.id === r.id)?.admin_notes || ""
+                  }
+                  onChange={(e) =>
+                    updateReview(r.id, "admin_notes", e.target.value)
+                  }
                 />
               </div>
             </SanggahKeluargaCard>
@@ -372,7 +399,11 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         </div>
 
         <div className="flex justify-end p-4">
-          <button type="submit" className="btn btn-xs btn-primary" onClick={submitReview}>
+          <button
+            type="submit"
+            className="btn btn-xs btn-primary"
+            onClick={submitReview}
+          >
             Simpan
           </button>
         </div>

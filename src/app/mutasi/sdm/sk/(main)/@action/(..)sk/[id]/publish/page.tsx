@@ -22,13 +22,17 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           }),
         },
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
 
       addNotification({
-        message: "Berhasil dipublish",
+        message: `${message} (Status: ${res.status})`,
         title: "Publish Surat Keputusan",
       });
       router.back();

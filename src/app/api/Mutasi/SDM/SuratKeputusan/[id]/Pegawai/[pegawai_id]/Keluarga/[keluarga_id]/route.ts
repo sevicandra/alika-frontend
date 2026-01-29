@@ -3,7 +3,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl =
+  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
+  process.env.MUTASI_ALIKA_BASE_URL;
 
 export async function GET(
   req: Request,
@@ -13,7 +15,9 @@ export async function GET(
     params: Promise<{ id: string; pegawai_id: string; keluarga_id: string }>;
   }
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -38,7 +42,10 @@ export async function GET(
 
     if (!suratKeputusan.ok) {
       const data = await suratKeputusan.json();
-      return NextResponse.json(data, { status: suratKeputusan.status });
+      return NextResponse.json(
+        data,
+        { status: suratKeputusan.status }
+      );
     }
     const data = await suratKeputusan.json();
     return NextResponse.json(data, { status: 200 });
@@ -55,7 +62,9 @@ export async function PATCH(
     params: Promise<{ id: string; pegawai_id: string; keluarga_id: string }>;
   }
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -82,7 +91,10 @@ export async function PATCH(
     );
     if (!suratKeputusan.ok) {
       const data = await suratKeputusan.json();
-      return NextResponse.json(data, { status: suratKeputusan.status });
+      return NextResponse.json(
+        data,
+        { status: suratKeputusan.status }
+      );
     }
     const data = await suratKeputusan.json();
     return NextResponse.json(data, { status: 200 });
@@ -99,7 +111,9 @@ export async function DELETE(
     params: Promise<{ id: string; pegawai_id: string; keluarga_id: string }>;
   }
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -125,7 +139,10 @@ export async function DELETE(
     );
     if (!suratKeputusan.ok) {
       const data = await suratKeputusan.json();
-      return NextResponse.json(data, { status: suratKeputusan.status });
+      return NextResponse.json(
+        data,
+        { status: suratKeputusan.status }
+      );
     }
     const data = await suratKeputusan.json();
     return NextResponse.json(data, { status: 200 });

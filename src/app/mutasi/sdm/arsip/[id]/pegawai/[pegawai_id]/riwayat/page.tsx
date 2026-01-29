@@ -30,7 +30,10 @@ export default function Page({
       action: string;
       description: string | null;
       created_at: Date;
-      action_type: "GENERAL_ACTION" | "SANGGAHAN_DIAJUKAN" | "SANGGAHAN_DIREVIEW";
+      action_type:
+        | "GENERAL_ACTION"
+        | "SANGGAHAN_DIAJUKAN"
+        | "SANGGAHAN_DIREVIEW";
     }[]
   >([]);
 
@@ -43,15 +46,16 @@ export default function Page({
           `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/History`,
           {
             method: "GET",
-          }
+          },
         );
-
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-
-        const { data } = await res.json();
         setData(data);
       } catch (error) {
         console.log(error);
@@ -86,13 +90,16 @@ export default function Page({
               {!item.description ? (
                 <ItemCard
                   title={item.action}
-                  subtitle={new Date(item.created_at).toLocaleDateString("id-ID", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                  })}
+                  subtitle={new Date(item.created_at).toLocaleDateString(
+                    "id-ID",
+                    {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                    },
+                  )}
                   status={
                     <span className="badge badge-sm text-nowrap badge-info">
                       {snackToUpperCase(item.actor_role)}
@@ -110,7 +117,11 @@ export default function Page({
                             href={`/mutasi/sdm/arsip/${id}/pegawai/${pegawai_id}/riwayat/${item.id}/payload`}
                           >
                             <div className="rounded-box bg-info/80 p-1 text-info-content">
-                              <Icon className="hover:scale-110" icon="Eye" height={16} />
+                              <Icon
+                                className="hover:scale-110"
+                                icon="Eye"
+                                height={16}
+                              />
                             </div>
                           </Link>
                         </div>
@@ -121,13 +132,16 @@ export default function Page({
               ) : (
                 <ExpandableItemCard
                   title={item.action}
-                  subtitle={new Date(item.created_at).toLocaleDateString("id-ID", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                  })}
+                  subtitle={new Date(item.created_at).toLocaleDateString(
+                    "id-ID",
+                    {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                    },
+                  )}
                   status={
                     <span className="badge badge-sm text-nowrap badge-info">
                       {snackToUpperCase(item.actor_role)}
@@ -146,7 +160,11 @@ export default function Page({
                             href={`/mutasi/sdm/arsip/${id}/pegawai/${pegawai_id}/riwayat/${item.id}/payload`}
                           >
                             <div className="rounded-box bg-info/80 p-1 text-info-content">
-                              <Icon className="hover:scale-110" icon="Eye" height={16} />
+                              <Icon
+                                className="hover:scale-110"
+                                icon="Eye"
+                                height={16}
+                              />
                             </div>
                           </Link>
                         </div>

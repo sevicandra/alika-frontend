@@ -10,7 +10,8 @@ import Form from "@/component/Organisms/Form";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { setRefresh } = useTable();
   const { id } = use(params);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -26,17 +27,23 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Sso/Grant`, {
+        const res = await fetch(`/api/Sso/Referensi/Grant`, {
           method: "GET",
         });
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { error } = await res.json();
-          throw new Error(error.message || "Terjadi kesalahan pada server.");
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setGrants(data);
       } catch (error) {
-        setError(error as Error);
+        addNotification({
+          message: (error as Error).message,
+          title: "Fetch Grant",
+        });
       } finally {
         setLoading(false);
       }
@@ -59,22 +66,19 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         method: "POST",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { error } = await res.json();
-
         if (res.status === 422) {
-          const errorArray: { field: string; message: string }[] = Object.entries(
-            error.details
-          ).map(([field, message]) => ({
-            field,
-            message: message as string,
-          }));
-          setValidationErrors(errorArray);
+          setValidationErrors(error.details);
         }
-        throw new Error(error.message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil ditabahkan",
+        message: `${message} (Status: ${res.status})`,
         title: "Grant",
       });
       router.back();
@@ -116,7 +120,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               className={`select-bordered select w-full pl-10 ${getValidationError("grant_kode") ? "select-error" : ""}`}
               required
               value={input.grant_kode || ""}
-              onChange={(e) => setInput({ ...input, grant_kode: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, grant_kode: e.target.value })
+              }
             >
               <option disabled value={""}>
                 Pilih Grant
@@ -131,7 +137,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           {getValidationError("grant_kode") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("grant_kode")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("grant_kode")}
               </span>
             </label>
           )}

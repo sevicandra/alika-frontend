@@ -10,7 +10,8 @@ import { SearchableSelect } from "@/component/Molecules/InputForm";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { id } = use(params);
   const { addNotification } = useNotification();
   const { setRefresh } = useTable();
@@ -32,14 +33,16 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const fetchGolongan = async () => {
       try {
         const res = await fetch("/api/Mutasi/Referensi/Golongan");
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const data = await res.json();
-        setGolongan(data.data);
+        setGolongan(data);
       } catch (error) {
-        setError(error as Error);
         addNotification({
           title: `Referensi Golongan`,
           message: (error as Error).message,
@@ -49,15 +52,19 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     };
     const fetchKantor = async () => {
       try {
-        const res = await fetch("/api/Mutasi/Referensi/Kantor?sortField=kode_kota&sortOrder=asc");
+        const res = await fetch(
+          "/api/Mutasi/Referensi/Kantor?sortField=kode_kota&sortOrder=asc",
+        );
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const data = await res.json();
-        setKantor(data.data);
+        setKantor(data);
       } catch (error) {
-        setError(error as Error);
         addNotification({
           title: `Referensi Kantor`,
           message: (error as Error).message,
@@ -86,15 +93,19 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         method: "POST",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "berhasil dibuat",
+        message: `${message} (Status: ${res.status})`,
         title: "Pegawai Mutasi",
       });
       router.back();
@@ -142,7 +153,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           {getValidationError("nama") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("nama")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("nama")}
               </span>
             </label>
           )}
@@ -169,7 +181,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           {getValidationError("nip") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("nip")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("nip")}
               </span>
             </label>
           )}
@@ -188,10 +201,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               name="golongan"
               className={`select-bordered select w-full pl-10 ${getValidationError("golongan") ? "select-error" : ""}`}
               required
-              value={input.golongan}
+              value={input.golongan || ""}
               onChange={(e) => setInput({ ...input, golongan: e.target.value })}
             >
-              <option disabled={true} value="">
+              <option disabled value="">
                 Golongan
               </option>
               {golongan.map((item) => (
@@ -204,7 +217,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           {getValidationError("golongan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("golongan")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("golongan")}
               </span>
             </label>
           )}
@@ -241,7 +255,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           {getValidationError("kantor_asal") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kantor_asal")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kantor_asal")}
               </span>
             </label>
           )}
@@ -278,7 +293,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
                 <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kantor_tujuan")?.message}
+                {getValidationError("kantor_tujuan")}
               </span>
             </label>
           )}

@@ -19,23 +19,30 @@ export default function Page({
   async function submitForm() {
     try {
       setLoading(true);
-      const res = await fetch(`/api/Sso/Service/${service_kode}/Scope/${scope_kode}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
+      const res = await fetch(
+        `/api/Sso/Service/${service_kode}/Scope/${scope_kode}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+          },
+          method: "DELETE",
         },
-        method: "DELETE",
-      });
+      );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: "Hapus Scope",
-        message: "Berhasil dihapus",
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
       setRefresh();

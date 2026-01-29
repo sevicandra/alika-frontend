@@ -34,13 +34,16 @@ export default function Page({
           `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/History/${riwayat_id}`,
           {
             method: "GET",
-          }
+          },
         );
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setData(data);
       } catch (error) {
         addNotification({
@@ -73,6 +76,7 @@ export default function Page({
                 {snackToTitleCase(r.action)}
               </span>
             }
+            className="text-base-content"
           >
             {r.action === "ADD" && (
               <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
@@ -111,7 +115,9 @@ export default function Page({
                 <div className="font-bold">{r.nama}</div>
                 {r.data?.nama && (
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                    <label className="col-span-1 label md:col-span-2">NIK</label>
+                    <label className="col-span-1 label md:col-span-2">
+                      NIK
+                    </label>
                     <div className="rounded-box bg-error/50 p-4 text-error-content">
                       <label>Data Lama</label>
                       <p>{r.data?.nama.old || "-"}</p>
@@ -124,7 +130,9 @@ export default function Page({
                 )}
                 {r.data?.nik && (
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                    <label className="col-span-1 label md:col-span-2">NIK</label>
+                    <label className="col-span-1 label md:col-span-2">
+                      NIK
+                    </label>
                     <div className="rounded-box bg-error/50 p-4 text-error-content">
                       <label>Data Lama</label>
                       <p>{r.data?.nik.old || "-"}</p>
@@ -137,7 +145,9 @@ export default function Page({
                 )}
                 {r.data?.hubungan && (
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                    <label className="col-span-1 label md:col-span-2">Hubungan</label>
+                    <label className="col-span-1 label md:col-span-2">
+                      Hubungan
+                    </label>
                     <div className="rounded-box bg-error/50 p-4 text-error-content">
                       <label>Data Lama</label>
                       <p>{r.data?.hubungan.old || "-"}</p>
@@ -150,7 +160,9 @@ export default function Page({
                 )}
                 {r.data?.tanggal_lahir && (
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                    <label className="col-span-1 label md:col-span-2">Tanggal Lahir</label>
+                    <label className="col-span-1 label md:col-span-2">
+                      Tanggal Lahir
+                    </label>
                     <div className="rounded-box bg-error/50 p-4 text-error-content">
                       <label>Data Lama</label>
                       <p>{r.data?.tanggal_lahir.old || "-"}</p>
@@ -163,7 +175,9 @@ export default function Page({
                 )}
                 {r.data?.pekerjaan && (
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                    <label className="col-span-1 label md:col-span-2">Pekerjaan</label>
+                    <label className="col-span-1 label md:col-span-2">
+                      Pekerjaan
+                    </label>
                     <div className="rounded-box bg-error/50 p-4 text-error-content">
                       <label>Data Lama</label>
                       <p>{r.data?.pekerjaan.old || "-"}</p>
@@ -176,7 +190,9 @@ export default function Page({
                 )}
                 {r.data?.status && (
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                    <label className="col-span-1 label md:col-span-2">Status</label>
+                    <label className="col-span-1 label md:col-span-2">
+                      Status
+                    </label>
                     <div className="rounded-box bg-error/50 p-4 text-error-content">
                       <label>Data Lama</label>
                       <p>{r.data?.status.old || "-"}</p>

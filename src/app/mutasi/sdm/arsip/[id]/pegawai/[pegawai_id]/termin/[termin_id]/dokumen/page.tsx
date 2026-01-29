@@ -33,17 +33,20 @@ export default function Page({
           `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin/${termin_id}/Dokumen`,
           {
             method: "GET",
-          }
+          },
         );
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setData(data);
       } catch (error) {
         addNotification({
-          title: "Error Fetch Data Pembayaran",
+          title: "Fetch Data Pembayaran",
           message: (error as Error).message,
           variant: "error",
         });
@@ -82,7 +85,11 @@ export default function Page({
                       href={`/mutasi/sdm/arsip/${id}/pegawai/${pegawai_id}/termin/${termin_id}/dokumen/${row.id}/file`}
                     >
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon className="hover:scale-110" icon="File" height={16} />
+                        <Icon
+                          className="hover:scale-110"
+                          icon="File"
+                          height={16}
+                        />
                       </div>
                     </Link>
                   </div>

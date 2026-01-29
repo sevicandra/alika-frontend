@@ -17,7 +17,8 @@ export default function Page({
   const { setRefresh } = useTable();
   const { id } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -37,15 +38,19 @@ export default function Page({
         method: "PATCH",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di ubah",
+        message: `${message} (Status: ${res.status})`,
         title: "Data FAQ",
       });
       router.back();
@@ -68,13 +73,21 @@ export default function Page({
         const res = await fetch(`/api/Mutasi/Admin/Referensi/Faq/${id}`, {
           method: "GET",
         });
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setInput(data);
       } catch (error) {
+        addNotification({
+          title: "Fetch Data FAQ",
+          message: (error as Error).message,
+          variant: "error",
+        });
         setError(error as Error);
       } finally {
         setLoading(false);
@@ -116,7 +129,8 @@ export default function Page({
           {getValidationError("question") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("question")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("question")}
               </span>
             </label>
           )}
@@ -127,22 +141,19 @@ export default function Page({
             <span className="label-text font-semibold">Answer</span>
           </label>
           <div className="relative">
-            <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
-              <Icon icon="FileText" height={20} />
-            </span>
-            <input
-              type="text"
+            <textarea
               name="answer"
-              className={`input-bordered input w-full pl-10 ${getValidationError("answer") ? "input-error" : ""}`}
+              className={`textarea-bordered textarea h-24 w-full ${getValidationError("answer") ? "textarea-error" : ""}`}
+              placeholder="Tentang dari Surat Keputusan..."
               value={input.answer || ""}
               onChange={(e) => setInput({ ...input, answer: e.target.value })}
-              required
-            />
+            ></textarea>
           </div>
           {getValidationError("answer") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("answer")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("answer")}
               </span>
             </label>
           )}

@@ -3,7 +3,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl =
+  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
+  process.env.MUTASI_ALIKA_BASE_URL;
 
 export async function GET(
   req: Request,
@@ -13,7 +15,9 @@ export async function GET(
     }>;
   }
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -25,14 +29,17 @@ export async function GET(
   const { mutasi_id } = await params.params;
 
   try {
-    const res = await fetch(`${apiBaseUrl}/api/v2/Pegawai/Mutasi/${mutasi_id}/Pembayaran`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session}`,
-      },
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${apiBaseUrl}/api/v2/Pegawai/Mutasi/${mutasi_id}/Pembayaran`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session}`,
+        },
+        cache: "no-store",
+      }
+    );
 
     if (!res.ok) {
       const data = await res.json();

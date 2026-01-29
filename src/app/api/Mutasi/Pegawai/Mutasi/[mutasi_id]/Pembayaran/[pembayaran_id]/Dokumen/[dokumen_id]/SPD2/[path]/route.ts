@@ -3,7 +3,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl =
+  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
+  process.env.MUTASI_ALIKA_BASE_URL;
 
 export async function GET(
   req: Request,
@@ -14,9 +16,11 @@ export async function GET(
       dokumen_id: string;
       path: string;
     }>;
-  }
+  },
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -37,7 +41,7 @@ export async function GET(
             Authorization: `Bearer ${session}`,
           },
           cache: "no-store",
-        }
+        },
       );
       if (!res.ok) {
         const data = await res.json();
@@ -62,9 +66,11 @@ export async function POST(
       dokumen_id: string;
       path: string;
     }>;
-  }
+  },
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -84,7 +90,7 @@ export async function POST(
         },
         body: JSON.stringify(await req.json()),
         cache: "no-store",
-      }
+      },
     );
     if (!res.ok) {
       const data = await res.json();
@@ -106,9 +112,11 @@ export async function DELETE(
       dokumen_id: string;
       path: string;
     }>;
-  }
+  },
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -127,7 +135,7 @@ export async function DELETE(
           Authorization: `Bearer ${session}`,
         },
         cache: "no-store",
-      }
+      },
     );
     if (!res.ok) {
       const data = await res.json();

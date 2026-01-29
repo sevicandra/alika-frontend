@@ -38,13 +38,21 @@ export default function Page({
         const res = await fetch(`/api/Sso/User/${id}/Role`, {
           method: "GET",
         });
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { error } = await res.json();
-          throw new Error(error.message || "Terjadi kesalahan pada server.");
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setData(data);
       } catch (error) {
+        addNotification({
+          message: (error as Error).message,
+          title: "Fetch Role",
+          variant: "error",
+        });
         setError(error as Error);
       } finally {
         setLoading(false);
@@ -60,13 +68,21 @@ export default function Page({
         const res = await fetch(`/api/Sso/Referensi/Role`, {
           method: "GET",
         });
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { error } = await res.json();
-          throw new Error(error.message || "Terjadi kesalahan pada server.");
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setRole(data);
       } catch (error) {
+        addNotification({
+          message: (error as Error).message,
+          title: "Fetch Referensi Role",
+          variant: "error",
+        });
         setError(error as Error);
       } finally {
         setLoading(false);
@@ -93,19 +109,23 @@ export default function Page({
           role: kode,
         }),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di tabah",
-        title: "Role",
+        message: `${message} (Status: ${res.status})`,
+        title: "Add Role",
       });
       setRefresh(refresh + 1);
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Role",
+        title: "Add Role",
         variant: "error",
       });
     } finally {
@@ -129,19 +149,23 @@ export default function Page({
           role: data,
         }),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di hapus",
-        title: "Role",
+        message: `${message} (Status: ${res.status})`,
+        title: "Remove Role",
       });
       setRefresh(refresh + 1);
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Role",
+        title: "Remove Role",
         variant: "error",
       });
     } finally {

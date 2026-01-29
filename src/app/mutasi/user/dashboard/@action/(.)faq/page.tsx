@@ -27,9 +27,12 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        const res = await fetch(`/api/Mutasi/Pegawai/Dashboard/Faq?${searchParams}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Mutasi/Pegawai/Dashboard/Faq?${searchParams}`,
+          {
+            method: "GET",
+          },
+        );
         if (!res.ok) {
           const { message } = await res.json();
           throw new Error(message);
@@ -61,7 +64,9 @@ export default function Page() {
           <ItemCard title={row.question} subtitle={row.answer} key={index} />
         ))}
       </div>
-      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
     </div>
   );
 }

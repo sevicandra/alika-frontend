@@ -63,18 +63,23 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (limit) searchParams.append("offset", (currentPage - 1).toString());
-        const { search } = searchs;
+        const {search} = searchs;
         if (search) searchParams.append("search", search);
-        const res = await fetch(`/api/Mutasi/Keuangan/PermohonanPembayaran?${searchParams}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Mutasi/Keuangan/PermohonanPembayaran?${searchParams}`,
+          {
+            method: "GET",
+          },
+        );
 
+        const { error, data, meta } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-
-        const { data, meta } = await res.json();
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
@@ -138,9 +143,15 @@ export default function Page() {
                 <td className="p-4">{row.Pegawai.KantorTujuan.kantor}</td>
                 <td>
                   <div className="tooltip" data-tip="Detail">
-                    <Link href={`/mutasi/keuangan/permohonan-pembayaran/${row.id}`}>
+                    <Link
+                      href={`/mutasi/keuangan/permohonan-pembayaran/${row.id}`}
+                    >
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon className="hover:scale-110" icon="FolderOpen" height={16} />
+                        <Icon
+                          className="hover:scale-110"
+                          icon="FolderOpen"
+                          height={16}
+                        />
                       </div>
                     </Link>
                   </div>

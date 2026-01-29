@@ -7,10 +7,15 @@ import { useForm } from "@/context/form.context";
 import { useTable } from "@/context/table.context";
 import Form from "@/component/Organisms/Form";
 
-export default function Page({ params }: { params: Promise<{ kode_prov: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ kode_prov: string }>;
+}) {
   const { setRefresh } = useTable();
   const { kode_prov } = use(params);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -18,34 +23,41 @@ export default function Page({ params }: { params: Promise<{ kode_prov: string }
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/Mutasi/Admin/Referensi/Provinsi/${kode_prov}/Kota`, {
-        headers: {
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `/api/Mutasi/Admin/Referensi/Provinsi/${kode_prov}/Kota`,
+        {
+          headers: {
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(input),
         },
-        method: "POST",
-        body: JSON.stringify(input),
-      });
+      );
+      const { error, message } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil ditambahkan",
-        title: "Data Kota",
+        message: `${message} (Status: ${res.status})`,
+        title: "Referensi Kota",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Data Kota",
+        title: "Referensi Kota",
         variant: "error",
       });
     } finally {
@@ -84,7 +96,8 @@ export default function Page({ params }: { params: Promise<{ kode_prov: string }
           {getValidationError("kode") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kode")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kode")}
               </span>
             </label>
           )}
@@ -110,7 +123,8 @@ export default function Page({ params }: { params: Promise<{ kode_prov: string }
           {getValidationError("kota") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kota")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kota")}
               </span>
             </label>
           )}

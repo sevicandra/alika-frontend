@@ -12,7 +12,8 @@ export default function Page() {
   const router = useRouter();
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(false);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const [data, setData] = useState<{ jenis: string; total: number }[]>();
   const [kantor, setKantor] = useState<
     {
@@ -26,10 +27,10 @@ export default function Page() {
       try {
         const res = await fetch(`/api/Mutasi/Referensi/Kantor`);
         if (!res.ok) {
-          throw new Error("Gagal memuat data estimasi.");
+          const { message } = await res.json();
+          throw new Error(message || "Network response was not ok");
         }
         const { data } = await res.json();
-
         setKantor(data);
       } catch (error) {
         addNotification({
@@ -45,7 +46,7 @@ export default function Page() {
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      setValidationErrors([]);
+      setValidationErrors({});
       setLoading(true);
       const res = await fetch(`/api/Mutasi/Pegawai/Dashboard/Estimasi`, {
         method: "POST",
@@ -59,14 +60,14 @@ export default function Page() {
         body: JSON.stringify(input),
       });
       if (!res.ok) {
-        const { message, errors } = await res.json();
-        if (res.status === 422) {
-          setValidationErrors(errors);
+        const { error } = await res.json();
+        if (error.statusCode === 422) {
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(error.message || "Terjadi kesalahan pada server.");
       }
-      const result = await res.json();
-      setData(result.data);
+      const { data } = await res.json();
+      setData(data);
       addNotification({
         message: "Estimasi biaya berhasil dihitung.",
         title: "Estimasi Biaya",
@@ -123,7 +124,8 @@ export default function Page() {
           {getValidationError("golongan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("golongan")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("golongan")}
               </span>
             </label>
           )}
@@ -144,14 +146,17 @@ export default function Page() {
               value={input.pasangan || ""}
               onChange={(e) => setInput({ ...input, pasangan: e.target.value })}
             >
-              <option value="">Tidak Tertanggung</option>
-              <option value="true">Tertanggung</option>
+              <option value="Tidak Tertanggung" defaultChecked>
+                Tidak Tertanggung
+              </option>
+              <option value="Tertanggung">Tertanggung</option>
             </select>
           </div>
           {getValidationError("pasangan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("pasangan")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("pasangan")}
               </span>
             </label>
           )}
@@ -169,12 +174,16 @@ export default function Page() {
               type="text"
               name="tanggungan_invant"
               className={`input-bordered input w-full pl-10 ${getValidationError("tanggungan_invant") ? "input-error" : ""}`}
-              value={input.tanggungan_invant ? input.tanggungan_invant.toLocaleString("id-ID") : ""}
+              value={
+                input.tanggungan_invant
+                  ? input.tanggungan_invant.toLocaleString("id-ID")
+                  : ""
+              }
               onChange={(e) => {
                 const rawValue = e.target.value.replace(/[^\d]/g, "");
                 const numericValue = /^(0|[1-9]\d*)$/.test(rawValue);
                 if (numericValue || rawValue === "") {
-                  setInput({ ...input, tanggungan_invant: rawValue });
+                  setInput({ ...input, tanggungan_invant: Number(rawValue) });
                 }
               }}
               required
@@ -184,7 +193,7 @@ export default function Page() {
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
                 <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("tanggungan_invant")?.message}
+                {getValidationError("tanggungan_invant")}
               </span>
             </label>
           )}
@@ -202,12 +211,14 @@ export default function Page() {
               type="text"
               name="tanggungan"
               className={`input-bordered input w-full pl-10 ${getValidationError("tanggungan") ? "input-error" : ""}`}
-              value={input.tanggungan ? input.tanggungan.toLocaleString("id-ID") : ""}
+              value={
+                input.tanggungan ? input.tanggungan.toLocaleString("id-ID") : ""
+              }
               onChange={(e) => {
                 const rawValue = e.target.value.replace(/[^\d]/g, "");
                 const numericValue = /^(0|[1-9]\d*)$/.test(rawValue);
                 if (numericValue || rawValue === "") {
-                  setInput({ ...input, tanggungan: rawValue });
+                  setInput({ ...input, tanggungan: Number(rawValue) });
                 }
               }}
               required
@@ -216,7 +227,8 @@ export default function Page() {
           {getValidationError("tanggungan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggungan")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("tanggungan")}
               </span>
             </label>
           )}
@@ -252,7 +264,8 @@ export default function Page() {
           {getValidationError("kantor_asal") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kantor_asal")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kantor_asal")}
               </span>
             </label>
           )}
@@ -289,7 +302,7 @@ export default function Page() {
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
                 <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kantor_tujuan")?.message}
+                {getValidationError("kantor_tujuan")}
               </span>
             </label>
           )}
@@ -299,7 +312,9 @@ export default function Page() {
         <div className="relative mt-6 p-4 before:absolute before:top-0 before:left-0 before:h-1 before:w-full before:rounded-lg before:bg-base-content/50 before:content-['']">
           {data.map((item) => (
             <div key={item.jenis} className="flex justify-between">
-              <p className="text-sm font-semibold">{snackToTitleCase(item.jenis)}</p>
+              <p className="text-sm font-semibold">
+                {snackToTitleCase(item.jenis)}
+              </p>
               <p className="text-lg font-bold">
                 {item.total.toLocaleString("id-ID", {
                   style: "currency",
@@ -323,7 +338,8 @@ export default function Page() {
       )}
       <div className="relative mt-4 before:absolute before:-top-2 before:left-0 before:h-1 before:w-full before:rounded-lg before:bg-base-content/50 before:content-['']">
         <p className="text-sm text-error">
-          * hitungan ini hanya bersifat estimasi dan dapat berbeda dengan hitungan pembayaran.
+          * hitungan ini hanya bersifat estimasi dan dapat berbeda dengan
+          hitungan pembayaran.
         </p>
         <p className="text-sm text-error">
           * Jika ada pertanyaan, silakan hubungi petugas terkait.

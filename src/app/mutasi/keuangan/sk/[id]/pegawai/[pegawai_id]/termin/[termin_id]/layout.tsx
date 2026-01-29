@@ -7,11 +7,15 @@ export default function Layout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ pegawai_id: string; termin_id: string; id: string }>;
+  params: Promise<{ pegawai_id: string; termin_id: string; id: string}>;
 }) {
   const { id, pegawai_id, termin_id } = use(params);
   return (
-    <TerminDetailProvider Sk_id={id} Pegawai_id={pegawai_id} Termin_id={termin_id}>
+    <TerminDetailProvider
+      Sk_id={id}
+      Pegawai_id={pegawai_id}
+      Termin_id={termin_id}
+    >
       <TableProvider>{children}</TableProvider>
     </TerminDetailProvider>
   );

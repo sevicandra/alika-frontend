@@ -25,13 +25,17 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         },
         method: "DELETE",
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { error } = await res.json();
-        throw new Error(error.message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: "Hapus User",
-        message: "Berhasil dihapus",
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
       setRefresh();

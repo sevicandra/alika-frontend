@@ -3,10 +3,17 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl =
+  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
+  process.env.MUTASI_ALIKA_BASE_URL;
 
-export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+export async function POST(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -17,14 +24,17 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const { id } = await params;
 
   try {
-    const suratKeputusan = await fetch(`${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/Selesai`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session}`,
-      },
-      cache: "no-store",
-    });
+    const suratKeputusan = await fetch(
+      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/Selesai`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session}`,
+        },
+        cache: "no-store",
+      }
+    );
 
     if (!suratKeputusan.ok) {
       const data = await suratKeputusan.json();

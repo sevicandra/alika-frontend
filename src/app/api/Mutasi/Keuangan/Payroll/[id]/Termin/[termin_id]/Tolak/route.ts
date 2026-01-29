@@ -3,13 +3,17 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl =
+  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
+  process.env.MUTASI_ALIKA_BASE_URL;
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ id: string; termin_id: string }> }
+  { params }: { params: Promise<{ id: string; termin_id: string }> },
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -33,7 +37,7 @@ export async function POST(
         },
         cache: "no-store",
         body: JSON.stringify(await req.json()),
-      }
+      },
     );
 
     if (!res.ok) {

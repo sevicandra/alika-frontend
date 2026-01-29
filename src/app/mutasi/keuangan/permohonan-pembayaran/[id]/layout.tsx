@@ -45,7 +45,7 @@ export default function Layout({
         {children}
         {action}
       </FormProvider>
-      <div className="mx-4 mb-4 flex justify-between"></div>
+      <div className="mx-4 flex justify-between"></div>
     </div>
   );
 }

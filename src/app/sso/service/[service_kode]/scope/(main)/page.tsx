@@ -10,7 +10,11 @@ import Link from "next/link";
 import Icon from "@/component/Atoms/LabelIcon";
 import { useTable } from "@/context/table.context";
 
-export default function Page({ params }: { params: Promise<{ service_kode: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ service_kode: string }>;
+}) {
   const { service_kode } = use(params);
   const { addNotification } = useNotification();
   const { refresh } = useTable();
@@ -31,17 +35,22 @@ export default function Page({ params }: { params: Promise<{ service_kode: strin
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        searchParams.append("sort", "kode");
 
         setLoading(true);
-        const res = await fetch(`/api/Sso/Service/${service_kode}/Scope?${searchParams}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Sso/Service/${service_kode}/Scope?${searchParams}`,
+          {
+            method: "GET",
+          },
+        );
+        const { error, data, meta } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data, meta } = await res.json();
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
@@ -55,7 +64,14 @@ export default function Page({ params }: { params: Promise<{ service_kode: strin
       }
     };
     fetchData();
-  }, [currentPage, limit, refresh, addNotification, setTotalPage, service_kode]);
+  }, [
+    currentPage,
+    limit,
+    refresh,
+    addNotification,
+    setTotalPage,
+    service_kode,
+  ]);
 
   return (
     <ContainerCard
@@ -80,16 +96,28 @@ export default function Page({ params }: { params: Promise<{ service_kode: strin
                 <td className="p-4">
                   <div className="flex gap-1">
                     <div className="tooltip" data-tip="edit">
-                      <Link href={`/sso/service/${service_kode}/scope/${row.kode}/edit`}>
+                      <Link
+                        href={`/sso/service/${service_kode}/scope/${row.kode}/edit`}
+                      >
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon className="hover:scale-110" icon="SquarePen" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="SquarePen"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>
                     <div className="tooltip" data-tip="hapus">
-                      <Link href={`/sso/service/${service_kode}/scope/${row.kode}/hapus`}>
+                      <Link
+                        href={`/sso/service/${service_kode}/scope/${row.kode}/hapus`}
+                      >
                         <div className="rounded-box bg-error/80 p-1 text-error-content">
-                          <Icon className="hover:scale-110" icon="Trash2" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="Trash2"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>

@@ -15,19 +15,34 @@ export default function Layout({
       <div className="mx-4 mt-4 overflow-x-auto pr-4"></div>
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-start gap-1">
-          <Link href="/penghasilan/cetak/kp4" className="btn btn-xs btn-success">
+          <Link
+            href="/penghasilan/cetak/kp4"
+            className="btn btn-xs btn-success"
+          >
             KP4
           </Link>
-          <Link href="/penghasilan/cetak/skp" className="btn btn-xs btn-success">
+          <Link
+            href="/penghasilan/cetak/skp"
+            className="btn btn-xs btn-success"
+          >
             SKP
           </Link>
-          <Link href="/penghasilan/cetak/daftar-gaji" className="btn btn-xs btn-success">
+          <Link
+            href="/penghasilan/cetak/daftar-gaji"
+            className="btn btn-xs btn-success"
+          >
             Daftar Gaji
           </Link>
-          <Link href="/penghasilan/cetak/1721-A2" className="btn btn-xs btn-success">
+          <Link
+            href="/penghasilan/cetak/1721-A2"
+            className="btn btn-xs btn-success"
+          >
             PPh Pasal 21
           </Link>
-          <Link href="/penghasilan/cetak/1721-VII" className="btn btn-xs btn-success">
+          <Link
+            href="/penghasilan/cetak/1721-VII"
+            className="btn btn-xs btn-success"
+          >
             PPh Pasal 21 Final
           </Link>
         </div>
@@ -36,7 +51,9 @@ export default function Layout({
         {children}
         {action}
       </>
-      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
     </div>
   );
 }

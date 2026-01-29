@@ -25,20 +25,24 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         },
         method: "DELETE",
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        title: "Hapus Data Golongan",
-        message: "Berhasil dihapus",
+        title: "Hapus Referensi Golongan",
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Hapus Data Golongan",
+        title: "Hapus Referensi Golongan",
         variant: "error",
       });
     } finally {

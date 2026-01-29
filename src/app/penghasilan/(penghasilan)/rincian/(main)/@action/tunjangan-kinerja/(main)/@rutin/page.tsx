@@ -41,7 +41,7 @@ const Page = () => {
               pot_absesi: item.abspotr,
               pot_pph: item.potpph,
             };
-          })
+          }),
         );
       } catch (error) {
         setError(error as Error);
@@ -83,17 +83,25 @@ const Page = () => {
             <td className="p-4">{index + 1}</td>
             <td className="p-4">{row.bulan}</td>
             <td className="p-4">{row.grade}</td>
-            <td className="p-4">{row.tunjangan_kinerja.toLocaleString("id-ID")}</td>
-            <td className="p-4">{row.tunjangan_pajak.toLocaleString("id-ID")}</td>
             <td className="p-4">
-              {(row.tunjangan_kinerja + row.tunjangan_pajak).toLocaleString("id-ID")}
+              {row.tunjangan_kinerja.toLocaleString("id-ID")}
+            </td>
+            <td className="p-4">
+              {row.tunjangan_pajak.toLocaleString("id-ID")}
+            </td>
+            <td className="p-4">
+              {(row.tunjangan_kinerja + row.tunjangan_pajak).toLocaleString(
+                "id-ID",
+              )}
             </td>
             <td className="p-4">
               {row.pot_absesi.toLocaleString("id-ID")} (
               {((row.pot_absesi / row.tunjangan_kinerja) * 100).toFixed(2)}%)
             </td>
             <td className="p-4">{row.pot_pph.toLocaleString("id-ID")}</td>
-            <td className="p-4">{(row.pot_absesi + row.pot_pph).toLocaleString("id-ID")}</td>
+            <td className="p-4">
+              {(row.pot_absesi + row.pot_pph).toLocaleString("id-ID")}
+            </td>
             <td className="p-4">
               {(
                 row.tunjangan_kinerja +

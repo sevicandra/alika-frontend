@@ -17,7 +17,8 @@ export default function Page({
   const { setRefresh } = useTable();
   const { id } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -26,26 +27,33 @@ export default function Page({
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/Mutasi/Admin/Referensi/HubunganKeluarga/${id}`, {
-        headers: {
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `/api/Mutasi/Admin/Referensi/HubunganKeluarga/${id}`,
+        {
+          headers: {
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+            "Content-Type": "application/json",
+          },
+          method: "PATCH",
+          body: JSON.stringify(input),
         },
-        method: "PATCH",
-        body: JSON.stringify(input),
-      });
+      );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di ubah",
+        message: `${message} (Status: ${res.status})`,
         title: "Referensi Hubungan Keluarga",
       });
       router.back();
@@ -65,16 +73,27 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Mutasi/Admin/Referensi/HubunganKeluarga/${id}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Mutasi/Admin/Referensi/HubunganKeluarga/${id}`,
+          {
+            method: "GET",
+          },
+        );
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setInput(data);
       } catch (error) {
+        addNotification({
+          title: "Referensi Hubungan Keluarga",
+          message: (error as Error).message,
+          variant: "error",
+        });
         setError(error as Error);
       } finally {
         setLoading(false);
@@ -116,7 +135,8 @@ export default function Page({
           {getValidationError("kode") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kode")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kode")}
               </span>
             </label>
           )}
@@ -142,7 +162,8 @@ export default function Page({
           {getValidationError("nama") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("nama")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("nama")}
               </span>
             </label>
           )}
@@ -172,7 +193,8 @@ export default function Page({
           {getValidationError("jenis") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("jenis")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("jenis")}
               </span>
             </label>
           )}

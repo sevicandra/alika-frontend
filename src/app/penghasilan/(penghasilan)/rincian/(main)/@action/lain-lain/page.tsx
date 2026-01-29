@@ -37,7 +37,7 @@ const Page = () => {
               bruto: item.bruto,
               pph: item.pph,
             };
-          })
+          }),
         );
       } catch (error) {
         setError(error as Error);
@@ -61,7 +61,14 @@ const Page = () => {
         </div>
       )}
       <DataTable
-        columns={["No", "Bulan", "Uarian Pembayaran", "Bruto", "Pot. PPh", "Netto"]}
+        columns={[
+          "No",
+          "Bulan",
+          "Uarian Pembayaran",
+          "Bruto",
+          "Pot. PPh",
+          "Netto",
+        ]}
         data={data || []}
         renderRow={(row, index) => (
           <tr key={index}>
@@ -70,7 +77,9 @@ const Page = () => {
             <td className="p-4">{row.uarian}</td>
             <td className="p-4">{row.bruto.toLocaleString("id-ID")}</td>
             <td className="p-4">{row.pph.toLocaleString("id-ID")}</td>
-            <td className="p-4">{(row.bruto - row.pph).toLocaleString("id-ID")}</td>
+            <td className="p-4">
+              {(row.bruto - row.pph).toLocaleString("id-ID")}
+            </td>
           </tr>
         )}
       />

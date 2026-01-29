@@ -2,9 +2,10 @@
 import { useState, useRef, DragEvent, use } from "react";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
-import Loading from "@/component/Molecules/Loading";
 import Icon from "@/component/Atoms/LabelIcon";
 import { useTable } from "@/context/table.context";
+import { useForm } from "@/context/form.context";
+import Form from "@/component/Organisms/Form";
 export default function Page({
   params,
 }: {
@@ -18,32 +19,23 @@ export default function Page({
   const { addNotification } = useNotification();
   const { setRefresh } = useTable();
   const [loading, setLoading] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [validationErrors, setValidationErrors] = useState<
-    {
-      field: string;
-      message: string;
-    }[]
-  >([]);
+
   const { mutasi_id, pembayaran_id, dokumen_id } = use(params);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
+
+  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!file) {
-      setValidationErrors([{ field: "file", message: "File belum dipilih." }]);
-      addNotification({
-        title: "Gagal",
-        message: "Silakan pilih file terlebih dahulu.",
-        variant: "error",
-      });
-      return;
-    }
-    setLoading(true);
+    if (loading) return;
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", input.file, input.file.name);
+
     try {
+      setLoading(true);
+      setValidationErrors({});
       const res = await fetch(
         `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Pembayaran/${pembayaran_id}/Dokumen/${dokumen_id}/File`,
         {
@@ -55,26 +47,29 @@ export default function Page({
           },
           method: "POST",
           body: formData,
-        }
+        },
       );
-
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil dibuat",
-        title: "Pegawai Mutasi",
+        message: `${message} (Status: ${res.status})`,
+        title: "Import Pegawai",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Pegawai Mutasi",
+        title: "Import Pegawai",
         variant: "error",
       });
     } finally {
@@ -106,10 +101,13 @@ export default function Page({
     const droppedFiles = e.dataTransfer.files;
     if (droppedFiles && droppedFiles.length > 0) {
       if (droppedFiles[0].type === "application/pdf") {
-        setFile(droppedFiles[0]);
-        setValidationErrors([]);
+        setInput({ ...input, file: droppedFiles[0] });
+        setValidationErrors({});
       } else {
-        setValidationErrors([{ field: "file", message: "Hanya file PDF yang diizinkan." }]);
+        setValidationErrors({
+          field: "file",
+          message: "Hanya file PDF yang diizinkan.",
+        });
       }
     }
   };
@@ -117,94 +115,88 @@ export default function Page({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files;
     if (selectedFiles && selectedFiles.length > 0) {
-      setFile(selectedFiles[0]);
-      setValidationErrors([]);
+      if (selectedFiles[0].type === "application/pdf") {
+        setInput({ ...input, file: selectedFiles[0] });
+        setValidationErrors({});
+      } else {
+        setValidationErrors({
+          field: "file",
+          message: "Hanya file PDF yang diizinkan.",
+        });
+      }
     }
   };
 
   return (
-    <div className="flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="card relative w-full max-w-lg bg-base-100 shadow-xl">
-        {loading && (
-          <div className="absolute z-10 flex h-full w-full items-center justify-center rounded-box bg-base-100/80 text-primary">
-            <Loading />
+    <Form
+      title="Upload Dokumen Pendukung"
+      onCancel={() => router.back()}
+      submitForm={submitForm}
+      loading={loading}
+      variant="positive"
+      confirmText="Import"
+      cancelText="Batalkan"
+    >
+      <div className="card-body">
+        <p className="text-sm text-base-content/70">
+          Pastikan file yang diunggah dalam format PDF
+        </p>
+
+        <div
+          className={`relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-8 transition-colors ${
+            isDragging
+              ? "border-primary bg-primary/10"
+              : "border-base-content/20 bg-base-200 hover:border-primary/50"
+          } ${getValidationError("nomor") ? "border-error" : ""}`}
+          onClick={() => fileInputRef.current?.click()}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+          <Icon icon="CloudUpload" height={20} />
+          <p className="text-center text-sm text-base-content/70">
+            <span className="font-semibold text-primary">
+              Klik untuk mengunggah
+            </span>{" "}
+            atau seret dan lepas
+          </p>
+          <p className="text-xs text-base-content/50">Hanya PDF</p>
+          <input
+            ref={fileInputRef}
+            name="file"
+            type="file"
+            className="hidden"
+            accept="application/pdf"
+            onChange={handleFileChange}
+          />
+        </div>
+        {input.file && (
+          <div className="rounded-md border border-base-content/20 bg-base-200 p-3 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="truncate pr-2">{input.file.name}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setInput({ ...input, file: undefined });
+                  setValidationErrors({});
+                }}
+                className="btn btn-circle text-error btn-ghost btn-xs"
+              >
+                <Icon icon="x" height={16} />
+              </button>
+            </div>
           </div>
         )}
-        <div className="card-body">
-          <p className="text-sm text-base-content/70">
-            Pastikan file yang diunggah dalam format PDF dan ukuran tidak melebihi 5MB.
-          </p>
-
-          <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-            <div
-              className={`relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-8 transition-colors ${
-                isDragging
-                  ? "border-primary bg-primary/10"
-                  : "border-base-content/20 bg-base-200 hover:border-primary/50"
-              } ${validationErrors.find((item) => item.field === "file") ? "border-error" : ""}`}
-              onClick={() => fileInputRef.current?.click()}
-              onDragEnter={handleDragEnter}
-              onDragLeave={handleDragLeave}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-            >
-              <Icon icon="CloudUpload" height={20} />
-              <p className="text-center text-sm text-base-content/70">
-                <span className="font-semibold text-primary">Klik untuk mengunggah</span> atau seret
-                dan lepas
-              </p>
-              <p className="text-xs text-base-content/50">Hanya PDF</p>
-              <input
-                ref={fileInputRef}
-                name="file"
-                type="file"
-                className="hidden"
-                accept="application/pdf"
-                onChange={handleFileChange}
-              />
-            </div>
-
-            {validationErrors.find((e) => e.field === "file") && (
-              <p className="label-text-alt -mt-2 text-xs font-bold text-error">
-                {validationErrors.find((e) => e.field === "file")?.message}
-              </p>
-            )}
-
-            {file && !validationErrors.length && (
-              <div className="rounded-md border border-base-content/20 bg-base-200 p-3 text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="truncate pr-2">{file.name}</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFile(null);
-                      if (fileInputRef.current) {
-                        fileInputRef.current.value = "";
-                      }
-                    }}
-                    className="btn btn-circle text-error btn-ghost btn-xs"
-                  >
-                    <Icon icon="x" height={16} />
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <div className="card-actions justify-end">
-              <button type="button" onClick={() => router.back()} className="btn btn-ghost">
-                Batal
-              </button>
-              <button
-                type="submit"
-                className={`btn btn-primary ${(!file || loading) && "btn-disabled"}`}
-                disabled={!file || loading}
-              >
-                {loading ? "Mengunggah..." : "Unggah"}
-              </button>
-            </div>
-          </form>
-        </div>
+        {getValidationError("file") && (
+          <label className="label">
+            <span className="label-text-alt flex items-center gap-1 text-error">
+              <Icon icon="CircleAlert" height={16} />{" "}
+              {getValidationError("file")}
+            </span>
+          </label>
+        )}
       </div>
-    </div>
+    </Form>
   );
 }

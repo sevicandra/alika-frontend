@@ -18,7 +18,8 @@ export default function Page({
   const { setRefresh } = useTable();
   const { service_kode, role_kode } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -27,40 +28,41 @@ export default function Page({
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/Sso/Service/${service_kode}/Role/${role_kode}`, {
-        headers: {
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `/api/Sso/Service/${service_kode}/Role/${role_kode}`,
+        {
+          headers: {
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+            "Content-Type": "application/json",
+          },
+          method: "PATCH",
+          body: JSON.stringify(input),
         },
-        method: "PATCH",
-        body: JSON.stringify(input),
-      });
+      );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { error } = await res.json();
         if (res.status === 422) {
-          const errorArray: { field: string; message: string }[] = Object.entries(
-            error.details
-          ).map(([field, message]) => ({
-            field,
-            message: message as string,
-          }));
-          setValidationErrors(errorArray);
+          setValidationErrors(error.details);
         }
-        throw new Error(error.message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di ubah",
-        title: "Role",
+        message: `${message} (Status: ${res.status})`,
+        title: "Edit Role",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Role",
+        title: "Edit Role",
         variant: "error",
       });
     } finally {
@@ -72,14 +74,20 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Sso/Service/${service_kode}/Role/${role_kode}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Sso/Service/${service_kode}/Role/${role_kode}`,
+          {
+            method: "GET",
+          },
+        );
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { error } = await res.json();
-          throw new Error(error.message || "Terjadi kesalahan pada server.");
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setInput(data);
       } catch (error) {
         setError(error as Error);
@@ -128,7 +136,7 @@ export default function Page({
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("kode")?.message}</span>
+                <span>{getValidationError("kode")}</span>
               </span>
             </label>
           )}
@@ -159,7 +167,7 @@ export default function Page({
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("role")?.message}</span>
+                <span>{getValidationError("role")}</span>
               </span>
             </label>
           )}
@@ -185,7 +193,7 @@ export default function Page({
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("description")?.message}</span>
+                <span>{getValidationError("description")}</span>
               </span>
             </label>
           )}

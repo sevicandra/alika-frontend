@@ -12,7 +12,8 @@ import Icon from "@/component/Atoms/LabelIcon";
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
-  const { refresh, searchs, searchsTerm, setSearchsTerm, filter, setFilter } = useTable();
+  const { refresh, searchs, searchsTerm, setSearchsTerm, filter, setFilter } =
+    useTable();
 
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [data, setData] = useState<
@@ -41,16 +42,20 @@ export default function Page() {
         if (jenjang) searchParams.append("jenjang", jenjang);
         if (status) searchParams.append("status", status);
         if (search) searchParams.append("search", search);
-        const res = await fetch(`/api/Mutasi/Keuangan/SuratKeputusan?${searchParams}`, {
-          method: "GET",
-        });
-
+        const res = await fetch(
+          `/api/Mutasi/Keuangan/SuratKeputusan?${searchParams}`,
+          {
+            method: "GET",
+          },
+        );
+        const { error, data, meta } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-
-        const { data, meta } = await res.json();
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
@@ -65,7 +70,15 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [refresh, searchs, filter, limit, currentPage, addNotification, setTotalPage]);
+  }, [
+    refresh,
+    searchs,
+    filter,
+    limit,
+    currentPage,
+    addNotification,
+    setTotalPage,
+  ]);
 
   return (
     <ContainerCard
@@ -134,7 +147,8 @@ export default function Page() {
                       })}
                     </li>
                     <li>
-                      <span className="font-semibold">Perihal:</span> {row.uraian}
+                      <span className="font-semibold">Perihal:</span>{" "}
+                      {row.uraian}
                     </li>
                   </ul>
                 </>
@@ -142,7 +156,8 @@ export default function Page() {
               detail={
                 <ul>
                   <li>
-                    <span className="font-semibold">Jenjang:</span> {row.jenjang}
+                    <span className="font-semibold">Jenjang:</span>{" "}
+                    {row.jenjang}
                   </li>
                   <li>
                     <span className="font-semibold">TMT:</span>{" "}
@@ -177,21 +192,33 @@ export default function Page() {
                       <div className="tooltip" data-tip="Payroll">
                         <Link href={`/mutasi/keuangan/sk/${row.id}/payroll`}>
                           <div className="rounded-box bg-info/80 p-1 text-info-content">
-                            <Icon className="hover:scale-110" icon="Upload" height={16} />
+                            <Icon
+                              className="hover:scale-110"
+                              icon="Upload"
+                              height={16}
+                            />
                           </div>
                         </Link>
                       </div>
                       <div className="tooltip" data-tip="Pegawai">
                         <Link href={`/mutasi/keuangan/sk/${row.id}/pegawai`}>
                           <div className="rounded-box bg-info/80 p-1 text-info-content">
-                            <Icon className="hover:scale-110" icon="PeopleArrows" height={16} />
+                            <Icon
+                              className="hover:scale-110"
+                              icon="PeopleArrows"
+                              height={16}
+                            />
                           </div>
                         </Link>
                       </div>
                       <div className="tooltip" data-tip="File">
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
                           <Link href={`/mutasi/keuangan/sk/${row.id}/file`}>
-                            <Icon className="hover:scale-110" icon="File" height={16} />
+                            <Icon
+                              className="hover:scale-110"
+                              icon="File"
+                              height={16}
+                            />
                           </Link>
                         </div>
                       </div>

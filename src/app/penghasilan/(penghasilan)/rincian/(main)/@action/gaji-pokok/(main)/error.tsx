@@ -18,7 +18,9 @@ export default function Error({
       <div className="mb-6 flex justify-center">
         <LuServerCrash className="text-error h-20 w-20" />
       </div>
-      <p className="mb-6 text-lg text-neutral-600">Ups! Sepertinya ada yang salah.</p>
+      <p className="mb-6 text-lg text-neutral-600">
+        Ups! Sepertinya ada yang salah.
+      </p>
       <button
         onClick={() => reset()}
         className="bg-error hover:bg-error-600 text-error-content inline-block rounded-full px-2 py-1 shadow transition"

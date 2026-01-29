@@ -4,10 +4,14 @@ import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 import { revalidateTag } from "next/cache";
 
-const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl =
+  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
+  process.env.MUTASI_ALIKA_BASE_URL;
 
 export async function GET(req: Request) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -17,7 +21,9 @@ export async function GET(req: Request) {
   }
 
   const url = new URL(req.url);
-  const limit = url.searchParams.get("limit") ? Number(url.searchParams.get("limit")) : undefined;
+  const limit = url.searchParams.get("limit")
+    ? Number(url.searchParams.get("limit"))
+    : undefined;
   const offset = url.searchParams.get("offset")
     ? Number(url.searchParams.get("offset"))
     : undefined;
@@ -42,7 +48,7 @@ export async function GET(req: Request) {
           Authorization: `Bearer ${session}`,
         },
         cache: "no-store",
-      }
+      },
     );
 
     if (!suratKeputusan.ok) {
@@ -55,9 +61,27 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
+const MAX_SIZE = 100 * 1024 * 1024; // 100MB
 
 export async function POST(req: Request) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const contentLength = req.headers.get("content-length");
+
+  if (contentLength && parseInt(contentLength) > MAX_SIZE) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: {
+          message: "File is too large",
+          code: "FILE_TOO_LARGE",
+        },
+      },
+      { status: 413 },
+    );
+  }
+
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -68,29 +92,18 @@ export async function POST(req: Request) {
 
   const formData = await req.formData();
 
-  const file = formData.get("file") as File;
-  const nomor = formData.get("nomor") as string;
-  const uraian = formData.get("uraian") as string;
-  const tanggal = formData.get("tanggal") as string;
-  const tmt = formData.get("tmt") as string;
-  const jenjang = formData.get("jenjang") as string;
-
-  const backendForm = new FormData();
-  backendForm.set("file", file, file.name);
-  backendForm.set("nomor", nomor);
-  backendForm.set("uraian", uraian);
-  backendForm.set("tanggal", tanggal);
-  backendForm.set("tmt", tmt);
-  backendForm.set("jenjang", jenjang);
   try {
-    const suratKeputusan = await fetch(`${apiBaseUrl}/api/v2/SDM/SuratKeputusan`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${session}`,
+    const suratKeputusan = await fetch(
+      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session}`,
+        },
+        body: formData,
+        cache: "no-store",
       },
-      body: backendForm as any,
-      cache: "no-store",
-    });
+    );
     if (!suratKeputusan.ok) {
       const data = await suratKeputusan.json();
       return NextResponse.json(data, { status: suratKeputusan.status });

@@ -16,12 +16,18 @@ export default function Page() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const tukin = await fetch("/api/Penghasilan/Tukin/Rekap/?tahun=" + tahun, {
-          method: "GET",
-        });
-        const kekurangan = await fetch("/api/Penghasilan/KekuranganTukin/Rekap?tahun=" + tahun, {
-          method: "GET",
-        });
+        const tukin = await fetch(
+          "/api/Penghasilan/Tukin/Rekap/?tahun=" + tahun,
+          {
+            method: "GET",
+          },
+        );
+        const kekurangan = await fetch(
+          "/api/Penghasilan/KekuranganTukin/Rekap?tahun=" + tahun,
+          {
+            method: "GET",
+          },
+        );
         if (!tukin.ok) {
           const { message } = await tukin.json();
           throw new Error(message);
@@ -49,7 +55,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [tahun, addNotification]);
+  }, [tahun,addNotification]);
   if (error) throw error;
   return (
     <StatCard

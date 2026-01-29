@@ -22,14 +22,12 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/Mutasi/Pegawai/Dashboard/Status");
-        if (!response.ok) {
-          if (response.status === 404) {
-            return;
-          }
-          throw new Error("Network response was not ok");
+        const res = await fetch("/api/Mutasi/Pegawai/Dashboard/Status");
+        if (!res.ok) {
+          const { message } = await res.json();
+          throw new Error(message || "Network response was not ok");
         }
-        const { data } = await response.json();
+        const { data } = await res.json();
 
         setData(data);
       } catch (error) {
@@ -54,7 +52,9 @@ export default function Page() {
         <p className="text-sm">Status Mutasi</p>
       </div>
       {loading && <Loading direction="horizontal" />}
-      {!loading && !data && <p className="text-sm text-base-content/60">Tidak ada data</p>}
+      {!loading && !data && (
+        <p className="text-sm text-base-content/60">Tidak ada data</p>
+      )}
       {!loading && data && (
         <div className="">
           <p className="font-bold">{data?.nomor}</p>

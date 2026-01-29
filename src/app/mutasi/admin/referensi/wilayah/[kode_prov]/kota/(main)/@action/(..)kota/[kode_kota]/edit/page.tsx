@@ -18,7 +18,8 @@ export default function Page({
   const { setRefresh } = useTable();
   const { kode_prov, kode_kota } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -38,25 +39,29 @@ export default function Page({
           },
           method: "PATCH",
           body: JSON.stringify(input),
-        }
+        },
       );
+      const { error, message } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di ubah",
-        title: "Data Provinsi",
+        message: `${message} (Status: ${res.status})`,
+        title: "Referensi Kota",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Data Kota",
+        title: "Referensi Kota",
         variant: "error",
       });
     } finally {
@@ -71,11 +76,15 @@ export default function Page({
           `/api/Mutasi/Admin/Referensi/Provinsi/${kode_prov}/Kota/${kode_kota}`,
           {
             method: "GET",
-          }
+          },
         );
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          const { error } = await res.json();
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
         const { data } = await res.json();
         setInput(data);
@@ -121,7 +130,8 @@ export default function Page({
           {getValidationError("kode") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kode")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kode")}
               </span>
             </label>
           )}
@@ -147,7 +157,8 @@ export default function Page({
           {getValidationError("kota") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("kota")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("kota")}
               </span>
             </label>
           )}

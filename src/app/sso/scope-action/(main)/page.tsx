@@ -30,17 +30,19 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (offset) searchParams.append("offset", offset.toString());
-        searchParams.append("sort", "kode");
 
         setLoading(true);
         const res = await fetch(`/api/Sso/ScopeAction?${searchParams}`, {
           method: "GET",
         });
+        const { error, data, meta } = await res.json();
         if (!res.ok) {
-          const { error } = await res.json();
-          throw new Error(error.message || "Terjadi kesalahan pada server.");
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data, meta } = await res.json();
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
@@ -81,14 +83,22 @@ export default function Page() {
                     <div className="tooltip" data-tip="edit">
                       <Link href={`/sso/scope-action/${row.id}/edit`}>
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
-                          <Icon className="hover:scale-110" icon="SquarePen" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="SquarePen"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>
                     <div className="tooltip" data-tip="hapus">
                       <Link href={`/sso/scope-action/${row.id}/hapus`}>
                         <div className="rounded-box bg-error/80 p-1 text-error-content">
-                          <Icon className="hover:scale-110" icon="Trash2" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="Trash2"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>

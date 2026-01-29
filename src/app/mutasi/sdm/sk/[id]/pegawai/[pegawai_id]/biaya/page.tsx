@@ -44,13 +44,16 @@ export default function Page({
           `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/RincianBiaya`,
           {
             method: "GET",
-          }
+          },
         );
+        const { error, data } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setData(data);
       } catch (error) {
         addNotification({
@@ -84,7 +87,8 @@ export default function Page({
     >
       <div className="relative grid grid-rows-[1fr_auto] overflow-hidden">
         <div className="overflow-y-auto py-2">
-          {pegawai?.process_biaya === "PROCESSING" || pegawai?.process_biaya === "RETRYING" ? (
+          {pegawai?.process_biaya === "PROCESSING" ||
+          pegawai?.process_biaya === "RETRYING" ? (
             <Onproccess
               refresh={() => {
                 setRefresh();
@@ -114,8 +118,12 @@ export default function Page({
                   <tr key={index}>
                     <td className="px-4 py-2">{index + 1}</td>
                     <td className="px-4 py-2">{snackToTitleCase(row.jenis)}</td>
-                    <td className="px-4 py-2">{row.sub_jenis ? row.sub_jenis : "-"}</td>
-                    <td className="px-4 py-2">{row.keterangan ? row.keterangan : "-"}</td>
+                    <td className="px-4 py-2">
+                      {row.sub_jenis ? row.sub_jenis : "-"}
+                    </td>
+                    <td className="px-4 py-2">
+                      {row.keterangan ? row.keterangan : "-"}
+                    </td>
                     <td className="px-4 py-2">{row.volume}</td>
                     <td className="px-4 py-2">
                       {row.harga_satuan.toLocaleString("id-ID", {
@@ -152,7 +160,11 @@ export default function Page({
                                   href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/biaya/${row.id}/hapus`}
                                 >
                                   <div className="rounded-box bg-error/80 p-1 text-error-content">
-                                    <Icon className="hover:scale-110" icon="Trash2" height={16} />
+                                    <Icon
+                                      className="hover:scale-110"
+                                      icon="Trash2"
+                                      height={16}
+                                    />
                                   </div>
                                 </Link>
                               </div>

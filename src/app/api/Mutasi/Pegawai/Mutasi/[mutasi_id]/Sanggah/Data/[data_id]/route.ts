@@ -3,18 +3,22 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl =
+  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
+  process.env.MUTASI_ALIKA_BASE_URL;
 
-export async function GET(
+export async function DELETE(
   req: Request,
   params: {
     params: Promise<{
       mutasi_id: string;
-      sanggah_id: string;
+      data_id: string;
     }>;
-  }
+  },
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -23,20 +27,19 @@ export async function GET(
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
 
-  const { mutasi_id, sanggah_id } = await params.params;
+  const { mutasi_id, data_id } = await params.params;
 
   try {
     const res = await fetch(
-      `${apiBaseUrl}/api/v2/Pegawai/Mutasi/${mutasi_id}/Sanggah/${sanggah_id}/Data`,
+      `${apiBaseUrl}/api/v2/Pegawai/Mutasi/${mutasi_id}/Sanggah/Data/${data_id}`,
       {
-        method: "GET",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session}`,
         },
-        body: JSON.stringify(await req.json()),
         cache: "no-store",
-      }
+      },
     );
 
     if (!res.ok) {

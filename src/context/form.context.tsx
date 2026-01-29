@@ -1,37 +1,31 @@
 "use client";
-import { createContext, useState, useMemo, useContext, useCallback } from "react";
+import {
+  createContext,
+  useState,
+  useMemo,
+  useContext,
+  useCallback,
+} from "react";
 type FormContextType = {
   input: { [key: string]: any };
   setInput: (input: { [key: string]: any }) => void;
   getValidationError: (field: string) =>
-    | {
-        field: string | null;
-        message: string;
-      }
+    | string
     | undefined;
-  setValidationErrors: (
-    errors: {
-      field: string | null;
-      message: string;
-    }[]
-  ) => void;
+  setValidationErrors: (validationErrors: { [key: string]: string }) => void;
 };
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
 
 export function FormProvider({ children }: { children: React.ReactNode }) {
   const [input, setInput] = useState<{ [key: string]: any }>({});
-  const [validationErrors, setValidationErrors] = useState<
-    {
-      field: string | null;
-      message: string;
-    }[]
-  >([]);
+  const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
+
   const getValidationError = useCallback(
     (field: string) => {
-      return validationErrors.find((e) => e.field === field);
+      return validationErrors[field]
     },
-    [validationErrors]
+    [validationErrors],
   );
 
   const value = useMemo(
@@ -41,7 +35,7 @@ export function FormProvider({ children }: { children: React.ReactNode }) {
       getValidationError,
       setValidationErrors,
     }),
-    [input, getValidationError]
+    [input, getValidationError],
   );
   return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
 }

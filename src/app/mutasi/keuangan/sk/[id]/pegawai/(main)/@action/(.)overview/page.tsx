@@ -13,19 +13,26 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   async function submitForm() {
     try {
       setLoading(true);
-      const res = await fetch(`/api/Mutasi/Keuangan/SuratKeputusan/${id}/Overview`, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
+      const res = await fetch(
+        `/api/Mutasi/Keuangan/SuratKeputusan/${id}/Overview`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+          },
+          method: "GET",
         },
-        method: "GET",
-      });
+      );
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        const { error } = await res.json();
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       router.back();
       // set pdf dokumen to download

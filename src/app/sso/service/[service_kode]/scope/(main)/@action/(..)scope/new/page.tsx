@@ -7,10 +7,15 @@ import { useForm } from "@/context/form.context";
 import { useTable } from "@/context/table.context";
 import Form from "@/component/Organisms/Form";
 
-export default function Page({ params }: { params: Promise<{ service_kode: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ service_kode: string }>;
+}) {
   const { service_kode } = use(params);
   const { setRefresh } = useTable();
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -30,23 +35,28 @@ export default function Page({ params }: { params: Promise<{ service_kode: strin
         method: "POST",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
+
       addNotification({
-        message: "Berhasil ditabahkan",
-        title: "Scope",
+        message: `${message} (Status: ${res.status})`,
+        title: "Create Scope",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Scope",
+        title: "Create Scope",
         variant: "error",
       });
     } finally {
@@ -90,7 +100,7 @@ export default function Page({ params }: { params: Promise<{ service_kode: strin
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("kode")?.message}</span>
+                <span>{getValidationError("kode")}</span>
               </span>
             </label>
           )}
@@ -121,7 +131,33 @@ export default function Page({ params }: { params: Promise<{ service_kode: strin
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("scope")?.message}</span>
+                <span>{getValidationError("scope")}</span>
+              </span>
+            </label>
+          )}
+        </div>
+        {/* --- Field Deskripsi --- */}
+        <div className="form-control md:col-span-2">
+          <label className="label">
+            <span className="label-text font-semibold">Deskripsi</span>
+          </label>
+          <textarea
+            name="description"
+            className={`textarea-bordered textarea h-24 w-full ${getValidationError("description") ? "textarea-error" : ""}`}
+            placeholder="Tentang dari Surat Keputusan..."
+            value={input.description || ""}
+            onChange={(e) => {
+              setInput({ ...input, description: e.target.value });
+            }}
+            required
+          ></textarea>
+          {getValidationError("description") && (
+            <label className="label">
+              <span className="label-text-alt grid grid-cols-[auto_1fr] items-center gap-2 pt-1 text-sm text-error">
+                <span>
+                  <Icon icon="CircleAlert" height={16} />{" "}
+                </span>
+                <span>{getValidationError("description")}</span>
               </span>
             </label>
           )}

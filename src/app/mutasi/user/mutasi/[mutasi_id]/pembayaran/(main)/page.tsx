@@ -24,17 +24,23 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Pembayaran`);
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
+        const res = await fetch(
+          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Pembayaran`,
+        );
+        const { error, data, meta } = await res.json();
+        if (!res.ok) {
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await response.json();
         setData(data);
       } catch (error) {
         setError(error as Error);
         addNotification({
-          title: "Gagal Memuat Data Pembayaran Mutasi",
-          message: `Gagal memuat data pembayaran mutasi: ${error instanceof Error ? error.message : "Unknown error"}`,
+          title: "Fetch Data Pembayaran Mutasi",
+          message: (error as Error).message || "Unknown Error",
           variant: "error",
         });
       } finally {
@@ -76,9 +82,15 @@ export default function Page({
                 <td className="p-4">{row.status}</td>
                 <td className="p-4">
                   <div className="tooltip" data-tip="Detail">
-                    <Link href={`/mutasi/user/mutasi/${mutasi_id}/pembayaran/${row.id}`}>
+                    <Link
+                      href={`/mutasi/user/mutasi/${mutasi_id}/pembayaran/${row.id}`}
+                    >
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon className="hover:scale-110" icon="Eye" height={16} />
+                        <Icon
+                          className="hover:scale-110"
+                          icon="Eye"
+                          height={16}
+                        />
                       </div>
                     </Link>
                   </div>

@@ -23,8 +23,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         },
       });
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        const { error } = await res.json();
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Terjadi kesalahan pada server.",
+        );
       }
 
       addNotification({

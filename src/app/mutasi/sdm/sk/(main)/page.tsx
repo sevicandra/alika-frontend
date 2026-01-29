@@ -12,7 +12,8 @@ import Icon from "@/component/Atoms/LabelIcon";
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
-  const { refresh, setFilter, searchsTerm, setSearchsTerm, filter, searchs } = useTable();
+  const { refresh, setFilter, searchsTerm, setSearchsTerm, filter, searchs } =
+    useTable();
 
   const { page: currentPage, limit, setTotalPage } = usePaginator();
   const [data, setData] = useState<
@@ -39,16 +40,21 @@ export default function Page() {
         if (search) searchParams.append("search", search);
         if (jenjang) searchParams.append("jenjang", jenjang);
         if (status) searchParams.append("status", status);
-        const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan?${searchParams}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Mutasi/SDM/SuratKeputusan?${searchParams}`,
+          {
+            method: "GET",
+          },
+        );
 
+        const { error, data, meta } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-
-        const { data, meta } = await res.json();
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {
@@ -62,7 +68,15 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [refresh, filter, currentPage, searchs, limit, addNotification, setTotalPage]);
+  }, [
+    refresh,
+    filter,
+    currentPage,
+    searchs,
+    limit,
+    addNotification,
+    setTotalPage,
+  ]);
 
   return (
     <ContainerCard
@@ -131,7 +145,8 @@ export default function Page() {
                       })}
                     </li>
                     <li>
-                      <span className="font-semibold">Perihal:</span> {row.uraian}
+                      <span className="font-semibold">Perihal:</span>{" "}
+                      {row.uraian}
                     </li>
                   </ul>
                 </>
@@ -139,7 +154,8 @@ export default function Page() {
               detail={
                 <ul>
                   <li>
-                    <span className="font-semibold">Jenjang:</span> {row.jenjang}
+                    <span className="font-semibold">Jenjang:</span>{" "}
+                    {row.jenjang}
                   </li>
                   <li>
                     <span className="font-semibold">TMT:</span>{" "}
@@ -167,14 +183,22 @@ export default function Page() {
                       <div className="tooltip" data-tip="edit">
                         <Link href={`/mutasi/sdm/sk/${row.id}/edit`}>
                           <div className="rounded-box bg-info/80 p-1 text-info-content">
-                            <Icon className="hover:scale-110" icon="SquarePen" height={16} />
+                            <Icon
+                              className="hover:scale-110"
+                              icon="SquarePen"
+                              height={16}
+                            />
                           </div>
                         </Link>
                       </div>
                       <div className="tooltip" data-tip="timeline">
                         <Link href={`/mutasi/sdm/sk/${row.id}/timeline`}>
                           <div className="rounded-box bg-info/80 p-1 text-info-content">
-                            <Icon className="hover:scale-110" icon="CalendarDays" height={16} />
+                            <Icon
+                              className="hover:scale-110"
+                              icon="CalendarDays"
+                              height={16}
+                            />
                           </div>
                         </Link>
                       </div>
@@ -183,14 +207,22 @@ export default function Page() {
                   <div className="tooltip" data-tip="Pegawai">
                     <Link href={`/mutasi/sdm/sk/${row.id}/pegawai`}>
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon className="hover:scale-110" icon="PeopleArrows" height={16} />
+                        <Icon
+                          className="hover:scale-110"
+                          icon="PeopleArrows"
+                          height={16}
+                        />
                       </div>
                     </Link>
                   </div>
                   <div className="tooltip" data-tip="File">
                     <div className="rounded-box bg-info/80 p-1 text-info-content">
                       <Link href={`/mutasi/sdm/sk/${row.id}/file`}>
-                        <Icon className="hover:scale-110" icon="File" height={16} />
+                        <Icon
+                          className="hover:scale-110"
+                          icon="File"
+                          height={16}
+                        />
                       </Link>
                     </div>
                   </div>
@@ -199,14 +231,22 @@ export default function Page() {
                       <div className="tooltip" data-tip="Publish">
                         <Link href={`/mutasi/sdm/sk/${row.id}/publish`}>
                           <div className="rounded-box bg-success/80 p-1 text-success-content">
-                            <Icon className="hover:scale-110" icon="Send" height={16} />
+                            <Icon
+                              className="hover:scale-110"
+                              icon="Send"
+                              height={16}
+                            />
                           </div>
                         </Link>
                       </div>
                       <div className="tooltip" data-tip="hapus">
                         <Link href={`/mutasi/sdm/sk/${row.id}/delete`}>
                           <div className="rounded-box bg-error/80 p-1 text-error-content">
-                            <Icon className="hover:scale-110" icon="Trash2" height={16} />
+                            <Icon
+                              className="hover:scale-110"
+                              icon="Trash2"
+                              height={16}
+                            />
                           </div>
                         </Link>
                       </div>
@@ -216,7 +256,11 @@ export default function Page() {
                     <div className="tooltip" data-tip="batal">
                       <Link href={`/mutasi/sdm/sk/${row.id}/batal`}>
                         <div className="rounded-box bg-error/80 p-1 text-error-content">
-                          <Icon className="hover:scale-110" icon="CircleX" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="CircleX"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>
@@ -225,7 +269,11 @@ export default function Page() {
                     <div className="tooltip" data-tip="selesai">
                       <Link href={`/mutasi/sdm/sk/${row.id}/selesai`}>
                         <div className="rounded-box bg-success/80 p-1 text-success-content">
-                          <Icon className="hover:scale-110" icon="CircleCheck" height={16} />
+                          <Icon
+                            className="hover:scale-110"
+                            icon="CircleCheck"
+                            height={16}
+                          />
                         </div>
                       </Link>
                     </div>

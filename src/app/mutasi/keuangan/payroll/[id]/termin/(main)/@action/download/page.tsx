@@ -2,10 +2,11 @@
 import { useState, use } from "react";
 import { usePayroll } from "@/context/mutasi/keu";
 import { useNotification } from "@/context/notifikasi";
-import Loading from "@/component/Molecules/Loading";
 import { useRouter } from "next/navigation";
 import Icon from "@/component/Atoms/LabelIcon";
 import { DataTable } from "@/component/Organisms/DataTable";
+import Form from "@/component/Organisms/Form";
+import { useForm } from "@/context/form.context";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { addNotification } = useNotification();
@@ -13,15 +14,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { setRefresh, termin, tanggal, setTanggal } = usePayroll();
   const [loading, setLoading] = useState(false);
   const { id } = use(params);
-  const [validationErrors, setValidationErrors] = useState<
-    {
-      field: string | null;
-      message: string;
-    }[]
-  >([]);
-  const getValidationError = (field: string) => {
-    return validationErrors.find((e) => e.field === field);
-  };
+  const { getValidationError, setValidationErrors, setInput, input } =
+    useForm();
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
@@ -40,16 +34,16 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         }),
       });
       if (!res.ok) {
-        const { message, errors } = await res.json();
+        const { error } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
-      addNotification({
-        message: "Berhasil di ubah",
-        title: "Surat Keputusan",
-      });
       const contentDisposition = res.headers.get("Content-Disposition");
       let filename = "dokumen.xlsx";
       if (contentDisposition) {
@@ -81,18 +75,23 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     }
   }
   return (
-    <form onSubmit={submitForm} noValidate>
-      {loading && (
-        <div className="absolute z-10 flex h-full w-full text-primary-600">
-          <Loading />
-        </div>
-      )}
+    <Form
+      title="Download Payroll"
+      onCancel={() => router.back()}
+      submitForm={submitForm}
+      loading={loading}
+      variant="positive"
+      confirmText="Download"
+      cancelText="Kembali"
+    >
       <div className="bg-base-100 shadow-xl">
         <div className="p-4">
           <div className="grid grid-cols-1 gap-x-8 gap-y-6">
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">Rincian Payroll</span>
+                <span className="label-text font-semibold">
+                  Rincian Payroll
+                </span>
               </label>
               <div className="relative max-h-36 overflow-auto">
                 <DataTable
@@ -135,7 +134,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             {/* --- Field Tanggal --- */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold">Tanggal Payroll</span>
+                <span className="label-text font-semibold">
+                  Tanggal Payroll
+                </span>
               </label>
               <div className="relative">
                 <span className="absolute top-1/2 left-3 z-10 -translate-y-1/2 text-base-content/50">
@@ -145,29 +146,24 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                   name="tanggal"
                   type="date"
                   className={`input-bordered input w-full pl-10 ${getValidationError("tanggal") ? "input-error" : ""}`}
-                  value={new Date(tanggal).toISOString().slice(0, 10)}
-                  onChange={(e) => setTanggal(new Date(e.target.value))}
+                  value={input.tanggal || ""}
+                  onChange={(e) =>
+                    setInput({ ...input, tanggal: e.target.value })
+                  }
                 />
               </div>
               {getValidationError("tanggal") && (
                 <label className="label">
                   <span className="label-text-alt flex items-center gap-1 text-error">
-                    <Icon icon="CircleAlert" height={16} /> {getValidationError("tanggal")?.message}
+                    <Icon icon="CircleAlert" height={16} />{" "}
+                    {getValidationError("tanggal")}
                   </span>
                 </label>
               )}
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-end gap-4 bg-base-200/50 px-8 py-4">
-          <button type="button" className="btn btn-ghost" onClick={() => router.back()}>
-            <Icon icon="ArrowLeft" height={16} /> Batal
-          </button>
-          <button type="submit" className="btn text-nowrap btn-primary">
-            <Icon icon="FileText" height={16} /> Download
-          </button>
-        </div>
       </div>
-    </form>
+    </Form>
   );
 }

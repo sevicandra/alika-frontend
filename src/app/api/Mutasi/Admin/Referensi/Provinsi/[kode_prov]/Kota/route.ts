@@ -3,10 +3,17 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl =
+  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
+  process.env.MUTASI_ALIKA_BASE_URL;
 
-export async function GET(req: Request, { params }: { params: Promise<{ kode_prov: string }> }) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ kode_prov: string }> },
+) {
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -17,7 +24,9 @@ export async function GET(req: Request, { params }: { params: Promise<{ kode_pro
   const { kode_prov } = await params;
 
   const url = new URL(req.url);
-  const limit = url.searchParams.get("limit") ? Number(url.searchParams.get("limit")) : undefined;
+  const limit = url.searchParams.get("limit")
+    ? Number(url.searchParams.get("limit"))
+    : undefined;
   const offset = url.searchParams.get("offset")
     ? Number(url.searchParams.get("offset"))
     : undefined;
@@ -38,7 +47,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ kode_pro
           Authorization: `Bearer ${session}`,
         },
         cache: "no-store",
-      }
+      },
     );
 
     if (!res.ok) {
@@ -52,8 +61,13 @@ export async function GET(req: Request, { params }: { params: Promise<{ kode_pro
   }
 }
 
-export async function POST(req: Request, { params }: { params: Promise<{ kode_prov: string }> }) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+export async function POST(
+  req: Request,
+  { params }: { params: Promise<{ kode_prov: string }> },
+) {
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -63,15 +77,18 @@ export async function POST(req: Request, { params }: { params: Promise<{ kode_pr
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
   try {
-    const ref = await fetch(`${apiBaseUrl}/api/v2/Admin/Referensi/Provinsi/${kode_prov}/Kota`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${session}`,
-        "Content-Type": "application/json",
+    const ref = await fetch(
+      `${apiBaseUrl}/api/v2/Admin/Referensi/Provinsi/${kode_prov}/Kota`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(await req.json()),
+        cache: "no-store",
       },
-      body: JSON.stringify(await req.json()),
-      cache: "no-store",
-    });
+    );
     if (!ref.ok) {
       const data = await ref.json();
       return NextResponse.json(data, { status: ref.status });

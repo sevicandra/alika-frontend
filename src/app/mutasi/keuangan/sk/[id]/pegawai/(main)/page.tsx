@@ -50,15 +50,18 @@ export default function Page({
           `/api/Mutasi/Keuangan/SuratKeputusan/${id}/Pegawai?${searchParams}`,
           {
             method: "GET",
-          }
+          },
         );
+        const { error, data, meta } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const data = await res.json();
-        setData(data.data);
-        setTotalPage(data.meta.totalPages);
+        setData(data);
+        setTotalPage(meta.totalPages);
       } catch (error) {
         addNotification({
           title: `Data Pegawai`,
@@ -123,23 +126,41 @@ export default function Page({
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="tooltip" data-tip="keluarga">
-                  <Link href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/keluarga`}>
+                  <Link
+                    href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/keluarga`}
+                  >
                     <div className="rounded-box bg-info/80 p-1 text-info-content">
-                      <Icon className="hover:scale-110" icon="Users" height={16} />
+                      <Icon
+                        className="hover:scale-110"
+                        icon="Users"
+                        height={16}
+                      />
                     </div>
                   </Link>
                 </div>
                 <div className="tooltip" data-tip="termin">
-                  <Link href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/termin`}>
+                  <Link
+                    href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/termin`}
+                  >
                     <div className="rounded-box bg-info/80 p-1 text-info-content">
-                      <Icon className="hover:scale-110" icon="Receipt" height={16} />
+                      <Icon
+                        className="hover:scale-110"
+                        icon="Receipt"
+                        height={16}
+                      />
                     </div>
                   </Link>
                 </div>
                 <div className="tooltip" data-tip="history">
-                  <Link href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/riwayat`}>
+                  <Link
+                    href={`/mutasi/keuangan/sk/${id}/pegawai/${row.id}/riwayat`}
+                  >
                     <div className="rounded-box bg-info/80 p-1 text-info-content">
-                      <Icon className="hover:scale-110" icon="History" height={16} />
+                      <Icon
+                        className="hover:scale-110"
+                        icon="History"
+                        height={16}
+                      />
                     </div>
                   </Link>
                 </div>

@@ -17,7 +17,8 @@ export default function Page({
   const { setRefresh } = useTable();
   const { id } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -43,16 +44,20 @@ export default function Page({
         method: "PATCH",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di ubah",
-        title: "Referensi Uang Harian",
+        message: `${message} (Status: ${res.status})`,
+        title: `"Referensi Uang Harian"`,
       });
       router.back();
       setRefresh();
@@ -71,16 +76,27 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/Mutasi/Admin/Referensi/UangHarian/${id}`, {
-          method: "GET",
-        });
+        const res = await fetch(
+          `/api/Mutasi/Admin/Referensi/UangHarian/${id}`,
+          {
+            method: "GET",
+          },
+        );
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setInput(data);
       } catch (error) {
+        addNotification({
+          title: "Referensi Uang Harian",
+          message: (error as Error).message,
+          variant: "error",
+        });
         setError(error as Error);
       } finally {
         setLoading(false);
@@ -100,14 +116,22 @@ export default function Page({
         const res = await fetch(`/api/Mutasi/Referensi/Wilayah`, {
           method: "GET",
         });
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
+
         setProvinsi(data);
       } catch (error) {
-        setError(error as Error);
+        addNotification({
+          title: "Referensi Provinsi",
+          message: (error as Error).message,
+          variant: "error",
+        });
       } finally {
         setLoading(false);
       }
@@ -141,7 +165,9 @@ export default function Page({
               className={`select-bordered select w-full pl-10 ${getValidationError("kode_provinsi") ? "select-error" : ""}`}
               required
               value={input.kode_provinsi || ""}
-              onChange={(e) => setInput({ ...input, kode_provinsi: e.target.value })}
+              onChange={(e) =>
+                setInput({ ...input, kode_provinsi: e.target.value })
+              }
             >
               <option disabled value={""}>
                 Pilih Provinsi
@@ -157,7 +183,7 @@ export default function Page({
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
                 <Icon icon="CircleAlert" height={16} />{" "}
-                {getValidationError("kode_provinsi")?.message}
+                {getValidationError("kode_provinsi")}
               </span>
             </label>
           )}
@@ -189,7 +215,8 @@ export default function Page({
           {getValidationError("tarif") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("tarif")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("tarif")}
               </span>
             </label>
           )}

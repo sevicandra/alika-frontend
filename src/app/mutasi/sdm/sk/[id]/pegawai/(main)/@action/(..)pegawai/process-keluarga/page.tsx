@@ -16,22 +16,29 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     if (loading) return;
     try {
       setLoading(true);
-      const res = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/ProcessKeluarga`, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
+      const res = await fetch(
+        `/api/Mutasi/SDM/SuratKeputusan/${id}/ProcessKeluarga`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+          },
+          method: "POST",
         },
-        method: "POST",
-      });
+      );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil diproses",
+        message: `${message} (Status: ${res.status})`,
         title: "Proses Data Keluarga",
       });
       router.back();

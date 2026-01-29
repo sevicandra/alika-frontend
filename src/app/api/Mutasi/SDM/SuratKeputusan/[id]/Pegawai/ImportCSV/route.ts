@@ -3,11 +3,18 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ?? process.env.MUTASI_ALIKA_BASE_URL;
+const apiBaseUrl =
+  process.env.MUTASI_ALIKA_BASE_URL_INTERNAL ??
+  process.env.MUTASI_ALIKA_BASE_URL;
 
-export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function POST(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
   const { id } = await params;
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -18,14 +25,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   const formData = await req.formData();
 
-  const file = formData.get("file") as File;
-
-  if (!file) {
-    return NextResponse.json({ message: "Bad Request" }, { status: 400 });
-  }
-
-  const backendForm = new FormData();
-  backendForm.set("file", file, file.name);
   try {
     const suratKeputusan = await fetch(
       `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/Pegawai/ImportCSV`,
@@ -34,9 +33,9 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         headers: {
           Authorization: `Bearer ${session}`,
         },
-        body: backendForm as any,
+        body: formData,
         cache: "no-store",
-      }
+      },
     );
     if (!suratKeputusan.ok) {
       const data = await suratKeputusan.json();

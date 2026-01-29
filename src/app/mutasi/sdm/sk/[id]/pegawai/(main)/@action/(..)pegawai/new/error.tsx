@@ -13,7 +13,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="grid h-60 place-content-center gap-2">
+    <div className="grid h-60 place-content-center gap-2" key="error">
       <div>
         <h2 className="text-2xl">Some thing went wrong!</h2>
       </div>

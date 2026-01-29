@@ -30,11 +30,15 @@ export default function Page({
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         );
+        const { error, data } = await file.json();
         if (!file.ok) {
-          const { message } = await file.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${file.status})`
+              : "Unknown Server Error",
+          );
         }
         const contentDisposition = file.headers.get("Content-Disposition");
         if (contentDisposition) {

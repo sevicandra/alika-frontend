@@ -5,9 +5,13 @@ import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
 import Confirmation from "@/component/Organisms/Confirmation";
 
-export default function Page({ params }: { params: Promise<{ id: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ service_kode: string }>;
+}) {
   const router = useRouter();
-  const { id } = use(params);
+  const { service_kode } = use(params);
   const [loading, setLoading] = useState(false);
   const { addNotification } = useNotification();
   const { setRefresh } = useTable();
@@ -15,7 +19,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   async function submitForm() {
     try {
       setLoading(true);
-      const res = await fetch(`/api/Sso/ScopeAction/${id}`, {
+      const res = await fetch(`/api/Sso/ScopeAction/${service_kode}`, {
         headers: {
           "Content-Type": "application/json",
           "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
@@ -25,13 +29,17 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         },
         method: "DELETE",
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { error } = await res.json();
-        throw new Error(error.message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: "Hapus Scope Action",
-        message: "Berhasil dihapus",
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
       setRefresh();

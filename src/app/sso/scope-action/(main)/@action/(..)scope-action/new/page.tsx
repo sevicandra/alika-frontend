@@ -9,7 +9,8 @@ import Form from "@/component/Organisms/Form";
 
 export default function Page() {
   const { setRefresh } = useTable();
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -29,29 +30,27 @@ export default function Page() {
         method: "POST",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { error } = await res.json();
         if (res.status === 422) {
-          const errorArray: { field: string; message: string }[] = Object.entries(
-            error.details
-          ).map(([field, message]) => ({
-            field,
-            message: message as string,
-          }));
-          setValidationErrors(errorArray);
+          setValidationErrors(error.details);
         }
-        throw new Error(error.message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil ditabahkan",
-        title: "Scope Action",
+        message: `${message} (Status: ${res.status})`,
+        title: "Create Scope Action",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Scope Action",
+        title: "Create Scope Action",
         variant: "error",
       });
     } finally {
@@ -95,7 +94,7 @@ export default function Page() {
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("kode")?.message}</span>
+                <span>{getValidationError("kode")}</span>
               </span>
             </label>
           )}
@@ -126,7 +125,7 @@ export default function Page() {
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("name")?.message}</span>
+                <span>{getValidationError("name")}</span>
               </span>
             </label>
           )}
@@ -152,7 +151,7 @@ export default function Page() {
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("description")?.message}</span>
+                <span>{getValidationError("description")}</span>
               </span>
             </label>
           )}

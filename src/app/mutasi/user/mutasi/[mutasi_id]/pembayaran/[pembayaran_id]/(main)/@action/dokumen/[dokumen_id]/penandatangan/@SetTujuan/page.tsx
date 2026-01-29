@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Icon from "@/component/Atoms/LabelIcon";
 import { usePenandatangan } from "@/context/mutasi/user";
 import { SearchableSelect } from "@/component/Molecules/InputForm";
+import { useForm } from "@/context/form.context";
+
 export default function Page({
   params,
 }: {
@@ -17,22 +19,8 @@ export default function Page({
   const router = useRouter();
   const { pegawaiTujuan } = usePenandatangan();
   const { mutasi_id, pembayaran_id, dokumen_id } = use(params);
-  const [validationErrors, setValidationErrors] = useState<
-    {
-      field: string | null;
-      message: string;
-    }[]
-  >([]);
-  const getValidationError = (field: string) => {
-    return validationErrors.find((e) => e.field === field);
-  };
-  const [dataAsal, setDataAsal] = useState<{
-    nama: string;
-    nip: string;
-  }>({
-    nama: "",
-    nip: "",
-  });
+  const { getValidationError, setValidationErrors, input, setInput } =
+    useForm();
   const { addNotification } = useNotification();
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -48,21 +36,26 @@ export default function Page({
           },
           method: "POST",
           body: JSON.stringify({
-            nama_pejabat: dataAsal.nama,
-            nip_pejabat: dataAsal.nip,
+            nama: input.nama,
+            nip: input.nip,
           }),
-        }
+        },
       );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
+
       addNotification({
         title: `SPD Lembar 2`,
-        message: "Permohonan SPD Lembar 2 Berhasil Di Kirim",
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
     } catch (error) {
@@ -90,8 +83,7 @@ export default function Page({
                 </span>
                 <SearchableSelect
                   onSelect={(val) => {
-                    setDataAsal({
-                      ...dataAsal,
+                    setInput({
                       nama: val.nama,
                       nip: val.nip,
                     });
@@ -102,7 +94,9 @@ export default function Page({
                     return (
                       <div
                         key={index}
-                        onClick={() => val(`${option.nama} / ${option.nip}`, index)}
+                        onClick={() =>
+                          val(`${option.nama} / ${option.nip}`, index)
+                        }
                         className="cursor-pointer border-b p-2 last:border-0 hover:bg-base-300"
                       >
                         {option.nama} / {option.nip}
@@ -126,13 +120,15 @@ export default function Page({
           <div className="form-control px-4">
             <label className="label">
               <span className="label-text font-semibold text-base-content">
-                Nama: {dataAsal.nama}
+                Nama:
               </span>
             </label>
-            {getValidationError("nama_asal") && (
+            <div>{input.nama}</div>
+            {getValidationError("nama") && (
               <label className="label">
                 <span className="label-text-alt flex items-center gap-1 text-error">
-                  <Icon icon="CircleAlert" height={16} /> {getValidationError("nama_asal")?.message}
+                  <Icon icon="CircleAlert" height={16} />{" "}
+                  {getValidationError("nama")}
                 </span>
               </label>
             )}
@@ -140,13 +136,15 @@ export default function Page({
           <div className="form-control px-4">
             <label className="label">
               <span className="label-text font-semibold text-base-content">
-                NIP: {dataAsal.nip}
+                NIP:
               </span>
             </label>
-            {getValidationError("nip_asal") && (
+            <div>{input.nip}</div>
+            {getValidationError("nip") && (
               <label className="label">
                 <span className="label-text-alt flex items-center gap-1 text-error">
-                  <Icon icon="CircleAlert" height={16} /> {getValidationError("nip_asal")?.message}
+                  <Icon icon="CircleAlert" height={16} />{" "}
+                  {getValidationError("nip")}
                 </span>
               </label>
             )}

@@ -25,13 +25,17 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         },
         method: "DELETE",
       });
+      const { error, message } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: "Referensi Rute Pesawat",
-        message: "Berhasil dihapus",
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
       setRefresh();

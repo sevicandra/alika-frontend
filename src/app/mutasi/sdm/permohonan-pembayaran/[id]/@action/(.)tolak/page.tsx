@@ -15,28 +15,33 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const tolak = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/Mutasi/SDM/PermohonanPembayaran/${id}/Tolak`, {
-        method: "POST",
-        headers: {
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
+      const res = await fetch(
+        `/api/Mutasi/SDM/PermohonanPembayaran/${id}/Tolak`,
+        {
+          method: "POST",
+          headers: {
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+          },
+          body: JSON.stringify(input),
         },
-        body: JSON.stringify({
-          catatan: input.catatan,
-        }),
-      });
+      );
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: "Permohonan Pembayaran",
-        message: "permohonan berhasil di tolak",
+        message: `${message} (Status: ${res.status})`,
       });
       router.replace("/mutasi/sdm/permohonan-pembayaran");
       setRefresh();

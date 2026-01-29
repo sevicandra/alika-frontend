@@ -7,9 +7,14 @@ import { useForm } from "@/context/form.context";
 import { usePayroll } from "@/context/mutasi/keu";
 import Form from "@/component/Organisms/Form";
 
-export default function Page({ params }: { params: Promise<{ id: string; termin_id: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ id: string; termin_id: string }>;
+}) {
   const { setRefresh } = usePayroll();
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -18,33 +23,40 @@ export default function Page({ params }: { params: Promise<{ id: string; termin_
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/Mutasi/Keuangan/Payroll/${id}/Termin/${termin_id}/Tolak`, {
-        headers: {
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
+      const res = await fetch(
+        `/api/Mutasi/Keuangan/Payroll/${id}/Termin/${termin_id}/Tolak`,
+        {
+          headers: {
+            "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
+              const data = await res.json();
+              return data.token;
+            }),
+          },
+          method: "POST",
+          body: JSON.stringify(input),
         },
-        method: "POST",
-        body: JSON.stringify(input),
-      });
+      );
+              const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di ubah",
-        title: "Surat Keputusan",
+        message: `${message} (Status: ${res.status})`,
+        title: "Payroll",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Surat Keputusan",
+        title: "Payroll",
         variant: "error",
       });
     } finally {
@@ -78,7 +90,8 @@ export default function Page({ params }: { params: Promise<{ id: string; termin_
           {getValidationError("catatan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("catatan")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("catatan")}
               </span>
             </label>
           )}

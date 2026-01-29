@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useState, useMemo, useContext, useEffect } from "react";
+import { useNotification } from "@/context/notifikasi";
 type PenandatanganContextType = {
   pegawaiAsal: {
     nip: string;
@@ -13,7 +14,9 @@ type PenandatanganContextType = {
   setSearch: (search: string) => void;
 };
 
-const PenandatanganContext = createContext<PenandatanganContextType | undefined>(undefined);
+const PenandatanganContext = createContext<
+  PenandatanganContextType | undefined
+>(undefined);
 
 export function PenandatanganProvider({
   children,
@@ -24,6 +27,7 @@ export function PenandatanganProvider({
   kdSatkerAsal: string;
   kdSatkerTujuan: string;
 }) {
+  const { addNotification } = useNotification();
   const [search, setSearch] = useState<string>("");
   const [pegawaiAsal, setPegawaiAsal] = useState<
     {
@@ -41,19 +45,29 @@ export function PenandatanganProvider({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `/api/Mutasi/Referensi/DaftarPegawai?kdSatker=${kdSatkerAsal}`
+        const res = await fetch(
+          `/api/Mutasi/Referensi/DaftarPegawai?kdSatker=${kdSatkerAsal}`,
         );
-        if (!response.ok) throw new Error("Gagal mengambil data Pegawai Kantor Asal");
-        const { data } = await response.json();
+        const { error, data } = await res.json();
+        if (!res.ok) {
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
+        }
         setPegawaiAsal(
           data.filter(
             (d: { nama: string; nip: string; jenisJabatan: string }) =>
-              d.jenisJabatan.toLowerCase() === "struktural"
-          )
+              d.jenisJabatan.toLowerCase() === "struktural",
+          ),
         );
       } catch (error) {
-        console.error(error);
+        addNotification({
+          variant: "error",
+          title: "Fetch Data Pegawai Kantor Asal",
+          message: (error as Error).message,
+        });
       }
     };
     fetchData();
@@ -62,19 +76,29 @@ export function PenandatanganProvider({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `/api/Mutasi/Referensi/DaftarPegawai?kdSatker=${kdSatkerTujuan}`
+        const res = await fetch(
+          `/api/Mutasi/Referensi/DaftarPegawai?kdSatker=${kdSatkerTujuan}`,
         );
-        if (!response.ok) throw new Error("Gagal mengambil data Pegawai Kantor Tujuan");
-        const { data } = await response.json();
+        const { error, data } = await res.json();
+        if (!res.ok) {
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
+        }
         setPegawaiTujuan(
           data.filter(
             (d: { nama: string; nip: string; jenisJabatan: string }) =>
-              d.jenisJabatan.toLowerCase() === "struktural"
-          )
+              d.jenisJabatan.toLowerCase() === "struktural",
+          ),
         );
       } catch (error) {
-        console.error(error);
+        addNotification({
+          variant: "error",
+          title: "Fetch Data Pegawai Kantor Asal",
+          message: (error as Error).message,
+        });
       }
     };
     fetchData();
@@ -87,15 +111,21 @@ export function PenandatanganProvider({
       search,
       setSearch,
     }),
-    [pegawaiAsal, pegawaiTujuan, search]
+    [pegawaiAsal, pegawaiTujuan, search],
   );
-  return <PenandatanganContext.Provider value={value}>{children}</PenandatanganContext.Provider>;
+  return (
+    <PenandatanganContext.Provider value={value}>
+      {children}
+    </PenandatanganContext.Provider>
+  );
 }
 
 export const usePenandatangan = () => {
   const context = useContext(PenandatanganContext);
   if (!context) {
-    throw new Error("usePenandatangan must be used within a PenandatanganProvider");
+    throw new Error(
+      "usePenandatangan must be used within a PenandatanganProvider",
+    );
   }
   return context;
 };

@@ -25,19 +25,22 @@ export default function Page({
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin`
+        const res = await fetch(
+          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin`,
         );
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
+        const { error, data } = await res.json();
+        if (!res.ok) {
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await response.json();
         setData(data);
       } catch (error) {
-        setError(error as Error);
         addNotification({
-          title: "Gagal Memuat Data Pembayaran Mutasi",
-          message: `Gagal memuat data pembayaran mutasi: ${error instanceof Error ? error.message : "Unknown error"}`,
+          title: "Data Pembayaran Mutasi",
+          message: (error as Error).message,
           variant: "error",
         });
       } finally {
@@ -83,7 +86,11 @@ export default function Page({
                       href={`/mutasi/sdm/arsip/${id}/pegawai/${pegawai_id}/termin/${row.id}/dokumen`}
                     >
                       <div className="rounded-box bg-info/80 p-1 text-info-content">
-                        <Icon className="hover:scale-110" icon="Eye" height={16} />
+                        <Icon
+                          className="hover:scale-110"
+                          icon="Eye"
+                          height={16}
+                        />
                       </div>
                     </Link>
                   </div>

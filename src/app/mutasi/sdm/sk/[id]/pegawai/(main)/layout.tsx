@@ -32,7 +32,9 @@ export default function Layout({
             let label;
             if (pathSegments[index - 1] === "sk") {
               return {
-                name: suratKeputusan ? suratKeputusan.nomor.toUpperCase() : "Surat Keputusan",
+                name: suratKeputusan
+                  ? suratKeputusan.nomor.toUpperCase()
+                  : "Surat Keputusan",
               };
             }
             return {
@@ -55,10 +57,16 @@ export default function Layout({
         <div className="flex min-w-max justify-end gap-1">
           {suratKeputusan?.status === "DRAFT" && (
             <>
-              <Link href={`/mutasi/sdm/sk/${id}/pegawai/import`} className="btn btn-xs btn-success">
+              <Link
+                href={`/mutasi/sdm/sk/${id}/pegawai/import`}
+                className="btn btn-xs btn-success"
+              >
                 Import Data
               </Link>
-              <Link href={`/mutasi/sdm/sk/${id}/pegawai/new`} className="btn btn-xs btn-success">
+              <Link
+                href={`/mutasi/sdm/sk/${id}/pegawai/new`}
+                className="btn btn-xs btn-success"
+              >
                 Tambah Pegawai
               </Link>
               <Link
@@ -67,22 +75,33 @@ export default function Layout({
               >
                 Proses Data Keluarga
               </Link>
-              <Link href={`/mutasi/sdm/sk/${id}/pegawai/hitung`} className="btn btn-xs btn-success">
+              <Link
+                href={`/mutasi/sdm/sk/${id}/pegawai/hitung`}
+                className="btn btn-xs btn-success"
+              >
                 Hitung Biaya
               </Link>
-              <Link href={`/mutasi/sdm/sk/${id}/pegawai/termin`} className="btn btn-xs btn-success">
+              <Link
+                href={`/mutasi/sdm/sk/${id}/pegawai/termin`}
+                className="btn btn-xs btn-success"
+              >
                 Buat Termin
               </Link>
             </>
           )}
-          <Link href={`/mutasi/sdm/sk/${id}/pegawai/overview`} className="btn btn-xs btn-success">
+          <Link
+            href={`/mutasi/sdm/sk/${id}/pegawai/overview`}
+            className="btn btn-xs btn-success"
+          >
             Overview
           </Link>
         </div>
       </div>
 
       {children}
-      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
       {action}
     </div>
   );

@@ -23,14 +23,12 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/Mutasi/Pegawai/Dashboard/Log");
-        if (!response.ok) {
-          if (response.status === 404) {
-            return;
-          }
-          throw new Error("Network response was not ok");
+        const res = await fetch("/api/Mutasi/Pegawai/Dashboard/Log");
+        if (!res.ok) {
+          const { message } = await res.json();
+          throw new Error(message || "Network response was not ok");
         }
-        const { data } = await response.json();
+        const { data } = await res.json();
         setData(data);
       } catch (error) {
         setError(error as Error);
@@ -39,7 +37,6 @@ export default function Page() {
           message: (error as Error).message,
           variant: "error",
         });
-        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -61,7 +58,7 @@ export default function Page() {
         {data.map((item, index) => (
           <div
             key={index}
-            className="grid grid-cols-[auto_1fr] grid-rows-[auto_auto] gap-1 border-b border-base-300 px-2 py-1 gap-x-2"
+            className="grid grid-cols-[auto_1fr] grid-rows-[auto_auto] gap-1 gap-x-2 border-b border-base-300 px-2 py-1"
           >
             <div className="aspect-square w-8 rounded-full bg-accent"></div>
             <div className="flex flex-col justify-center">

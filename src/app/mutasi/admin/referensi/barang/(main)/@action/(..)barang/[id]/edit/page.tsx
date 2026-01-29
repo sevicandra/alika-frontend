@@ -17,7 +17,8 @@ export default function Page({
   const { setRefresh } = useTable();
   const { id } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } = useForm();
+  const { input, setInput, getValidationError, setValidationErrors } =
+    useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -37,15 +38,19 @@ export default function Page({
         method: "PATCH",
         body: JSON.stringify(input),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message, errors } = await res.json();
         if (res.status === 422) {
-          setValidationErrors(errors);
+          setValidationErrors(error.details);
         }
-        throw new Error(message || "Terjadi kesalahan pada server.");
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
-        message: "Berhasil di ubah",
+        message: `${message} (Status: ${res.status})`,
         title: "Referensi Volumen Barang",
       });
       router.back();
@@ -68,13 +73,21 @@ export default function Page({
         const res = await fetch(`/api/Mutasi/Admin/Referensi/Barang/${id}`, {
           method: "GET",
         });
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         setInput(data);
       } catch (error) {
+        addNotification({
+          title: "Referensi Volumen Barang",
+          message: (error as Error).message,
+          variant: "error",
+        })
         setError(error as Error);
       } finally {
         setLoading(false);
@@ -123,7 +136,8 @@ export default function Page({
           {getValidationError("golongan") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("golongan")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("golongan")}
               </span>
             </label>
           )}
@@ -146,14 +160,19 @@ export default function Page({
             >
               <option value={""}>Pilih Status</option>
               <option value="TIDAK_BERKELUARGA">Tidak Berkeluarga</option>
-              <option value="BERKELUARGA_TANPA_ANAK">Berkeluarga Tanpa Anak</option>
-              <option value="BERKELUARGA_DENGAN_ANAK">Berkeluarga Dengan Anak</option>
+              <option value="BERKELUARGA_TANPA_ANAK">
+                Berkeluarga Tanpa Anak
+              </option>
+              <option value="BERKELUARGA_DENGAN_ANAK">
+                Berkeluarga Dengan Anak
+              </option>
             </select>
           </div>
           {getValidationError("status") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("status")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("status")}
               </span>
             </label>
           )}
@@ -185,7 +204,8 @@ export default function Page({
           {getValidationError("volume") && (
             <label className="label">
               <span className="label-text-alt flex items-center gap-1 text-error">
-                <Icon icon="CircleAlert" height={16} /> {getValidationError("volume")?.message}
+                <Icon icon="CircleAlert" height={16} />{" "}
+                {getValidationError("volume")}
               </span>
             </label>
           )}

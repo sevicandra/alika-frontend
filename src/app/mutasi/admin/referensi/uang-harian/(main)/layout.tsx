@@ -29,22 +29,31 @@ export default function Layout({
           })}
           renderRow={(row, index) => (
             <li key={index}>
-              {row.href ? <Link href={row.href}>{row.name}</Link> : <span>{row.name}</span>}
+              {row.href ? (
+                <Link href={row.href}>{row.name}</Link>
+              ) : (
+                <span>{row.name}</span>
+              )}
             </li>
           )}
         />
       </div>
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1">
-          <Link href="/mutasi/admin/referensi/uang-harian/new" className="btn btn-xs btn-success">
+          <Link
+            href="/mutasi/admin/referensi/uang-harian/new"
+            className="btn btn-xs btn-success"
+          >
             Tambah
           </Link>
         </div>
       </div>
-
-      {children}
-      {action}
-      <div className="mx-4 mb-4 flex justify-between">{totalPage && <Paginator />}</div>
+      
+        {children}
+        {action}
+      <div className="mx-4 mb-4 flex justify-between">
+        {totalPage && <Paginator />}
+      </div>
     </div>
   );
 }

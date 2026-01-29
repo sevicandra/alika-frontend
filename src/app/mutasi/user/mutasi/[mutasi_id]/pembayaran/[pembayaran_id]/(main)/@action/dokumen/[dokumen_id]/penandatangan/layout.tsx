@@ -3,6 +3,7 @@ import { use, useState, useEffect } from "react";
 import PopUp from "@/component/Molecules/PopUp";
 import { PenandatanganProvider, useMutasiDetail } from "@/context/mutasi/user";
 import { useNotification } from "@/context/notifikasi";
+import { FormProvider } from "@/context/form.context";
 
 export default function Layout({
   SetAsal,
@@ -38,13 +39,15 @@ export default function Layout({
       status: "PENDING" | "PROCESS" | "SIGNED" | "FAILED";
     };
   }>();
-  const [children, setChildren] = useState<"Kantor_Asal" | "Kantor_Tujuan">("Kantor_Asal");
+  const [children, setChildren] = useState<"Kantor_Asal" | "Kantor_Tujuan">(
+    "Kantor_Asal",
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Pembayaran/${pembayaran_id}/Dokumen/${dokumen_id}/SPD2/Status`
+          `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Pembayaran/${pembayaran_id}/Dokumen/${dokumen_id}/SPD2/Status`,
         );
         if (!res.ok) {
           const { message } = await res.json();
@@ -88,7 +91,7 @@ export default function Layout({
               {data ? (
                 children === "Kantor_Asal" ? (
                   !data.KantorAsal.penandatangan ? (
-                    SetAsal
+                    <FormProvider>{SetAsal}</FormProvider>
                   ) : (
                     <div>
                       <div className="p-4">
@@ -114,12 +117,13 @@ export default function Layout({
                       </div>
                       {data &&
                         (data.KantorAsal.status === "FAILED" ||
-                          data.KantorAsal.status === "PENDING") &&
-                        ResetAsal}
+                          data.KantorAsal.status === "PENDING") && (
+                          <FormProvider>{ResetAsal}</FormProvider>
+                        )}
                     </div>
                   )
                 ) : !data.KantorTujuan.penandatangan ? (
-                  SetTujuan
+                  <FormProvider>{SetTujuan}</FormProvider>
                 ) : (
                   <div>
                     <div className="p-4">
@@ -145,8 +149,9 @@ export default function Layout({
                     </div>
                     {data &&
                       (data.KantorTujuan.status === "FAILED" ||
-                        data.KantorTujuan.status === "PENDING") &&
-                      ResetTujuan}
+                        data.KantorTujuan.status === "PENDING") && (
+                        <FormProvider>{ResetTujuan}</FormProvider>
+                      )}
                   </div>
                 )
               ) : (
