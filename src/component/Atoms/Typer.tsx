@@ -19,7 +19,7 @@ export default function Typer({
         () => {
           setText((prev) => prev + char);
         },
-        (delay || 0) + index * interval
+        (delay || 0) + index * interval,
       );
       timeouts.push(timeout);
       index++;

@@ -23,7 +23,8 @@ const variantStyles = {
 };
 
 export default function Notification() {
-  const { notification, clearNotification, closeNotification } = useNotification();
+  const { notification, clearNotification, closeNotification } =
+    useNotification();
 
   // ✅ FIXED: Use useEffect with proper cleanup to prevent timeout memory leaks
   // This ensures timeouts are properly cleared when component unmounts or notifications change
@@ -69,12 +70,12 @@ export default function Notification() {
             <div
               className={cn(
                 `alert w-3xs transition-all duration-150`,
-                variantStyles[n.variant].iconColor
+                variantStyles[n.variant].iconColor,
               )}
             >
               <div
                 onClick={() => closeNotification(n.id)}
-                className="cursor-pointer hover:opacity-70 transition-opacity"
+                className="cursor-pointer transition-opacity hover:opacity-70"
               >
                 <FiXCircle />
               </div>

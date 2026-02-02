@@ -11,10 +11,18 @@ interface ModuleSelectCardProps {
   className?: string;
 }
 
-export default function ModuleSelectCard({ title, icon, href, className }: ModuleSelectCardProps) {
+export default function ModuleSelectCard({
+  title,
+  icon,
+  href,
+  className,
+}: ModuleSelectCardProps) {
   return (
-    <Link href={href} className={cn("transition duration-200 hover:shadow-lg", className)}>
-      <Card className="flex aspect-square w-50 flex-col items-center justify-center gap-2 bg-primary border-primary-content p-4 text-center text-primary-content">
+    <Link
+      href={href}
+      className={cn("transition duration-200 hover:shadow-lg", className)}
+    >
+      <Card className="flex aspect-square w-50 flex-col items-center justify-center gap-2 border-primary-content bg-primary p-4 text-center text-primary-content">
         <div className="text-4xl">{icon}</div>
         <div className="text-sm font-semibold">{title}</div>
       </Card>

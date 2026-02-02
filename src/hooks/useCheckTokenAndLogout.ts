@@ -50,7 +50,10 @@ export function useCheckTokenAndLogout({
 
     // Batch console.log untuk avoid multiple DOM queries
     if (debug) {
-      console.log("[TokenCheck] Activity detected at:", new Date().toLocaleTimeString());
+      console.log(
+        "[TokenCheck] Activity detected at:",
+        new Date().toLocaleTimeString(),
+      );
     }
 
     // Clear existing timeout
@@ -85,7 +88,9 @@ export function useCheckTokenAndLogout({
 
       // Call logout endpoint
 
-      const csrf_token = await fetch("/api/auth/csrf").then((res) => res.json());
+      const csrf_token = await fetch("/api/auth/csrf").then((res) =>
+        res.json(),
+      );
 
       // Call logout endpoint
       const response = await fetch("/api/auth/signout", {
@@ -146,7 +151,13 @@ export function useCheckTokenAndLogout({
     // Track events dengan passive listener
     // Passive: true = prevent blocking scroll performance
     // Capture: true = catch events di capture phase
-    const activityEvents = ["mousedown", "keydown", "scroll", "touchstart", "click"];
+    const activityEvents = [
+      "mousedown",
+      "keydown",
+      "scroll",
+      "touchstart",
+      "click",
+    ];
 
     activityEvents.forEach((event) => {
       document.addEventListener(event, resetIdleTimer, {

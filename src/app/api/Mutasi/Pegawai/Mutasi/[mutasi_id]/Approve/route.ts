@@ -43,7 +43,7 @@ export async function POST(
     if (!res.ok) {
       const data = await res.json();
       console.log(data);
-      
+
       return NextResponse.json(data, { status: res.status });
     }
     const data = await res.json();

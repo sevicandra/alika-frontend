@@ -28,7 +28,11 @@ export function CetakProvider({ children }: { children: React.ReactNode }) {
     open,
     setOpen,
   };
-  return <CetakContext.Provider value={contextValue}>{children}</CetakContext.Provider>;
+  return (
+    <CetakContext.Provider value={contextValue}>
+      {children}
+    </CetakContext.Provider>
+  );
 }
 
 export const useCetak = () => {

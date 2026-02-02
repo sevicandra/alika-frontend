@@ -13,13 +13,18 @@ export default function Label({
   showText?: boolean;
 }) {
   return (
-    <div className={`align-center grid grid-cols-[50_auto] gap-2 py-2 ${className}`} {...props}>
+    <div
+      className={`align-center grid grid-cols-[50_auto] gap-2 py-2 ${className}`}
+      {...props}
+    >
       {showIcon && (
         <span>
           <Icon height={"25px"} icon={icon} />
         </span>
       )}
-      {showText && <span className="truncate text-left text-nowrap">{children}</span>}
+      {showText && (
+        <span className="truncate text-left text-nowrap">{children}</span>
+      )}
     </div>
   );
 }

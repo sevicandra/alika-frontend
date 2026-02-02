@@ -29,7 +29,7 @@ export async function GET(
   const { mutasi_id } = await params.params;
 
   try {
-       const res = await fetch(
+    const res = await fetch(
       `${apiBaseUrl}/api/v2/Pegawai/Mutasi/${mutasi_id}/Sanggah/Data`,
       {
         method: "GET",

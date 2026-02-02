@@ -61,7 +61,9 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
             </span>
           </div>
         </div>
-        <div className="overflow-x-hidden overflow-y-scroll py-8">{children}</div>
+        <div className="overflow-x-hidden overflow-y-scroll py-8">
+          {children}
+        </div>
       </aside>
     </SidebarContext.Provider>
   );

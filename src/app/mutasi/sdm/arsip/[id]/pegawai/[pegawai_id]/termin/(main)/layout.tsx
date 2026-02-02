@@ -47,10 +47,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1"></div>
       </div>
-
-      {children}
-      <div className="mx-4 mb-4 flex justify-between">
-      </div>
+      <>{children}</>
+      <div className="mx-4 mb-4 flex justify-between"></div>
     </div>
   );
 }

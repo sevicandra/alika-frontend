@@ -4,7 +4,7 @@ import * as pdfjs from "pdfjs-dist";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
+  import.meta.url,
 ).toString();
 
 type PdfSource = string | { data: Uint8Array } | undefined;
@@ -71,7 +71,8 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
           setLoading(false);
         }
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Error memproses sumber PDF";
+        const errorMessage =
+          err instanceof Error ? err.message : "Error memproses sumber PDF";
         setError(errorMessage);
         console.error("Error mengatur sumber PDF:", err);
         setLoading(false);
@@ -93,7 +94,8 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
         const pdf = await pdfjs.getDocument(source).promise;
         setPdfDoc(pdf);
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Error memuat PDF";
+        const errorMessage =
+          err instanceof Error ? err.message : "Error memuat PDF";
         setError(errorMessage);
         console.error("Error memuat PDF:", err);
         setLoading(false);
@@ -200,7 +202,8 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
           await renderPage(pageNum);
         }
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Error merender PDF";
+        const errorMessage =
+          err instanceof Error ? err.message : "Error merender PDF";
         setError(errorMessage);
         console.error("Error merender PDF:", err);
       } finally {
@@ -228,7 +231,9 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
   };
 
   const scrollToPage = (pageNum: number) => {
-    const pageWrapper = document.querySelector(`[data-page-number="${pageNum}"]`);
+    const pageWrapper = document.querySelector(
+      `[data-page-number="${pageNum}"]`,
+    );
     if (pageWrapper) {
       pageWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -307,7 +312,8 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
       document.body.appendChild(a);
       a.click();
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Gagal mengunduh file";
+      const errorMessage =
+        err instanceof Error ? err.message : "Gagal mengunduh file";
       setError(errorMessage);
     } finally {
       document.body.removeChild(a);
@@ -318,7 +324,11 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
   };
 
   if (error) {
-    return <div className="flex items-center justify-center p-8 text-red-500">Error: {error}</div>;
+    return (
+      <div className="flex items-center justify-center p-8 text-red-500">
+        Error: {error}
+      </div>
+    );
   }
 
   return (
@@ -414,11 +424,16 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
             <div className="bg-opacity-75 absolute inset-0 z-20 flex items-center justify-center bg-white/20">
               <div className="text-center">
                 <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-accent-300 border-t-blue-500"></div>
-                <p className="mt-4 font-medium text-accent-700">Memuat PDF...</p>
+                <p className="mt-4 font-medium text-accent-700">
+                  Memuat PDF...
+                </p>
               </div>
             </div>
           )}
-          <div ref={containerRef} className="flex flex-col items-center gap-4 py-4" />
+          <div
+            ref={containerRef}
+            className="flex flex-col items-center gap-4 py-4"
+          />
         </div>
       </div>
     </div>

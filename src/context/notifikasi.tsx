@@ -30,7 +30,11 @@ const NotificationContext = createContext<NotificationContextType>({
   closeNotification: () => {},
 });
 
-export function NotificationProvider({ children }: { children: React.ReactNode }) {
+export function NotificationProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [notification, setNotification] = useState<
     {
       id: string;
@@ -62,7 +66,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         },
       ]);
     },
-    []
+    [],
   );
 
   const clearNotification = (id: string) => {
@@ -71,7 +75,9 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
   // ✅ CORRECT - Immutable update
   const closeNotification = (id: string) => {
-    setNotification(notification.map((n) => (n.id === id ? { ...n, show: false } : n)));
+    setNotification(
+      notification.map((n) => (n.id === id ? { ...n, show: false } : n)),
+    );
   };
 
   const contextValue = {
@@ -82,7 +88,9 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   };
 
   return (
-    <NotificationContext.Provider value={contextValue}>{children}</NotificationContext.Provider>
+    <NotificationContext.Provider value={contextValue}>
+      {children}
+    </NotificationContext.Provider>
   );
 }
 
@@ -90,7 +98,7 @@ export function useNotification() {
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error(
-      "useNotification must be used within a NotificationProvider" // Pesan error sudah benar, tidak perlu diubah jika nama komponen provider diubah.
+      "useNotification must be used within a NotificationProvider", // Pesan error sudah benar, tidak perlu diubah jika nama komponen provider diubah.
     );
   }
   return context;

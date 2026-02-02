@@ -27,7 +27,9 @@ type PegawaiDetailContextType = {
   setError: (error: Error | null) => void;
 };
 
-const PegawaiDetailContext = createContext<PegawaiDetailContextType | undefined>(undefined);
+const PegawaiDetailContext = createContext<
+  PegawaiDetailContextType | undefined
+>(undefined);
 
 export function PegawaiDetailProvider({
   children,
@@ -47,13 +49,15 @@ export function PegawaiDetailProvider({
       setLoading(true);
       try {
         const response = await fetch(
-          `/api/Mutasi/Keuangan/SuratKeputusan/${id}/Pegawai/${pegawai_id}`
+          `/api/Mutasi/Keuangan/SuratKeputusan/${id}/Pegawai/${pegawai_id}`,
         );
         if (!response.ok) throw new Error("Gagal mengambil data SK");
         const { data } = await response.json();
         setData(data);
       } catch (error) {
-        setError(new Error(error instanceof Error ? error.message : "Unknown error"));
+        setError(
+          new Error(error instanceof Error ? error.message : "Unknown error"),
+        );
       } finally {
         setLoading(false);
       }
@@ -62,7 +66,9 @@ export function PegawaiDetailProvider({
   }, [id, pegawai_id]);
 
   return (
-    <PegawaiDetailContext.Provider value={{ data, loading, error, setLoading, setError }}>
+    <PegawaiDetailContext.Provider
+      value={{ data, loading, error, setLoading, setError }}
+    >
       {children}
     </PegawaiDetailContext.Provider>
   );
@@ -71,7 +77,9 @@ export function PegawaiDetailProvider({
 export function usePegawaiDetail() {
   const context = useContext(PegawaiDetailContext);
   if (!context) {
-    throw new Error("PegawaiDetail harus digunakan di dalam PegawaiDetailProvider");
+    throw new Error(
+      "PegawaiDetail harus digunakan di dalam PegawaiDetailProvider",
+    );
   }
   return context;
 }

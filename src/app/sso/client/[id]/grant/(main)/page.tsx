@@ -35,7 +35,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         const res = await fetch(`/api/Sso/Client/${id}/Grant?${searchParams}`, {
           method: "GET",
         });
-        const { error, data, meta } = await res.json();
+        const { data, error, meta } = await res.json();
         if (!res.ok) {
           throw new Error(
             error.message

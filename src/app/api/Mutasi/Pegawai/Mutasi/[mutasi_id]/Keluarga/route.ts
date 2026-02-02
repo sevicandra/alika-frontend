@@ -13,10 +13,10 @@ export async function GET(
     params: Promise<{
       mutasi_id: string;
     }>;
-  }
+  },
 ) {
   const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
+    `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
@@ -24,7 +24,7 @@ export async function GET(
   const user = await verify(session);
   if (!user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
-  }  
+  }
   const { mutasi_id } = await params.params;
 
   try {
@@ -37,7 +37,7 @@ export async function GET(
           Authorization: `Bearer ${session}`,
         },
         cache: "no-store",
-      }
+      },
     );
 
     if (!suratKeputusan.ok) {

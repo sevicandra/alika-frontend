@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   title: "SSO",
 };
 
-export default async function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <Template>{children}</Template>;
 }

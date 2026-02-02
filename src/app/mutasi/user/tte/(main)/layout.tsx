@@ -32,8 +32,8 @@ export default function Layout({
         />
       </div>
       <TableProvider>
-        {children}
-        {action}
+        <>{children}</>
+        <>{action}</>
       </TableProvider>
       <div className="mx-4 mb-4 flex justify-between">
         {totalPage && <Paginator />}

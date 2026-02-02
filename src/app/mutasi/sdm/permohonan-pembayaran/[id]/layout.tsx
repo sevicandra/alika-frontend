@@ -42,8 +42,8 @@ export default function Layout({
         <div className="flex min-w-max justify-end gap-1"></div>
       </div>
       <FormProvider>
-        {children}
-        {action}
+        <>{children}</>
+        <>{action}</>
       </FormProvider>
       <div className="mx-4 flex justify-between"></div>
     </div>

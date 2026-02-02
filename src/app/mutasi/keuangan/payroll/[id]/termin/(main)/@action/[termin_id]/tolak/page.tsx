@@ -36,7 +36,7 @@ export default function Page({
           body: JSON.stringify(input),
         },
       );
-              const { message, error } = await res.json();
+      const { message, error } = await res.json();
       if (!res.ok) {
         if (res.status === 422) {
           setValidationErrors(error.details);

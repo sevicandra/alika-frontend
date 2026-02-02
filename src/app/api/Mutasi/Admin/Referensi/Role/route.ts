@@ -4,8 +4,7 @@ import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
 const apiBaseUrl =
-  process.env.AUTH_BASE_URI_INTERNAL ??
-  process.env.AUTH_BASE_URI;
+  process.env.AUTH_BASE_URI_INTERNAL ?? process.env.AUTH_BASE_URI;
 
 export async function GET(req: Request) {
   const session = (await cookies()).get(

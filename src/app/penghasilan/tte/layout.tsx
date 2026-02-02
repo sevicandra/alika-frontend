@@ -31,8 +31,8 @@ export default function Layout({
             </button>
           </div>
         </div>
-        {page ? tte : arsip}
-        {Modal}
+        <>{page ? tte : arsip}</>
+        <>{Modal}</>
       </div>
     </TableProvider>
   );

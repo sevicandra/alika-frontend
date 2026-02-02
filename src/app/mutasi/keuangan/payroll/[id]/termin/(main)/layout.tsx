@@ -63,10 +63,10 @@ export default function Layout({
           </Link>
         </div>
       </div>
-<PayrollProvider>
-  <>{children}</>
-  <>{action}</>
-</PayrollProvider>
+      <PayrollProvider>
+        <>{children}</>
+        <>{action}</>
+      </PayrollProvider>
 
       <div className="mx-4 mb-4 flex justify-between">
         {totalPage && <Paginator />}

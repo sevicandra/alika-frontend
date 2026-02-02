@@ -55,27 +55,35 @@ interface SessionProviderProps {
   children: ReactNode;
 }
 
-const SessionContext = createContext<SessionContextValue | undefined>(undefined);
+const SessionContext = createContext<SessionContextValue | undefined>(
+  undefined,
+);
 const sessionChannel = new BroadcastChannel("session_channel");
 
 export function SessionProvider({ children }: SessionProviderProps) {
   const pathname = usePathname();
 
   const [session, setSession] = useState<Session | null>(null);
-  const [status, setStatus] = useState<"authenticated" | "unauthenticated" | "loading">("loading");
+  const [status, setStatus] = useState<
+    "authenticated" | "unauthenticated" | "loading"
+  >("loading");
   const changeCurrentAccount = useCallback((kode_satker: string) => {
     setSession((prev: Session | null) => {
       if (!prev || !prev.account) return null;
       return {
         ...prev,
-        current_account: prev?.account.find((a: account) => a.kode_satker === kode_satker),
+        current_account: prev?.account.find(
+          (a: account) => a.kode_satker === kode_satker,
+        ),
       };
     });
   }, []);
   const fetchSession = useCallback(async () => {
     try {
       setStatus("loading");
-      const csrf_token = await fetch("/api/auth/csrf").then((res) => res.json());
+      const csrf_token = await fetch("/api/auth/csrf").then((res) =>
+        res.json(),
+      );
       const res = await fetch("/api/auth/session", {
         method: "POST",
         headers: {
@@ -111,7 +119,9 @@ export function SessionProvider({ children }: SessionProviderProps) {
   }> => {
     return new Promise(async (resolve, reject) => {
       try {
-        const csrf_token = await fetch("/api/auth/csrf").then((res) => res.json());
+        const csrf_token = await fetch("/api/auth/csrf").then((res) =>
+          res.json(),
+        );
         const res = await fetch("/api/auth/signout", {
           method: "POST",
           headers: {
@@ -151,9 +161,11 @@ export function SessionProvider({ children }: SessionProviderProps) {
       changeCurrentAccount,
       signOut,
     }),
-    [session, status, fetchSession, changeCurrentAccount, signOut]
+    [session, status, fetchSession, changeCurrentAccount, signOut],
   );
-  return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
+  return (
+    <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
+  );
 }
 
 export function useSession() {

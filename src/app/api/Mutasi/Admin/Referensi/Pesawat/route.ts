@@ -69,18 +69,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
   try {
-    const ref = await fetch(
-      `${apiBaseUrl}/api/v2/Admin/Referensi/Pesawat`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(await req.json()),
-        cache: "no-store",
+    const ref = await fetch(`${apiBaseUrl}/api/v2/Admin/Referensi/Pesawat`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session}`,
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(await req.json()),
+      cache: "no-store",
+    });
     if (!ref.ok) {
       const data = await ref.json();
       return NextResponse.json(data, { status: ref.status });

@@ -30,7 +30,9 @@ type TerminDetailContextType = {
   setRefresh: () => void;
 };
 
-const TerminDetailContext = createContext<TerminDetailContextType | undefined>(undefined);
+const TerminDetailContext = createContext<TerminDetailContextType | undefined>(
+  undefined,
+);
 
 export function TerminDetailProvider({
   children,
@@ -50,7 +52,7 @@ export function TerminDetailProvider({
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `/api/Mutasi/Keuangan/SuratKeputusan/${Sk_id}/Pegawai/${Pegawai_id}/Termin/${Termin_id}`
+          `/api/Mutasi/Keuangan/SuratKeputusan/${Sk_id}/Pegawai/${Pegawai_id}/Termin/${Termin_id}`,
         );
         if (!response.ok) throw new Error("Gagal mengambil data Termin");
         const { data } = await response.json();
@@ -67,16 +69,22 @@ export function TerminDetailProvider({
       data,
       setRefresh: () => setRefresh((prev) => prev + 1),
     }),
-    [data]
+    [data],
   );
 
-  return <TerminDetailContext.Provider value={value}>{children}</TerminDetailContext.Provider>;
+  return (
+    <TerminDetailContext.Provider value={value}>
+      {children}
+    </TerminDetailContext.Provider>
+  );
 }
 
 export const useTerminDetail = () => {
   const context = useContext(TerminDetailContext);
   if (!context) {
-    throw new Error("useTerminDetail must be used within a TerminDetailProvider");
+    throw new Error(
+      "useTerminDetail must be used within a TerminDetailProvider",
+    );
   }
   return context;
 };

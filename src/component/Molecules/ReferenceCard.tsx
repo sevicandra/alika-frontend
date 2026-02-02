@@ -9,7 +9,13 @@ type props = {
   actionText?: string;
 };
 
-export default function Card({ title, icon, description, href, actionText = "Buka" }: props) {
+export default function Card({
+  title,
+  icon,
+  description,
+  href,
+  actionText = "Buka",
+}: props) {
   return (
     <div className="grid grid-rows-[1fr_auto] overflow-clip rounded-lg bg-base-100 shadow hover:-translate-y-1 hover:shadow-lg">
       <div className="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] items-center gap-2 p-4">

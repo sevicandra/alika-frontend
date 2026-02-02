@@ -31,7 +31,7 @@ const verify = async (token: string) => {
         revalidate: 60,
         tags: ["jwks"],
       },
-    }
+    },
   );
   const jwk = await jwkResponse.json();
   const publicKey = await crypto.subtle.importKey(
@@ -39,7 +39,7 @@ const verify = async (token: string) => {
     jwk.keys[0],
     { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
     false,
-    ["verify"]
+    ["verify"],
   );
   const { payload } = await jwtVerify(token, publicKey, {
     issuer: `${process.env.AUTH_BASE_URI}`,

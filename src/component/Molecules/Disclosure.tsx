@@ -14,14 +14,14 @@ export const Disclosure = ({
     <div {...props}>
       <div
         onClick={() => setOpen(!open)}
-        className="cursor-pointer p-2 after:content-[''] after:w-full after:h-0 after:block after:border-accent-600 after:border after:mt-2"
+        className="cursor-pointer p-2 after:mt-2 after:block after:h-0 after:w-full after:border after:border-accent-600 after:content-['']"
       >
         {title}
       </div>
       <div
-        className={`${open ? "h-0" : "h-fit"} rounded-md w-full transition-all duration-700 overflow-hidden`}
+        className={`${open ? "h-0" : "h-fit"} w-full overflow-hidden rounded-md transition-all duration-700`}
       >
-        <div className="p-2 h-fit">{children}</div>
+        <div className="h-fit p-2">{children}</div>
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ export default function Layout({
   const { mutasi_id } = use(params);
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr] gap-2 overflow-hidden">
-      <div className="mx-4 mt-4  overflow-x-auto pr-4">
+      <div className="mx-4 mt-4 overflow-x-auto pr-4">
         <Breadcrumb
           data={pathSegments.map((segment, index) => {
             let label;
@@ -76,7 +76,7 @@ export default function Layout({
             biaya}
         </div>
       </div>
-      {action}
+      <>{action}</>
     </div>
   );
 }

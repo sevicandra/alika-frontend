@@ -91,7 +91,7 @@ export default function Page({
           title: "Fetch Data Redirect",
           message: (error as Error).message,
           variant: "error",
-        })
+        });
         setError(error as Error);
       } finally {
         setLoading(false);

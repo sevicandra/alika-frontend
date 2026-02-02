@@ -8,10 +8,17 @@ interface SanggahKeluargaCard {
   action: React.ReactNode;
 }
 
-export default function SanggahKeluargaCard({ className, children, action }: SanggahKeluargaCard) {
+export default function SanggahKeluargaCard({
+  className,
+  children,
+  action,
+}: SanggahKeluargaCard) {
   return (
     <Card
-      className={cn("p-4 hover:bg-base-200 hover:shadow flex flex-col gap-2 relative", className)}
+      className={cn(
+        "relative flex flex-col gap-2 p-4 hover:bg-base-200 hover:shadow",
+        className,
+      )}
     >
       <div className="mb-4 flex items-start justify-between">
         <div className="flex items-center space-x-3">{action}</div>

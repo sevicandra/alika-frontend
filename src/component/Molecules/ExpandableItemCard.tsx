@@ -26,11 +26,16 @@ export default function ExpandableItemCard({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <Card className={cn("hover:bg-base-200", className)} onClick={() => setIsOpen(!isOpen)}>
+    <Card
+      className={cn("hover:bg-base-200", className)}
+      onClick={() => setIsOpen(!isOpen)}
+    >
       <div className="flex items-start justify-between px-4 pt-4">
         <div>
           <div className="text-lg font-semibold">{title}</div>
-          {subtitle && <div className="text-muted-foreground text-sm">{subtitle}</div>}
+          {subtitle && (
+            <div className="text-muted-foreground text-sm">{subtitle}</div>
+          )}
         </div>
         <div className="flex items-center gap-2">
           {status}
@@ -45,7 +50,9 @@ export default function ExpandableItemCard({
         </div>
       </div>
       {isOpen && detail && (
-        <div className="text-muted-foreground mt-2 px-4 pt-2 text-sm transition">{detail}</div>
+        <div className="text-muted-foreground mt-2 px-4 pt-2 text-sm transition">
+          {detail}
+        </div>
       )}
       <div className="mt-2 pb-4 text-sm">{children}</div>
     </Card>

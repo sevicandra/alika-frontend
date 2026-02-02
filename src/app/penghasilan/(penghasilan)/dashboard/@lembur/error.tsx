@@ -14,15 +14,9 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="bg-base-200 rounded-box skeleton grid min-h-18 grid-rows-[auto_1fr] gap-2 overflow-hidden p-2">
+    <div className="grid min-h-18 skeleton grid-rows-[auto_1fr] gap-2 overflow-hidden rounded-box bg-base-200 p-2">
       <h2>Some thing went wrong</h2>
-      <button
-        onClick={
-          () => reset()
-        }
-      >
-        Try again
-      </button>
+      <button onClick={() => reset()}>Try again</button>
     </div>
   );
 }

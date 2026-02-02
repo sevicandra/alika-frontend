@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         timestamp: new Date().toISOString(),
       },
     },
-    { status: 404 }
+    { status: 404 },
   );
 }
 
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         timestamp: new Date().toISOString(),
       },
     },
-    { status: 404 }
+    { status: 404 },
   );
 }
 
@@ -44,7 +44,7 @@ export async function PUT(req: NextRequest) {
         timestamp: new Date().toISOString(),
       },
     },
-    { status: 404 }
+    { status: 404 },
   );
 }
 
@@ -60,7 +60,7 @@ export async function DELETE(req: NextRequest) {
         timestamp: new Date().toISOString(),
       },
     },
-    { status: 404 }
+    { status: 404 },
   );
 }
 
@@ -76,6 +76,6 @@ export async function PATCH(req: NextRequest) {
         timestamp: new Date().toISOString(),
       },
     },
-    { status: 404 }
+    { status: 404 },
   );
 }

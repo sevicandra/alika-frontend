@@ -77,15 +77,18 @@ export async function PATCH(
   }
   const { kode_satker } = await params;
   try {
-    const ref = await fetch(`${apiBaseUrl}/api/v2/Admin/Referensi/Kantor/${kode_satker}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${session}`,
-        "Content-Type": "application/json",
+    const ref = await fetch(
+      `${apiBaseUrl}/api/v2/Admin/Referensi/Kantor/${kode_satker}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${session}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(await req.json()),
+        cache: "no-store",
       },
-      body: JSON.stringify(await req.json()),
-      cache: "no-store",
-    });
+    );
     if (!ref.ok) {
       const data = await ref.json();
       return NextResponse.json(data, { status: ref.status });

@@ -74,7 +74,7 @@ export default function Page({
         const res = await fetch(`/api/Sso/Service/${service_kode}`, {
           method: "GET",
         });
-              const { error, data } = await res.json();
+        const { error, data } = await res.json();
         if (!res.ok) {
           throw new Error(
             error.message

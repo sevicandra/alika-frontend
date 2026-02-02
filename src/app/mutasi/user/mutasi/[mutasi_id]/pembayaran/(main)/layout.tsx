@@ -20,7 +20,7 @@ export default function Layout({
   const { data: mutasi } = useMutasiDetail();
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">
-      <div className="mx-4 mt-4  overflow-x-auto pr-4">
+      <div className="mx-4 mt-4 overflow-x-auto pr-4">
         <Breadcrumb
           data={pathSegments.map((segment, index) => {
             let label;
@@ -48,10 +48,9 @@ export default function Layout({
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1"></div>
       </div>
-
-      {children}
+      <>{children}</>
       <div className="mx-4 mb-4 flex justify-between">
-        {totalPage && <Paginator />}
+        <>{totalPage && <Paginator />}</>
       </div>
     </div>
   );

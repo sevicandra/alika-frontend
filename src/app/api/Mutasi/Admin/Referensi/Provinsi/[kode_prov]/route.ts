@@ -63,15 +63,18 @@ export async function PATCH(
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
   try {
-    const ref = await fetch(`${apiBaseUrl}/api/v2/Admin/Referensi/Provinsi/${kode_prov}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${session}`,
-        "Content-Type": "application/json",
+    const ref = await fetch(
+      `${apiBaseUrl}/api/v2/Admin/Referensi/Provinsi/${kode_prov}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${session}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(await req.json()),
+        cache: "no-store",
       },
-      body: JSON.stringify(await req.json()),
-      cache: "no-store",
-    });
+    );
     if (!ref.ok) {
       const data = await ref.json();
       return NextResponse.json(data, { status: ref.status });

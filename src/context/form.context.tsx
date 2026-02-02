@@ -9,9 +9,7 @@ import {
 type FormContextType = {
   input: { [key: string]: any };
   setInput: (input: { [key: string]: any }) => void;
-  getValidationError: (field: string) =>
-    | string
-    | undefined;
+  getValidationError: (field: string) => string | undefined;
   setValidationErrors: (validationErrors: { [key: string]: string }) => void;
 };
 
@@ -19,11 +17,13 @@ const FormContext = createContext<FormContextType | undefined>(undefined);
 
 export function FormProvider({ children }: { children: React.ReactNode }) {
   const [input, setInput] = useState<{ [key: string]: any }>({});
-  const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
+  const [validationErrors, setValidationErrors] = useState<{
+    [key: string]: string;
+  }>({});
 
   const getValidationError = useCallback(
     (field: string) => {
-      return validationErrors[field]
+      return validationErrors[field];
     },
     [validationErrors],
   );

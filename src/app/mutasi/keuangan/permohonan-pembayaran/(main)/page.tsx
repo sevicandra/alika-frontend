@@ -63,7 +63,7 @@ export default function Page() {
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
         if (limit) searchParams.append("offset", (currentPage - 1).toString());
-        const {search} = searchs;
+        const { search } = searchs;
         if (search) searchParams.append("search", search);
         const res = await fetch(
           `/api/Mutasi/Keuangan/PermohonanPembayaran?${searchParams}`,

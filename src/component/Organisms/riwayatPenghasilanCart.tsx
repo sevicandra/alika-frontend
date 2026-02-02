@@ -9,7 +9,14 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 const options = {
   maintainAspectRatio: false,
@@ -75,7 +82,12 @@ export default function RiwayatPenghasilanCart({
   };
 
   data.forEach((item) => {
-    if (item.gaji != 0 || item.tukin != 0 || item.umak != 0 || item.lembur != 0) {
+    if (
+      item.gaji != 0 ||
+      item.tukin != 0 ||
+      item.umak != 0 ||
+      item.lembur != 0
+    ) {
       labels.push(item.bulan);
       gaji.data.push(item.gaji);
       tukin.data.push(item.tukin);

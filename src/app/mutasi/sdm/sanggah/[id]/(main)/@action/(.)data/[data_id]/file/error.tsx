@@ -14,7 +14,7 @@ export default function Error({
 
   return (
     <div
-      className="grid h-full w-full grid-rows-[auto_1fr] gap-1 overflow-hidden rounded-box bg-primary border border-base-content shadow shadow-base-content/10"
+      className="grid h-full w-full grid-rows-[auto_1fr] gap-1 overflow-hidden rounded-box border border-base-content bg-primary shadow shadow-base-content/10"
       onClick={(e) => e.stopPropagation()}
     >
       <div>

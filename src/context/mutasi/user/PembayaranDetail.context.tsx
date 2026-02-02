@@ -45,7 +45,9 @@ type PembayaranDetailContextType = {
   setRefresh: () => void;
 };
 
-const PembayaranDetailContext = createContext<PembayaranDetailContextType | undefined>(undefined);
+const PembayaranDetailContext = createContext<
+  PembayaranDetailContextType | undefined
+>(undefined);
 
 export function PembayaranDetailProvider({
   children,
@@ -63,7 +65,7 @@ export function PembayaranDetailProvider({
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `/api/Mutasi/Pegawai/Mutasi/${Mutasi_id}/Pembayaran/${Pembayaran_id}`
+          `/api/Mutasi/Pegawai/Mutasi/${Mutasi_id}/Pembayaran/${Pembayaran_id}`,
         );
         if (!response.ok) throw new Error("Gagal mengambil data Pembayaran");
         const { data } = await response.json();
@@ -80,18 +82,22 @@ export function PembayaranDetailProvider({
       data,
       setRefresh: () => setRefresh((prev) => prev + 1),
     }),
-    [data]
+    [data],
   );
 
   return (
-    <PembayaranDetailContext.Provider value={value}>{children}</PembayaranDetailContext.Provider>
+    <PembayaranDetailContext.Provider value={value}>
+      {children}
+    </PembayaranDetailContext.Provider>
   );
 }
 
 export const usePembayaranDetail = () => {
   const context = useContext(PembayaranDetailContext);
   if (!context) {
-    throw new Error("usePembayaranDetail must be used within a PembayaranDetailProvider");
+    throw new Error(
+      "usePembayaranDetail must be used within a PembayaranDetailProvider",
+    );
   }
   return context;
 };

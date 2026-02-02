@@ -82,7 +82,7 @@ export default function Page({
       className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden"
     >
       <div className="relative grid grid-rows-[1fr_auto_auto] overflow-hidden">
-        <div className="flex flex-col items-center gap-2 px-4 mt-4 overflow-y-auto">
+        <div className="mt-4 flex flex-col items-center gap-2 overflow-y-auto px-4">
           <DataTable
             columns={["No", "Nama", "File"]}
             data={

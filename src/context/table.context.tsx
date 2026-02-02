@@ -42,10 +42,12 @@ export const TableProvider = ({ children }: { children: React.ReactNode }) => {
       searchsTerm,
       setSearchsTerm,
     }),
-    [refresh, filter, searchs, searchsTerm]
+    [refresh, filter, searchs, searchsTerm],
   );
 
-  return <TableContext.Provider value={value}>{children}</TableContext.Provider>;
+  return (
+    <TableContext.Provider value={value}>{children}</TableContext.Provider>
+  );
 };
 
 export const useTable = () => {

@@ -9,10 +9,10 @@ const apiBaseUrl =
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
+    `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
@@ -25,7 +25,6 @@ export async function GET(
   if (!id) {
     return NextResponse.json({ message: "Bad Request" }, { status: 400 });
   }
-
 
   const url = new URL(req.url);
   const limit = url.searchParams.get("limit")
@@ -57,7 +56,7 @@ export async function GET(
           Authorization: `Bearer ${session}`,
         },
         cache: "no-store",
-      }
+      },
     );
 
     if (!res.ok) {

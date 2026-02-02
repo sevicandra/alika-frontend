@@ -15,7 +15,7 @@ export function PopUpProvider({ children }: { children: React.ReactNode }) {
     () => ({
       backdropRef,
     }),
-    [backdropRef]
+    [backdropRef],
   );
 
   function onClick() {

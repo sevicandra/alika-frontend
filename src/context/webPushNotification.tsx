@@ -1,5 +1,11 @@
 "use client";
-import { useEffect, useState, createContext, useCallback, useMemo } from "react";
+import {
+  useEffect,
+  useState,
+  createContext,
+  useCallback,
+  useMemo,
+} from "react";
 import { useNotification } from "./notifikasi";
 
 type WebPushNotificationContextType = {
@@ -9,17 +15,24 @@ type WebPushNotificationContextType = {
   subscription: PushSubscription | null;
 };
 
-export const WebPushNotificationContext = createContext<WebPushNotificationContextType>({
-  isSupported: false,
-  subscribeToPush: () => {},
-  unsubscribeFromPush: () => {},
-  subscription: null,
-});
+export const WebPushNotificationContext =
+  createContext<WebPushNotificationContextType>({
+    isSupported: false,
+    subscribeToPush: () => {},
+    unsubscribeFromPush: () => {},
+    subscription: null,
+  });
 
-export default function WebPushNotificationProvider({ children }: { children: React.ReactNode }) {
+export default function WebPushNotificationProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { addNotification } = useNotification();
   const [isSupported, setIsSupported] = useState(false);
-  const [subscription, setSubscription] = useState<PushSubscription | null>(null);
+  const [subscription, setSubscription] = useState<PushSubscription | null>(
+    null,
+  );
   const [csrfToken, setCsrfToken] = useState<string>("");
 
   // Fetch CSRF token once on mount
@@ -177,7 +190,9 @@ export default function WebPushNotificationProvider({ children }: { children: Re
 
   function urlBase64ToUint8Array(base64String: string) {
     const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+    const base64 = (base64String + padding)
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
 
     const rawData = window.atob(base64);
     const outputArray = new Uint8Array(rawData.length);
@@ -196,7 +211,7 @@ export default function WebPushNotificationProvider({ children }: { children: Re
       unsubscribeFromPush,
       subscription,
     }),
-    [isSupported, subscribeToPush, subscription]
+    [isSupported, subscribeToPush, subscription],
   );
 
   return (

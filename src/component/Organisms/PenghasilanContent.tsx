@@ -17,7 +17,7 @@ const Content = ({ children }: { children: React.ReactNode }) => {
           { name: "Lain-Lain", type: "link", href: "/penghasilan/lain-lain" },
         ]}
       />
-      <div className="bg-base-200 rounded-box grid grid-rows-[auto_1fr_auto] gap-2 overflow-hidden p-2">
+      <div className="grid grid-rows-[auto_1fr_auto] gap-2 overflow-hidden rounded-box bg-base-200 p-2">
         <div>content header</div>
         <div className="overflow-auto">{children}</div>
         <div>content footer</div>

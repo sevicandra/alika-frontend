@@ -69,10 +69,9 @@ export default function Layout({
           )}
         </div>
       </div>
-
-      {children}
+      <>{children}</>
       <div className="mx-4 mb-4 flex justify-between"></div>
-      {action}
+      <>{action}</>
     </div>
   );
 }

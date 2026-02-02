@@ -36,7 +36,7 @@ export default function Page() {
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      setValidationErrors({})
+      setValidationErrors({});
       setLoading(true);
       const res = await fetch(`/api/Mutasi/Admin/Referensi/Pesawat`, {
         headers: {

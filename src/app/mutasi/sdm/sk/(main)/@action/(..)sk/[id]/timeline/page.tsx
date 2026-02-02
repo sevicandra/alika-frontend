@@ -77,7 +77,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           const { message } = await res.json();
           throw new Error(message);
         }
-        const { data } = await res.json();        
+        const { data } = await res.json();
         setInput({
           timeline_sanggah:
             data.Timeline.find((e: any) => e.ref_kode === "01")?.tanggal ?? "",

@@ -40,17 +40,13 @@ export default function Layout({
       </div>
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1">
-          <Link
-            href="/sso/client/new"
-            className="btn btn-xs btn-success"
-          >
+          <Link href="/sso/client/new" className="btn btn-xs btn-success">
             Tambah
           </Link>
         </div>
       </div>
-
-      {children}
-      {action}
+      <>{children}</>
+      <>{action}</>
       <div className="mx-4 mb-4 flex justify-between">
         {totalPage && <Paginator />}
       </div>

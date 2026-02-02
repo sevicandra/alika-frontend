@@ -18,8 +18,12 @@ export default function ContainerCard({
   return (
     <Card className={cn(className)}>
       {(title || headerRight) && (
-        <div className="relative p-4 py-2 flex flex-wrap lg:flex-nowrap overflow-x-hidden gap-1 justify-between items-center after:absolute after:content-[''] after:w-full after:h-px after:left-0 after:bottom-0 after:bg-base-100">
-          {title && <h2 className="text-lg font-semibold shrink-0">{title.toLocaleUpperCase()}</h2>}
+        <div className="relative flex flex-wrap items-center justify-between gap-1 overflow-x-hidden p-4 py-2 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-base-100 after:content-[''] lg:flex-nowrap">
+          {title && (
+            <h2 className="shrink-0 text-lg font-semibold">
+              {title.toLocaleUpperCase()}
+            </h2>
+          )}
           {headerRight}
         </div>
       )}

@@ -14,7 +14,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="bg-base-100/50 grid h-full w-full place-content-center gap-2">
+    <div className="grid h-full w-full place-content-center gap-2 bg-base-100/50">
       <div>
         <h2 className="text-2xl">Some thing went wrong!</h2>
       </div>

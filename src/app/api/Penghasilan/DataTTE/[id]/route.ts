@@ -3,10 +3,16 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
+const apiBaseUrl =
+  process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
 
-export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }

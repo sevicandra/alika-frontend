@@ -4,5 +4,7 @@ import { usePaginator } from "@/context/paginator";
 
 export default function Paginator() {
   const { totalPage, page, setPage } = usePaginator();
-  return <Warper totalPage={totalPage} page={page} onEachSide={3} action={setPage} />;
+  return (
+    <Warper totalPage={totalPage} page={page} onEachSide={3} action={setPage} />
+  );
 }

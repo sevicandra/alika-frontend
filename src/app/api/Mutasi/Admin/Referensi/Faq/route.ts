@@ -29,13 +29,11 @@ export async function GET(req: Request) {
   const search = url.searchParams.get("search") || undefined;
   const status = url.searchParams.get("status") || undefined;
 
-
   const searchParams = new URLSearchParams();
   if (limit) searchParams.append("limit", limit.toString());
   if (offset) searchParams.append("offset", offset.toString());
   if (search) searchParams.append("search", search);
   if (status) searchParams.append("status", status);
-
 
   try {
     const res = await fetch(
@@ -73,18 +71,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
   try {
-    const ref = await fetch(
-      `${apiBaseUrl}/api/v2/Admin/Referensi/Faq`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(await req.json()),
-        cache: "no-store",
+    const ref = await fetch(`${apiBaseUrl}/api/v2/Admin/Referensi/Faq`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session}`,
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(await req.json()),
+      cache: "no-store",
+    });
     if (!ref.ok) {
       const data = await ref.json();
       return NextResponse.json(data, { status: ref.status });

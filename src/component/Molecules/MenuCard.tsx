@@ -63,7 +63,7 @@ export default function MenuCard({ menu }: { menu: Menu[] }) {
   };
 
   return (
-    <div className="bg-base-200 text-base-content *:not-last:after:h-1 *:not-last:after:bg-base-300 flex min-h-full flex-col gap-2 rounded-t-md px-2 py-4 text-sm drop-shadow-sm *:not-last:after:w-full *:not-last:after:grow *:not-last:after:content-['']">
+    <div className="flex min-h-full flex-col gap-2 rounded-t-md bg-base-200 px-2 py-4 text-sm text-base-content drop-shadow-sm *:not-last:after:h-1 *:not-last:after:w-full *:not-last:after:grow *:not-last:after:bg-base-300 *:not-last:after:content-['']">
       {menu.map((item, index) => {
         return (
           <List key={index}>
@@ -81,7 +81,8 @@ export default function MenuCard({ menu }: { menu: Menu[] }) {
                     <Link
                       href={item.url}
                       className={`hover:bg-accent-300/20 ${
-                        pathname.startsWith(item.url) && "bg-accent text-accent-content"
+                        pathname.startsWith(item.url) &&
+                        "bg-accent text-accent-content"
                       }`}
                     >
                       <div className="flex items-center gap-4">

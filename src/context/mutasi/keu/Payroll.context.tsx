@@ -59,12 +59,17 @@ export function PayrollProvider({ children }: { children: React.ReactNode }) {
     };
   }, [searchTerm]);
 
-  const addTerminId = (id: string, nominal: number, nama: string, nip: string) => {
+  const addTerminId = (
+    id: string,
+    nominal: number,
+    nama: string,
+    nip: string,
+  ) => {
     setTermin((prev) => {
       const existing = prev.find((terminId) => terminId.id === id);
       if (existing) {
         return prev.map((terminId) =>
-          terminId.id === id ? { ...terminId, nominal, nama, nip } : terminId
+          terminId.id === id ? { ...terminId, nominal, nama, nip } : terminId,
         );
       }
       return [...prev, { id, nominal, nama, nip }];
@@ -92,9 +97,11 @@ export function PayrollProvider({ children }: { children: React.ReactNode }) {
       tahap,
       setTahap,
     }),
-    [refresh, termin, tanggal, search, searchTerm, status, tahap]
+    [refresh, termin, tanggal, search, searchTerm, status, tahap],
   );
-  return <PayrollContext.Provider value={value}>{children}</PayrollContext.Provider>;
+  return (
+    <PayrollContext.Provider value={value}>{children}</PayrollContext.Provider>
+  );
 }
 
 export const usePayroll = () => {

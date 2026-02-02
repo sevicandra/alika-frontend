@@ -9,7 +9,12 @@ type PopUpProps = React.HTMLAttributes<HTMLDivElement> & {
   title: string;
 };
 
-export default function PopUp({ title, children, className, ...props }: PopUpProps) {
+export default function PopUp({
+  title,
+  children,
+  className,
+  ...props
+}: PopUpProps) {
   const router = useRouter();
 
   useEffect(() => {
@@ -30,7 +35,7 @@ export default function PopUp({ title, children, className, ...props }: PopUpPro
     <div
       className={cn(
         "m-auto grid h-fit max-h-full max-w-full grid-rows-[auto_1fr] overflow-hidden rounded-box border border-base-content/20 bg-base-200 shadow shadow-base-content/10",
-        className
+        className,
       )}
       onClick={(e) => e.stopPropagation()}
       {...props}
@@ -48,7 +53,9 @@ export default function PopUp({ title, children, className, ...props }: PopUpPro
           <Icon icon="x" height={"20px"} />
         </button>
       </div>
-      <div className="relative overflow-y-auto overflow-x-hidden">{children}</div>
+      <div className="relative overflow-x-hidden overflow-y-auto">
+        {children}
+      </div>
     </div>
   );
 }

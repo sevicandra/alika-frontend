@@ -21,7 +21,7 @@ export async function GET(
   if (!user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
-  const { id, termin_id  } = await params;
+  const { id, termin_id } = await params;
   if (!id || !termin_id) {
     return NextResponse.json({ message: "Bad Request" }, { status: 400 });
   }

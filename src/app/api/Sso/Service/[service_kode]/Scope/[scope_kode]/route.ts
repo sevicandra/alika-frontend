@@ -3,13 +3,16 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.AUTH_BASE_URI_INTERNAL ?? process.env.AUTH_BASE_URI;
+const apiBaseUrl =
+  process.env.AUTH_BASE_URI_INTERNAL ?? process.env.AUTH_BASE_URI;
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ service_kode: string; scope_kode: string }> }
+  { params }: { params: Promise<{ service_kode: string; scope_kode: string }> },
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -28,7 +31,7 @@ export async function GET(
           Authorization: `Bearer ${session}`,
         },
         cache: "no-store",
-      }
+      },
     );
 
     if (!res.ok) {
@@ -44,9 +47,11 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ service_kode: string; scope_kode: string }> }
+  { params }: { params: Promise<{ service_kode: string; scope_kode: string }> },
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -66,7 +71,7 @@ export async function PATCH(
         },
         body: JSON.stringify(await req.json()),
         cache: "no-store",
-      }
+      },
     );
     if (!ref.ok) {
       const data = await ref.json();
@@ -81,9 +86,11 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ service_kode: string; scope_kode: string }> }
+  { params }: { params: Promise<{ service_kode: string; scope_kode: string }> },
 ) {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -102,7 +109,7 @@ export async function DELETE(
           "Content-Type": "application/json",
         },
         cache: "no-store",
-      }
+      },
     );
     if (!ref.ok) {
       const data = await ref.json();

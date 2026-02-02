@@ -35,7 +35,7 @@ export default function Page() {
         const res = await fetch(`/api/Sso/User?${searchParams}`, {
           method: "GET",
         });
-              const { error, data, meta } = await res.json();
+        const { error, data, meta } = await res.json();
         if (!res.ok) {
           throw new Error(
             error.message

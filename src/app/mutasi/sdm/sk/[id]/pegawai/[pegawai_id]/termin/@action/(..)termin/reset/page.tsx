@@ -33,7 +33,7 @@ export default function Page({
         },
       );
       const { message, error } = await res.json();
-      if (!res.ok) {        
+      if (!res.ok) {
         throw new Error(
           error.message
             ? `${error.message} (Status: ${res.status})`
@@ -47,7 +47,7 @@ export default function Page({
       router.back();
       setRefresh();
       setRefreshPegawai();
-    } catch (error) {      
+    } catch (error) {
       addNotification({
         message: (error as Error).message,
         title: "Reset Termin",

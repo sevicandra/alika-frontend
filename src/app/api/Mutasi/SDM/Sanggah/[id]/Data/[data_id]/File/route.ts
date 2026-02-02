@@ -27,13 +27,16 @@ export async function GET(
   }
 
   try {
-    const res = await fetch(`${apiBaseUrl}/api/v2/SDM/Sanggah/${id}/Data/${data_id}/File`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session}`,
+    const res = await fetch(
+      `${apiBaseUrl}/api/v2/SDM/Sanggah/${id}/Data/${data_id}/File`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session}`,
+        },
       },
-    });
+    );
 
     if (!res.ok) {
       const data = await res.json();

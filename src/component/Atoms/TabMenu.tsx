@@ -14,7 +14,9 @@ export function TabProvider({ children }: { children: React.ReactNode }) {
     tab,
     setTab,
   };
-  return <TabContext.Provider value={contextValue}>{children}</TabContext.Provider>;
+  return (
+    <TabContext.Provider value={contextValue}>{children}</TabContext.Provider>
+  );
 }
 export function useTab() {
   const context = useContext(TabContext);

@@ -1,5 +1,11 @@
 "use client";
-import { createContext, useState, useEffect, useCallback, useMemo } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 
 type ThemesContextType = {
   isOpen: boolean;
@@ -38,7 +44,10 @@ export function ThemesProvider({ children }: { children?: React.ReactNode }) {
 
   const closeMenu = useCallback(() => setIsOpen(false), []);
   const openMenu = useCallback(() => handlerOpen(), [handlerOpen]);
-  const handleSetTheme = useCallback((newTheme: string) => setTheme(newTheme), []);
+  const handleSetTheme = useCallback(
+    (newTheme: string) => setTheme(newTheme),
+    [],
+  );
 
   useEffect(() => {
     const initialTheme = localStorage.getItem("theme") || "";
@@ -63,8 +72,10 @@ export function ThemesProvider({ children }: { children?: React.ReactNode }) {
       show,
       handlerClose,
     }),
-    [isOpen, closeMenu, openMenu, theme, handleSetTheme, show, handlerClose]
+    [isOpen, closeMenu, openMenu, theme, handleSetTheme, show, handlerClose],
   );
 
-  return <ThemesContext.Provider value={value}>{children}</ThemesContext.Provider>;
+  return (
+    <ThemesContext.Provider value={value}>{children}</ThemesContext.Provider>
+  );
 }

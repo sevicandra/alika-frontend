@@ -2,7 +2,11 @@
 import Link from "next/link";
 import Breadcrumb from "@/component/Molecules/Breadcrumb";
 import { usePathname } from "next/navigation";
-import { usePegawaiDetail, useSkDetail, useTerminDetail } from "@/context/mutasi/keu";
+import {
+  usePegawaiDetail,
+  useSkDetail,
+  useTerminDetail,
+} from "@/context/mutasi/keu";
 
 export default function Layout({
   children,

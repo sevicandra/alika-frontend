@@ -33,7 +33,7 @@ export default function Confirmation({
   return (
     open && (
       <div
-        className="fixed inset-0 z-50 px-2 transition-all delay-75 duration-300 backdrop-blur-xs"
+        className="fixed inset-0 z-50 px-2 backdrop-blur-xs transition-all delay-75 duration-300"
         onClick={() => onCancel()}
       >
         <Transition
@@ -48,7 +48,7 @@ export default function Confirmation({
           afterLeave={() => setShow(false)}
         >
           <div
-            className="bg-base-200 text-base-content rounded-box border-info-content/40 absolute top-10 left-1/2 flex w-xs max-w-full translate-x-[-50%] flex-col gap-2 border p-4 shadow"
+            className="absolute top-10 left-1/2 flex w-xs max-w-full translate-x-[-50%] flex-col gap-2 rounded-box border border-info-content/40 bg-base-200 p-4 text-base-content shadow"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-center">
@@ -58,18 +58,22 @@ export default function Confirmation({
               <p className="text-sm">{message}</p>
             </div>
             <div>
-              <label className="input input-bordered input-sm flex items-center gap-2 text-base-content">
+              <label className="input-bordered input input-sm flex items-center gap-2 text-base-content">
                 <FiKey className="h-4 w-4" />
                 <input
                   type="password"
                   name="passphrase"
-                  className="text-base-content grow"
+                  className="grow text-base-content"
                   value={passphrase}
                   placeholder="passphrase"
                   onChange={(e) => setPassphrase(e.target.value)}
                 />
               </label>
-              {passphraseError && <span className="text-error-600 text-sm">{passphraseError}</span>}
+              {passphraseError && (
+                <span className="text-sm text-error-600">
+                  {passphraseError}
+                </span>
+              )}
             </div>
             <div className="flex justify-center gap-2">
               <Button className="btn-sm btn-error" onClick={() => onCancel()}>

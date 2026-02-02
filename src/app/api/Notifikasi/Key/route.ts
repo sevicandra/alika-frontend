@@ -3,10 +3,13 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
 
-const apiBaseUrl = process.env.WEB_PUSH_BASE_URI_INTERNAL ?? process.env.WEB_PUSH_BASE_URI;
+const apiBaseUrl =
+  process.env.WEB_PUSH_BASE_URI_INTERNAL ?? process.env.WEB_PUSH_BASE_URI;
 
 export const GET = async () => {
-  const session = (await cookies()).get(`${process.env.APP_NAME}.session`)?.value;
+  const session = (await cookies()).get(
+    `${process.env.APP_NAME}.session`,
+  )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
   }
@@ -24,7 +27,10 @@ export const GET = async () => {
     });
     if (!key.ok) {
       const data = await key.json();
-      return NextResponse.json({ message: data.message }, { status: key.status });
+      return NextResponse.json(
+        { message: data.message },
+        { status: key.status },
+      );
     }
     const data = await key.json();
     return NextResponse.json(data, { status: 200 });

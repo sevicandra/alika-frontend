@@ -79,14 +79,14 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
       addNotification({
         message: `${message} (Status: ${res.status})`,
-        title: "Grant",
+        title: "Add Grant",
       });
       router.back();
       setRefresh();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Grant",
+        title: "Add Grant",
         variant: "error",
       });
     } finally {

@@ -26,7 +26,9 @@ type PegawaiDetailContextType = {
   setRefresh: () => void;
 };
 
-const PegawaiDetailContext = createContext<PegawaiDetailContextType | undefined>(undefined);
+const PegawaiDetailContext = createContext<
+  PegawaiDetailContextType | undefined
+>(undefined);
 
 export function PegawaiDetailProvider({
   children,
@@ -51,7 +53,9 @@ export function PegawaiDetailProvider({
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`);
+        const response = await fetch(
+          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}`,
+        );
         if (!response.ok) throw new Error("Gagal mengambil data SK");
         const { data } = await response.json();
         setData(data);
@@ -74,7 +78,9 @@ export function PegawaiDetailProvider({
 export function usePegawaiDetail() {
   const context = useContext(PegawaiDetailContext);
   if (!context) {
-    throw new Error("PegawaiDetail harus digunakan di dalam PegawaiDetailProvider");
+    throw new Error(
+      "PegawaiDetail harus digunakan di dalam PegawaiDetailProvider",
+    );
   }
   return context;
 }

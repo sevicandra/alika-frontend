@@ -9,7 +9,11 @@ export type MenuType = {
   }[];
 };
 
-export const menus = async ({ module }: { module: string }): Promise<MenuType[]> => {
+export const menus = async ({
+  module,
+}: {
+  module: string;
+}): Promise<MenuType[]> => {
   if (module === "Penghasilan") {
     return [
       {

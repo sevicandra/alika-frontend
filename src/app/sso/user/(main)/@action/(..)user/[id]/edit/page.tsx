@@ -74,7 +74,7 @@ export default function Page({
         const res = await fetch(`/api/Sso/User/${id}`, {
           method: "GET",
         });
-              const { error, data } = await res.json();
+        const { error, data } = await res.json();
         if (!res.ok) {
           throw new Error(
             error.message
@@ -88,7 +88,7 @@ export default function Page({
           message: (error as Error).message,
           title: "Edit User",
           variant: "error",
-        })
+        });
         setError(error as Error);
       } finally {
         setLoading(false);

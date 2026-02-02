@@ -56,7 +56,8 @@ export async function POST(
     return new Response(data, {
       status: 200,
       headers: {
-        "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "Content-Disposition": `inline; filename="${filename}"`,
       },
     });

@@ -40,7 +40,7 @@ export async function POST(
           Authorization: `Bearer ${session}`,
         },
         cache: "no-store",
-        body: JSON.stringify(await req.json())
+        body: JSON.stringify(await req.json()),
       },
     );
 

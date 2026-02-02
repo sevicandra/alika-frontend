@@ -19,9 +19,17 @@ type SanggahDetailContextType = {
   setRefresh: () => void;
 };
 
-const SanggahDetailContext = createContext<SanggahDetailContextType | undefined>(undefined);
+const SanggahDetailContext = createContext<
+  SanggahDetailContextType | undefined
+>(undefined);
 
-export function SanggahDetailProvider({ children, id }: { children: React.ReactNode; id: string }) {
+export function SanggahDetailProvider({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id: string;
+}) {
   const [data, setData] = useState<SanggahDetailAttributes>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,7 +67,9 @@ export function SanggahDetailProvider({ children, id }: { children: React.ReactN
 export function useSanggahDetail() {
   const context = useContext(SanggahDetailContext);
   if (!context) {
-    throw new Error("SanggahDetail harus digunakan di dalam SanggahDetailProvider");
+    throw new Error(
+      "SanggahDetail harus digunakan di dalam SanggahDetailProvider",
+    );
   }
   return context;
 }

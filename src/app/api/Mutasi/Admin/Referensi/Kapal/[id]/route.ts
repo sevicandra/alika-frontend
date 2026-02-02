@@ -62,15 +62,18 @@ export async function PATCH(
   }
   const { id } = await params;
   try {
-    const ref = await fetch(`${apiBaseUrl}/api/v2/Admin/Referensi/Kapal/${id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${session}`,
-        "Content-Type": "application/json",
+    const ref = await fetch(
+      `${apiBaseUrl}/api/v2/Admin/Referensi/Kapal/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${session}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(await req.json()),
+        cache: "no-store",
       },
-      body: JSON.stringify(await req.json()),
-      cache: "no-store",
-    });
+    );
     if (!ref.ok) {
       const data = await ref.json();
       return NextResponse.json(data, { status: ref.status });
@@ -98,14 +101,17 @@ export async function DELETE(
   }
   const { id } = await params;
   try {
-    const ref = await fetch(`${apiBaseUrl}/api/v2/Admin/Referensi/Kapal/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${session}`,
-        "Content-Type": "application/json",
+    const ref = await fetch(
+      `${apiBaseUrl}/api/v2/Admin/Referensi/Kapal/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${session}`,
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
       },
-      cache: "no-store",
-    });
+    );
     if (!ref.ok) {
       const data = await ref.json();
       return NextResponse.json(data, { status: ref.status });

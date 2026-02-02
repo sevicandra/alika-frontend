@@ -65,7 +65,10 @@ export const TabButton = ({
   );
 };
 
-export const SelectButton = ({ className, options }: SelectProps & { options: string[] }) => {
+export const SelectButton = ({
+  className,
+  options,
+}: SelectProps & { options: string[] }) => {
   const { tab, setTab } = useTab();
   return (
     <div className={`w-full ${className}`}>

@@ -23,14 +23,17 @@ export async function PATCH(
   }
   const { id } = await params;
   try {
-    const ref = await fetch(`${apiBaseUrl}/api/v2/Admin/Referensi/Faq/${id}/Publish`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${session}`,
-        "Content-Type": "application/json",
+    const ref = await fetch(
+      `${apiBaseUrl}/api/v2/Admin/Referensi/Faq/${id}/Publish`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${session}`,
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
       },
-      cache: "no-store",
-    });
+    );
     if (!ref.ok) {
       const data = await ref.json();
       return NextResponse.json(data, { status: ref.status });

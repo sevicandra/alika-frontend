@@ -15,7 +15,7 @@ const ProfileButton = ({
   return (
     <div
       ref={ref}
-      className="flex max-w-3xs min-w-fit cursor-pointer items-center gap-2 overflow-x-hidden rounded-full border border-primary-content bg-primary/80 p-1 hover:bg-primary hover:shadow shadow-primary/50 sm:pr-3"
+      className="flex max-w-3xs min-w-fit cursor-pointer items-center gap-2 overflow-x-hidden rounded-full border border-primary-content bg-primary/80 p-1 shadow-primary/50 hover:bg-primary hover:shadow sm:pr-3"
     >
       {src && <Avatar src={src} />}
       <div className="hidden truncate text-left text-nowrap text-primary-content sm:block">

@@ -81,7 +81,7 @@ export default function Page() {
         addNotification({
           message: (error as Error).message,
           title: "Penghasilan Bulanan",
-          variant: "error"
+          variant: "error",
         });
       } finally {
         setLoading(false);

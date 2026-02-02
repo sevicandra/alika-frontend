@@ -29,18 +29,15 @@ export async function POST(
   const { id } = await params.params;
 
   try {
-    const res = await fetch(
-      `${apiBaseUrl}/api/v2/Pegawai/TTE/${id}/Process`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        cache: "no-store",
-        body: JSON.stringify(await req.json()),
+    const res = await fetch(`${apiBaseUrl}/api/v2/Pegawai/TTE/${id}/Process`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
       },
-    );
+      cache: "no-store",
+      body: JSON.stringify(await req.json()),
+    });
 
     if (!res.ok) {
       const data = await res.json();

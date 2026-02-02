@@ -2,13 +2,22 @@
 import { Menu, Items, Item } from "../Molecules/Sidebar";
 import { menus } from "@/lib/sidebar";
 
-export default async function Sidebar({ menu, role }: { menu: string; role?: string[] }) {
+export default async function Sidebar({
+  menu,
+  role,
+}: {
+  menu: string;
+  role?: string[];
+}) {
   const sidebar = await menus({ module: menu });
   return (
     <Menu>
       {sidebar.map(
         (items, i) =>
-          (!items.role || role?.find((r) => r.toUpperCase() === items.role?.toUpperCase())) && (
+          (!items.role ||
+            role?.find(
+              (r) => r.toUpperCase() === items.role?.toUpperCase(),
+            )) && (
             <Items key={i} title={items.title}>
               {items.data.map((item) => (
                 <Item key={item.label} href={item.path} icon={item.icon}>
@@ -16,7 +25,7 @@ export default async function Sidebar({ menu, role }: { menu: string; role?: str
                 </Item>
               ))}
             </Items>
-          )
+          ),
       )}
     </Menu>
   );

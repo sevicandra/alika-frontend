@@ -25,7 +25,7 @@ export default function Layout({
 
   return (
     <div className="grid h-full max-h-full grid-rows-[auto_auto_1fr_auto] gap-2 overflow-hidden">
-      <div className="mx-4 mt-4  overflow-x-auto pr-4">
+      <div className="mx-4 mt-4 overflow-x-auto pr-4">
         <Breadcrumb
           data={pathSegments.map((segment, index) => {
             let label;
@@ -79,8 +79,8 @@ export default function Layout({
         </div>
       </div>
       <TableProvider>
-        {children}
-        {action}
+        <>{children}</>
+        <>{action}</>
       </TableProvider>
       <div className="mx-4 mb-4 flex justify-between"></div>
     </div>

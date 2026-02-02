@@ -29,7 +29,7 @@ export async function GET(
   const { mutasi_id } = await params.params;
 
   try {
-       const res = await fetch(
+    const res = await fetch(
       `${apiBaseUrl}/api/v2/Pegawai/Mutasi/${mutasi_id}/Sanggah`,
       {
         method: "GET",
@@ -50,5 +50,3 @@ export async function GET(
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
-
-

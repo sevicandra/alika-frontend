@@ -4,18 +4,18 @@ import { LuGhost } from "react-icons/lu";
 
 export default function NotFoundPage() {
   return (
-    <div className="from-primary-300 via-secondary-300 to-accent-300 flex h-full items-center justify-center bg-linear-to-tr px-4">
-      <div className="bg-neutral w-full max-w-md rounded-2xl p-10 text-center shadow-xl">
+    <div className="flex h-full items-center justify-center bg-linear-to-tr from-primary-300 via-secondary-300 to-accent-300 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-neutral p-10 text-center shadow-xl">
         <div className="mb-6 flex justify-center">
-          <LuGhost className="text-accent-500 h-20 w-20" />
+          <LuGhost className="h-20 w-20 text-accent-500" />
         </div>
-        <h1 className="text-neutral-content mb-4 text-5xl font-bold">404</h1>
-        <p className="text-neutral-content mb-6 text-lg">
+        <h1 className="mb-4 text-5xl font-bold text-neutral-content">404</h1>
+        <p className="mb-6 text-lg text-neutral-content">
           Wah, halaman yang kamu cari tidak ditemukan.
         </p>
         <Link
           href="/"
-          className="bg-primary-500 text-primary-content hover:bg-primary-600 inline-block rounded-full px-6 py-2 shadow transition"
+          className="inline-block rounded-full bg-primary-500 px-6 py-2 text-primary-content shadow transition hover:bg-primary-600"
         >
           Kembali ke Beranda
         </Link>

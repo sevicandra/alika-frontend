@@ -71,7 +71,9 @@ export default function Layout({
         headerRight={
           <div className="">
             <input
-              onChange={(e) => setSearchsTerm({...searchsTerm, search: e.target.value})}
+              onChange={(e) =>
+                setSearchsTerm({ ...searchsTerm, search: e.target.value })
+              }
               type="text"
               className="input-bordered input input-xs w-md max-w-full focus:outline-none"
               placeholder="Cari berdasarkan Nama / NIP"

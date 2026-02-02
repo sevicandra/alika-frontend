@@ -48,8 +48,8 @@ const Layout = async ({
           </Link>
         </div>
       </div>
-      {children}
-      {action}
+      <>{children}</>
+      <>{action}</>
       <div className="mx-4 mb-4 flex justify-between"></div>
     </div>
   );

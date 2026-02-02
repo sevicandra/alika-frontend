@@ -5,7 +5,8 @@ import { Transition } from "@headlessui/react";
 import { FiXCircle } from "react-icons/fi";
 import { themes } from "@/lib/themes";
 export default function Themes() {
-  const { isOpen, closeMenu, setTheme, show, handlerClose } = useContext(ThemesContext);
+  const { isOpen, closeMenu, setTheme, show, handlerClose } =
+    useContext(ThemesContext);
 
   return (
     isOpen && (
@@ -42,19 +43,29 @@ export default function Themes() {
                     <div className="col-start-1 row-span-2 row-start-1 bg-base-200"></div>
                     <div className="col-start-1 row-start-3 bg-base-300"></div>
                     <div className="col-span-4 col-start-2 row-span-3 row-start-1 flex flex-col gap-1 bg-base-100 p-2">
-                      <div className="font-bold capitalize">{item.replace("-", " ")}</div>
+                      <div className="font-bold capitalize">
+                        {item.replace("-", " ")}
+                      </div>
                       <div className="flex flex-wrap gap-1">
                         <div className="flex aspect-square w-5 items-center justify-center rounded bg-primary lg:w-6">
-                          <div className="text-sm font-bold text-primary-content">A</div>
+                          <div className="text-sm font-bold text-primary-content">
+                            A
+                          </div>
                         </div>
                         <div className="flex aspect-square w-5 items-center justify-center rounded bg-secondary lg:w-6">
-                          <div className="text-sm font-bold text-secondary-content">A</div>
+                          <div className="text-sm font-bold text-secondary-content">
+                            A
+                          </div>
                         </div>
                         <div className="flex aspect-square w-5 items-center justify-center rounded bg-accent lg:w-6">
-                          <div className="text-sm font-bold text-accent-content">A</div>
+                          <div className="text-sm font-bold text-accent-content">
+                            A
+                          </div>
                         </div>
                         <div className="flex aspect-square w-5 items-center justify-center rounded bg-neutral lg:w-6">
-                          <div className="text-sm font-bold text-neutral-content">A</div>
+                          <div className="text-sm font-bold text-neutral-content">
+                            A
+                          </div>
                         </div>
                       </div>
                     </div>

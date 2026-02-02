@@ -8,7 +8,7 @@ export default function Page() {
         <button className="h-full w-full cursor-pointer gap-2 overflow-hidden rounded-box bg-primary px-4 py-1 text-primary-content shadow shadow-base-content/10 hover:shadow-lg">
           Estimasi Biaya
         </button>
-      </Link >
+      </Link>
       <Link href={"/mutasi/user/dashboard/faq"} className="w-full">
         <button className="h-full w-full cursor-pointer gap-2 overflow-hidden rounded-box bg-primary px-4 py-1 text-primary-content shadow shadow-base-content/10 hover:shadow-lg">
           FAQ

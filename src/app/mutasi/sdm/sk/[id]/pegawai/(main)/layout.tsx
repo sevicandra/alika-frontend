@@ -97,12 +97,11 @@ export default function Layout({
           </Link>
         </div>
       </div>
-
-      {children}
+      <>{children}</>
       <div className="mx-4 mb-4 flex justify-between">
         {totalPage && <Paginator />}
       </div>
-      {action}
+      <>{action}</>
     </div>
   );
 }

@@ -1,5 +1,11 @@
 "use client";
-import { createContext, useState, useContext, useMemo, useCallback } from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  useMemo,
+  useCallback,
+} from "react";
 
 type PaginatorContextType = {
   page: number;
@@ -12,7 +18,9 @@ type PaginatorContextType = {
   setOnEachSide: (onEachSide: number) => void;
 };
 
-const PaginatorContext = createContext<PaginatorContextType | undefined>(undefined);
+const PaginatorContext = createContext<PaginatorContextType | undefined>(
+  undefined,
+);
 
 export function PaginatorProvider({ children }: { children: React.ReactNode }) {
   const [page, setPage] = useState(1);
@@ -30,7 +38,7 @@ export function PaginatorProvider({ children }: { children: React.ReactNode }) {
         setPage(page);
       }
     },
-    [totalPage]
+    [totalPage],
   );
 
   const setCurrentTotalPage = useCallback((totalPage: number) => {
@@ -58,10 +66,14 @@ export function PaginatorProvider({ children }: { children: React.ReactNode }) {
         setOnEachSide(page);
       },
     }),
-    [limit, onEachSide, page, totalPage, setCurrentPage, setCurrentTotalPage]
+    [limit, onEachSide, page, totalPage, setCurrentPage, setCurrentTotalPage],
   );
 
-  return <PaginatorContext.Provider value={value}>{children}</PaginatorContext.Provider>;
+  return (
+    <PaginatorContext.Provider value={value}>
+      {children}
+    </PaginatorContext.Provider>
+  );
 }
 
 export function usePaginator() {

@@ -14,16 +14,16 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="bg-base-100/50 grid h-full w-full place-content-center gap-2">
+    <div className="grid h-full w-full place-content-center gap-2 bg-base-100/50">
       <div className="mb-6 flex justify-center">
-        <LuServerCrash className="text-error h-20 w-20" />
+        <LuServerCrash className="h-20 w-20 text-error" />
       </div>
       <p className="mb-6 text-lg text-neutral-600">
         Ups! Sepertinya ada yang salah.
       </p>
       <button
         onClick={() => reset()}
-        className="bg-error hover:bg-error-600 text-error-content inline-block rounded-full px-2 py-1 shadow transition"
+        className="inline-block rounded-full bg-error px-2 py-1 text-error-content shadow transition hover:bg-error-600"
       >
         Try again
       </button>

@@ -9,7 +9,7 @@ const apiBaseUrl =
 
 export async function GET(req: Request) {
   const session = (await cookies()).get(
-    `${process.env.APP_NAME}.session`
+    `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
@@ -47,14 +47,14 @@ export async function GET(req: Request) {
           Authorization: `Bearer ${session}`,
         },
         cache: "no-store",
-      }
+      },
     );
 
     if (!res.ok) {
       const data = await res.json();
       return NextResponse.json(data, { status: res.status });
     }
-    
+
     const data = await res.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {

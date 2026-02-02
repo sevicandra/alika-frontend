@@ -87,7 +87,7 @@ export default function Page({
           title: "Referensi Volumen Barang",
           message: (error as Error).message,
           variant: "error",
-        })
+        });
         setError(error as Error);
       } finally {
         setLoading(false);
