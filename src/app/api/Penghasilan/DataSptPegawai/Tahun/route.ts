@@ -35,6 +35,9 @@ export async function GET() {
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     revalidateTag("Penghasilan:DataSptPegawai:Tahun", "max");
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json(
+      { message: (error as Error).message },
+      { status: 500 },
+    );
   }
 }

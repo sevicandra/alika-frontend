@@ -59,7 +59,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [refresh, id]);
+  }, [refresh, id, addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,7 +89,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification]);
 
   if (error) throw error;
 

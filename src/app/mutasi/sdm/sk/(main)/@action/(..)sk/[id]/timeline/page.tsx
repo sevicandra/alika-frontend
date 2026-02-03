@@ -2,7 +2,6 @@
 import { useEffect, useState, use } from "react";
 import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
-import Loading from "@/component/Molecules/Loading";
 import { useRouter } from "next/navigation";
 import Icon from "@/component/Atoms/LabelIcon";
 import { useForm } from "@/context/form.context";
@@ -98,7 +97,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     fetchData();
-  }, [addNotification, id]);
+  }, [addNotification, id, setInput]);
   if (error) throw error;
   return (
     <Form

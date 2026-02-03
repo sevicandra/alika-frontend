@@ -60,7 +60,7 @@ export function MutasiDetailProvider({
       }
     };
     fetchData();
-  }, [mutasi_id, refresh]);
+  }, [mutasi_id, refresh, addNotification]);
 
   const value = useMemo(
     () => ({

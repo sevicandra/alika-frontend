@@ -83,7 +83,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [addNotification, id, keluarga_id, pegawai_id]);
+  }, [addNotification, id, keluarga_id, pegawai_id, setInput]);
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

@@ -94,7 +94,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [id, setInput]);
+  }, [id, setInput, addNotification]);
 
   if (error) throw error;
   return (

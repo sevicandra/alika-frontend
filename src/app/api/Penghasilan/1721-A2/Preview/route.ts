@@ -42,9 +42,12 @@ async function handler(req: Request) {
         "Content-Type": "application/pdf",
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     revalidateTag(`Penghasilan:1721-A2:${tahun}`, "max");
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: (error as Error).message },
+      { status: 500 },
+    );
   }
 }
 

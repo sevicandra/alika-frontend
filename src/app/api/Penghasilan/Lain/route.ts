@@ -51,8 +51,11 @@ export async function GET(req: Request) {
     }
     const data = await lain.json();
     return NextResponse.json(data, { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
     revalidateTag(`Penghasilan:Lain`, "max");
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: (error as Error).message },
+      { status: 500 },
+    );
   }
 }

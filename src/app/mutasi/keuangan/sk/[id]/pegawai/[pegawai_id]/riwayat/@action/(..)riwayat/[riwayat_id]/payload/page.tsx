@@ -76,6 +76,7 @@ export default function Page({
                 {snackToTitleCase(r.action)}
               </span>
             }
+            className="text-base-content"
           >
             {r.action === "ADD" && (
               <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
@@ -115,7 +116,7 @@ export default function Page({
                 {r.data?.nama && (
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                     <label className="col-span-1 label md:col-span-2">
-                      NIK
+                      Nama
                     </label>
                     <div className="rounded-box bg-error/50 p-4 text-error-content">
                       <label>Data Lama</label>

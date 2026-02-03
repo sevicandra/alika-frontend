@@ -58,7 +58,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [addNotification, id, pegawai_id, termin_id]);
+  }, [addNotification, id, pegawai_id, termin_id, setInput]);
 
   useEffect(() => {
     const fetchData = async () => {

@@ -151,7 +151,7 @@ export default function WebPushNotificationProvider({
   }
 
   // ✅ FIXED: Better error handling
-  async function unsubscribeFromPush() {
+  const unsubscribeFromPush = useCallback(async () => {
     if (subscription) {
       try {
         await subscription?.unsubscribe();
@@ -186,7 +186,7 @@ export default function WebPushNotificationProvider({
         }
       }
     }
-  }
+  }, [subscription, csrfToken, addNotification]);
 
   function urlBase64ToUint8Array(base64String: string) {
     const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -211,7 +211,7 @@ export default function WebPushNotificationProvider({
       unsubscribeFromPush,
       subscription,
     }),
-    [isSupported, subscribeToPush, subscription],
+    [isSupported, subscribeToPush, subscription, unsubscribeFromPush],
   );
 
   return (

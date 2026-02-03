@@ -48,7 +48,7 @@ export default function Page({
       }
     }
     fetchData();
-  }, [addNotification, biaya_id, id, pegawai_id]);
+  }, [addNotification, biaya_id, id, pegawai_id, setInput]);
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (loading) return;

@@ -30,13 +30,15 @@ export default function Page() {
           throw new Error(message);
         }
         if (res.ok) {
-          const data = (await res.json()).data;
+          const { data } = await res.json();
           setData(
-            data.map((item: any) => ({
-              dokumen: item.perihal,
-              status: item.status,
-              file: item.file,
-            })),
+            data.map(
+              (item: { perihal: string; status: number; file: string }) => ({
+                dokumen: item.perihal,
+                status: item.status,
+                file: item.file,
+              }),
+            ),
           );
         }
       } catch (error) {

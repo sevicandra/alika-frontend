@@ -38,9 +38,12 @@ async function handler() {
         "Content-Type": "application/pdf",
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     revalidateTag(`Penghasilan:KP4`, "max");
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: (error as Error).message },
+      { status: 500 },
+    );
   }
 }
 

@@ -66,8 +66,18 @@ export async function GET(
         "Content-Disposition": `inline; filename="${filename}"`,
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     revalidateTag("Mutasi:Sanggah:File", "max");
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: {
+          message: (error as Error).message,
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 500 },
+    );
   }
 }

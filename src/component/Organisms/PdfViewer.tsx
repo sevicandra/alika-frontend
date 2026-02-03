@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import * as pdfjs from "pdfjs-dist";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -111,41 +111,44 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
   }, [pdfSource]);
 
   // Render halaman dengan TextLayer class
-  const renderPage = async (pageNum: number) => {
-    if (!pdfDoc || pageNum < 1 || pageNum > pdfDoc.numPages) return;
+  const renderPage = useCallback(
+    async (pageNum: number) => {
+      if (!pdfDoc || pageNum < 1 || pageNum > pdfDoc.numPages) return;
 
-    try {
-      const page = await pdfDoc.getPage(pageNum);
-      const pageData = pageRefs.current[pageNum];
-      if (!pageData) return;
+      try {
+        const page = await pdfDoc.getPage(pageNum);
+        const pageData = pageRefs.current[pageNum];
+        if (!pageData) return;
 
-      const { canvas, canvasWrapper } = pageData;
-      const viewport = page.getViewport({ scale: scale });
+        const { canvas, canvasWrapper } = pageData;
+        const viewport = page.getViewport({ scale: scale });
 
-      // ========== RENDER CANVAS ==========
-      const context = canvas.getContext("2d");
-      if (!context) return;
+        // ========== RENDER CANVAS ==========
+        const context = canvas.getContext("2d");
+        if (!context) return;
 
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-      canvas.style.width = Math.floor(viewport.width) + "px";
-      canvas.style.height = Math.floor(viewport.height) + "px";
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        canvas.style.width = Math.floor(viewport.width) + "px";
+        canvas.style.height = Math.floor(viewport.height) + "px";
 
-      // Set wrapper size
-      canvasWrapper.style.width = `${viewport.width}px`;
-      canvasWrapper.style.height = `${viewport.height}px`;
+        // Set wrapper size
+        canvasWrapper.style.width = `${viewport.width}px`;
+        canvasWrapper.style.height = `${viewport.height}px`;
 
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport,
-        intent: "print",
-      };
+        const renderContext = {
+          canvasContext: context,
+          viewport: viewport,
+          intent: "print",
+        };
 
-      await page.render(renderContext).promise;
-    } catch (err) {
-      console.error(`Error merender halaman ${pageNum}:`, err);
-    }
-  };
+        await page.render(renderContext).promise;
+      } catch (err) {
+        console.error(`Error merender halaman ${pageNum}:`, err);
+      }
+    },
+    [pdfDoc, scale],
+  );
 
   // Render semua halaman
   useEffect(() => {
@@ -212,7 +215,7 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
     };
 
     renderAllPages();
-  }, [pdfDoc, scale]);
+  }, [pdfDoc, scale, renderPage]);
 
   // Navigasi halaman
   const goToPreviousPage = () => {

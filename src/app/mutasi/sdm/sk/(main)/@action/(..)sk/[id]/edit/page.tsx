@@ -103,7 +103,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     fetchData();
-  }, [addNotification, id]);
+  }, [addNotification, id, setInput]);
   if (error) throw error;
   return (
     <Form

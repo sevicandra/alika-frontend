@@ -16,7 +16,6 @@ export default function Page({
 }) {
   const { setRefresh } = useTable();
   const { kode_satker } = use(params);
-  const [error, setError] = useState<Error | null>(null);
   const { input, setInput, getValidationError, setValidationErrors } =
     useForm();
   const { addNotification } = useNotification();
@@ -111,16 +110,16 @@ export default function Page({
       }
     };
     fetchData();
-  }, [kode_satker, setInput]);
+  }, [kode_satker, setInput, addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        setInput({
-          ...input,
+        setInput((prev: any) => ({
+          ...prev,
           kode_kota: "",
-        });
+        }));
         const res = await fetch(`/api/Mutasi/Referensi/Wilayah`, {
           method: "GET",
         });
@@ -147,7 +146,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [setInput]);
+  }, [setInput, addNotification, setValidationErrors]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -181,9 +180,8 @@ export default function Page({
     if (input.kode_provinsi) {
       fetchData();
     }
-  }, [input.kode_provinsi]);
+  }, [input.kode_provinsi, addNotification]);
 
-  if (error) throw error;
   return (
     <Form
       title="Ubah Kantor"

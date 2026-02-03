@@ -2,11 +2,9 @@
 import { useState } from "react";
 import PopUp from "@/component/Molecules/PopUp";
 export default function Layout({
-  children,
   UangMuka,
   Lunas,
 }: {
-  children: React.ReactNode;
   UangMuka: React.ReactNode;
   Lunas: React.ReactNode;
 }) {

@@ -16,7 +16,6 @@ export default function Page({
   }>;
 }) {
   const { id, pegawai_id } = use(params);
-  const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
   const [data, setData] = useState<any[]>([]);
@@ -51,7 +50,6 @@ export default function Page({
     fetchData();
   }, [addNotification, id, pegawai_id]);
 
-  if (error) throw error;
   return (
     <ContainerCard
       title="Pembayaran Mutasi"

@@ -71,7 +71,7 @@ export function PenandatanganProvider({
       }
     };
     fetchData();
-  }, [kdSatkerAsal]);
+  }, [kdSatkerAsal, addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,7 +102,7 @@ export function PenandatanganProvider({
       }
     };
     fetchData();
-  }, [kdSatkerTujuan]);
+  }, [kdSatkerTujuan, addNotification]);
 
   const value = useMemo(
     () => ({

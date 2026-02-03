@@ -72,7 +72,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [input, setInput]);
+  }, [input, setInput, addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,7 +106,7 @@ export default function Page({
       }
     };
     if (input.service_kode) fetchData();
-  }, [input.service_kode]);
+  }, [input.service_kode, addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -136,7 +136,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification]);
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -209,7 +209,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [id, scope_id, setInput]);
+  }, [id, scope_id, setInput, addNotification]);
 
   if (error) throw error;
   return (

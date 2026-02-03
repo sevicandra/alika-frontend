@@ -57,8 +57,18 @@ export async function GET(req: Request) {
     }
     const data = await suratKeputusan.json();
     return NextResponse.json(data, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: {
+          message: (error as Error).message,
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 500 },
+    );
   }
 }
 const MAX_SIZE = 100 * 1024 * 1024; // 100MB
@@ -111,7 +121,17 @@ export async function POST(req: Request) {
     revalidateTag("Mutasi:SuratKeputusan", "max");
     const data = await suratKeputusan.json();
     return NextResponse.json(data, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: {
+          message: (error as Error).message,
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 500 },
+    );
   }
 }

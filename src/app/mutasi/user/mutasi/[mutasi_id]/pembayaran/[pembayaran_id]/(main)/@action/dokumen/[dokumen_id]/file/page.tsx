@@ -15,7 +15,6 @@ export default function Page({
 }) {
   const { mutasi_id, pembayaran_id, dokumen_id } = use(params);
   const [base64, setBase64] = useState<string>();
-  const [error, setError] = useState<Error | null>(null);
   const { addNotification } = useNotification();
   const [loading, setLoading] = useState(true);
   const [fileName, setFileName] = useState("dokumen.pdf");
@@ -72,7 +71,6 @@ export default function Page({
     fetchData();
   }, [addNotification, mutasi_id, pembayaran_id, dokumen_id]);
 
-  if (error) throw error;
   return (
     <PopUp title="Preview Dokumen" className="w-6xl">
       <div className="relative h-full w-full overflow-hidden rounded-box text-neutral-content shadow">

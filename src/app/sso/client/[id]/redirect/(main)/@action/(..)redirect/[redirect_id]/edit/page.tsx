@@ -98,7 +98,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [id, redirect_id, setInput]);
+  }, [id, redirect_id, setInput, addNotification]);
 
   if (error) throw error;
   return (

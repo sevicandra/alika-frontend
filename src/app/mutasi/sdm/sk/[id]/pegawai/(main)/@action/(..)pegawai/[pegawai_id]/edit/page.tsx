@@ -87,7 +87,7 @@ export default function Page({
 
     fetchGolongan();
     fetchKantor();
-  }, [addNotification]);
+  }, [addNotification, setValidationErrors]);
   useEffect(() => {
     const fetchPegawai = async () => {
       try {
@@ -120,7 +120,7 @@ export default function Page({
     };
 
     fetchPegawai();
-  }, [id, pegawai_id, setInput]);
+  }, [id, pegawai_id, setInput, addNotification, setValidationErrors]);
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {

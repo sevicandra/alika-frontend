@@ -15,7 +15,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
   const [grants, setGrants] = useState<
     {
       kode: string;
@@ -49,7 +48,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification]);
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -94,7 +93,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     }
   }
 
-  if (error) throw error;
   return (
     <Form
       title="Tambah Grant"

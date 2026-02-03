@@ -27,7 +27,7 @@ export default function Page({
         const res = await fetch(
           `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Pembayaran`,
         );
-        const { error, data, meta } = await res.json();
+        const { error, data } = await res.json();
         if (!res.ok) {
           throw new Error(
             error.message

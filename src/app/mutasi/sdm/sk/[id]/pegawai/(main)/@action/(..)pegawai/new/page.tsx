@@ -15,7 +15,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { addNotification } = useNotification();
   const { setRefresh } = useTable();
-  const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);
   const [golongan, setGolongan] = useState<
     {
@@ -120,7 +119,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       setLoading(false);
     }
   }
-  if (error) throw error;
+
   return (
     <Form
       title="Tambah Pegawai"

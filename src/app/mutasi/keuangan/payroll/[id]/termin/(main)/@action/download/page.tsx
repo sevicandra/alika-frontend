@@ -11,7 +11,7 @@ import { useForm } from "@/context/form.context";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { addNotification } = useNotification();
   const router = useRouter();
-  const { setRefresh, termin, tanggal, setTanggal } = usePayroll();
+  const { setRefresh, termin, tanggal } = usePayroll();
   const [loading, setLoading] = useState(false);
   const { id } = use(params);
   const { getValidationError, setValidationErrors, setInput, input } =

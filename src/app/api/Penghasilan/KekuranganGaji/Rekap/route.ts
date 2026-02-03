@@ -44,8 +44,11 @@ export async function GET(req: Request) {
     }
     const data = await kekuranganGaji.json();
     return NextResponse.json(data, { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
     revalidateTag(`Penghasilan:KekuranganGaji:Rekap`, "max");
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: (error as Error).message },
+      { status: 500 },
+    );
   }
 }

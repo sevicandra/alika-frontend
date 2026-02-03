@@ -64,12 +64,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {
       setScopes([]);
-      setInput({ ...input, scope_kode: undefined });
+      setInput((prev: any) => ({ ...prev, scope_kode: undefined }));
       try {
         setLoading(true);
         const res = await fetch(
@@ -99,7 +99,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     if (input.service_kode) fetchData();
-  }, [input.service_kode, setInput]);
+  }, [input.service_kode, setInput, addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -129,7 +129,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification]);
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

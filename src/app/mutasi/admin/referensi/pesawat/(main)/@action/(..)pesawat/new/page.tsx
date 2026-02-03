@@ -9,7 +9,6 @@ import Form from "@/component/Organisms/Form";
 
 export default function Page() {
   const { setRefresh } = useTable();
-  const [error, setError] = useState<Error | null>(null);
   const { input, setInput, getValidationError, setValidationErrors } =
     useForm();
   const { addNotification } = useNotification();
@@ -80,10 +79,10 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setInput({
-          ...input,
+        setInput((prev: any) => ({
+          ...prev,
           kode_kota: "",
-        });
+        }));
         setLoading(true);
         const res = await fetch(`/api/Mutasi/Referensi/Wilayah`, {
           method: "GET",
@@ -108,7 +107,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, [setInput]);
+  }, [setInput, addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -142,7 +141,7 @@ export default function Page() {
     if (input.provinsi_asal) {
       fetchData();
     }
-  }, [input.provinsi_asal]);
+  }, [input.provinsi_asal, setKotaAsal, addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -176,9 +175,8 @@ export default function Page() {
     if (input.provinsi_tujuan) {
       fetchData();
     }
-  }, [input.provinsi_tujuan]);
+  }, [input.provinsi_tujuan, setKotaTujuan, addNotification]);
 
-  if (error) throw error;
   return (
     <Form
       title="Tambah Rute Pesawat"

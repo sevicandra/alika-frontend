@@ -45,8 +45,18 @@ export async function GET(
     }
     const data = await suratKeputusan.json();
     return NextResponse.json(data, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: {
+          message: (error as Error).message,
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 500 },
+    );
   }
 }
 
@@ -89,7 +99,7 @@ export async function PATCH(
         headers: {
           Authorization: `Bearer ${session}`,
         },
-        body: backendForm as any,
+        body: backendForm,
         cache: "no-store",
       },
     );
@@ -99,8 +109,18 @@ export async function PATCH(
     }
     const data = await suratKeputusan.json();
     return NextResponse.json(data, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: {
+          message: (error as Error).message,
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 500 },
+    );
   }
 }
 
@@ -139,7 +159,17 @@ export async function DELETE(
     }
     const data = await suratKeputusan.json();
     return NextResponse.json(data, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: {
+          message: (error as Error).message,
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 500 },
+    );
   }
 }

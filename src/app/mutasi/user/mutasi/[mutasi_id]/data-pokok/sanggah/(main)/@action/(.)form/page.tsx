@@ -30,17 +30,17 @@ export default function Page({
     try {
       setValidationErrors({});
       const formData = new FormData();
-      input.action && formData.append("action", input.action);
-      input.nama && formData.append("nama", input.nama);
-      input.nik && formData.append("nik", input.nik);
-      input.hubungan && formData.append("hubungan", input.hubungan);
-      input.tanggal_lahir &&
+      if (input.action) formData.append("action", input.action);
+      if (input.nama) formData.append("nama", input.nama);
+      if (input.nik) formData.append("nik", input.nik);
+      if (input.hubungan) formData.append("hubungan", input.hubungan);
+      if (input.tanggal_lahir)
         formData.append("tanggal_lahir", input.tanggal_lahir);
-      input.pekerjaan && formData.append("pekerjaan", input.pekerjaan);
-      input.status && formData.append("status", input.status);
-      input.catatan && formData.append("catatan", input.catatan);
-      input.file && formData.append("file", input.file);
-      input.keluarga_id && formData.append("keluarga_id", input.keluarga_id);
+      if (input.pekerjaan) formData.append("pekerjaan", input.pekerjaan);
+      if (input.status) formData.append("status", input.status);
+      if (input.catatan) formData.append("catatan", input.catatan);
+      if (input.file) formData.append("file", input.file);
+      if (input.keluarga_id) formData.append("keluarga_id", input.keluarga_id);
       const res = await fetch(
         `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Sanggah/Data`,
         {
@@ -83,8 +83,8 @@ export default function Page({
   }
 
   useEffect(() => {
-    setInput({
-      ...input,
+    setInput((prev: any)=>({
+      ...prev,
       nama: undefined,
       nik: undefined,
       hubungan: undefined,
@@ -94,8 +94,10 @@ export default function Page({
       catatan: undefined,
       file: undefined,
       keluarga_id: undefined,
-    });
-    selectedData && setSelectedData("");
+    }));
+
+      setSelectedData("");
+
     setValidationErrors({});
   }, [setValidationErrors, setInput, input.action]);
 

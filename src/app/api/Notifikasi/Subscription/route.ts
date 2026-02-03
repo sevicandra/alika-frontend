@@ -45,8 +45,11 @@ export const POST = async (req: NextRequest) => {
     }
 
     return NextResponse.json({ message: "success" }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: (error as Error).message },
+      { status: 500 },
+    );
   }
 };
 export const PATCH = async (req: NextRequest) => {
@@ -81,7 +84,10 @@ export const PATCH = async (req: NextRequest) => {
     }
     return NextResponse.json({ message: "success" }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json(
+      { message: (error as Error).message },
+      { status: 500 },
+    );
   }
 };
 export const DELETE = async (req: NextRequest) => {
@@ -115,6 +121,9 @@ export const DELETE = async (req: NextRequest) => {
     }
     return NextResponse.json({ message: "success" }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json(
+      { message: (error as Error).message },
+      { status: 500 },
+    );
   }
 };

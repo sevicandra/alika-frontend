@@ -98,7 +98,7 @@ export default function Page() {
         message: "Data Cetak berhasil dihapus",
         title: "Data Cetak",
       });
-    } catch (error: any) {
+    } catch (error) {
       addNotification({
         message: (error as Error).message,
         title: "Data Cetak",

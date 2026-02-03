@@ -85,7 +85,7 @@ export function SanggahProvider({
       }
     };
     fetchData();
-  }, []);
+  }, [addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {

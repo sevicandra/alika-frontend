@@ -46,8 +46,11 @@ export async function GET(
         "Content-Type": "application/pdf",
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     revalidateTag(`Penghasilan:File:${id}`, "max");
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: (error as Error).message },
+      { status: 500 },
+    );
   }
 }

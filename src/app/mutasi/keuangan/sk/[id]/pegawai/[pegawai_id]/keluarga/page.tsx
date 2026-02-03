@@ -49,7 +49,7 @@ export default function Page({
             method: "GET",
           },
         );
-        const { error, data, meta } = await res.json();
+        const { error, data } = await res.json();
         if (!res.ok) {
           throw new Error(
             error.message

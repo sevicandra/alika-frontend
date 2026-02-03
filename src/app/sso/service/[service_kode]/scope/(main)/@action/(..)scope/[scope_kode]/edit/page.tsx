@@ -102,7 +102,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [scope_kode, service_kode, setInput]);
+  }, [scope_kode, service_kode, setInput, addNotification]);
 
   if (error) throw error;
   return (

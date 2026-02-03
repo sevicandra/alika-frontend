@@ -17,8 +17,7 @@ export default function Page({
   const { setRefresh } = useTable();
   const { id } = use(params);
   const [error, setError] = useState<Error | null>(null);
-  const { input, setInput, getValidationError, setValidationErrors } =
-    useForm();
+  const { input, setInput, getValidationError } = useForm();
   const { addNotification } = useNotification();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -94,7 +93,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [id, setInput]);
+  }, [id, setInput, addNotification]);
 
   if (error) throw error;
   return (

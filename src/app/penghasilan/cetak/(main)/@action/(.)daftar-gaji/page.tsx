@@ -53,12 +53,16 @@ const Page = () => {
           throw new Error(message);
         }
         if (res.ok) {
-          const data = (await res.json()).data;
-          data.sort((a: any, b: any) => {
+          const { data } = await res.json();
+          data.sort((a: { tahun: number }, b: { tahun: number }) => {
             return b.tahun - a.tahun;
           });
-          while (data[0].tahun != new Date().getFullYear()) {
-            data.unshift({ tahun: `${Number(data[0].tahun) + 1}` });
+          if (data[0]) {
+            while (data[0].tahun != new Date().getFullYear()) {
+              data.unshift({ tahun: `${Number(data[0].tahun) + 1}` });
+            }
+          } else {
+            data.unshift({ tahun: `${new Date().getFullYear()}` });
           }
           setTahuns(data);
           setTahun(

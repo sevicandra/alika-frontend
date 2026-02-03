@@ -42,32 +42,6 @@ export function useCheckTokenAndLogout({
   const isLoggingOutRef = useRef<boolean>(false);
 
   /**
-   * Reset idle timer saat ada activity
-   * Menggunakan useCallback untuk prevent recreation setiap render
-   */
-  const resetIdleTimer = useCallback(() => {
-    lastActivityRef.current = Date.now();
-
-    // Batch console.log untuk avoid multiple DOM queries
-    if (debug) {
-      console.log(
-        "[TokenCheck] Activity detected at:",
-        new Date().toLocaleTimeString(),
-      );
-    }
-
-    // Clear existing timeout
-    if (idleTimeoutRef.current) {
-      clearTimeout(idleTimeoutRef.current);
-    }
-
-    // Set timeout baru untuk logout jika idle
-    idleTimeoutRef.current = setTimeout(() => {
-      handleIdleTimeout();
-    }, idleTimeout);
-  }, [idleTimeout, debug]);
-
-  /**
    * Handle idle timeout dan trigger logout
    * Menggunakan requestAnimationFrame untuk smooth redirect
    * Menggunakan AbortController untuk timeout management
@@ -132,6 +106,32 @@ export function useCheckTokenAndLogout({
       isLoggingOutRef.current = false;
     }
   }, [debug, router]);
+
+  /**
+   * Reset idle timer saat ada activity
+   * Menggunakan useCallback untuk prevent recreation setiap render
+   */
+  const resetIdleTimer = useCallback(() => {
+    lastActivityRef.current = Date.now();
+
+    // Batch console.log untuk avoid multiple DOM queries
+    if (debug) {
+      console.log(
+        "[TokenCheck] Activity detected at:",
+        new Date().toLocaleTimeString(),
+      );
+    }
+
+    // Clear existing timeout
+    if (idleTimeoutRef.current) {
+      clearTimeout(idleTimeoutRef.current);
+    }
+
+    // Set timeout baru untuk logout jika idle
+    idleTimeoutRef.current = setTimeout(() => {
+      handleIdleTimeout();
+    }, idleTimeout);
+  }, [idleTimeout, debug, handleIdleTimeout]);
 
   /**
    * Setup event listeners dan initial timeout

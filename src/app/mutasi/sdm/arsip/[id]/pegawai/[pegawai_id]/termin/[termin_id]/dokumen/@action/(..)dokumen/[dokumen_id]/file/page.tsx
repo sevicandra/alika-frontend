@@ -32,8 +32,8 @@ export default function Page({
             },
           },
         );
-        const { error, data } = await file.json();
         if (!file.ok) {
+          const { error } = await file.json();
           throw new Error(
             error.message
               ? `${error.message} (Status: ${file.status})`

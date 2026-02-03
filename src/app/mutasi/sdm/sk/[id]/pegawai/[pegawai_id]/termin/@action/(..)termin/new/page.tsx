@@ -4,7 +4,6 @@ import { usePegawaiDetail } from "@/context/mutasi/sdm";
 import { useTable } from "@/context/table.context";
 import { useNotification } from "@/context/notifikasi";
 import { useRouter } from "next/navigation";
-import Loading from "@/component/Molecules/Loading";
 import Icon from "@/component/Atoms/LabelIcon";
 import { useForm } from "@/context/form.context";
 import Form from "@/component/Organisms/Form";
@@ -18,7 +17,6 @@ export default function Page({
   const { id, pegawai_id } = use(params);
   const { addNotification } = useNotification();
   const { setRefresh } = useTable();
-  const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);
   const [refTermin, setRefTermin] = useState<
     {
@@ -59,7 +57,7 @@ export default function Page({
     };
 
     fetchData();
-  }, [addNotification]);
+  }, [addNotification, setValidationErrors]);
 
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -107,7 +105,7 @@ export default function Page({
       setLoading(false);
     }
   }
-  if (error) throw error;
+
   return (
     <Form
       title="Tambah Termin"

@@ -35,8 +35,11 @@ async function handler() {
     revalidateTag("Penghasilan:DataCetak:TTE", "max");
     const data = await dataCetak.json();
     return NextResponse.json({ message: data.message }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error) {
+        return NextResponse.json(
+      { message: (error as Error).message },
+      { status: 500 },
+    );
   }
 }
 

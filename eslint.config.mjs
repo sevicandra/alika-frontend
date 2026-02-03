@@ -19,12 +19,11 @@ const eslintConfig = defineConfig([
     rules: {
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": [
-        "warn",
+        "error",
         {
           argsIgnorePattern: "^_",
         },
       ],
-      // "@typescript-eslint/no-unused-vars": "off",
     },
   },
 ]);

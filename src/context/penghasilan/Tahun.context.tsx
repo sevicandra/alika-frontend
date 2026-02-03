@@ -29,14 +29,20 @@ export function TahunProvider({ children }: { children: React.ReactNode }) {
           throw new Error(message);
         }
         if (res.ok) {
-          const data = (await res.json()).data;
-          data.sort((a: any, b: any) => {
-            return b.tahun - a.tahun;
+          const { data } = await res.json();
+          data.sort((a: { tahun: number }, b: { tahun: number }) => {
+            return b?.tahun - a?.tahun;
           });
-          while (data[0].tahun != new Date().getFullYear()) {
-            data.unshift({ tahun: `${Number(data[0].tahun) + 1}` });
+          console.log();
+          if (data[0]) {
+            while (data[0]?.tahun != new Date().getFullYear()) {
+              data.unshift({ tahun: `${Number(data[0].tahun) + 1}` });
+            }
+            setTahuns(data);
+          } else {
+            data.unshift({ tahun: `${new Date().getFullYear()}` });
+            setTahuns(data);
           }
-          setTahuns(data);
         }
       } catch (error) {
         addNotification({

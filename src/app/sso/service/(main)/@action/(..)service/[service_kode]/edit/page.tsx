@@ -95,7 +95,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [service_kode, setInput]);
+  }, [service_kode, setInput, addNotification]);
 
   if (error) throw error;
   return (

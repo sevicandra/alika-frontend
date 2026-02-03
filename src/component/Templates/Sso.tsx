@@ -8,7 +8,7 @@ export default async function Layout({
   return (
     <div className="relative grid grid-cols-[auto_1fr] overflow-hidden">
       <Sidebar menu={"Sso"} />
-      <div className={`h-full max-h-full w-[50px] md:hidden`}></div>
+      <div className={`h-full max-h-full w-12.5 md:hidden`}></div>
       <main className="relative overflow-hidden">{children}</main>
     </div>
   );

@@ -29,13 +29,10 @@ const Page = () => {
           const { message } = await res.json();
           throw new Error(message);
         }
-        const data = (await res.json()).data;
-        data.sort((a: any, b: any) => {
+        const { data } = await res.json();
+        data.sort((a: { tahun: number }, b: { tahun: number }) => {
           return b.tahun - a.tahun;
         });
-        // while (data[0].tahun != new Date().getFullYear() - 1) {
-        //   data.unshift({ tahun: `${Number(data[0].tahun) + 1}` });
-        // }
         setTahuns(data);
         setTahun(
           data

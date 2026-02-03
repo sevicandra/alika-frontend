@@ -6,11 +6,8 @@ import { usePaginator } from "@/context/paginator";
 import Link from "next/link";
 import Loading from "@/component/Molecules/Loading";
 import ContainerCard from "@/component/Molecules/ContainerCard";
-import ExpandableItemCard from "@/component/Molecules/ExpandableItemCard";
 import { snackToTitleCase } from "@/helpers/string.helper";
-import Icon from "@/component/Atoms/LabelIcon";
 import SanggahKeluargaCard from "@/component/Molecules/SanggahKeluargaCard";
-import { useSanggahContext } from "@/context/mutasi/user";
 export default function Page({
   params,
 }: {
@@ -20,7 +17,7 @@ export default function Page({
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
   const { refresh } = useTable();
-  const { page: currentPage, limit, setTotalPage } = usePaginator();
+  const { setTotalPage } = usePaginator();
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -55,7 +52,7 @@ export default function Page({
     } finally {
       setLoading(false);
     }
-  }, [refresh, mutasi_id]);
+  }, [refresh, mutasi_id, addNotification, setTotalPage]);
 
   return (
     <ContainerCard
@@ -221,7 +218,7 @@ export default function Page({
                   </div>
                   <div className="col-span-1 md:col-span-2">
                     <label className="label">Catatan</label>
-                    <p>{r.catatan}</p>
+                    <p>{r.reason}</p>
                   </div>
                 </div>
               )}

@@ -4,22 +4,22 @@ import { createContext, useState, useContext, useMemo, useEffect } from "react";
 type TableContextType = {
   refresh: number;
   setRefresh: () => void;
-  filter: { [key: string]: any };
-  setFilter: (filter: { [key: string]: any }) => void;
-  searchs: { [key: string]: any };
-  setSearchs: (searchs: { [key: string]: any }) => void;
-  searchsTerm: { [key: string]: any };
-  setSearchsTerm: (searchsTerm: { [key: string]: any }) => void;
+  filter: { [key: string]: string };
+  setFilter: (filter: { [key: string]: string }) => void;
+  searchs: { [key: string]: string };
+  setSearchs: (searchs: { [key: string]: string }) => void;
+  searchsTerm: { [key: string]: string };
+  setSearchsTerm: (searchsTerm: { [key: string]: string }) => void;
 };
 
 const TableContext = createContext<TableContextType | undefined>(undefined);
 
 export const TableProvider = ({ children }: { children: React.ReactNode }) => {
   const [refresh, setRefreshState] = useState(0);
-  const [filter, setFilterState] = useState<{ [key: string]: any }>({});
-  const [searchs, setSearchs] = useState<{ [key: string]: any }>({});
+  const [filter, setFilterState] = useState<{ [key: string]: string }>({});
+  const [searchs, setSearchs] = useState<{ [key: string]: string }>({});
   const [searchsTerm, setSearchsTerm] = useState<{
-    [key: string]: any;
+    [key: string]: string;
   }>({});
   const setRefresh = () => setRefreshState((prev) => prev + 1);
   useEffect(() => {
