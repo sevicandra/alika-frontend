@@ -10,7 +10,6 @@ import { useTable } from "@/context/table.context";
 
 const Page = () => {
   const [base64, setBase64] = useState<string>();
-  const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const { addNotification } = useNotification();
@@ -30,8 +29,12 @@ const Page = () => {
           },
         });
         if (!file.ok) {
-          const { message } = await file.json();
-          throw new Error(message);
+          const { error } = await file.json();
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${file.status})`
+              : "Unknown Server Error",
+          );
         }
         const dataFile = await file.arrayBuffer();
         function arrayBufferToBase64(buffer: ArrayBuffer) {
@@ -46,7 +49,6 @@ const Page = () => {
         const base64 = arrayBufferToBase64(dataFile);
         setBase64(base64);
       } catch (error) {
-        setError(error as Error);
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,
@@ -74,13 +76,17 @@ const Page = () => {
           }),
         },
       });
+      const { error, message } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: `Kirim Permohonan`,
-        message: `Permohonan telah dikirim`,
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
       setRefresh();
@@ -94,7 +100,7 @@ const Page = () => {
       setLoading(false);
     }
   };
-  if (error) throw error;
+
   return (
     <>
       <div className="relative grid max-h-full grid-rows-[auto_1fr] gap-2 overflow-hidden rounded-box bg-base-200 p-2">

@@ -24,11 +24,14 @@ const Page = () => {
         const res = await fetch(`/api/Penghasilan/Lain?tahun=${tahun}`, {
           method: "GET",
         });
+                const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const data = (await res.json()).data;
         setData(
           data.map((item: any) => {
             return {

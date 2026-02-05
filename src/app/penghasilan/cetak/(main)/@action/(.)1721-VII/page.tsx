@@ -11,7 +11,6 @@ import { useTable } from "@/context/table.context";
 
 const Page = () => {
   const [base64, setBase64] = useState<string>();
-  const [error, setError] = useState<Error | null>(null);
   const { tahun, bulan, setLoading, open, setOpen, loading, setTahun } =
     useCetak();
   const { addNotification } = useNotification();
@@ -25,11 +24,14 @@ const Page = () => {
         const res = await fetch("/api/Penghasilan/DataSptPegawai/Tahun", {
           method: "GET",
         });
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const { data } = await res.json();
         data.sort((a: { tahun: number }, b: { tahun: number }) => {
           return b.tahun - a.tahun;
         });
@@ -39,10 +41,9 @@ const Page = () => {
             .sort(
               (a: { tahun: number }, b: { tahun: number }) => b.tahun - a.tahun,
             )[0]
-            .tahun.toString(),
+            .tahun?.toString(),
         );
       } catch (error) {
-        setError(error as Error);
         addNotification({
           message: (error as Error).message,
           title: `Tahun`,
@@ -71,8 +72,12 @@ const Page = () => {
           }),
         });
         if (!file.ok) {
-          const { message } = await file.json();
-          throw new Error(message);
+          const { error } = await file.json();
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${file.status})`
+              : "Unknown Server Error",
+          );
         }
         const dataFile = await file.arrayBuffer();
         function arrayBufferToBase64(buffer: ArrayBuffer) {
@@ -127,13 +132,17 @@ const Page = () => {
           tahun,
         }),
       });
+      const { error, message } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: `Kirim Permohonan`,
-        message: `Permohonan telah dikirim`,
+        message: `${message} (Status: ${res.status})`,
       });
       router.back();
       setRefresh();
@@ -148,7 +157,6 @@ const Page = () => {
     }
   };
 
-  if (error) throw error;
   return (
     <div className="relative grid max-h-full grid-rows-[auto_1fr] gap-2 overflow-hidden rounded-box bg-base-200 p-2">
       {loading && (

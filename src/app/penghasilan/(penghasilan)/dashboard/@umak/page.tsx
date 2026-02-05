@@ -22,17 +22,19 @@ export default function Page() {
             method: "GET",
           },
         );
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        if (res.ok) {
-          const data = (await res.json()).data;
-          setData({
-            netto: data.netto || 0,
-            bruto: data.bruto || 0,
-          });
-        }
+
+        setData({
+          netto: data.netto || 0,
+          bruto: data.bruto || 0,
+        });
       } catch (error) {
         setError(error as Error);
         addNotification({

@@ -25,19 +25,29 @@ export default function Page() {
             method: "GET",
           },
         );
+        const {data:gajiData, error:gajiError} = await gaji.json();
+        const {data:kekuranganData, error:kekuranganError} = await kekurangan.json();
+
         if (!gaji.ok) {
-          const { message } = await gaji.json();
-          throw new Error(message);
-        }
-        if (!kekurangan.ok) {
-          const { message } = await kekurangan.json();
-          throw new Error(message);
-        }
-        const data = (await gaji.json()).data;
-        const kekuranganData = (await kekurangan.json()).data;
+                  throw new Error(
+            gajiError.message
+              ? `${gajiError.message} (Status: ${gaji.status})`
+              : "Unknown Server Error",
+          );
+        
+        
+      }
+      if(!kekurangan.ok){
+        throw new Error(
+          kekuranganError.message
+            ? `${kekuranganError.message} (Status: ${kekurangan.status})`
+            : "Unknown Server Error",
+        );
+      }
+
         setData({
-          netto: (data.netto || 0) + (kekuranganData.netto || 0),
-          bruto: (data.bruto || 0) + (kekuranganData.netto || 0),
+          netto: (gajiData.netto || 0) + (kekuranganData.netto || 0),
+          bruto: (gajiData.bruto || 0) + (kekuranganData.netto || 0),
         });
       } catch (error) {
         setError(error as Error);

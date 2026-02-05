@@ -24,25 +24,25 @@ export function TahunProvider({ children }: { children: React.ReactNode }) {
         const res = await fetch("/api/Penghasilan/Gaji/Tahun", {
           method: "GET",
         });
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        if (res.ok) {
-          const { data } = await res.json();
-          data.sort((a: { tahun: number }, b: { tahun: number }) => {
-            return b?.tahun - a?.tahun;
-          });
-          console.log();
-          if (data[0]) {
-            while (data[0]?.tahun != new Date().getFullYear()) {
-              data.unshift({ tahun: `${Number(data[0].tahun) + 1}` });
-            }
-            setTahuns(data);
-          } else {
-            data.unshift({ tahun: `${new Date().getFullYear()}` });
-            setTahuns(data);
+        data.sort((a: { tahun: number }, b: { tahun: number }) => {
+          return b?.tahun - a?.tahun;
+        });
+        if (data[0]) {
+          while (data[0]?.tahun != new Date().getFullYear()) {
+            data.unshift({ tahun: `${Number(data[0].tahun) + 1}` });
           }
+          setTahuns(data);
+        } else {
+          data.unshift({ tahun: `${new Date().getFullYear()}` });
+          setTahuns(data);
         }
       } catch (error) {
         addNotification({

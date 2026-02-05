@@ -8,18 +8,40 @@ const apiBaseUrl =
   process.env.MUTASI_ALIKA_BASE_URL;
 
 export async function GET(
-  req: Request,
+  _req: Request,
   { params }: { params: Promise<{ id: string; termin_id: string }> },
 ) {
   const session = (await cookies()).get(
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const { id, termin_id } = await params;
   if (!id || !termin_id) {
@@ -41,7 +63,10 @@ export async function GET(
 
     if (!res.ok) {
       const data = await res.json();
-      return NextResponse.json(data, { status: res.status });
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
     const data = await res.json();
     return NextResponse.json(data, { status: 200 });
@@ -49,6 +74,7 @@ export async function GET(
     return NextResponse.json(
       {
         success: false,
+        origin: "local",
         error: {
           message: (error as Error).message,
           statusCode: 500,
@@ -68,11 +94,33 @@ export async function PATCH(
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const { id, termin_id } = await params;
   if (!id) {
@@ -95,7 +143,10 @@ export async function PATCH(
 
     if (!res.ok) {
       const data = await res.json();
-      return NextResponse.json(data, { status: res.status });
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
     const data = await res.json();
     return NextResponse.json(data, { status: 200 });
@@ -103,6 +154,7 @@ export async function PATCH(
     return NextResponse.json(
       {
         success: false,
+        origin: "local",
         error: {
           message: (error as Error).message,
           statusCode: 500,

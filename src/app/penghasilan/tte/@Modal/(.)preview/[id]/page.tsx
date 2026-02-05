@@ -12,7 +12,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { setRefresh } = useTable();
   const [base64, setBase64] = useState<string>();
   const [data, setData] = useState<any>({});
-  const [error, setError] = useState<Error | null>(null);
   const { addNotification } = useNotification();
   const [tte, setTte] = useState(false);
   const [tolak, setTolak] = useState(false);
@@ -42,8 +41,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           },
         });
         if (!file.ok) {
-          const { message } = await file.json();
-          throw new Error(message);
+          const { error } = await file.json();
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${file.status})`
+              : "Unknown Server Error",
+          );
         }
         const dataFile = await file.arrayBuffer();
         function arrayBufferToBase64(buffer: ArrayBuffer) {
@@ -58,7 +61,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         const base64 = arrayBufferToBase64(dataFile);
         setBase64(base64);
       } catch (error) {
-        setError(error as Error);
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,
@@ -89,14 +91,18 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             passphrase,
           }),
         });
+        const { message, error } = await res.json();
         if (!res.ok) {
-          const { errors } = await res.json();
-          throw new Error(errors.message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
         router.back();
         addNotification({
           title: `TTE`,
-          message: `File berhasil ditandatangani`,
+          message: `${message} (Status: ${res.status})`,
         });
         setRefresh();
       } else {
@@ -114,14 +120,18 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             passphrase,
           }),
         });
+        const { message, error } = await res.json();
         if (!res.ok) {
-          const { errors } = await res.json();
-          throw new Error(errors.message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
         router.back();
         addNotification({
           title: `TTE`,
-          message: `File berhasil ditandatangani`,
+          message: `${message} (Status: ${res.status})`,
         });
         setRefresh();
       }
@@ -140,7 +150,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const tolakTte = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/Penghasilan/DataCetak/${id}/Tolak`, {
+      const res = await fetch(`/api/Penghasilan/DataTTE/${id}/Tolak`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -153,14 +163,19 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           id,
         }),
       });
+      const { message, error } = await res.json();
       if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
+
       router.back();
       addNotification({
         title: `TTE`,
-        message: `File berhasil ditolak`,
+        message: `${message} (Status: ${res.status})`,
       });
       setRefresh();
     } catch (error) {
@@ -174,8 +189,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       setLoading(false);
     }
   };
-
-  if (error) throw error;
   return (
     <div
       className="grid h-full w-full grid-rows-[auto_1fr] gap-2 overflow-hidden p-2 md:p-4"

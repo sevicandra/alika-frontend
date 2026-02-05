@@ -7,7 +7,7 @@ const apiBaseUrl =
   process.env.AUTH_BASE_URI_INTERNAL ?? process.env.AUTH_BASE_URI;
 
 export async function DELETE(
-  req: Request,
+  _req: Request,
   { params }: { params: Promise<{ id: string; kode: string }> },
 ) {
   const session = (await cookies()).get(

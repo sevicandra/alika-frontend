@@ -12,11 +12,33 @@ export async function GET() {
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   try {
     const res = await fetch(`${apiBaseUrl}/api/v2/Pegawai/Dashboard/Biaya`, {
@@ -30,7 +52,10 @@ export async function GET() {
 
     if (!res.ok) {
       const data = await res.json();
-      return NextResponse.json(data, { status: res.status });
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
     const data = await res.json();
     return NextResponse.json(data, { status: 200 });
@@ -38,6 +63,7 @@ export async function GET() {
     return NextResponse.json(
       {
         success: false,
+        origin: "local",
         error: {
           message: (error as Error).message,
           statusCode: 500,

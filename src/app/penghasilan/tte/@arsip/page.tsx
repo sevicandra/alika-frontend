@@ -9,7 +9,6 @@ import Loading from "@/component/Molecules/Loading";
 import Paginator from "@/component/Organisms/Paginator";
 export default function Page() {
   const { page: currentPage, limit, totalPage, setTotalPage } = usePaginator();
-  const [error, setError] = useState<Error | null>(null);
   const { addNotification } = useNotification();
   const [data, setData] = useState<
     {
@@ -30,18 +29,21 @@ export default function Page() {
         setIsLoading(true);
         const offset = (Number(currentPage) - 1) * limit;
         const res = await fetch(
-          `/api/Penghasilan/DataTTE?limit=${limit}&offset=${offset}&status=1&sortField=tanggal&sortOrder=desc`,
+          `/api/Penghasilan/DataTTE?limit=${limit}&offset=${offset}&status=1&sort=-tanggal`,
           {
             method: "GET",
           },
         );
+        const { data, error, meta } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const data = await res.json();
         setData(
-          data.data.map((item: any) => {
+          data.map((item: any) => {
             return {
               jenis: item.jenis,
               nomor: item.nomor,
@@ -53,9 +55,8 @@ export default function Page() {
             };
           }),
         );
-        setTotalPage(data.meta.totalPages);
+        setTotalPage(meta.totalPages);
       } catch (error) {
-        setError(error as Error);
         addNotification({
           message: (error as Error).message,
           title: "Data TTE",
@@ -67,7 +68,7 @@ export default function Page() {
     };
     fetchData();
   }, [currentPage, refresh, limit, addNotification, setTotalPage]);
-  if (error) throw error;
+
   return (
     <div className="relative grid grid-rows-[auto_1fr_auto] gap-2 overflow-hidden rounded-box bg-base-200 p-2">
       <div></div>

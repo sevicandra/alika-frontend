@@ -11,25 +11,38 @@ export async function GET(request: Request) {
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const url = new URL(request.url);
-  const tahun = url.searchParams.get("tahun") || undefined;
-  const jenis = url.searchParams.get("jenis") || undefined;
-  const status = url.searchParams.get("status") || undefined;
-  const hal = url.searchParams.get("hal") || undefined;
-
-  const searchParams = new URLSearchParams();
-  if (tahun) searchParams.append("tahun", tahun);
-  if (jenis) searchParams.append("jenis", jenis);
-  if (status) searchParams.append("status", status);
-  if (hal) searchParams.append("hal", hal);
+  const searchParams = new URLSearchParams(url.search);
   try {
-    const countDataCetak = await fetch(
+    const res = await fetch(
       `${apiBaseUrl}/api/v2/DataTte/Count/?${searchParams.toString()}`,
       {
         method: "GET",
@@ -39,15 +52,26 @@ export async function GET(request: Request) {
         },
       },
     );
-    if (!countDataCetak.ok) {
-      const data = await countDataCetak.json();
-      return NextResponse.json(data, { status: countDataCetak.status });
+    if (!res.ok) {
+      const data = await res.json();
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
-    const data = await countDataCetak.json();
+    const data = await res.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: (error as Error).message },
+      {
+        success: false,
+        origin: "local",
+        error: {
+          message: (error as Error).message,
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+        },
+      },
       { status: 500 },
     );
   }

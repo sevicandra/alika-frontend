@@ -5,7 +5,6 @@ import { usePaginator } from "@/context/paginator";
 import { useNotification } from "@/context/notifikasi";
 import { useTable } from "@/context/table.context";
 import Link from "next/link";
-import Confirmation from "@/component/Molecules/Confirmation";
 import Loading from "@/component/Molecules/Loading";
 import { useSession } from "@/context/session";
 import ContainerCard from "@/component/Molecules/ContainerCard";
@@ -17,9 +16,8 @@ export default function Page() {
       window.location.href = "/api/auth/signin";
     }
   }, [status]);
-  const { setRefresh, refresh } = useTable();
+  const { refresh } = useTable();
   const { page: currentPage, limit, setTotalPage } = usePaginator();
-  const [error, setError] = useState<Error | null>(null);
   const { addNotification } = useNotification();
   const [data, setData] = useState<
     {
@@ -32,7 +30,6 @@ export default function Page() {
       id: string;
     }[]
   >([]);
-  const [isDelete, setIsDelete] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
@@ -40,18 +37,21 @@ export default function Page() {
         setIsLoading(true);
         const offset = (Number(currentPage) - 1) * limit;
         const res = await fetch(
-          `/api/Penghasilan/DataCetak?limit=${limit}&offset=${offset}`,
+          `/api/Penghasilan/DataCetak?limit=${limit}&offset=${offset}&sort=-tanggal`,
           {
             method: "GET",
           },
         );
+        const { data, error, meta } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
+          );
         }
-        const data = await res.json();
         setData(
-          data.data.map((item: any) => {
+          data.map((item: any) => {
             return {
               jenis: item.jenis,
               nomor: item.nomor,
@@ -63,9 +63,8 @@ export default function Page() {
             };
           }),
         );
-        setTotalPage(data.meta.totalPages);
+        setTotalPage(meta.totalPages);
       } catch (error) {
-        setError(error as Error);
         addNotification({
           message: (error as Error).message,
           title: "Data Cetak",
@@ -78,38 +77,6 @@ export default function Page() {
     fetchData();
   }, [currentPage, refresh, limit, addNotification, setTotalPage]);
 
-  const HapusData = async () => {
-    try {
-      const res = await fetch(`/api/Penghasilan/DataCetak/${isDelete}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
-            const data = await res.json();
-            return data.token;
-          }),
-        },
-      });
-      if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message);
-      }
-      addNotification({
-        message: "Data Cetak berhasil dihapus",
-        title: "Data Cetak",
-      });
-    } catch (error) {
-      addNotification({
-        message: (error as Error).message,
-        title: "Data Cetak",
-        variant: "error",
-      });
-    } finally {
-      setIsDelete(null);
-      setRefresh();
-    }
-  };
-  if (error) throw error;
   return (
     <ContainerCard className="mx-4 grid grid-rows-[auto_1fr] overflow-x-hidden">
       <div className="overflow-auto">
@@ -154,12 +121,12 @@ export default function Page() {
               <td className="p-4">
                 <div className="flex justify-center gap-1">
                   {row.status === 2 && (
-                    <button
-                      onClick={() => setIsDelete(row.id)}
+                    <Link
+                      href={`/penghasilan/cetak/${row.id}/hapus`}
                       className="btn join-item btn-xs btn-error"
                     >
                       hapus
-                    </button>
+                    </Link>
                   )}
                   <Link
                     href={`/penghasilan/cetak/${row.id}/preview`}
@@ -171,11 +138,6 @@ export default function Page() {
               </td>
             </tr>
           )}
-        />
-        <Confirmation
-          onConfirm={HapusData}
-          isOpen={!isDelete ? false : true}
-          onCancel={() => setIsDelete(null)}
         />
       </div>
     </ContainerCard>

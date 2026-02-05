@@ -8,45 +8,68 @@ const apiBaseUrl =
   process.env.MUTASI_ALIKA_BASE_URL;
 
 export async function POST(
-  req: Request,
+  _req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const session = (await cookies()).get(
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const { id } = await params;
 
   try {
-    const suratKeputusan = await fetch(
-      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/Batal`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        cache: "no-store",
+    const res = await fetch(`${apiBaseUrl}/api/v2/SDM/res/${id}/Batal`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
       },
-    );
+      cache: "no-store",
+    });
 
-    if (!suratKeputusan.ok) {
-      const data = await suratKeputusan.json();
-      return NextResponse.json(data, { status: suratKeputusan.status });
+    if (!res.ok) {
+      const data = await res.json();
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
 
-    const data = await suratKeputusan.json();
+    const data = await res.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       {
         success: false,
+        origin: "local",
         error: {
           message: (error as Error).message,
           statusCode: 500,

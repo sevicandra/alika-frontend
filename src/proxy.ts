@@ -55,9 +55,14 @@ export default async function middleware(req: NextRequest) {
       return NextResponse.redirect(req.url);
     }
   } catch (error) {
-    console.error("Failed to set CSRF token:", error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      {
+        message: "Internal server error",
+        error: {
+          message: (error as Error).message,
+          code: 500,
+        },
+      },
       { status: 500 },
     );
   }
@@ -166,9 +171,14 @@ export default async function middleware(req: NextRequest) {
           );
         }
       } catch (error) {
-        console.error("CSRF validation failed:", error);
         return NextResponse.json(
-          { message: "CSRF validation error" },
+          {
+            message: "CSRF validation error",
+            error: {
+              message: (error as Error).message,
+              code: 500,
+            },
+          },
           { status: 500 },
         );
       }

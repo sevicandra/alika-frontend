@@ -11,17 +11,39 @@ async function handler(req: Request) {
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
 
   const { tahun, bulan } = await req.json();
 
   try {
-    const kp4 = await fetch(`${apiBaseUrl}/api/v2/Skp/Preview/`, {
+    const res = await fetch(`${apiBaseUrl}/api/v2/Skp/Preview/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,12 +55,15 @@ async function handler(req: Request) {
       }),
       next: { revalidate: 60, tags: [`Penghasilan:Skp`] },
     });
-    if (!kp4.ok) {
+    if (!res.ok) {
       revalidateTag(`Penghasilan:SKP`, "max");
-      const data = await kp4.json();
-      return NextResponse.json(data, { status: kp4.status });
+      const data = await res.json();
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
-    const data = await kp4.blob();
+    const data = await res.blob();
     return new Response(data, {
       status: 200,
       headers: {
@@ -48,7 +73,15 @@ async function handler(req: Request) {
   } catch (error) {
     revalidateTag(`Penghasilan:SKP`, "max");
     return NextResponse.json(
-      { message: (error as Error).message },
+      {
+        success: false,
+        origin: "local",
+        error: {
+          message: (error as Error).message,
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+        },
+      },
       { status: 500 },
     );
   }

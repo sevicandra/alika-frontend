@@ -41,37 +41,38 @@ const Page = () => {
             method: "GET",
           },
         );
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
-        }
-        if (res.ok) {
-          const data = (await res.json()).data;
-          setData(
-            data.map((item: any) => {
-              return {
-                bulan: item.nama_bulan,
-                gapok: item.gapok,
-                istri: item.tistri,
-                anak: item.tanak,
-                umum: item.tumum + item.ttambumum,
-                str: item.tstruktur + item.tfungsi,
-                bulat: item.bulat,
-                beras: item.tberas,
-                pajak: item.tpajak,
-                lain: item.tpapua + item.tlain + item.tpencil,
-                iwp: item.iwp,
-                pph: item.pph,
-                rumdin: item.sewarmh,
-                potlain:
-                  item.pberas + item.tunggakan + item.utanglebih + item.potlain,
-                taperum: item.taperum,
-                bpjs: item.bpjs,
-                bpjs2: item.bpjs2,
-              };
-            }),
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
           );
         }
+        setData(
+          data.map((item: any) => {
+            return {
+              bulan: item.nama_bulan,
+              gapok: item.gapok,
+              istri: item.tistri,
+              anak: item.tanak,
+              umum: item.tumum + item.ttambumum,
+              str: item.tstruktur + item.tfungsi,
+              bulat: item.bulat,
+              beras: item.tberas,
+              pajak: item.tpajak,
+              lain: item.tpapua + item.tlain + item.tpencil,
+              iwp: item.iwp,
+              pph: item.pph,
+              rumdin: item.sewarmh,
+              potlain:
+                item.pberas + item.tunggakan + item.utanglebih + item.potlain,
+              taperum: item.taperum,
+              bpjs: item.bpjs,
+              bpjs2: item.bpjs2,
+            };
+          }),
+        );
       } catch (error) {
         setError(error as Error);
         addNotification({

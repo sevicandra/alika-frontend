@@ -41,13 +41,34 @@ export default function Page() {
             method: "GET",
           },
         );
-        if (!penghasilan.ok || !penghasilan2.ok || !penghasilan3.ok) {
-          const data = await penghasilan.json();
-          throw new Error(data.error_description);
+        const { data: data1, error: error1 } = await penghasilan.json();
+        const { data: data2, error: error2 } = await penghasilan2.json();
+        const { data: data3, error: error3 } = await penghasilan3.json();
+
+        if (!penghasilan.ok) {
+          throw new Error(
+            error1.message
+              ? `${error1.message} (Status: ${penghasilan.status})`
+              : "Unknown Server Error",
+          );
         }
-        const data1 = (await penghasilan.json()).data;
-        const data2 = (await penghasilan2.json()).data;
-        const data3 = (await penghasilan3.json()).data;
+
+        if (!penghasilan2.ok) {
+          throw new Error(
+            error2.message
+              ? `${error2.message} (Status: ${penghasilan2.status})`
+              : "Unknown Server Error",
+          );
+        }
+
+        if (!penghasilan3.ok) {
+          throw new Error(
+            error3.message
+              ? `${error3.message} (Status: ${penghasilan3.status})`
+              : "Unknown Server Error",
+          );
+        }
+
         const ref1 = data1.map((item: any) => {
           return {
             bulan: item.bulan + " " + tahun,

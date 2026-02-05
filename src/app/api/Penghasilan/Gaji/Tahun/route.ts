@@ -11,14 +11,36 @@ export async function GET() {
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   try {
-    const dataCetak = await fetch(`${apiBaseUrl}/api/v2/Gaji/GetTahun/`, {
+    const res = await fetch(`${apiBaseUrl}/api/v2/Gaji/GetTahun/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -27,17 +49,28 @@ export async function GET() {
       next: { revalidate: 60, tags: ["Penghasilan:Gaji:Tahun"] },
     });
 
-    if (!dataCetak.ok) {
+    if (!res.ok) {
       revalidateTag("Penghasilan:Gaji:Tahun", "max");
-      const data = await dataCetak.json();
-      return NextResponse.json(data, { status: dataCetak.status });
+      const data = await res.json();
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
-    const data = await dataCetak.json();
+    const data = await res.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     revalidateTag("Penghasilan:Gaji:Tahun", "max");
     return NextResponse.json(
-      { message: (error as Error).message },
+      {
+        success: false,
+        origin: "local",
+        error: {
+          message: (error as Error).message,
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+        },
+      },
       { status: 500 },
     );
   }

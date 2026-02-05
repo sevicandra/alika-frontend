@@ -28,20 +28,30 @@ export default function Page() {
             method: "GET",
           },
         );
+
+        const { data: tukinData, error: tukinError } = await tukin.json();
+        const { data: kekuranganData, error: kekuranganError } =
+          await kekurangan.json();
+
         if (!tukin.ok) {
-          const { message } = await tukin.json();
-          throw new Error(message);
-        }
-        if (!kekurangan.ok) {
-          const { message } = await kekurangan.json();
-          throw new Error(message);
+          throw new Error(
+            tukinError.message
+              ? `${tukinError.message} (Status: ${tukin.status})`
+              : "Unknown Server Error",
+          );
         }
 
-        const data = (await tukin.json()).data;
-        const kekuranganData = (await kekurangan.json()).data;
+        if (!kekurangan.ok) {
+          throw new Error(
+            kekuranganError.message
+              ? `${kekuranganError.message} (Status: ${kekurangan.status})`
+              : "Unknown Server Error",
+          );
+        }
+
         setData({
-          netto: (data.netto || 0) + (kekuranganData.netto || 0),
-          bruto: (data.bruto || 0) + (kekuranganData.netto || 0),
+          netto: (tukinData.netto || 0) + (kekuranganData.netto || 0),
+          bruto: (tukinData.bruto || 0) + (kekuranganData.netto || 0),
         });
       } catch (error) {
         setError(error as Error);

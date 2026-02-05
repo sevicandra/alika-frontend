@@ -11,30 +11,38 @@ export async function GET(req: Request) {
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const url = new URL(req.url);
-  const tahun = url.searchParams.get("tahun") || undefined;
-  const limit = url.searchParams.get("limit") || undefined;
-  const offset = url.searchParams.get("offset") || undefined;
-  const bulan = url.searchParams.get("bulan") || undefined;
-  const kdjns = url.searchParams.get("kdjns") || undefined;
-  const sortField = url.searchParams.get("sortField") || "bulan";
-  const sortOrder = url.searchParams.get("sortOrder") || "asc";
-  const searchParams = new URLSearchParams();
-  if (tahun) searchParams.append("tahun", tahun);
-  if (limit) searchParams.append("limit", limit);
-  if (offset) searchParams.append("offset", offset);
-  if (bulan) searchParams.append("bulan", bulan);
-  if (kdjns) searchParams.append("kdjns", kdjns);
-  if (sortField) searchParams.append("sortField", sortField);
-  if (sortOrder) searchParams.append("sortOrder", sortOrder);
+  const searchParams = new URLSearchParams(url.search);
   try {
-    const gaji = await fetch(
+    const res = await fetch(
       `${apiBaseUrl}/api/v2/KekuranganGaji/?${searchParams.toString()}`,
       {
         method: "GET",
@@ -46,17 +54,28 @@ export async function GET(req: Request) {
       },
     );
 
-    if (!gaji.ok) {
+    if (!res.ok) {
       revalidateTag(`Penghasilan:KekuranganGaji`, "max");
-      const data = await gaji.json();
-      return NextResponse.json(data, { status: gaji.status });
+      const data = await res.json();
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
-    const data = await gaji.json();
+    const data = await res.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     revalidateTag(`Penghasilan:KekuranganGaji`, "max");
     return NextResponse.json(
-      { message: (error as Error).message },
+      {
+        success: false,
+        origin: "local",
+        error: {
+          message: (error as Error).message,
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+        },
+      },
       { status: 500 },
     );
   }

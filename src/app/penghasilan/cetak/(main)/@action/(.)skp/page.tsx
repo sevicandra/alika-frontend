@@ -26,7 +26,6 @@ const bulans = [
 
 const Page = () => {
   const [base64, setBase64] = useState<string>();
-  const [error, setError] = useState<Error | null>(null);
   const {
     tahun,
     bulan,
@@ -60,8 +59,12 @@ const Page = () => {
           }),
         });
         if (!file.ok) {
-          const { message } = await file.json();
-          throw new Error(message);
+          const { error } = await file.json();
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${file.status})`
+              : "Unknown Server Error",
+          );
         }
         const dataFile = await file.arrayBuffer();
         function arrayBufferToBase64(buffer: ArrayBuffer) {
@@ -76,7 +79,6 @@ const Page = () => {
         const base64 = arrayBufferToBase64(dataFile);
         setBase64(base64);
       } catch (error) {
-        setError(error as Error);
         addNotification({
           title: `Preview Dokumen`,
           message: (error as Error).message,
@@ -97,34 +99,33 @@ const Page = () => {
         const res = await fetch("/api/Penghasilan/Gaji/Tahun", {
           method: "GET",
         });
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
-        }
-        if (res.ok) {
-          const { data } = await res.json();
-          data.sort((a: { tahun: number }, b: { tahun: number }) => {
-            return b.tahun - a.tahun;
-          });
-          if (data[0]) {
-            while (data[0].tahun != new Date().getFullYear()) {
-              data.unshift({ tahun: `${Number(data[0].tahun) + 1}` });
-            }
-          } else {
-            data.unshift({ tahun: `${new Date().getFullYear()}` });
-          }
-          setTahuns(data);
-          setTahun(
-            data
-              .sort(
-                (a: { tahun: number }, b: { tahun: number }) =>
-                  b.tahun - a.tahun,
-              )[0]
-              .tahun.toString(),
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
           );
         }
+        data.sort((a: { tahun: number }, b: { tahun: number }) => {
+          return b.tahun - a.tahun;
+        });
+        if (data[0]) {
+          while (data[0].tahun != new Date().getFullYear()) {
+            data.unshift({ tahun: `${Number(data[0].tahun) + 1}` });
+          }
+        } else {
+          data.unshift({ tahun: `${new Date().getFullYear()}` });
+        }
+        setTahuns(data);
+        setTahun(
+          data
+            .sort(
+              (a: { tahun: number }, b: { tahun: number }) => b.tahun - a.tahun,
+            )[0]
+            .tahun.toString(),
+        );
       } catch (error) {
-        setError(error as Error);
         addNotification({
           message: (error as Error).message,
           title: `Tahun`,
@@ -162,13 +163,17 @@ const Page = () => {
           bulan,
         }),
       });
+      const { error, message } = await res.json();
       if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message);
+        throw new Error(
+          error.message
+            ? `${error.message} (Status: ${res.status})`
+            : "Unknown Server Error",
+        );
       }
       addNotification({
         title: `Kirim Permohonan`,
-        message: `Permohonan telah dikirim`,
+        message: `${message} (Status: ${res.status})`,
       });
       setRefresh();
       router.back();
@@ -183,7 +188,6 @@ const Page = () => {
     }
   };
 
-  if (error) throw error;
   return (
     <div className="relative grid max-h-full grid-rows-[auto_1fr] gap-2 overflow-hidden rounded-box bg-base-200 p-2">
       {loading && (

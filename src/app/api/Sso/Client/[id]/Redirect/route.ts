@@ -47,6 +47,7 @@ export async function GET(
     return NextResponse.json(
       {
         success: false,
+        origin: "upstream",
         error: {
           message: (error as Error).message,
           statusCode: 500,
@@ -96,6 +97,7 @@ export async function POST(
     return NextResponse.json(
       {
         success: false,
+        origin: "upstream",
         error: {
           message: (error as Error).message,
           statusCode: 500,

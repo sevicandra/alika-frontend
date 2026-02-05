@@ -7,7 +7,7 @@ const apiBaseUrl =
   process.env.AUTH_BASE_URI_INTERNAL ?? process.env.AUTH_BASE_URI;
 
 export async function GET(
-  req: Request,
+  _req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const session = (await cookies()).get(
@@ -41,6 +41,7 @@ export async function GET(
     return NextResponse.json(
       {
         success: false,
+        origin: "upstream",
         error: {
           message: (error as Error).message,
           statusCode: 500,
@@ -87,6 +88,7 @@ export async function PATCH(
     return NextResponse.json(
       {
         success: false,
+        origin: "upstream",
         error: {
           message: (error as Error).message,
           statusCode: 500,
@@ -99,7 +101,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: Request,
+  _req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const session = (await cookies()).get(
@@ -132,6 +134,7 @@ export async function DELETE(
     return NextResponse.json(
       {
         success: false,
+        origin: "upstream",
         error: {
           message: (error as Error).message,
           statusCode: 500,

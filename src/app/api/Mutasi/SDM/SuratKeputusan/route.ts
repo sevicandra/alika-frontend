@@ -13,11 +13,33 @@ export async function GET(req: Request) {
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
 
   const url = new URL(req.url);
@@ -39,7 +61,7 @@ export async function GET(req: Request) {
   if (search) searchParams.append("search", search);
 
   try {
-    const suratKeputusan = await fetch(
+    const res = await fetch(
       `${apiBaseUrl}/api/v2/SDM/SuratKeputusan?${searchParams.toString()}`,
       {
         method: "GET",
@@ -51,16 +73,20 @@ export async function GET(req: Request) {
       },
     );
 
-    if (!suratKeputusan.ok) {
-      const data = await suratKeputusan.json();
-      return NextResponse.json(data, { status: suratKeputusan.status });
+    if (!res.ok) {
+      const data = await res.json();
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
-    const data = await suratKeputusan.json();
+    const data = await res.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       {
         success: false,
+        origin: "local",
         error: {
           message: (error as Error).message,
           statusCode: 500,
@@ -93,11 +119,33 @@ export async function POST(req: Request) {
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
 
   const formData = await req.formData();
@@ -125,6 +173,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         success: false,
+        origin: "upstream",
         error: {
           message: (error as Error).message,
           statusCode: 500,

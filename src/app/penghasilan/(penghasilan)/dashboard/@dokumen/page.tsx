@@ -25,22 +25,23 @@ export default function Page() {
             },
           },
         );
+        const { data, error } = await res.json();
         if (!res.ok) {
-          const { message } = await res.json();
-          throw new Error(message);
-        }
-        if (res.ok) {
-          const { data } = await res.json();
-          setData(
-            data.map(
-              (item: { perihal: string; status: number; file: string }) => ({
-                dokumen: item.perihal,
-                status: item.status,
-                file: item.file,
-              }),
-            ),
+          throw new Error(
+            error.message
+              ? `${error.message} (Status: ${res.status})`
+              : "Unknown Server Error",
           );
         }
+        setData(
+          data.map(
+            (item: { perihal: string; status: number; file: string }) => ({
+              dokumen: item.perihal,
+              status: item.status,
+              file: item.file,
+            }),
+          ),
+        );
       } catch (error) {
         setError(error as Error);
         addNotification({

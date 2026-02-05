@@ -11,38 +11,71 @@ export async function POST(req: Request) {
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const { passphrase, id } = await req.json();
   try {
-    const tukin = await fetch(`${apiBaseUrl}/api/v2/Tte/KP4S`, {
+    const res = await fetch(`${apiBaseUrl}/api/v2/Tte/KP4S`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${session}`,
       },
       body: JSON.stringify({
-        id: id,
-        Passphrase: passphrase,
+        id,
+        passphrase,
       }),
       cache: "no-store",
     });
 
-    if (!tukin.ok) {
-      const data = await tukin.json();
-      return NextResponse.json(data, { status: tukin.status });
+    if (!res.ok) {
+      const data = await res.json();
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
-    const data = await tukin.json();
+    const data = await res.json();
     revalidateTag("Penghasilan:DataCetak:TTE", "max");
     revalidateTag("Penghasilan:DataCetak:RiwayatTTE", "max");
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: (error as Error).message },
+      {
+        success: false,
+        origin: "local",
+        error: {
+          message: (error as Error).message,
+          statusCode: 500,
+          timestamp: new Date().toISOString(),
+        },
+      },
       { status: 500 },
     );
   }

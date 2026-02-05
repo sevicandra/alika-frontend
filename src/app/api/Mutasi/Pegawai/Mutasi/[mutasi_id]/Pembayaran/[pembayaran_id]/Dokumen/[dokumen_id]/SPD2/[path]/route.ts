@@ -8,7 +8,7 @@ const apiBaseUrl =
   process.env.MUTASI_ALIKA_BASE_URL;
 
 export async function GET(
-  req: Request,
+  _req: Request,
   params: {
     params: Promise<{
       mutasi_id: string;
@@ -22,14 +22,35 @@ export async function GET(
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const { mutasi_id, pembayaran_id, dokumen_id, path } = await params.params;
-  console.log(mutasi_id, pembayaran_id, dokumen_id, path);
 
   try {
     if (path === "Status") {
@@ -51,21 +72,22 @@ export async function GET(
       return NextResponse.json(data, { status: 200 });
     } else {
       return NextResponse.json(
-      {
-        success: false,
-        error: {
-          message: "Not Found",
-          statusCode: 404,
-          timestamp: new Date().toISOString(),
+        {
+          success: false,
+          error: {
+            message: "Not Found",
+            statusCode: 404,
+            timestamp: new Date().toISOString(),
+          },
         },
-      },
-      { status: 404 },
-    );
+        { status: 404 },
+      );
     }
   } catch (error) {
     return NextResponse.json(
       {
         success: false,
+        origin: "local",
         error: {
           message: (error as Error).message,
           statusCode: 500,
@@ -92,11 +114,33 @@ export async function POST(
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const { mutasi_id, pembayaran_id, dokumen_id, path } = await params.params;
   try {
@@ -122,6 +166,7 @@ export async function POST(
     return NextResponse.json(
       {
         success: false,
+        origin: "local",
         error: {
           message: (error as Error).message,
           statusCode: 500,
@@ -134,7 +179,7 @@ export async function POST(
 }
 
 export async function DELETE(
-  req: Request,
+  _req: Request,
   params: {
     params: Promise<{
       mutasi_id: string;
@@ -148,11 +193,33 @@ export async function DELETE(
     `${process.env.APP_NAME}.session`,
   )?.value;
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not found",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const user = await verify(session);
   if (!user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+        origin: "local",
+        error: {
+          message: "session not valid",
+          statusCode: 401,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 401 },
+    );
   }
   const { mutasi_id, pembayaran_id, dokumen_id, path } = await params.params;
   try {
@@ -169,7 +236,10 @@ export async function DELETE(
     );
     if (!res.ok) {
       const data = await res.json();
-      return NextResponse.json(data, { status: res.status });
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
     const data = await res.json();
     return NextResponse.json(data, { status: 200 });
@@ -177,6 +247,7 @@ export async function DELETE(
     return NextResponse.json(
       {
         success: false,
+        origin: "local",
         error: {
           message: (error as Error).message,
           statusCode: 500,
