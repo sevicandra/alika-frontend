@@ -40,7 +40,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Hapus Surat Keputusan",
+        title: "Hapus Dokumen",
         variant: "error",
       });
     } finally {
@@ -50,7 +50,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <Confirmation
-      title="Hapus Surat Keputusan"
+      title="Hapus Dokumen"
       message="Data yang sudah dihapus tidak dapat dikembalikan"
       onConfirm={deleteData}
       onCancel={() => router.back()}
