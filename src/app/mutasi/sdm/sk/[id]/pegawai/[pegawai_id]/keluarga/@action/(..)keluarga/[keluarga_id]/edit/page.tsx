@@ -89,10 +89,10 @@ export default function Page({
     e.preventDefault();
     if (loading) {
       return;
-    }
+    }    
     try {
       setLoading(true);
-      setValidationErrors({}); // Reset validation errors
+      setValidationErrors({});
       const res = await fetch(
         `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Keluarga/${keluarga_id}`,
         {
@@ -130,6 +130,8 @@ export default function Page({
         title: "Ubah Data Keluarga",
         variant: "error",
       });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -157,7 +159,6 @@ export default function Page({
               type="text"
               name="nama"
               className={`input-bordered input w-full pl-10 ${getValidationError("nama") ? "input-error" : ""}`}
-              required
               value={input.nama || ""}
               onChange={(e) => setInput({ ...input, nama: e.target.value })}
             />
@@ -185,7 +186,6 @@ export default function Page({
               type="text"
               name="nik"
               className={`input-bordered input w-full pl-10 ${getValidationError("nik") ? "input-error" : ""}`}
-              required
               value={input.nik || ""}
               onChange={(e) => setInput({ ...input, nik: e.target.value })}
             />
@@ -212,7 +212,6 @@ export default function Page({
             <select
               name="hubungan"
               className={`select-bordered select w-full pl-10 ${getValidationError("hubungan") ? "select-error" : ""}`}
-              required
               onChange={(e) => setInput({ ...input, hubungan: e.target.value })}
               value={input.hubungan || ""}
             >
@@ -248,7 +247,6 @@ export default function Page({
             <select
               name="status"
               className={`select-bordered select w-full pl-10 ${getValidationError("status") ? "select-error" : ""}`}
-              required
               onChange={(e) => setInput({ ...input, status: e.target.value })}
               value={input.status || ""}
             >
@@ -311,7 +309,6 @@ export default function Page({
               type="text"
               name="pekerjaan"
               className={`input-bordered input w-full pl-10 ${getValidationError("pekerjaan") ? "input-error" : ""}`}
-              required
               value={input.pekerjaan || ""}
               onChange={(e) =>
                 setInput({ ...input, pekerjaan: e.target.value })

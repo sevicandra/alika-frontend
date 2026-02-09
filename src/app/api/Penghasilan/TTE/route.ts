@@ -2,7 +2,6 @@ import "server-only";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "@/lib/jwt";
-import { revalidateTag } from "next/cache";
 const apiBaseUrl =
   process.env.API_ALIKA_BASE_URL_INTERNAL ?? process.env.API_ALIKA_BASE_URL;
 
@@ -62,8 +61,6 @@ export async function POST(req: Request) {
       );
     }
     const data = await res.json();
-    revalidateTag("Penghasilan:DataCetak:TTE", "max");
-    revalidateTag("Penghasilan:DataCetak:RiwayatTTE", "max");
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json(

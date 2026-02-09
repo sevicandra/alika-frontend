@@ -232,7 +232,7 @@ export async function DELETE(
     return NextResponse.json(
       {
         success: false,
-        origin: "upstream",
+        origin: "local",
         error: {
           message: (error as Error).message,
           statusCode: 500,

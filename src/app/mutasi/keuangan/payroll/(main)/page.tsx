@@ -34,8 +34,9 @@ export default function Page() {
       try {
         setLoading(true);
         const searchParams = new URLSearchParams();
+        const offset = (currentPage - 1) * limit;
         if (limit) searchParams.append("limit", limit.toString());
-        if (limit) searchParams.append("offset", (currentPage - 1).toString());
+        if (limit) searchParams.append("offset", offset.toString());
         const { search } = searchs;
         const { jenjang, status } = filter;
 
@@ -56,6 +57,7 @@ export default function Page() {
               : "Unknown Server Error",
           );
         }
+        console.log(meta)
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {

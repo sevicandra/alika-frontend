@@ -7,8 +7,6 @@ type PayrollContextType = {
     nama: string;
     nip: string;
   }[];
-  tanggal: Date;
-  setTanggal: (tanggal: Date) => void;
   refresh: number;
   setRefresh: () => void;
   addTerminId: (id: string, nominal: number, nama: string, nip: string) => void;
@@ -34,7 +32,6 @@ export function PayrollProvider({ children }: { children: React.ReactNode }) {
       nip: string;
     }[]
   >([]);
-  const [tanggal, setTanggal] = useState<Date>(new Date());
   const [search, setSearch] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
   const [status, setStatus] = useState<string>("");
@@ -42,7 +39,6 @@ export function PayrollProvider({ children }: { children: React.ReactNode }) {
   const setRefresh = () => {
     setRefreshState((prev) => prev + 1);
     setTermin([]);
-    setTanggal(new Date());
     setSearch("");
     setSearchTerm("");
     setStatus("");
@@ -83,8 +79,6 @@ export function PayrollProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo(
     () => ({
       termin,
-      tanggal,
-      setTanggal,
       refresh,
       setRefresh,
       addTerminId,
@@ -97,7 +91,7 @@ export function PayrollProvider({ children }: { children: React.ReactNode }) {
       tahap,
       setTahap,
     }),
-    [refresh, termin, tanggal, search, searchTerm, status, tahap],
+    [refresh, termin, search, searchTerm, status, tahap],
   );
   return (
     <PayrollContext.Provider value={value}>{children}</PayrollContext.Provider>

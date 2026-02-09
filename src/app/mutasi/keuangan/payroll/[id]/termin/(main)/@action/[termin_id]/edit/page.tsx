@@ -81,7 +81,7 @@ export default function Page({
               : "Unknown Server Error",
           );
         }
-        setInput(data);
+        setInput(data ? data : {});
       } catch (error: any) {
         addNotification({
           title: "Data Rekening",

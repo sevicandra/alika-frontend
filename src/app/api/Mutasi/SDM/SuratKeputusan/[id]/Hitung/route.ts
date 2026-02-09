@@ -46,7 +46,7 @@ export async function POST(
   const { id } = await params;
 
   try {
-    const res = await fetch(`${apiBaseUrl}/api/v2/SDM/res/${id}/ProcessBiaya`, {
+    const res = await fetch(`${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/ProcessBiaya`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

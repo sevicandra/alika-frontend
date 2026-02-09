@@ -11,7 +11,7 @@ import { useForm } from "@/context/form.context";
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { addNotification } = useNotification();
   const router = useRouter();
-  const { setRefresh, termin, tanggal } = usePayroll();
+  const { setRefresh, termin } = usePayroll();
   const [loading, setLoading] = useState(false);
   const { id } = use(params);
   const { getValidationError, setValidationErrors, setInput, input } =
@@ -30,7 +30,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         method: "POST",
         body: JSON.stringify({
           terminId: termin.map((t) => t.id),
-          tanggal: new Date(tanggal).toISOString().slice(0, 10),
+          tanggal: new Date(input.tanggal).toISOString().slice(0, 10),
         }),
       });
       if (!res.ok) {

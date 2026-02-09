@@ -43,22 +43,8 @@ export async function GET(req: Request) {
   }
 
   const url = new URL(req.url);
-  const limit = url.searchParams.get("limit")
-    ? Number(url.searchParams.get("limit"))
-    : undefined;
-  const offset = url.searchParams.get("offset")
-    ? Number(url.searchParams.get("offset"))
-    : undefined;
-  const jenjang = url.searchParams.get("jenjang") || undefined;
-  const status = url.searchParams.get("status") || undefined;
-  const search = url.searchParams.get("search") || undefined;
+  const searchParams = new URLSearchParams(url.search);
 
-  const searchParams = new URLSearchParams();
-  if (limit) searchParams.append("limit", limit.toString());
-  if (offset) searchParams.append("offset", offset.toString());
-  if (jenjang) searchParams.append("jenjang", jenjang);
-  if (status) searchParams.append("status", status);
-  if (search) searchParams.append("search", search);
 
   try {
     const res = await fetch(

@@ -49,21 +49,18 @@ export async function GET(
   }
 
   try {
-    const res = await fetch(
-      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        cache: "no-store",
+    const res = await fetch(`${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
       },
-    );
+      cache: "no-store",
+    });
 
     if (!res.ok) {
       const data = await res.json();
-            return NextResponse.json(
+      return NextResponse.json(
         { ...data, origin: "upstream" },
         { status: res.status },
       );
@@ -124,44 +121,29 @@ export async function PATCH(
   }
   const { id } = await params;
   const formData = await req.formData();
-
-  const file = formData.get("file") as File;
-  const nomor = formData.get("nomor") as string;
-  const uraian = formData.get("uraian") as string;
-  const tanggal = formData.get("tanggal") as string;
-  const tmt = formData.get("tmt") as string;
-  const jenjang = formData.get("jenjang") as string;
-
-  const backendForm = new FormData();
-  if (file) backendForm.set("file", file, file.name);
-  if (nomor) backendForm.set("nomor", nomor);
-  if (uraian) backendForm.set("uraian", uraian);
-  if (tanggal) backendForm.set("tanggal", tanggal);
-  if (tmt) backendForm.set("tmt", tmt);
-  if (jenjang) backendForm.set("jenjang", jenjang);
   try {
-    const suratKeputusan = await fetch(
-      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${session}`,
-        },
-        body: backendForm,
-        cache: "no-store",
+    const res = await fetch(`${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${session}`,
       },
-    );
-    if (!suratKeputusan.ok) {
-      const data = await suratKeputusan.json();
-      return NextResponse.json(data, { status: suratKeputusan.status });
+      body: formData,
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
-    const data = await suratKeputusan.json();
+    const data = await res.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       {
         success: false,
-        origin: "upstream",
+        origin: "local",
         error: {
           message: (error as Error).message,
           statusCode: 500,
@@ -212,29 +194,29 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    const suratKeputusan = await fetch(
-      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session}`,
-        },
-        cache: "no-store",
+    const res = await fetch(`${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session}`,
       },
-    );
+      cache: "no-store",
+    });
 
-    if (!suratKeputusan.ok) {
-      const data = await suratKeputusan.json();
-      return NextResponse.json(data, { status: suratKeputusan.status });
+    if (!res.ok) {
+      const data = await res.json();
+      return NextResponse.json(
+        { ...data, origin: "upstream" },
+        { status: res.status },
+      );
     }
-    const data = await suratKeputusan.json();
+    const data = await res.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       {
         success: false,
-        origin: "upstream",
+        origin: "local",
         error: {
           message: (error as Error).message,
           statusCode: 500,

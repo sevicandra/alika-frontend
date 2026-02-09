@@ -64,7 +64,6 @@ export async function GET(
           "Content-Type": "application/json",
           Authorization: `Bearer ${session}`,
         },
-        next: { revalidate: 60, tags: ["Mutasi:Dokumen:File"] },
       },
     );
 
