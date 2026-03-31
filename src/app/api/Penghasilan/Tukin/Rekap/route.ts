@@ -40,7 +40,7 @@ export async function GET(req: Request) {
     );
   }
   const url = new URL(req.url);
-  const searchParams = new URLSearchParams(url.search);  
+  const searchParams = new URLSearchParams(url.search);
 
   try {
     const res = await fetch(
@@ -58,7 +58,7 @@ export async function GET(req: Request) {
     if (!res.ok) {
       revalidateTag(`Penghasilan:Tukin:Rekap`, "max");
       const data = await res.json();
-            return NextResponse.json(
+      return NextResponse.json(
         { ...data, origin: "upstream" },
         { status: res.status },
       );

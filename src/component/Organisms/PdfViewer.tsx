@@ -1,6 +1,15 @@
 "use client";
 import { useEffect, useState, useRef, useCallback } from "react";
 import * as pdfjs from "pdfjs-dist";
+import "./pdf_viewer.css";
+import {
+  LuChevronLeft,
+  LuChevronRight,
+  LuZoomIn,
+  LuZoomOut,
+  LuDownload,
+  LuLoader,
+} from "react-icons/lu";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -32,6 +41,8 @@ type PdfViewerProps =
 interface PageData {
   canvas: HTMLCanvasElement;
   canvasWrapper: HTMLDivElement;
+  textLayerDiv: HTMLDivElement;
+  annotationLayerDiv: HTMLDivElement;
   pageNumber: number;
 }
 
@@ -120,7 +131,8 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
         const pageData = pageRefs.current[pageNum];
         if (!pageData) return;
 
-        const { canvas, canvasWrapper } = pageData;
+        const { canvas, canvasWrapper, textLayerDiv, annotationLayerDiv } =
+          pageData;
         const viewport = page.getViewport({ scale: scale });
 
         // ========== RENDER CANVAS ==========
@@ -136,6 +148,18 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
         canvasWrapper.style.width = `${viewport.width}px`;
         canvasWrapper.style.height = `${viewport.height}px`;
 
+        // Set page wrapper size for correct absolute positioning of children layers
+        const pageWrapper = canvasWrapper.parentElement;
+        if (pageWrapper) {
+          pageWrapper.style.width = `${viewport.width}px`;
+          pageWrapper.style.height = `${viewport.height}px`;
+          // PDF.js variable for text overlay scale
+          pageWrapper.style.setProperty(
+            "--scale-factor",
+            viewport.scale.toString(),
+          );
+        }
+
         const renderContext = {
           canvasContext: context,
           viewport: viewport,
@@ -143,6 +167,46 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
         };
 
         await page.render(renderContext).promise;
+
+        // ========== RENDER TEXT LAYER ==========
+        // width and height are inherited from CSS 100% or explicitly via pdf_viewer.css
+        textLayerDiv.innerHTML = ""; // Clear existing
+
+        const textContent = await page.getTextContent();
+
+        const textLayer = new pdfjs.TextLayer({
+          textContentSource: textContent,
+          container: textLayerDiv,
+          viewport: viewport,
+        });
+        await textLayer.render();
+
+        // ========== RENDER ANNOTATION LAYER ==========
+        // size handled by css
+        annotationLayerDiv.innerHTML = ""; // Clear existing
+
+        const annotations = await page.getAnnotations();
+        const annotationLayer = new pdfjs.AnnotationLayer({
+          div: annotationLayerDiv,
+          page: page,
+          viewport: viewport,
+          accessibilityManager: null,
+          annotationCanvasMap: null,
+          annotationEditorUIManager: null,
+          structTreeLayer: null,
+          commentManager: null,
+          linkService: {} as any,
+          annotationStorage: null,
+        });
+
+        await annotationLayer.render({
+          annotations: annotations,
+          div: annotationLayerDiv,
+          page: page,
+          viewport: viewport,
+          linkService: {} as any, // minimal dummy linkService
+          renderForms: false,
+        });
       } catch (err) {
         console.error(`Error merender halaman ${pageNum}:`, err);
       }
@@ -172,33 +236,49 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
           pageWrapper.setAttribute("data-page-number", pageNum.toString());
           pageWrapper.style.cssText = `
             position: relative;
-            margin: 0 auto 20px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-            width: fit-content;
-            display: inline-block;
+            margin: 0 auto 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border-radius: 8px;
+            /* PDF.js standard viewer properties */
+            background-clip: content-box;
           `;
 
           const canvasWrapper = document.createElement("div");
           canvasWrapper.className = "canvasWrapper";
           canvasWrapper.style.cssText = `
-            position: relative;
-            display: inline-block;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            border-radius: 8px;
           `;
 
           const canvas = document.createElement("canvas");
           canvas.id = `page${pageNum}`;
           canvas.style.cssText = `
             display: block;
-            border: 1px solid #ddd;
           `;
 
+          const textLayerDiv = document.createElement("div");
+          textLayerDiv.className = "textLayer";
+
+          const annotationLayerDiv = document.createElement("div");
+          annotationLayerDiv.className = "annotationLayer";
+
           canvasWrapper.appendChild(canvas);
+
           pageWrapper.appendChild(canvasWrapper);
+          pageWrapper.appendChild(textLayerDiv);
+          pageWrapper.appendChild(annotationLayerDiv);
+
           containerRef.current?.appendChild(pageWrapper);
 
           pageRefs.current[pageNum] = {
             canvas,
             canvasWrapper,
+            textLayerDiv,
+            annotationLayerDiv,
             pageNumber: pageNum,
           };
 
@@ -335,109 +415,107 @@ const PdfViewer = ({ blob, fileName, base64, url }: PdfViewerProps) => {
   }
 
   return (
-    <div className="flex h-full bg-accent-50">
-      <div className="grid h-full w-full grid-rows-[auto_1fr]">
-        {/* Toolbar */}
-        <div className="sticky top-0 z-10 border-b border-accent-300 bg-accent-100 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-4 px-4 py-3">
-            {/* Navigation */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={goToPreviousPage}
-                disabled={currentPage <= 1}
-                className="rounded bg-accent-300 px-3 py-2 text-sm text-accent-content hover:bg-accent-400 disabled:opacity-50"
-                title="Previous"
-              >
-                ← Prev
-              </button>
-
-              <input
-                type="number"
-                min="1"
-                max={pdfDoc?.numPages || 1}
-                value={pageInput}
-                onChange={(e) => setPageInput(e.target.value)}
-                onKeyDown={handleGoToPage}
-                className="w-12 rounded border border-accent-300 px-2 py-2 text-center text-sm text-accent-content"
-              />
-
-              <span className="text-sm font-medium text-accent-content">
-                of {pdfDoc?.numPages || 0}
-              </span>
-
-              <button
-                onClick={goToNextPage}
-                disabled={!pdfDoc || currentPage >= pdfDoc.numPages}
-                className="rounded bg-accent-300 px-3 py-2 text-sm text-accent-content hover:bg-accent-400 disabled:opacity-50"
-                title="Next"
-              >
-                Next →
-              </button>
-            </div>
-
-            {/* Zoom */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleZoomOut}
-                className="rounded bg-accent-300 px-2 py-2 text-sm text-accent-content hover:bg-accent-400"
-              >
-                −
-              </button>
-
-              <select
-                value={Math.round(scale * 100) / 100}
-                onChange={(e) => handleZoomSelect(e.target.value)}
-                className="rounded border border-accent-300 px-2 py-1 text-sm text-accent-content"
-              >
-                <option value="auto">Auto</option>
-                <option value="page-fit">Fit Page</option>
-                <option value="page-width">Page Width</option>
-                <option value="0.5">50%</option>
-                <option value="0.75">75%</option>
-                <option value="1">100%</option>
-                <option value="1.25">125%</option>
-                <option value="1.5">150%</option>
-                <option value="2">200%</option>
-                <option value="3">300%</option>
-              </select>
-
-              <button
-                onClick={handleZoomIn}
-                className="rounded bg-accent-300 px-2 py-2 text-sm text-accent-content hover:bg-accent-400"
-              >
-                +
-              </button>
-            </div>
-
-            {/* Download */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleDownload}
-                className="rounded bg-primary-500 px-4 py-2 text-sm font-medium text-primary-content hover:bg-primary-600"
-              >
-                ⬇ Download
-              </button>
-            </div>
+    <div className="relative flex h-full flex-col bg-slate-50/50 dark:bg-slate-900/50">
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm dark:bg-slate-900/60">
+          <div className="flex flex-col items-center justify-center rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-800">
+            <LuLoader className="h-10 w-10 animate-spin text-primary-500" />
+            <p className="mt-4 font-medium text-slate-700 dark:text-slate-200">
+              Memuat Dokumen...
+            </p>
           </div>
         </div>
+      )}
 
-        {/* PDF Container */}
-        <div className="relative flex-1 overflow-auto bg-accent-50">
-          {loading && (
-            <div className="bg-opacity-75 absolute inset-0 z-20 flex items-center justify-center bg-white/20">
-              <div className="text-center">
-                <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-accent-300 border-t-blue-500"></div>
-                <p className="mt-4 font-medium text-accent-700">
-                  Memuat PDF...
-                </p>
-              </div>
-            </div>
-          )}
-          <div
-            ref={containerRef}
-            className="flex flex-col items-center gap-4 py-4"
-          />
+      {/* Floating Toolbar */}
+      <div className="absolute bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 rounded-full border border-slate-200/50 bg-white/80 p-1.5 shadow-lg backdrop-blur-md opacity-50 transition-opacity duration-300 hover:opacity-100 dark:border-slate-700/50 dark:bg-slate-800/80">
+        {/* Pagination Controls */}
+        <div className="flex items-center gap-1 rounded-full bg-slate-100/50 px-2 py-1 dark:bg-slate-700/50">
+          <button
+            onClick={goToPreviousPage}
+            disabled={currentPage <= 1 || !pdfDoc}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-slate-600 transition-colors hover:cursor-pointer hover:bg-white hover:text-slate-900 hover:shadow-sm disabled:opacity-40 disabled:hover:bg-transparent dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white"
+            title="Halaman Sebelumnya"
+          >
+            <LuChevronLeft className="h-5 w-5" />
+          </button>
+
+          <div className="flex items-center px-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+            <input
+              type="text"
+              value={pageInput}
+              onChange={(e) => setPageInput(e.target.value)}
+              onKeyDown={handleGoToPage}
+              className="w-10 bg-transparent text-center font-semibold outline-none focus:ring-0"
+            />
+            <span className="opacity-60">/ {pdfDoc?.numPages || 0}</span>
+          </div>
+
+          <button
+            onClick={goToNextPage}
+            disabled={!pdfDoc || currentPage >= pdfDoc.numPages}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-slate-600 transition-colors hover:cursor-pointer hover:bg-white hover:text-slate-900 hover:shadow-sm disabled:opacity-40 disabled:hover:bg-transparent dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white"
+            title="Halaman Selanjutnya"
+          >
+            <LuChevronRight className="h-5 w-5" />
+          </button>
         </div>
+
+        <div className="mx-1 h-6 w-px bg-slate-200 dark:bg-slate-600"></div>
+
+        {/* Zoom Controls */}
+        <div className="flex items-center gap-1 rounded-full bg-slate-100/50 px-2 py-1 dark:bg-slate-700/50">
+          <button
+            onClick={handleZoomOut}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-slate-600 transition-colors hover:cursor-pointer hover:bg-white hover:text-slate-900 hover:shadow-sm dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white"
+            title="Zoom Out"
+          >
+            <LuZoomOut className="h-4 w-4" />
+          </button>
+
+          <select
+            value={Math.round(scale * 100) / 100}
+            onChange={(e) => handleZoomSelect(e.target.value)}
+            className="appearance-none bg-transparent px-2 py-1 text-center text-sm font-medium text-slate-700 outline-none hover:cursor-pointer focus:ring-0 dark:text-slate-300"
+          >
+            <option value="auto">Auto</option>
+            <option value="page-fit">Fit Page</option>
+            <option value="page-width">Page Width</option>
+            <option value="0.5">50%</option>
+            <option value="0.75">75%</option>
+            <option value="1">100%</option>
+            <option value="1.25">125%</option>
+            <option value="1.5">150%</option>
+            <option value="2">200%</option>
+            <option value="3">300%</option>
+          </select>
+
+          <button
+            onClick={handleZoomIn}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-slate-600 transition-colors hover:cursor-pointer hover:bg-white hover:text-slate-900 hover:shadow-sm dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-white"
+            title="Zoom In"
+          >
+            <LuZoomIn className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="mx-1 h-6 w-px bg-slate-200 dark:bg-slate-600"></div>
+
+        {/* Action Controls */}
+        <button
+          onClick={handleDownload}
+          className="flex h-10 items-center justify-center gap-2 rounded-full bg-primary-500 px-4 text-sm font-medium text-white shadow-sm transition-colors hover:cursor-pointer hover:bg-primary-600 hover:shadow-md"
+          title="Unduh PDF"
+        >
+          <LuDownload className="h-4 w-4" />
+          <span className="hidden sm:inline">Unduh</span>
+        </button>
+      </div>
+
+      {/* PDF Canvas Container */}
+      <div className="flex-1 overflow-auto p-4 md:p-8">
+        <div ref={containerRef} className="flex flex-col items-center gap-6" />
       </div>
     </div>
   );

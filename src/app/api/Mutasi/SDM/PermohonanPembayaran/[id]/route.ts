@@ -63,7 +63,7 @@ export async function GET(
 
     if (!res.ok) {
       const data = await res.json();
-            return NextResponse.json(
+      return NextResponse.json(
         { ...data, origin: "upstream" },
         { status: res.status },
       );

@@ -57,7 +57,7 @@ export default function Page() {
               : "Unknown Server Error",
           );
         }
-        console.log(meta)
+        console.log(meta);
         setData(data);
         setTotalPage(meta.totalPages);
       } catch (error) {

@@ -96,7 +96,7 @@ export default function Page() {
                         <div className="rounded-box bg-info/80 p-1 text-info-content">
                           <Icon
                             className="hover:scale-110"
-                            icon="Users"
+                            icon="UserCog"
                             height={16}
                           />
                         </div>
@@ -108,6 +108,17 @@ export default function Page() {
                           <Icon
                             className="hover:scale-110"
                             icon="Layers3"
+                            height={16}
+                          />
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="tooltip" data-tip="jabatan">
+                      <Link href={`/sso/service/${row.kode}/jabatan`}>
+                        <div className="rounded-box bg-info/80 p-1 text-info-content">
+                          <Icon
+                            className="hover:scale-110"
+                            icon="Briefcase"
                             height={16}
                           />
                         </div>

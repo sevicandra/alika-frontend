@@ -4,6 +4,8 @@ import { encrypt, decrypt } from "@/lib/jwt";
 import { nanoid } from "nanoid";
 import { cookies as getCookies } from "next/headers";
 import { OAuth2 } from "@/lib/OAuthOptions";
+import { UserSession } from "@/types/auth";
+import { checkRouteAccess } from "@/lib/routes";
 const csrfProtectedMethods = ["POST", "PUT", "PATCH", "DELETE"];
 
 export default async function middleware(req: NextRequest) {
@@ -15,25 +17,7 @@ export default async function middleware(req: NextRequest) {
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   const cookies = getCookies();
   const { pathname } = req.nextUrl;
-  let user: {
-    user: {
-      sub: string;
-      name: string;
-      nik: string;
-      nip: string;
-      kode_satker: string;
-      satker: string;
-      gravatar: string;
-    };
-    account: {
-      service: string;
-      kode_satker: string | null;
-      roles: {
-        kode: string;
-        nama: string;
-      }[];
-    }[];
-  };
+  let user: UserSession;
   if (
     pathname.startsWith("/api/auth/signin") &&
     pathname.startsWith("/api/auth/callback")
@@ -97,59 +81,12 @@ export default async function middleware(req: NextRequest) {
       new URL(`${process.env.APP_URL}/api/auth/signin`, req.url),
     );
   }
-  if (pathname.startsWith("/sso")) {
-    if (
-      !user.account
-        .find((a) => a.service.toUpperCase() === "ACCOUNT")
-        ?.roles.find((r) => r.nama.toUpperCase() === "ADMIN")
-    ) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-    return response;
+  const routeCheck = checkRouteAccess(pathname, user.account);
+  if (!routeCheck.authorized) {
+    return NextResponse.redirect(new URL(routeCheck.redirect || "/", req.url));
   }
-  if (pathname === "/penghasilan") {
-    return NextResponse.redirect(new URL("/penghasilan/dashboard", req.url));
-  }
-  if (pathname.startsWith("/mutasi")) {
-    if (pathname.startsWith("/mutasi/admin")) {
-      if (
-        !user.account
-          .find((a) => a.service.toUpperCase() === "MUTASI")
-          ?.roles.find((r) => r.nama.toUpperCase() === "ADMIN")
-      ) {
-        return NextResponse.redirect(new URL("/", req.url));
-      }
-      if (pathname === "/mutasi/admin") {
-        return NextResponse.redirect(new URL("/mutasi/admin/user", req.url));
-      }
-    }
-    if (pathname === "/mutasi/user" || pathname === "/mutasi") {
-      return NextResponse.redirect(new URL("/mutasi/user/dashboard", req.url));
-    }
-    if (pathname.startsWith("/mutasi/keuangan")) {
-      if (
-        !user.account
-          .find((a) => a.service.toUpperCase() === "MUTASI")
-          ?.roles.find((r) => r.nama.toUpperCase() === "KEUANGAN")
-      ) {
-        return NextResponse.redirect(new URL("/", req.url));
-      }
-      if (pathname === "/mutasi/keuangan") {
-        return NextResponse.redirect(new URL("/mutasi/keuangan/sk", req.url));
-      }
-    }
-    if (pathname.startsWith("/mutasi/sdm")) {
-      if (
-        !user.account
-          .find((a) => a.service.toUpperCase() === "MUTASI")
-          ?.roles.find((r) => r.nama.toUpperCase() === "SDM")
-      ) {
-        return NextResponse.redirect(new URL("/", req.url));
-      }
-      if (pathname === "/mutasi/sdm") {
-        return NextResponse.redirect(new URL("/mutasi/sdm/sk", req.url));
-      }
-    }
+  if (routeCheck.redirect) {
+    return NextResponse.redirect(new URL(routeCheck.redirect, req.url));
   }
   if (pathname.startsWith("/api")) {
     const { method } = req;

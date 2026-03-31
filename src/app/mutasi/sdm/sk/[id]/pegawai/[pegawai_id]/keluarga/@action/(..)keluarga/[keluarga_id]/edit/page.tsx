@@ -89,7 +89,7 @@ export default function Page({
     e.preventDefault();
     if (loading) {
       return;
-    }    
+    }
     try {
       setLoading(true);
       setValidationErrors({});

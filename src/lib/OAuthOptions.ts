@@ -1,4 +1,5 @@
 import "server-only";
+import { UserSession } from "@/types/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "./jwt";
@@ -169,25 +170,7 @@ export class OAuth2 {
     });
   }
 
-  static async session(): Promise<{
-    user: {
-      sub: string;
-      name: string;
-      nik: string;
-      nip: string;
-      kode_satker: string;
-      satker: string;
-      gravatar: string;
-    };
-    account: {
-      service: string;
-      kode_satker: string | null;
-      roles: {
-        kode: string;
-        nama: string;
-      }[];
-    }[];
-  }> {
+  static async session(): Promise<UserSession> {
     return new Promise(async (resolve, reject) => {
       const token = (await this.getUser()) ?? "";
       const user = await verify(token).catch(() => null);
@@ -226,14 +209,7 @@ export class OAuth2 {
             satker: user.satker as string,
             gravatar: user.gravatar as string,
           },
-          account: user.account as {
-            service: string;
-            kode_satker: string | null;
-            roles: {
-              kode: string;
-              nama: string;
-            }[];
-          }[],
+          account: user.account as UserSession["account"],
         });
       }
     });

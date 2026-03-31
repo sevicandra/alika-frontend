@@ -40,7 +40,7 @@ export async function GET(request: Request) {
     );
   }
   const url = new URL(request.url);
-  const searchParams = new URLSearchParams(url.search);  
+  const searchParams = new URLSearchParams(url.search);
   try {
     const res = await fetch(
       apiBaseUrl + `/api/v2/DataCetak/?${searchParams.toString()}`,
@@ -54,7 +54,7 @@ export async function GET(request: Request) {
     );
     if (!res.ok) {
       const data = await res.json();
-            return NextResponse.json(
+      return NextResponse.json(
         { ...data, origin: "upstream" },
         { status: res.status },
       );

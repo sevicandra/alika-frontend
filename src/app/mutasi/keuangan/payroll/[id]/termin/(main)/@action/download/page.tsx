@@ -30,7 +30,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         method: "POST",
         body: JSON.stringify({
           terminId: termin.map((t) => t.id),
-          tanggal: new Date(input.tanggal).toISOString().slice(0, 10),
+          tanggal: input.tanggal,
         }),
       });
       if (!res.ok) {
@@ -63,15 +63,15 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       a.remove();
       window.URL.revokeObjectURL(url);
       setRefresh();
+      router.back();
     } catch (error) {
       addNotification({
         message: (error as Error).message,
-        title: "Surat Keputusan",
+        title: "Download Payroll",
         variant: "error",
       });
     } finally {
       setLoading(false);
-      router.back();
     }
   }
   return (

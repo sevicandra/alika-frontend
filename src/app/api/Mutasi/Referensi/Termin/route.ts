@@ -75,7 +75,7 @@ export async function GET(req: Request) {
     if (!res.ok) {
       revalidateTag("Mutasi:Termin", "max");
       const data = await res.json();
-            return NextResponse.json(
+      return NextResponse.json(
         { ...data, origin: "upstream" },
         { status: res.status },
       );

@@ -83,7 +83,7 @@ export default function Page({
   }
 
   useEffect(() => {
-    setInput((prev: any)=>({
+    setInput((prev: any) => ({
       ...prev,
       nama: undefined,
       nik: undefined,
@@ -96,7 +96,7 @@ export default function Page({
       keluarga_id: undefined,
     }));
 
-      setSelectedData("");
+    setSelectedData("");
 
     setValidationErrors({});
   }, [setValidationErrors, setInput, input.action]);

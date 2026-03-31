@@ -27,7 +27,7 @@ const Page = () => {
         const res = await fetch(`/api/Penghasilan/UangLembur?tahun=${tahun}`, {
           method: "GET",
         });
-                const { data, error } = await res.json();
+        const { data, error } = await res.json();
         if (!res.ok) {
           throw new Error(
             error.message

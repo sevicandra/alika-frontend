@@ -41,7 +41,7 @@ export async function GET(
     const data = await res.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-        return NextResponse.json(
+    return NextResponse.json(
       {
         success: false,
         origin: "upstream",
@@ -91,7 +91,7 @@ export async function PATCH(
     const data = await ref.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-        return NextResponse.json(
+    return NextResponse.json(
       {
         success: false,
         origin: "upstream",
@@ -140,7 +140,7 @@ export async function DELETE(
     const data = await ref.json();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-        return NextResponse.json(
+    return NextResponse.json(
       {
         success: false,
         origin: "upstream",

@@ -45,7 +45,6 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const searchParams = new URLSearchParams(url.search);
 
-
   try {
     const res = await fetch(
       `${apiBaseUrl}/api/v2/SDM/SuratKeputusan?${searchParams.toString()}`,
