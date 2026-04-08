@@ -26,6 +26,7 @@ export default function Page({
     e.preventDefault();
     try {
       setLoading(true);
+      setValidationErrors({});
       const res = await fetch(`/api/Mutasi/Pegawai/TTE/${id}/Process`, {
         headers: {
           "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
@@ -143,7 +144,7 @@ export default function Page({
               name="confirmation"
               className="checkbox"
               required
-              value={input.confirmation || ""}
+              checked={input.confirmation || false}
               onChange={(e) => {
                 setInput({ ...input, confirmation: e.target.checked });
               }}

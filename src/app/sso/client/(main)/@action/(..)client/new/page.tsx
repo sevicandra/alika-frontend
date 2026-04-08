@@ -18,15 +18,16 @@ export default function Page() {
   async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      if (input.secret !== input.resecret) {
+      if (input.client_secret !== input.re_client_secret) {
         setValidationErrors({
-          field: "resecret",
+          field: "re_client_secret",
           message: "Secret tidak cocok",
         });
         return;
       }
 
       setLoading(true);
+      setValidationErrors({});
       const res = await fetch(`/api/Sso/Client`, {
         headers: {
           "X-CSRF-Token": await fetch("/api/auth/csrf").then(async (res) => {
@@ -87,11 +88,11 @@ export default function Page() {
             </span>
             <input
               type="text"
-              name="id"
+              name="client_id"
               className={`input-bordered input w-full pl-10 ${getValidationError("client_id") ? "input-error" : ""}`}
-              value={input.id || ""}
+              value={input.client_id || ""}
               onChange={(e) => {
-                setInput({ ...input, id: e.target.value });
+                setInput({ ...input, client_id: e.target.value });
               }}
               required
             />
@@ -118,11 +119,11 @@ export default function Page() {
             </span>
             <input
               type="password"
-              name="secret"
+              name="client_secret"
               className={`input-bordered input w-full pl-10 ${getValidationError("client_secret") ? "input-error" : ""}`}
-              value={input.secret || ""}
+              value={input.client_secret || ""}
               onChange={(e) => {
-                setInput({ ...input, secret: e.target.value });
+                setInput({ ...input, client_secret: e.target.value });
               }}
               required
             />
@@ -147,22 +148,22 @@ export default function Page() {
             </span>
             <input
               type="password"
-              name="resecret"
-              className={`input-bordered input w-full pl-10 ${getValidationError("resecret") ? "input-error" : ""}`}
-              value={input.resecret || ""}
+              name="re_client_secret"
+              className={`input-bordered input w-full pl-10 ${getValidationError("re_client_secret") ? "input-error" : ""}`}
+              value={input.re_client_secret || ""}
               onChange={(e) => {
-                setInput({ ...input, resecret: e.target.value });
+                setInput({ ...input, re_client_secret: e.target.value });
               }}
               required
             />
           </div>
-          {getValidationError("resecret") && (
+          {getValidationError("re_client_secret") && (
             <label className="label">
               <span className="label-text-alt grid grid-cols-[auto_1fr] items-center gap-2 pt-1 text-sm text-error">
                 <span>
                   <Icon icon="CircleAlert" height={16} />{" "}
                 </span>
-                <span>{getValidationError("resecret")}</span>
+                <span>{getValidationError("re_client_secret")}</span>
               </span>
             </label>
           )}

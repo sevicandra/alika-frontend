@@ -28,6 +28,7 @@ export default function Page({
     e.preventDefault();
     try {
       setLoading(true);
+      setValidationErrors({});
       const res = await fetch(
         `/api/Mutasi/Pegawai/Mutasi/${mutasi_id}/Pembayaran/${pembayaran_id}/Kirim`,
         {
@@ -120,7 +121,7 @@ export default function Page({
               name="confirmation"
               className="checkbox"
               required
-              value={input.confirmation || ""}
+              checked={input.confirmation || false}
               onChange={(e) => {
                 setInput({ ...input, confirmation: e.target.checked });
               }}
