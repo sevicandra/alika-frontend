@@ -72,7 +72,7 @@ export default function Page({
       }
     };
     fetchData();
-  }, [input, setInput, addNotification]);
+  }, [setInput, addNotification]);
 
   useEffect(() => {
     const fetchData = async () => {
