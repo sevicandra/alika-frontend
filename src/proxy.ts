@@ -1,7 +1,6 @@
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
 import { encrypt, decrypt } from "@/lib/jwt";
-import { nanoid } from "nanoid";
 import { cookies as getCookies } from "next/headers";
 import { OAuth2 } from "@/lib/OAuthOptions";
 import { UserSession } from "@/types/auth";
@@ -27,7 +26,7 @@ export default async function middleware(req: NextRequest) {
   try {
     const csrfTokenCookie = (await cookies).get("csrf_token")?.value;
     if (!csrfTokenCookie) {
-      const newCsrfToken = nanoid();
+      const newCsrfToken = crypto.randomUUID();
       const encryptedCsrfToken = await encrypt({ newCsrfToken });
       (await cookies).set("csrf_token", encryptedCsrfToken, {
         httpOnly: true,
