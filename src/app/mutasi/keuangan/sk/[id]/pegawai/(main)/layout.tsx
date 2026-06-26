@@ -64,6 +64,13 @@ export default function Layout({
           >
             Overview
           </Link>
+
+          <Link
+            href={`/mutasi/keuangan/sk/${id}/pegawai/overview-csv`}
+            className="btn btn-xs btn-success"
+          >
+            Overview (CSV)
+          </Link>
         </div>
       </div>
       <ContainerCard
