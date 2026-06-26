@@ -132,7 +132,7 @@ export async function PATCH(
   }
   try {
     const res = await fetch(
-      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin/${termin_id}`,
+      `${apiBaseUrl}/api/v2/Keuangan/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin/${termin_id}`,
       {
         method: "PATCH",
         headers: {
@@ -209,7 +209,7 @@ export async function DELETE(
   }
   try {
     const suratKeputusan = await fetch(
-      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin/${termin_id}`,
+      `${apiBaseUrl}/api/v2/Keuangan/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Termin/${termin_id}`,
       {
         method: "DELETE",
         headers: {

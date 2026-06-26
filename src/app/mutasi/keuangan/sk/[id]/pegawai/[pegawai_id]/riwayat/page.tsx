@@ -159,7 +159,7 @@ export default function Page({
                       >
                         <div className="tooltip" data-tip="payload">
                           <Link
-                            href={`/mutasi/sdm/arsip/${id}/pegawai/${pegawai_id}/riwayat/${item.id}/payload`}
+                            href={`/mutasi/keuangan/arsip/${id}/pegawai/${pegawai_id}/riwayat/${item.id}/payload`}
                           >
                             <div className="rounded-box bg-info/80 p-1 text-info-content">
                               <Icon

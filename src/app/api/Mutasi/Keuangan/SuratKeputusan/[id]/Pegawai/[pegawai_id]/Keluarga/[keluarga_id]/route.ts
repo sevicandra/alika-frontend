@@ -51,7 +51,7 @@ export async function GET(
 
   try {
     const res = await fetch(
-      `${apiBaseUrl}/api/v2/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Keluarga/${keluarga_id}`,
+      `${apiBaseUrl}/api/v2/Keuangan/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Keluarga/${keluarga_id}`,
       {
         method: "GET",
         headers: {

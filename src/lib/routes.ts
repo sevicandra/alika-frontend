@@ -14,6 +14,7 @@ export const AppRoutes: RouteConfig[] = [
   { path: "/mutasi/admin", service: "MUTASI", roles: ["ADMIN"] },
   { path: "/mutasi/keuangan", service: "MUTASI", roles: ["KEUANGAN"] },
   { path: "/mutasi/sdm", service: "MUTASI", roles: ["SDM"] },
+  { path: "/mutasi/ppk", service: "MUTASI", roles: ["PPK"] },
 
   // Exact Redirects
   { path: "/penghasilan", exact: true, redirect: "/penghasilan/dashboard" },
@@ -22,6 +23,7 @@ export const AppRoutes: RouteConfig[] = [
   { path: "/mutasi/admin", exact: true, redirect: "/mutasi/admin/user" },
   { path: "/mutasi/keuangan", exact: true, redirect: "/mutasi/keuangan/sk" },
   { path: "/mutasi/sdm", exact: true, redirect: "/mutasi/sdm/sk" },
+  { path: "/mutasi/ppk", exact: true, redirect: "/mutasi/ppk/sk" },
 ];
 
 export function hasRole(

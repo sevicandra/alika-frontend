@@ -44,7 +44,7 @@ export default function Page({
       searchParams.append("associations", "Ref");
       try {
         const res = await fetch(
-          `/api/Mutasi/SDM/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Keluarga?${searchParams}`,
+          `/api/Mutasi/Keuangan/SuratKeputusan/${id}/Pegawai/${pegawai_id}/Keluarga?${searchParams}`,
           {
             method: "GET",
           },

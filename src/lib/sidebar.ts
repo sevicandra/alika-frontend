@@ -122,6 +122,38 @@ export const menus = async ({
         ],
       },
       {
+        title: "PPK",
+        role: "PPK",
+        data: [
+          {
+            label: "SK Mutasi",
+            path: "/mutasi/ppk/sk",
+            icon: "FileBadge2",
+          },
+          {
+            label: "TTE",
+            path: "/mutasi/ppk/tte",
+            icon: "FilePenLine",
+          },
+        ],
+      },
+      {
+        title: "BENDAHARA",
+        role: "BENDAHARA",
+        data: [
+          {
+            label: "SK Mutasi",
+            path: "/mutasi/bendahara/sk",
+            icon: "FileBadge2",
+          },
+          {
+            label: "TTE",
+            path: "/mutasi/bendahara/tte",
+            icon: "FilePenLine",
+          },
+        ],
+      },
+      {
         title: "Admin",
         role: "ADMIN",
         data: [
