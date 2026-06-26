@@ -116,6 +116,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Role",
+        variant: "error",
       });
     } finally {
       setLoading(false);
@@ -155,6 +156,7 @@ export default function Page({
       addNotification({
         message: (error as Error).message,
         title: "Role",
+        variant: "error",
       });
     } finally {
       setLoading(false);
