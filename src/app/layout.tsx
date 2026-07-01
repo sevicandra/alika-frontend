@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { Abel } from "next/font/google";
 import "./globals.css";
-import Header from "@/component/Organisms/Header";
+import Header from "@/components/organisms/header.ormanism";
 import Notification from "@/component/Organisms/Notification";
 import Themes from "@/component/Organisms/Themes";
 import Splash from "@/component/Molecules/Splash";

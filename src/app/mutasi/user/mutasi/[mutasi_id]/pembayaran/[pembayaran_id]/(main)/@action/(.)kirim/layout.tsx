@@ -1,5 +1,9 @@
 "use client";
-import { FormProvider } from "@/context/form.context";
+import PopUp from "@/component/Molecules/PopUp";
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <FormProvider>{children}</FormProvider>;
+  return (
+    <PopUp className="max-w-md" title="Tanda Tangan Elektronik">
+      {children}
+    </PopUp>
+  );
 }
