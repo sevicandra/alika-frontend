@@ -18,7 +18,7 @@ export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   let user: UserSession;
   if (
-    pathname.startsWith("/api/auth/signin") &&
+    pathname.startsWith("/api/auth/signin") ||
     pathname.startsWith("/api/auth/callback")
   ) {
     return response;
@@ -28,14 +28,14 @@ export default async function middleware(req: NextRequest) {
     if (!csrfTokenCookie) {
       const newCsrfToken = crypto.randomUUID();
       const encryptedCsrfToken = await encrypt({ newCsrfToken });
-      (await cookies).set("csrf_token", encryptedCsrfToken, {
+      response.cookies.set("csrf_token", encryptedCsrfToken, {
         httpOnly: true,
         secure: process.env.APP_COOKIES === "secure",
         sameSite: "strict",
         path: "/",
         maxAge: 60 * 60, // 1h
       });
-      return NextResponse.redirect(req.url);
+      req.cookies.set("csrf_token", encryptedCsrfToken);
     }
   } catch (error) {
     return NextResponse.json(
@@ -129,6 +129,6 @@ export default async function middleware(req: NextRequest) {
 }
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|manifest.json|manifest.webmanifest).*)",
+    "/((?!_next/static|_next/image|favicon.ico|manifest.json|.*\\.webmanifest$|.*\\.png$|.*\\.jpg$|.*\\.jpeg$|.*\\.svg$|.*\\.gif$|.*\\.ico$).*)",
   ],
 };
