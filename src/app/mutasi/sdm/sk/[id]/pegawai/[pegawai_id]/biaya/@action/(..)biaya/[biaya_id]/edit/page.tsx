@@ -92,6 +92,8 @@ export default function Page({
         title: "Ubah Biaya Mutasi",
         variant: "error",
       });
+    } finally {
+      setLoading(false);
     }
   }
   if (error) throw error;
