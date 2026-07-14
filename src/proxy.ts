@@ -19,7 +19,8 @@ export default async function middleware(req: NextRequest) {
   let user: UserSession;
   if (
     pathname.startsWith("/api/auth/signin") ||
-    pathname.startsWith("/api/auth/callback")
+    pathname.startsWith("/api/auth/callback") ||
+    pathname.startsWith("/api/health")
   ) {
     return response;
   }
