@@ -59,13 +59,36 @@ export default function Layout({
       </div>
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1">
-          {pegawai?.process_biaya === "IDLE" &&
-            pegawai?.process_keluarga === "DONE" && (
+          {pegawai?.status === "DRAFT" &&
+            pegawai?.process_termin === "IDLE" &&
+            pegawai?.process_biaya === "IDLE" &&
+            pegawai?.process_keluarga === "DONE" &&
+            suratKeputusan?.status !== "SELESAI" && (
+              <>
+                <Link
+                  href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/keluarga/new`}
+                  className="btn btn-xs btn-success"
+                >
+                  Tambah Keluarga
+                </Link>
+                <Link
+                  href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/keluarga/reset`}
+                  className="btn btn-xs btn-success"
+                >
+                  Reset
+                </Link>
+              </>
+            )}
+          {pegawai?.status === "DRAFT" &&
+            pegawai?.process_termin === "IDLE" &&
+            pegawai?.process_biaya === "IDLE" &&
+            pegawai?.process_keluarga === "IDLE" &&
+            suratKeputusan?.status !== "SELESAI" && (
               <Link
-                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/keluarga/new`}
+                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/keluarga/process`}
                 className="btn btn-xs btn-success"
               >
-                Tambah Keluarga
+                Process
               </Link>
             )}
         </div>

@@ -59,8 +59,10 @@ export default function Layout({
       </div>
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1">
-          {pegawai?.process_termin === "IDLE" &&
-            pegawai?.process_biaya === "DONE" && (
+          {pegawai?.status === "DRAFT" &&
+            pegawai?.process_termin === "IDLE" &&
+            pegawai?.process_biaya === "DONE" &&
+            suratKeputusan?.status !== "SELESAI" && (
               <>
                 <Link
                   href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/biaya/reset`}
@@ -73,6 +75,19 @@ export default function Layout({
                   className="btn btn-xs btn-success"
                 >
                   Tambah Biaya
+                </Link>
+              </>
+            )}
+          {pegawai?.status === "DRAFT" &&
+            pegawai?.process_termin === "IDLE" &&
+            pegawai?.process_biaya === "IDLE" &&
+            suratKeputusan?.status !== "SELESAI" && (
+              <>
+                <Link
+                  href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/biaya/process`}
+                  className="btn btn-xs btn-success"
+                >
+                  Process
                 </Link>
               </>
             )}

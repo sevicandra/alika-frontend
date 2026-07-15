@@ -60,8 +60,9 @@ export default function Layout({
       </div>
       <div className="max-w-full overflow-x-auto px-4">
         <div className="flex min-w-max justify-end gap-1">
-          {pegawai?.process_termin === "DONE" &&
-            suratKeputusan?.status === "DRAFT" && (
+          {pegawai?.status === "DRAFT" &&
+            pegawai?.process_termin === "DONE" &&
+            suratKeputusan?.status !== "SELESAI" && (
               <>
                 <Link
                   href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/reset`}
@@ -74,6 +75,18 @@ export default function Layout({
                   className="btn btn-xs btn-success"
                 >
                   Tambah Termin
+                </Link>
+              </>
+            )}
+          {pegawai?.status === "DRAFT" &&
+            pegawai?.process_termin === "IDLE" &&
+            suratKeputusan?.status !== "SELESAI" && (
+              <>
+                <Link
+                  href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/process`}
+                  className="btn btn-xs btn-success"
+                >
+                  Process
                 </Link>
               </>
             )}

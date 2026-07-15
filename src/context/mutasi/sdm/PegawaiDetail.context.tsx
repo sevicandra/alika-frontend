@@ -12,6 +12,7 @@ type PegawaiDetailData = {
   process_keluarga: string;
   process_biaya: string;
   process_termin: string;
+  status: string;
   MonitoringTagihan: {
     total_tagihan: number;
     total_termin: number;

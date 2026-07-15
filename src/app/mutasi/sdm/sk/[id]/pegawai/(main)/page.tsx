@@ -289,6 +289,38 @@ export default function Page({
                       </div>
                     </>
                   )}
+                  {SuratKeputusan?.status === "PUBLISH" &&
+                    row.status === "DRAFT" && (
+                      <div className="tooltip" data-tip="publish">
+                        <Link
+                          href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/publish`}
+                        >
+                          <div className="rounded-box bg-success/80 p-1 text-success-content">
+                            <Icon
+                              className="hover:scale-110"
+                              icon="Send"
+                              height={16}
+                            />
+                          </div>
+                        </Link>
+                      </div>
+                    )}
+                  {SuratKeputusan?.status === "PUBLISH" &&
+                    row.status !== "DRAFT" && (
+                      <div className="tooltip" data-tip="batal">
+                        <Link
+                          href={`/mutasi/sdm/sk/${id}/pegawai/${row.id}/batal`}
+                        >
+                          <div className="rounded-box bg-error/80 p-1 text-error-content">
+                            <Icon
+                              className="hover:scale-110"
+                              icon="CircleX"
+                              height={16}
+                            />
+                          </div>
+                        </Link>
+                      </div>
+                    )}
                 </div>
               </div>
             </ExpandableItemCard>
