@@ -60,9 +60,10 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
+        const offset = (currentPage - 1) * limit;
         const searchParams = new URLSearchParams();
         if (limit) searchParams.append("limit", limit.toString());
-        if (limit) searchParams.append("offset", (currentPage - 1).toString());
+        if (offset) searchParams.append("offset", offset.toString());
         const { search } = searchs;
         if (search) searchParams.append("search", search);
         const res = await fetch(
