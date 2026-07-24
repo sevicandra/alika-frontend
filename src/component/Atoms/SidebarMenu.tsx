@@ -61,7 +61,9 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
             </span>
           </div>
         </div>
-        <div className="overflow-x-hidden overflow-y-scroll py-8">
+        <div
+          className={`overflow-x-hidden overflow-y-scroll ${isOpen && "px-2"} py-8`}
+        >
           {children}
         </div>
       </aside>
