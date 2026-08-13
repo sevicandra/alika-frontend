@@ -60,6 +60,7 @@ import {
   LuActivity,
   LuPalette,
   LuBriefcase,
+  LuPencilLine,
 } from "react-icons/lu";
 import { FaPeopleArrows } from "react-icons/fa6";
 import { BiReset } from "react-icons/bi";
@@ -581,6 +582,15 @@ export default function Icon({
     case "Briefcase":
       return (
         <LuBriefcase
+          className={cn("w-full", className)}
+          size={height}
+          {...props}
+        />
+      );
+      break;
+    case "PencilLine":
+      return (
+        <LuPencilLine
           className={cn("w-full", className)}
           size={height}
           {...props}

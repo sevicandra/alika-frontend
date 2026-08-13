@@ -3,7 +3,7 @@ import { use, useEffect, useState } from "react";
 import { useNotification } from "@/context/notifikasi";
 import { DataTable } from "@/component/Organisms/DataTable";
 import Loading from "@/component/Molecules/Loading";
-import { usePegawaiDetail, useSkDetail } from "@/context/mutasi/sdm";
+import { usePegawaiDetail } from "@/context/mutasi/sdm";
 import { useTable } from "@/context/table.context";
 import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
@@ -39,7 +39,6 @@ export default function Page({
   const [loading, setLoading] = useState(true);
   const { addNotification } = useNotification();
   const { data: pegawai, setRefresh: setRefreshPegawai } = usePegawaiDetail();
-  const { data: suratKeputusan } = useSkDetail();
   const { refresh, setRefresh } = useTable();
 
   useEffect(() => {
@@ -126,37 +125,36 @@ export default function Page({
                       })}
                     </td>
                     <td className="px-4 py-2">
-                      {pegawai?.process_termin === "DONE" &&
-                        suratKeputusan?.status === "DRAFT" && (
-                          <div className="flex gap-1">
-                            <div className="tooltip" data-tip="edit">
-                              <Link
-                                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/${row.id}/edit`}
-                              >
-                                <div className="rounded-box bg-info/80 p-1 text-info-content">
-                                  <Icon
-                                    className="hover:scale-110"
-                                    icon="SquarePen"
-                                    height={16}
-                                  />
-                                </div>
-                              </Link>
-                            </div>
-                            <div className="tooltip" data-tip="hapus">
-                              <Link
-                                href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/${row.id}/hapus`}
-                              >
-                                <div className="rounded-box bg-error/80 p-1 text-error-content">
-                                  <Icon
-                                    className="hover:scale-110"
-                                    icon="Trash2"
-                                    height={16}
-                                  />
-                                </div>
-                              </Link>
-                            </div>
+                      {pegawai?.process_termin === "DONE" && (
+                        <div className="flex gap-1">
+                          <div className="tooltip" data-tip="edit">
+                            <Link
+                              href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/${row.id}/edit`}
+                            >
+                              <div className="rounded-box bg-info/80 p-1 text-info-content">
+                                <Icon
+                                  className="hover:scale-110"
+                                  icon="SquarePen"
+                                  height={16}
+                                />
+                              </div>
+                            </Link>
                           </div>
-                        )}
+                          <div className="tooltip" data-tip="hapus">
+                            <Link
+                              href={`/mutasi/sdm/sk/${id}/pegawai/${pegawai_id}/termin/${row.id}/hapus`}
+                            >
+                              <div className="rounded-box bg-error/80 p-1 text-error-content">
+                                <Icon
+                                  className="hover:scale-110"
+                                  icon="Trash2"
+                                  height={16}
+                                />
+                              </div>
+                            </Link>
+                          </div>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 )}

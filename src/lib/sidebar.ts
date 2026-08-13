@@ -93,6 +93,11 @@ export const menus = async ({
             path: "/mutasi/sdm/arsip",
             icon: "Archive",
           },
+          {
+            label: "Addendum Pembayaran",
+            path: "/mutasi/sdm/addendum-pembayaran",
+            icon: "PencilLine",
+          },
         ],
       },
       {
