@@ -1,6 +1,7 @@
 "use client";
-import PopUp from "@/component/Molecules/PopUp";
-export type ConfirmationProps = {
+import PopUp from "@/component/Organisms/PopUp";
+// Tipe dipertahankan sebagai ConfirmationProps untuk backward compatibility
+export type FormDialogProps = {
   title: string;
   onCancel: () => void;
   variant?: "destructive" | "positive" | "warning";
@@ -11,7 +12,8 @@ export type ConfirmationProps = {
   children: React.ReactNode;
 };
 
-export default function Confirmation({
+// Nama komponen diperbaiki: FormDialog (sebelumnya: Confirmation — tidak konsisten dengan nama file Form.tsx)
+export default function FormDialog({
   title,
   onCancel,
   variant = "positive",
@@ -20,7 +22,7 @@ export default function Confirmation({
   submitForm,
   confirmText,
   children,
-}: ConfirmationProps) {
+}: FormDialogProps) {
   const variantStyles = {
     destructive: {
       buttonClass: "btn-error",
@@ -35,7 +37,7 @@ export default function Confirmation({
       defaultConfirmText: "Lanjutkan",
     },
   };
-  const { buttonClass, defaultConfirmText } = variantStyles[variant];
+  const { buttonClass, defaultConfirmText } = variantStyles[variant as keyof typeof variantStyles];
   return (
     <PopUp title={title} className="w-lg">
       <form onSubmit={submitForm} noValidate autoComplete="off">

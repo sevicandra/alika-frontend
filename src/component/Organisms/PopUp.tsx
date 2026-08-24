@@ -9,6 +9,13 @@ type PopUpProps = React.HTMLAttributes<HTMLDivElement> & {
   title: string;
 };
 
+// ────────────────────────────────────────────────────────────
+// POPUP — Organism
+// Dipindahkan dari Molecules karena memiliki side-effects:
+//   - useRouter().back() (navigation side-effect)
+//   - document.addEventListener("keydown") (DOM side-effect)
+//   - usePopUp() context (application-level context)
+// ────────────────────────────────────────────────────────────
 export default function PopUp({
   title,
   children,
@@ -30,7 +37,9 @@ export default function PopUp({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [router]);
+
   const { backdropRef } = usePopUp();
+
   return (
     <div
       className={cn(

@@ -1,5 +1,5 @@
 "use client";
-import PopUp from "@/component/Molecules/PopUp";
+import PopUp from "@/component/Organisms/PopUp";
 import { useTahun } from "@/context/penghasilan";
 import { Suspense } from "react";
 

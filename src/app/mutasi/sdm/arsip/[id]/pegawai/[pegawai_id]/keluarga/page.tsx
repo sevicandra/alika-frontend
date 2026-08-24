@@ -5,7 +5,7 @@ import { DataTable } from "@/component/Organisms/DataTable";
 import Loading from "@/component/Molecules/Loading";
 import { usePegawaiDetail } from "@/context/mutasi/sdm";
 import { useTable } from "@/context/table.context";
-import Onproccess from "@/component/Molecules/Onproccess";
+import Onproccess from "@/component/Organisms/OnProcess";
 import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import { snackToTitleCase } from "@/helpers/string.helper";

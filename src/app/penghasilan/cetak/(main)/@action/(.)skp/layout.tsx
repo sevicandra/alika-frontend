@@ -1,5 +1,5 @@
 "use client";
-import PopUp from "@/component/Molecules/PopUp";
+import PopUp from "@/component/Organisms/PopUp";
 import { CetakProvider } from "@/context/penghasilan/Cetak.context";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

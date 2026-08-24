@@ -1,11 +1,28 @@
 "use client";
-import { usePaginator } from "@/context/paginator";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+
+// ────────────────────────────────────────────────────────────
+// TIPE SHARED
+// ────────────────────────────────────────────────────────────
 type ButtonProps = React.HTMLAttributes<HTMLButtonElement>;
 
-function CloseToEnd({ action }: { action: (page: number) => void }) {
-  const { totalPage, page: currentPage, onEachSide } = usePaginator();
+type PageButtonProps = {
+  action: (page: number) => void;
+  currentPage: number;
+};
 
+// ────────────────────────────────────────────────────────────
+// ATOM SUB-KOMPONEN — SEMUA PURE / PRESENTATIONAL
+// Tidak ada usePaginator() di sini. Semua data masuk via props.
+// Context dependency telah dipindahkan ke Organisms/Paginator.
+// ────────────────────────────────────────────────────────────
+
+function CloseToEnd({
+  action,
+  currentPage,
+  totalPage,
+  onEachSide,
+}: PageButtonProps & { totalPage: number; onEachSide: number }) {
   const array = Array.from(
     { length: onEachSide * 2 + 4 },
     (_, index) => index + (totalPage - (onEachSide * 2 + 4)) + 1,
@@ -25,8 +42,12 @@ function CloseToEnd({ action }: { action: (page: number) => void }) {
     </>
   );
 }
-function CloseToStart({ action }: { action: (page: number) => void }) {
-  const { page: currentPage, onEachSide } = usePaginator();
+
+function CloseToStart({
+  action,
+  currentPage,
+  onEachSide,
+}: PageButtonProps & { onEachSide: number }) {
   const array = Array.from(
     { length: onEachSide * 2 + 4 },
     (_, index) => index + 1,
@@ -46,8 +67,14 @@ function CloseToStart({ action }: { action: (page: number) => void }) {
     </>
   );
 }
-function End({ action }: { action: (page: number) => void }) {
-  const { totalPage } = usePaginator();
+
+function End({
+  action,
+  totalPage,
+}: {
+  action: (page: number) => void;
+  totalPage: number;
+}) {
   return (
     <>
       <button
@@ -71,13 +98,15 @@ function End({ action }: { action: (page: number) => void }) {
     </>
   );
 }
-const MainElement = ({
+
+// Internal helper — tidak diekspor
+const PageButton = ({
   className,
   children,
   onClick,
+  currentPage,
   ...props
-}: ButtonProps) => {
-  const { page: currentPage } = usePaginator();
+}: ButtonProps & { currentPage: number }) => {
   return (
     <button
       onClick={onClick}
@@ -89,8 +118,12 @@ const MainElement = ({
     </button>
   );
 };
-function Main({ action }: { action: (page: number) => void }) {
-  const { page: currentPage, onEachSide } = usePaginator();
+
+function Main({
+  action,
+  currentPage,
+  onEachSide,
+}: PageButtonProps & { onEachSide: number }) {
   const first = Array.from(
     { length: onEachSide },
     (_, index) => index + (currentPage - onEachSide),
@@ -102,23 +135,27 @@ function Main({ action }: { action: (page: number) => void }) {
   return (
     <>
       {first.map((page) => (
-        <MainElement key={page} onClick={() => action(page)}>
+        <PageButton key={page} onClick={() => action(page)} currentPage={currentPage}>
           {page}
-        </MainElement>
+        </PageButton>
       ))}
-      <MainElement onClick={() => action(currentPage)}>
+      <PageButton onClick={() => action(currentPage)} currentPage={currentPage}>
         {currentPage}
-      </MainElement>
+      </PageButton>
       {last.map((page) => (
-        <MainElement key={page} onClick={() => action(page)}>
+        <PageButton key={page} onClick={() => action(page)} currentPage={currentPage}>
           {page}
-        </MainElement>
+        </PageButton>
       ))}
     </>
   );
 }
-function Next({ action }: { action: (page: number) => void }) {
-  const { totalPage, page: currentPage } = usePaginator();
+
+function Next({
+  action,
+  currentPage,
+  totalPage,
+}: PageButtonProps & { totalPage: number }) {
   return (
     <button
       onClick={() => action(currentPage + 1)}
@@ -129,8 +166,11 @@ function Next({ action }: { action: (page: number) => void }) {
     </button>
   );
 }
-function Previous({ action }: { action: (page: number) => void }) {
-  const { page: currentPage } = usePaginator();
+
+function Previous({
+  action,
+  currentPage,
+}: PageButtonProps) {
   return (
     <button
       onClick={() => action(currentPage - 1)}
@@ -141,8 +181,12 @@ function Previous({ action }: { action: (page: number) => void }) {
     </button>
   );
 }
-function Small({ action }: { action: (page: number) => void }) {
-  const { totalPage, page: currentPage } = usePaginator();
+
+function Small({
+  action,
+  currentPage,
+  totalPage,
+}: PageButtonProps & { totalPage: number }) {
   const array = Array.from({ length: totalPage }, (_, index) => index + 1);
   return (
     <>
@@ -159,6 +203,7 @@ function Small({ action }: { action: (page: number) => void }) {
     </>
   );
 }
+
 function Start({ action }: { action: (page: number) => void }) {
   return (
     <>

@@ -13,3 +13,4 @@ storage
 *.tsbuildinfo
 next-env.d.ts
 .prettierrc
+antigravity.yaml

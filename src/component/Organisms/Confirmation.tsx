@@ -1,5 +1,5 @@
 "use client";
-import PopUp from "@/component/Molecules/PopUp";
+import PopUp from "@/component/Organisms/PopUp";
 import Icon from "@/component/Atoms/LabelIcon";
 
 export type ConfirmationProps = {

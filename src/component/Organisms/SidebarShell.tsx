@@ -1,6 +1,10 @@
 "use client";
 import { createContext, useState, useRef, useEffect } from "react";
 import Icon from "../Atoms/LabelIcon";
+
+// ────────────────────────────────────────────────────────────
+// CONTEXT — shared dengan SidebarItem & SidebarItems
+// ────────────────────────────────────────────────────────────
 type SidebarContextType = {
   buttonRef: React.RefObject<HTMLButtonElement | null>;
   itemsRef: React.RefObject<HTMLDivElement | null>;
@@ -17,10 +21,15 @@ export const SidebarContext = createContext<SidebarContextType>({
   closeMenu: () => {},
 });
 
-export default function Sidebar({ children }: { children: React.ReactNode }) {
+export default function SidebarShell({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const itemsRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(true);
+
   const contextValue = {
     buttonRef,
     itemsRef,

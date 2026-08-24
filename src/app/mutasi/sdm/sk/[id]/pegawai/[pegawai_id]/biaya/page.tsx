@@ -6,7 +6,7 @@ import Loading from "@/component/Molecules/Loading";
 import Link from "next/link";
 import { usePegawaiDetail } from "@/context/mutasi/sdm";
 import { useTable } from "@/context/table.context";
-import Onproccess from "@/component/Molecules/Onproccess";
+import Onproccess from "@/component/Organisms/OnProcess";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import { snackToTitleCase } from "@/helpers/string.helper";
 import Icon from "@/component/Atoms/LabelIcon";

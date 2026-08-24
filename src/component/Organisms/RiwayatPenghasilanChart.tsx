@@ -9,6 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -21,34 +22,31 @@ ChartJS.register(
 const options = {
   maintainAspectRatio: false,
   responsive: true,
-
   plugins: {
-    title: {
-      display: false,
-    },
+    title: { display: false },
     legend: {
-      labels: {
-        usePointStyle: true,
-      },
+      labels: { usePointStyle: true },
       display: false,
     },
   },
   scales: {
-    x: {
-      stacked: true,
-    },
-    y: {
-      stacked: true,
-    },
+    x: { stacked: true },
+    y: { stacked: true },
   },
 };
 
-type Data = {
+type DataSeries = {
   label: string;
   data: number[];
   backgroundColor: string;
 };
-export default function RiwayatPenghasilanCart({
+
+// ────────────────────────────────────────────────────────────
+// RIWAYAT PENGHASILAN CHART — Organism
+// Nama diperbaiki: Chart (bukan Cart) + PascalCase.
+// File lama (riwayatPenghasilanCart.tsx) menjadi re-export.
+// ────────────────────────────────────────────────────────────
+export default function RiwayatPenghasilanChart({
   data,
 }: {
   data: {
@@ -60,22 +58,22 @@ export default function RiwayatPenghasilanCart({
   }[];
 }) {
   const labels: string[] = [];
-  const gaji: Data = {
+  const gaji: DataSeries = {
     label: "Gaji Pokok",
     data: [],
     backgroundColor: "rgb(255, 99, 132)",
   };
-  const tukin: Data = {
+  const tukin: DataSeries = {
     label: "Tunjangan Kinerja",
     data: [],
     backgroundColor: "rgb(75, 192, 192)",
   };
-  const umak: Data = {
+  const umak: DataSeries = {
     label: "Uang Makan",
     data: [],
     backgroundColor: "rgb(255, 205, 86)",
   };
-  const lembur: Data = {
+  const lembur: DataSeries = {
     label: "Uang Lembur",
     data: [],
     backgroundColor: "rgb(53, 162, 235)",
@@ -100,5 +98,6 @@ export default function RiwayatPenghasilanCart({
     labels,
     datasets: [gaji, tukin, umak, lembur],
   };
+
   return <Bar options={options} data={datasets} className="w-full" />;
 }

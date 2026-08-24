@@ -5,7 +5,7 @@ import "./globals.css";
 import Header from "@/component/Organisms/Header";
 import Notification from "@/component/Organisms/Notification";
 import Themes from "@/component/Organisms/Themes";
-import Splash from "@/component/Molecules/Splash";
+import Splash from "@/component/Organisms/Splash";
 import WebPushNotificationProvider from "@/context/webPushNotification";
 import PushNotificationSub from "@/component/Organisms/PushNotificationSub";
 import { LayoutProviders } from "@/app/layout-provider";

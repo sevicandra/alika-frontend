@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import PopUp from "@/component/Molecules/PopUp";
+import PopUp from "@/component/Organisms/PopUp";
 
 export default function Error({
   error,

@@ -9,7 +9,7 @@ import Link from "next/link";
 import ContainerCard from "@/component/Molecules/ContainerCard";
 import { snackToTitleCase } from "@/helpers/string.helper";
 import Icon from "@/component/Atoms/LabelIcon";
-import Onproccess from "@/component/Molecules/Onproccess";
+import Onproccess from "@/component/Organisms/OnProcess";
 
 export default function Page({
   params,

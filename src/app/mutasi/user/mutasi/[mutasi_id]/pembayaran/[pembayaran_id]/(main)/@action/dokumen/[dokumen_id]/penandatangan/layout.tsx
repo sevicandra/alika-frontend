@@ -1,6 +1,6 @@
 "use client";
 import { use, useState, useEffect } from "react";
-import PopUp from "@/component/Molecules/PopUp";
+import PopUp from "@/component/Organisms/PopUp";
 import { PenandatanganProvider, useMutasiDetail } from "@/context/mutasi/user";
 import { useNotification } from "@/context/notifikasi";
 import { FormProvider } from "@/context/form.context";

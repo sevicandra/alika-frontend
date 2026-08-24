@@ -1,5 +1,4 @@
 "use client";
-import { usePaginator } from "@/context/paginator";
 import {
   CloseToEnd,
   CloseToStart,
@@ -11,20 +10,29 @@ import {
   Main,
 } from "@/component/Atoms/PaginatorComponent";
 
-export default function Paginator({
+// ────────────────────────────────────────────────────────────
+// PAGINATOR WRAPPER — Molecule
+// Presentational: menerima semua data via props.
+// Context dependency (usePaginator) telah dipindahkan ke
+// Organisms/Paginator yang membungkus komponen ini.
+// ────────────────────────────────────────────────────────────
+export default function PaginatorWrapper({
   onEachSide,
   totalPage,
   page,
   action,
+  limit,
+  setLimit,
 }: {
   onEachSide: number;
   totalPage: number;
   page: number;
   action: (page: number) => void;
+  limit: number;
+  setLimit: (limit: number) => void;
 }) {
-  const { limit, setLimit } = usePaginator();
-
   const window = onEachSide + 4;
+
   return (
     <div className="grid w-full grid-cols-2 items-center px-2 md:grid-cols-[auto_1fr_auto]">
       <div className="flex items-center gap-1 text-nowrap">
@@ -45,29 +53,29 @@ export default function Paginator({
         {totalPage > 1 &&
           (totalPage <= onEachSide * 2 + 8 ? (
             <div className="flex w-full justify-between gap-1 px-4 md:justify-center">
-              <Small action={action} />
+              <Small action={action} currentPage={page} totalPage={totalPage} />
             </div>
           ) : page <= window ? (
             <div className="flex w-full justify-between gap-1 px-4 md:justify-center">
-              <CloseToStart action={action} />
-              <End action={action} />
+              <CloseToStart action={action} currentPage={page} onEachSide={onEachSide} />
+              <End action={action} totalPage={totalPage} />
             </div>
           ) : page > totalPage - window ? (
             <div className="flex w-full justify-between gap-1 px-4 md:justify-center">
               <Start action={action} />
-              <CloseToEnd action={action} />
+              <CloseToEnd action={action} currentPage={page} totalPage={totalPage} onEachSide={onEachSide} />
             </div>
           ) : (
             <div className="flex w-full justify-between gap-1 px-4 md:justify-center">
               <Start action={action} />
-              <Main action={action} />
-              <End action={action} />
+              <Main action={action} currentPage={page} onEachSide={onEachSide} />
+              <End action={action} totalPage={totalPage} />
             </div>
           ))}
       </div>
       <div className="flex justify-end gap-1">
-        <Previous action={action} />
-        <Next action={action} />
+        <Previous action={action} currentPage={page} />
+        <Next action={action} currentPage={page} totalPage={totalPage} />
       </div>
     </div>
   );

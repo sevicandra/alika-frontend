@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import PopUp from "@/component/Molecules/PopUp";
+import PopUp from "@/component/Organisms/PopUp";
 export default function Layout({
   UangMuka,
   Lunas,

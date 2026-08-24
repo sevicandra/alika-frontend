@@ -1,7 +1,13 @@
 "use client";
 import { LuRefreshCw } from "react-icons/lu";
 
-export default function Onproccess({ refresh }: { refresh: () => void }) {
+// ────────────────────────────────────────────────────────────
+// ON PROCESS — Organism
+// Dipindahkan dari Molecules (Onproccess.tsx — typo diperbaiki).
+// Komponen "feature state" yang berdiri sendiri dengan layout
+// penuh dan teks domain-spesifik, tepat sebagai Organism.
+// ────────────────────────────────────────────────────────────
+export default function OnProcess({ refresh }: { refresh: () => void }) {
   return (
     <div className="flex h-full items-center justify-center bg-base-100">
       <div className="w-full max-w-md space-y-6 rounded-2xl bg-base-200 p-8 text-center shadow-xl">

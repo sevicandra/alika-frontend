@@ -3,7 +3,7 @@ import Preview from "@/component/Organisms/PdfViewer";
 import { use, useState, useEffect } from "react";
 import { useNotification } from "@/context/notifikasi";
 import Loading from "@/component/Molecules/Loading";
-import PopUp from "@/component/Molecules/PopUp";
+import PopUp from "@/component/Organisms/PopUp";
 export default function Page({
   params,
 }: {

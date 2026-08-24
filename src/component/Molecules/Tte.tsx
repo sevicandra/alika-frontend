@@ -3,7 +3,9 @@ import Button from "../Atoms/Button";
 import { Transition } from "@headlessui/react";
 import { useState } from "react";
 import { FiKey } from "react-icons/fi";
-export default function Confirmation({
+// Nama komponen diperbaiki: TteConfirmation (sebelumnya: Confirmation — conflict naming).
+// Komponen ini khusus untuk konfirmasi TTE yang membutuhkan passphrase.
+export default function TteConfirmation({
   isOpen,
   onConfirm,
   onCancel,

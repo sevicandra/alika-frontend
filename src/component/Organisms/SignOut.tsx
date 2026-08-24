@@ -4,8 +4,9 @@ import { LuLogOut } from "react-icons/lu";
 import { useNotification } from "@/context/notifikasi";
 import { WebPushNotificationContext } from "@/context/webPushNotification";
 import { useContext, useState } from "react";
-import Confirmation from "./Confirmation";
+import Confirmation from "@/component/Molecules/Confirmation";
 import { useSession } from "@/context/session";
+
 export default function SignOut() {
   const router = useRouter();
   const { addNotification } = useNotification();
@@ -30,6 +31,7 @@ export default function SignOut() {
       });
     }
   };
+
   return (
     <>
       <div

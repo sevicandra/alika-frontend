@@ -6,7 +6,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from "../Molecules/Dropdown";
 import { useSession } from "@/context/session";
 import { ThemesContext } from "@/context/themes";
 import { useContext } from "react";
-import SignOut from "../Molecules/SignOut";
+import SignOut from "../Organisms/SignOut";
 export default function Header() {
   const { data: session } = useSession();
   const { openMenu } = useContext(ThemesContext);

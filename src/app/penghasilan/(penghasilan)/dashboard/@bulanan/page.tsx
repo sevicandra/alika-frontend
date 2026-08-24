@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Cart from "@/component/Organisms/riwayatPenghasilanCart";
+import Cart from "@/component/Organisms/RiwayatPenghasilanChart";
 import { useNotification } from "@/context/notifikasi";
 import { useTahun } from "@/context/penghasilan";
 import Loading from "@/component/Molecules/Loading";
